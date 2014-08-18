@@ -1,0 +1,29 @@
+% drbnwtsn.bbl: bibliography for drbnwtsn.tex produced by bibtex
+
+\begin{thebibliography}{1}
+
+\bibitem{durbin-watson-1950}
+J.~Durbin and G.~S. Watson.
+\newblock Testing for serial correlation in least squares regression. {I}.
+\newblock {\em Biometrika}, 37:409--428, 1950.
+
+\bibitem{farebrother-1984}
+R.~W. Farebrother.
+\newblock Remark {AS} {R52}: The distribution of a linear combination of
+  central $\chi^2$ random variables: A remark on {AS} 153: {P}an's procedure
+  for the tail probabilities of the {D}urbin-{W}atson statistic.
+\newblock {\em Journal of the Royal Statistical Society. Series C (Applied
+  Statistics)}, 33(3):363--366, 1984.
+
+\bibitem{imhof-1961}
+J.~P. Imhof.
+\newblock Computing the distribution of quadratic forms in normal variables.
+\newblock {\em Biometrika}, 48:419--426, 1961.
+
+\bibitem{savin-white-1977}
+N.~E. Savin and K.~J. White.
+\newblock The {D}urbin-{W}atson test for serial correlation with extreme sample
+  sizes or many regressors.
+\newblock {\em Econometrica}, 45:1989--1996, 1977.
+
+\end{thebibliography}

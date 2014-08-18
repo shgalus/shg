@@ -1,0 +1,33 @@
+# make.clang: file included by description files for make
+
+SHELL = /bin/sh
+
+# Things you might add to DEFS:
+# -DMCHECK              To debug memory allocation in GCC.
+# -D_GLIBCXX_DEBUG      Use the libstdc++ debug mode.
+# -DSHG_IEEE_EXCEPTIONS	Enable traps for IEEE exceptions.
+
+DEFS = -DMCHECK -D_GLIBCXX_DEBUG -DSHG_IEEE_EXCEPTIONS
+
+CXX = clang -O2
+DEBUG = -g
+INCLUDE = -I../include
+WARNINGS = -pedantic -Weverything -Wno-documentation -Wno-c++98-compat	\
+-Wno-c++98-compat-pedantic -Wno-sign-conversion				\
+-Wno-global-constructors -Wno-shadow -Wno-padded -Wno-weak-vtables	\
+-Wno-exit-time-destructors
+CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++11 $(WARNINGS) $(DEFS)
+CPPFLAGS =
+LDFLAGS = -static
+LOADLIBES = -L../lib
+LDLIBS = -lshg -lstdc++ -lm
+
+AR = /usr/bin/ar
+ARFLAGS = rc
+RANLIB = /usr/bin/ranlib
+
+%.o : %.cc
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+
+% : %.cc
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) -o $@

@@ -1,0 +1,27 @@
+% nhmm.bbl: bibliography for nhmm.tex produced by bibtex
+
+\begin{thebibliography}{1}
+
+\bibitem{baum-petrie-soules-weiss-1970}
+Leonard~E. Baum, Ted Petrie, George Soules, and Norman Weiss.
+\newblock A maximization technique occuring in the statistical analysis of
+  probabilistic functions of {M}arkov chains.
+\newblock {\em The Annals of Mathematical Statistics}, 41(1):164--171, 1970.
+
+\bibitem{cappe-moulines-ryden-2005}
+Olivier Capp{\'{e}}, Eric Moulines, and Tobias Ryd{\'{e}}n.
+\newblock {\em Inference in Hidden Markov Models}.
+\newblock Springer Series in Statistics. Springer, New York, 2005.
+
+\bibitem{rabiner-1989}
+Lawrence~R. Rabiner.
+\newblock A tutorial on hidden {M}arkov models and selected applications in
+  speech recognition.
+\newblock {\em Proceedings of the {IEEE}}, 77(2):257--286, 1989.
+
+\bibitem{zucchini-macdonald-2009}
+Walter Zucchini and Iain~L. MacDonald.
+\newblock {\em Hidden Markov Models for Time Series. An Introduction Using R}.
+\newblock Chapman and Hall/CRC, Boca Raton, 2009.
+
+\end{thebibliography}

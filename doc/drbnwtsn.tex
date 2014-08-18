@@ -1,0 +1,99 @@
+% drbnwtsn.tex: Durbin-Watson statistic
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\sgn}{sgn}
+\renewcommand{\Pr}{\mathit{P}}
+
+\title{Cumulative distribution function of the Durbin-Watson statistic}
+\author{Stanis{\l}aw Galus}
+\date{9 July 2012}
+
+\begin{document}
+\maketitle
+
+Let us consider the linear regression model \[ y_i = \beta_0 +
+\beta_1x_{i1} + \ldots + \beta_kx_{ik} + \xi_i, \] $i = 1, \ldots, n$,
+$k \geq 1$, $n > k + 1$, where $\xi_i$ are independent identically
+distributed normal variables with zero mean, or $y = X\beta + \xi$. The
+least squares estimate of $\beta$ is $b = (X^TX)^{-1}X^Ty$ and the
+vector of residuals from the regression is $e = y - Xb$. The
+Durbin-Watson $d$ statistic is defined by \[ d = \frac{\sum_{i = 2}^n
+  (e_i - e_{i - 1})^2}{\sum_{i = 1}^n e_i^2} \] It is shown in
+\cite[p.~426]{durbin-watson-1950} that $d_L \leq d \leq d_U$, where \[
+d_L = \frac{\sum_{i = 1}^{n - k - 1} \lambda_i \zeta_i^2} {\sum_{i =
+    1}^{n - k - 1} \zeta_i^2}, \] \[ d_U = \frac{\sum_{i = 1}^{n - k -
+    1} \lambda_{i + k} \zeta_i^2} {\sum_{i = 1}^{n - k - 1}
+  \zeta_i^2}, \] \[ \lambda_i = 2\left(1 - \cos \frac{\pi i}{n}\right),
+\quad i = 1, \ldots, n - 1, \] and $\zeta_1, \ldots, \zeta_{n - 1}$ are
+independent standard normal variables. The cumulative distribution
+functions of $d_L$ and $d_U$ are
+\begin{align} \label{eq:dwcdfdL}
+  \Pr(d_L < x) &= \Pr\left(\sum_{i = 1}^{n - k - 1} (x - \lambda_i)
+  \zeta_i^2 > 0 \right), \\
+  \label{eq:dwcdfdU}
+  \Pr(d_U < x) &= \Pr\left(\sum_{i = 1}^{n - k - 1} (x - \lambda_{i + k})
+  \zeta_i^2 > 0 \right).
+\end{align}
+
+In both cases, the probabilities~(\ref{eq:dwcdfdL})
+and~(\ref{eq:dwcdfdU}) are of the form \[ \Pr\left(\sum_{i = 1}^m w_i
+\zeta_i^2 > 0 \right), \] where $w_i$, $i = 1, \ldots, m$, $m > 0$, are
+those $x - \lambda_i$ or $x - \lambda_{i + k}$ which are not equal to 0.
+They can be calculated by the formula (3.2) of
+\cite[p.~422]{imhof-1961}, which states that if $w_i \neq 0$, $i = 1,
+\ldots, m$, then \[ \Pr\left(\sum_{i = 1}^m w_i \zeta_i^2 > 0 \right) =
+\frac{1}{2} + \frac{1}{\pi} \int_0^{+\infty} f(u) du, \] where
+\begin{align*}
+  f(u) &= \frac{\sin \theta(u)}{u \rho(u)}, \\
+  \theta(u) &= \frac{1}{2} \sum_{i = 1}^m \arctan(w_iu), \\
+  \rho(u) &= \prod_{i = 1}^m (1 + w_i^2u^2)^{1 / 4}.
+\end{align*}
+It is shown in (3.3) of \cite[p.~423]{imhof-1961} that
+\begin{align}
+  \nonumber
+  \lim_{u \rightarrow 0} f(u) &= \frac{1}{2} \sum_{i = 1}^m w_i, \\
+  \nonumber
+  \lim_{u \rightarrow \infty} \theta(u) &= \frac{\pi}{4}
+  \sum_{i = 1}^m \sgn w_i, \\
+  \label{eq:dwcdftail}
+  |\frac{1}{\pi} \int_u^{+\infty} f(u) du| & \leq
+  \frac{1}{\pi} \frac{2}{m} u^{-m / 2} \prod_{i = 1}^m |w_i|^{-1 / 2}.
+\end{align}
+
+To achieve the result $\mathit{prob}$ and the accuracy $\mathit{eps}$
+such that
+\begin{equation} \label{eq:dwcdfprob}
+  \mathit{prob} - \mathit{eps} \leq \Pr \left( \sum_{i = 1}^m w_i
+  \zeta_i^2 > 0 \right) < \mathit{prob} + \mathit{eps}
+\end{equation}
+we put
+\begin{equation} \label{eq:dwcdfupperlimit}
+  u \geq (\frac{1}{\pi} \frac{2}{m} (\prod_{i = 1}^m |w_i|^{-1 / 2}) /
+  (\mathit{eps} / 2))^{2 / m}
+\end{equation}
+so that by~(\ref{eq:dwcdftail}) we have \[ |\frac{1}{\pi}
+\int_u^{+\infty} f(u) du| \leq \mathit{eps} / 2 \] and then calculate
+\begin{equation} \label{eq:dwcdfintegral}
+  \frac{1}{\pi} \int_0^u f(u) du
+\end{equation}
+by the Simpson method until two consecutive approximations differ no
+more than $\mathit{eps} / 2$. To have four significant digits after the
+comma, we put $\mathit{eps} = 0.000049$.
+
+The function should not be used for low values of $n - k - 1$, say 1, 2,
+3, as integration~(\ref{eq:dwcdfintegral}) fails. For $n - k - 1 = 1$ we
+have
+\begin{align*}
+  \Pr(d_L < x) = 0 & \quad \mathrm{for} \quad x \leq \lambda_1, \\
+  \Pr(d_L < x) = 1 & \quad \mathrm{for} \quad x > \lambda_1, \\
+  \Pr(d_U < x) = 0 & \quad \mathrm{for} \quad x \leq \lambda_{1 + k}, \\
+  \Pr(d_U < x) = 1 & \quad \mathrm{for} \quad x > \lambda_{1 + k}.
+\end{align*}
+For possible solution to this problem, see~\cite{farebrother-1984}. See
+also~\cite{savin-white-1977}.
+
+\bibliographystyle{plain}
+\bibliography{sgalus}
+\end{document}

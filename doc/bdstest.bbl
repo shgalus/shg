@@ -1,0 +1,15 @@
+% bdstest.bbl: bibliography for bdstest.tex produced by bibtex
+
+\begin{thebibliography}{1}
+
+\bibitem{baker-gollub-1998}
+Gregory~L. Baker and Jerry~P. Gollub.
+\newblock {\em Wst{\k{e}}p do dynamiki uk{\l}ad{\'{o}}w chaotycznych}.
+\newblock Wydaw\-nic\-two Na\-ukowe PWN, War\-szawa, 1998.
+
+\bibitem{brock-dechert-scheinkman-lebaron-1996}
+W.~A. Brock, W.~D. Dechert, J.~A. Scheinkman, and B.~LeBaron.
+\newblock A test for independence based on the correlation dimension.
+\newblock {\em Econometric Reviews}, 15(3):197--235, 1996.
+
+\end{thebibliography}

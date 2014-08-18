@@ -1,0 +1,24 @@
+/* mainpage.doc: doxygen documentation index page */
+
+/**
+
+\mainpage SHG Documentation
+
+\tableofcontents
+
+\section directory_structure Directory structure.
+\verbatim
+.
+|-- aux              auxiliary files
+|   |-- scripts      various scripts
+|   `-- strdlr       NIST StRD - Linear Regression
+|-- doc              documentation files
+|-- examples         example programs
+|-- include
+|   `-- shg          SHG include files
+|-- src              SHG source files
+`-- testing          source files for testing
+    `-- data         data for testing
+\endverbatim
+
+*/

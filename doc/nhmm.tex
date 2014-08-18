@@ -1,0 +1,257 @@
+% nhmm.tex: normal hidden Markov models
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\sgn}{sgn}
+\renewcommand{\Pr}{\mathit{P}}
+
+\title{Normal hidden Markov models}
+\author{Stanis{\l}aw Galus}
+\date{13 January 2013}
+
+\begin{document}
+\maketitle
+
+\section{Forward-backward variables}
+
+Let $(X_t)_{t = 1}^T$ be a homogeneous Markov chain over the state
+space $S = \{1, \ldots, s\}$ with transition matrix $P = [p_{ij}]$,
+$i, j \in S$, and initial state distribution $p = [p_i]$, $i \in S$.
+Then, for each $i_1, \ldots, i_T \in S$,
+\[
+\Pr(X_1 = i_1, X_2 = i_2, \ldots, X_T = i_T) = p_{i_1}p_{i_1i_2}
+\ldots p_{i_{T - 1}i_T}.
+\]
+For each state $i \in S$, let $f_i(y, \theta_i)$ be a corresponding
+probability density function. In each moment $t = 1, \ldots, T$, a
+value $y_t$ of a random variable $Y_t$ is observed which comes from
+the density $f_{i_t}$. The likelihood of the sample $y_1, \ldots, y_T$
+is
+\begin{eqnarray*}
+  \lefteqn{\mathcal{L} = L(p, P, \theta_1, \ldots, \theta_s) =} \\ & =
+  & \sum_{i_1, \ldots, i_T = 1}^s p_{i_1}f_{i_1}(y_1, \theta_{i_1})
+  p_{i_1i_2}f_{i_2}(y_2, \theta_{i_2}) \ldots p_{i_{T - 1}i_T}
+  f_{i_T}(y_T, \theta_{i_T}) = \\ & = & \sum_{i_1 = 1}^s
+  p_{i_1}f_{i_1}(y_1, \theta_{i_1}) \sum_{i_2 = 1}^s
+  p_{i_1i_2}f_{i_2}(y_2, \theta_{i_2}) \ldots \sum_{i_T = 1}^s p_{i_{T
+      - 1}i_T}f_{i_T}(y_T, \theta_{i_T}).
+\end{eqnarray*}
+The last expression can be calculated using forward variables
+\begin{eqnarray}
+  \label{eq:alpha1}
+  \alpha_1(j) & = & p_j f_j(y_1, \theta_j), \hspace{1em} j \in S, \\
+  \label{eq:alphat}
+  \alpha_t(j) & = & \sum_{i = 1}^s (\alpha_{t - 1}(i)p_{ij})
+  f_j(y_t, \theta_j),
+  \hspace{1em} j\in S, \hspace{1em} t = 2, \ldots, T
+\end{eqnarray}
+or backward variables
+\begin{eqnarray}
+  \label{eq:betaT}
+  \beta_T(i) & = & 1, \hspace{1em} i \in S, \\
+  \label{eq:betat}
+  \beta_t(i) & = & \sum_{j = 1}^s p_{ij}f_j(y_{t + 1},
+  \theta_j)\beta_{t + 1}(j),
+  \hspace{1em} i \in S, \hspace{1em} t = T - 1, \ldots, 1
+\end{eqnarray}
+or both as
+\begin{equation}
+  \label{eq:likelihood}
+  \mathcal{L} = \sum_{i = 1}^s \alpha_T(i) = \sum_{i = 1}^s p_i f_i(y_1,
+  \theta_i) \beta_1(i) = \sum_{i = 1}^s
+  \alpha_t(i)\beta_t(i), \hspace{1em} t = 1, \ldots, T.
+\end{equation}
+
+Moreover, if we define
+\begin{eqnarray}
+  \label{eq:gamma}
+  \gamma_t(i) & = & \alpha_t(i)\beta_t(i) / \mathcal{L}, \hspace{1em} t
+  = 1, \ldots, T, \hspace{1em} i \in S, \\
+  \label{eq:xi}
+  \xi_t(i, j) & = &
+  \alpha_t(i)\beta_{t + 1}(j)p_{ij} f_j(y_{t + 1}, \theta_j) / \mathcal{L},
+  \hspace{1em}
+  t = 1, \ldots, T - 1, \hspace{1em} i, j \in S,
+\end{eqnarray}
+the following interpretations are possible:
+\begin{eqnarray*}
+  \alpha_t(i) & = & \Pr(Y_1 = y_1, \ldots, Y_t = y_t, X_t = i),
+  \\ \beta_t(i) & = & \Pr(Y_{t + 1} = y_{t + 1}, \ldots, Y_T = y_T, X_t
+  = i), \\
+  \gamma_t(i) & = & \Pr(Y_1 = y_1, \ldots, Y_T = y_T, X_t = i), \\
+  \xi_t(i, j) & = & \Pr(Y_1 = y_1, \ldots, Y_T = y_T, X_t = i,
+  X_{t + 1} = j),
+\end{eqnarray*}
+where $\Pr$ denotes likelihood of the respective event.
+
+\section{Baum-Welch algorithm}
+
+If $f_i(y, \theta_i) = \phi((y - \mu_i) / \sigma_i)$, where $\phi$ is
+standard normal probability density, the following formulas can be
+used for $i, j \in S$ to increase the likelihood $\mathcal{L}$:
+\begin{eqnarray}
+  \label{eq:baumwelchp}
+  \overline{p}_i & = & \gamma_1(i), \\
+  \label{eq:baumwelchP}
+  \overline{p}_{ij} & = & \frac{\sum_{t = 1}^{T - 1} \xi_t(i,
+    j)}{\sum_{t = 1}^{T - 1} \gamma_t(i)}, \\
+  \label{eq:baumwelchmu}
+  \overline{\mu}_{i} & = & \frac{\sum_{t = 1}^T \gamma_t(i)y_t}{\sum_{t
+      = 1}^T \gamma_t(i)}, \\
+  \label{eq:baumwelchsigma}
+  \overline{\sigma}_i^2 & = & \frac{\sum_{t = 1}^T \gamma_t(i)(y_t -
+    \overline{\mu}_i)^2}{\sum_{t = 1}^T \gamma_t(i)}.
+\end{eqnarray}
+
+\section{Viterbi algorithm}
+
+Having found $p$, $P$, $\theta_1$, \ldots, $\theta_s$, one may need to
+find the best sequence of states, that is a sequence
+\begin{equation} \label{eq:bestseq}
+  i_1, \ldots, i_T
+\end{equation}
+which maximizes
+\begin{equation} \label{eq:bestseqprob}
+  p_{i_1}f_{i_1}(y_1, \theta_{i_1}) p_{i_1i_2}f_{i_2}(y_2, \theta_{i_2})
+  \ldots p_{i_{T - 1}i_T}f_{i_T}(y_T, \theta_{i_T}).
+\end{equation}
+The Viterbi algorithm proceeds as follows. Let
+\begin{displaymath}
+  \delta_1(i) = p_i f_i(y_1, \theta_i), \hspace{1em} \psi_1(i) =
+  0, \hspace{1em} i \in S.
+\end{displaymath}
+For $t = 2, \ldots, T$, let
+\begin{displaymath}
+  \delta_t(j) = \max_{i \in S} (\delta_{t - 1}(i) p_{ij}) f_j(y_t,
+  \theta_j),
+  \hspace{1em}
+  \psi_t(j) = \argmax_{i \in S} (\delta_{t - 1}(i) p_{ij}),
+  \hspace{1em} i \in S.
+\end{displaymath}
+Then the maximized probability~(\ref{eq:bestseqprob}) is equal to
+$\max_{i \in S} \delta_T(i)$ and the best sequence~(\ref{eq:bestseq})
+can be backtracked by
+\begin{displaymath}
+  i_T = \argmax_{i \in S} \delta_T(i),
+  \hspace{1em}
+  i_t = \psi_{t + 1}(i_{t + 1}), \hspace{1em} t = T - 1, \ldots, 1.
+\end{displaymath}
+
+\section{Scaling}
+
+If the forward and backward variables are scaled, i.~e.
+\begin{eqnarray}
+  \label{eq:alpha1scaled}
+  \hat{\alpha}_1(j) & = & c_1 \alpha_1(j), \hspace{1em} j \in S, \\
+  \label{eq:alphatscaled}
+  \hat{\alpha}_t(j) & = & c_t \sum_{i = 1}^s (\hat{\alpha}_{t -
+    1}(i)p_{ij}) f_j(y_t, \theta_j),
+  \hspace{1em} j \in S, \hspace{1em} t = 2, \ldots, T,
+\end{eqnarray}
+and
+\begin{eqnarray}
+  \label{eq:betaTscaled}
+  \hat{\beta}_T(i) & = & d_T \beta_T(i), \hspace{1em} i \in S, \\
+  \label{eq:betatscaled}
+  \hat{\beta}_t(i) & = & d_t \sum_{j = 1}^s p_{ij}f_j(y_{t + 1},
+  \theta_j)\hat{\beta}_{t + 1}(j),
+  \hspace{1em} i \in S, \hspace{1em} t = T - 1, \ldots, 1
+\end{eqnarray}
+are calculated instead of~(\ref{eq:alpha1}--\ref{eq:betat}), where
+\begin{eqnarray}
+  \label{eq:c1}
+  c_1^{-1} & = & \sum_{j = 1}^s \alpha_1(j), \\
+  \label{eq:ct}
+  c_t^{-1} & = & \sum_{j = 1}^s \sum_{i = 1}^s (\hat{\alpha}_{t -
+    1}(i)p_{ij}) f_j(y_t, \theta_j), \hspace{1em} t = 2, \ldots, T, \\
+  \label{eq:dT}
+  d_T^{-1} & = & \sum_{i = 1}^s \beta_T(i) = s, \\
+  \label{eq:dt}
+  d_t^{-1} & = & \sum_{i = 1}^s \sum_{j = 1}^s p_{ij}f_j(y_{t + 1},
+  \theta_j)\hat{\beta}_{t + 1}(j),
+  \hspace{1em} t = T - 1, \ldots, 1,
+\end{eqnarray}
+then
+\begin{eqnarray}
+  \label{eq:alphabyscaled}
+  \hat{\alpha}_t(j) & = & c_1 \ldots c_t \alpha_t(j) =
+  \frac{\alpha_t(j)}{\sum_{j = 1}^s \alpha_t(j)}, \\
+  \label{eq:betabyscaled}
+  \hat{\beta}_t(i) & = & d_T \ldots d_t \beta_t(i) =
+  \frac{\beta_t(i)}{\sum_{i = 1}^s \beta_t(i)},
+\end{eqnarray}
+for $i, j \in S$, $t = 1, \ldots, T$. The logarithm of likelihood may be
+calculated using the first equality~(\ref{eq:likelihood})
+and~(\ref{eq:alphabyscaled}) for $t = T$ as
+\begin{equation}
+  \label{eq:loglikelihood}
+  \log \mathcal{L} = - \sum_{t = 1}^T \log c_t,
+\end{equation}
+since $\sum_{i = 1}^s \alpha_T(i) = (c_1 \ldots c_T)^{-1}$.
+The values~(\ref{eq:gamma}) and~(\ref{eq:xi}) may be calculated as
+\begin{eqnarray}
+  \label{eq:gammabyscaled}
+  \gamma_t(i) & = & \frac{\hat{\alpha}_t(i)\hat{\beta}_t(i)}{\sum_{i =
+      1}^s \hat{\alpha}_t(i) \hat{\beta}_t(i)}, \hspace{1em} t = 1,
+  \ldots, T, \\
+  \label{eq:xibyscaled}
+  \xi_t(i, j) & = & d_t\frac{\hat{\alpha}_t(i)\hat{\beta}_{t +
+      1}(j)p_{ij} f_j(y_{t + 1}, \theta_j)}{\sum_{i = 1}^s
+    \hat{\alpha}_t(i) \hat{\beta}_t(i)},
+  \hspace{1em} t = 1, \ldots, T - 1
+\end{eqnarray}
+for $i, j \in S$.
+
+The Baum-Welch
+adjustments~(\ref{eq:baumwelchp}--\ref{eq:baumwelchsigma}) can be
+calculated as above except for~(\ref{eq:baumwelchP}), which should be
+calculated as
+\begin{equation}
+  \label{eq:baumwelchPscaled}
+  \overline{p}_{ij} = \frac{\sum_{t = 1}^{T - 1} \frac{\hat{\alpha}_t(i)
+      \hat{\beta}_{t + 1}(j) p_{ij} f_j(y_{t + 1}, \theta_j)}{\sum_{i =
+        1}^s \hat{\alpha}_t(i) \hat{\beta}_t(i)}d_t }{\sum_{t = 1}^{T - 1}
+    \gamma_t(i)}
+\end{equation}
+for $i, j \in S$.
+
+The Viterbi algorithm needs not scaling, but what should be maximized
+is logarithm of~(\ref{eq:bestseqprob}) rather
+than~(\ref{eq:bestseqprob}) itself.
+
+% TODO: Put citations in proper places.
+References: \cite{rabiner-1989}, \cite{baum-petrie-soules-weiss-1970},
+\cite{cappe-moulines-ryden-2005}.
+
+\section{Forecast normal pseudo-residuals}
+
+Forecast normal pseudo-residuals are defined as follows \cite [p.~97]
+{zucchini-macdonald-2009}. If $X_t$ is a continuous random variable
+with distribution function $F_{X_t}$, then $F_{X_t}(X_t)$ is uniformly
+distributed on $(0, 1)$ and $u_t = \Pr(X_t \leq x_t) = F_{X_t}(x_t)$
+is the uniform pseudo-residual. The random variable
+$\Phi^{-1}(F_{X_t}(X_t))$ is distributed standard normal and
+\[
+z_t = \Phi^{-1}(u_t) = \Phi^{-1}(F_{X_t}(x_t))
+\]
+is the normal pseudo-residual. If we take
+\[
+F_{X_t}(x_t) = \Pr(X_t \leq x_t\ |\ \mathbf{X}^{(t - 1)} =
+\mathbf{x}^{(t - 1)}),
+\]
+we get forecast normal pseudo-residuals, while taking
+\[
+F_{X_t}(x_t) = \Pr(X_t \leq x_t\ |\ \mathbf{X}^{(-t)} =
+\mathbf{x}^{(-t)}),
+\]
+we get ordinary normal pseudo-residuals. Therefore, we calculate
+density of forecast according to formula
+\[
+\Pr(X_t = x\ |\ \mathbf{X}^{(t - 1)} = \mathbf{x}^{(t - 1)})
+= \frac{\alpha_{t - 1} \Gamma P(x) 1^T}{\alpha_{t - 1} 1^T}.
+\]
+
+\bibliographystyle{plain}
+\bibliography{sgalus}
+\end{document}
