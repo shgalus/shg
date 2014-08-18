@@ -1,0 +1,12 @@
+/bin/
+/build/
+/doc/html/
+/doc/*.aux
+/doc/*.log
+/doc/*.pdf
+/doc/doxwarn.txt
+/lib/
+mtrace
+testshg.log
+*.o
+*.d
