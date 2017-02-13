@@ -260,6 +260,12 @@ template<class T>
 bool equal(const Matrix<T>& a, const Matrix<T>& b);
 
 /**
+ * \copydoc equal(const Matrix<T>& a, const Matrix<T>& b)
+ */
+template <class T>
+inline bool operator==(const Matrix<T>& a, const Matrix<T>& b);
+
+/**
  * Returns the sum of all the elements of the matrix. Operator \a +=
  * must be defined for the type \a T. If the matrix is empty, the
  * behaviour is undefined.

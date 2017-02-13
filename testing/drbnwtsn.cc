@@ -44,11 +44,11 @@ void cdftst() {
      };
 
      ifstream f(datapath("drbnwts1.txt").c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      {
           string s;
           getline(f, s);
-          SHG_ASSERT(f);
+          SHG_ASSERT(bool(f));
      }
 
      for (int i = 0; i < 20; i++) {
@@ -62,7 +62,7 @@ void cdftst() {
                          pdu = dwcdf(n[i], k, x, false, 1e-7, 17);
                     double pdl0, pdu0;
                     f >> pdl0 >> pdu0;
-                    SHG_ASSERT(f);
+                    SHG_ASSERT(bool(f));
                     SHG_ASSERT(abs(pdl - pdl0) < 5e-5);
                     SHG_ASSERT(abs(pdu - pdu0) < 5e-5);
                }
@@ -84,12 +84,12 @@ void ppdtst() {
      int n;
 
      ifstream f(datapath("drbnwts2.txt").c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      {
           string s;
           for (int i = 0; i < 5; i++)
                getline(f, s);
-          SHG_ASSERT(f);
+          SHG_ASSERT(bool(f));
      }
 
      for (int i = 0; i < 49; i++) {
@@ -135,7 +135,7 @@ void swtbltst() {
      stringstream ss;
      swtbl(ss);
      ifstream f(datapath("drbnwts3.txt").c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      while (getline(ss, s)) {
           getline(f, t);
           SHG_ASSERT(s == t);

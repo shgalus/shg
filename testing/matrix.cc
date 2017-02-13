@@ -64,6 +64,7 @@ void test_matrix_members() {
                Matint b(m, n, *p);
                free_c_matrix(p);
                SHG_ASSERT(equal(a, b));
+               SHG_ASSERT(a == b);
           }
           {
                // copy and move constructors from Vector
@@ -92,6 +93,7 @@ void test_matrix_members() {
                          SHG_ASSERT(a[i][j] == static_cast<int>(j));
                const Matint b(2, 3, {0, 1, 2});
                SHG_ASSERT(equal(b, a));
+               SHG_ASSERT(b == a);
                const Matint c(3, 4, {});
                SHG_ASSERT(c.nrows() == 3 && c.ncols() == 4);
           }

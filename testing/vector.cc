@@ -50,23 +50,31 @@ void test_vector_members() {
           SHG_ASSERT(it == il.end());
           const Vecint v5 {1, 3, 5, 7, 9};
           SHG_ASSERT(equal(v4, v5));
+          SHG_ASSERT(v4 == v5);
           const Vecint v6 {};
           SHG_ASSERT(v6.size() == 0);
           const Vecint v7(v5), v8(v6);
           SHG_ASSERT(equal(v7, v5) && equal(v8, v6));
+          SHG_ASSERT(v7 == v5 && v8 == v6);
           Vecint v9(v0), v10(v2), v11(v3);
           Vecint v12(move(v9)), v13(move(v10)), v14(move(v11));
           SHG_ASSERT(equal(v12, v0) && equal(v9, v0));
+          SHG_ASSERT(v12 == v0 && v9 == v0);
           SHG_ASSERT(equal(v13, v2) && equal(v10, v0));
+          SHG_ASSERT(v13 == v2 && v10 == v0);
           SHG_ASSERT(equal(v14, v3) && equal(v11, v0));
+          SHG_ASSERT(v14 == v3 && v11 == v0);
      }
      {
           // assignment
           const Vecint v0, v1(10, 13);
           Vecint v2, v3;
           SHG_ASSERT(equal(v2 = v0, v0));
+          SHG_ASSERT(v2 == v0);
           SHG_ASSERT(equal(v3 = v1, v1));
+          SHG_ASSERT(v3 == v1);
           SHG_ASSERT(equal(v3 = v0, v0));
+          SHG_ASSERT(v3 == v0);
           const Vecint v4 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
           const Vecint v5 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
           v2 = move(v2);
@@ -75,8 +83,10 @@ void test_vector_members() {
           v3 = v5;
           v2 = move(v3);
           SHG_ASSERT(equal(v2, v5) && equal(v3, v4));
+          SHG_ASSERT(v2 == v5 && v3 == v4);
           v2 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
           SHG_ASSERT(equal(v2, v4));
+          SHG_ASSERT(v2 == v4);
           v2 = 2;
           SHG_ASSERT(v2.size() == 10);
           for (size_t i = 0; i < v2.size(); i++)
@@ -90,9 +100,11 @@ void test_vector_members() {
           for (size_t i = 0; i < w.size(); i++)
                w(i) = v(i);
           SHG_ASSERT(equal(w, v));
+          SHG_ASSERT(w == v);
           for (size_t i = 0; i < w.size(); i++)
                w[i] = v(i);
           SHG_ASSERT(equal(w, v));
+          SHG_ASSERT(w == v);
           for (size_t i = 0; i < w.size(); i++)
                SHG_ASSERT(v(i) == w(i));
           try {
@@ -127,11 +139,13 @@ void test_vector_members() {
           for (size_t i = 0; i < v.size(); i++)
                pv[i]--;
           SHG_ASSERT(equal(cv, v));
+          SHG_ASSERT(cv == v);
 
           const Vecint x0 {0, 3, 6, 9}, y0 {1, 4, 7, 10}, z0;
           Vecint x(x0), y(y0), z(z0);
           x.swap(y);
           SHG_ASSERT(equal(x, y0) && equal(y, x0));
+          SHG_ASSERT(x == y0 && y == x0);
           x.swap(y);
           SHG_ASSERT(equal(x, x0) && equal(y, y0));
           x.swap(z);

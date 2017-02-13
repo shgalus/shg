@@ -244,6 +244,11 @@ bool equal(const Matrix<T>& a, const Matrix<T>& b) {
 }
 
 template <class T>
+bool operator==(const Matrix<T>& a, const Matrix<T>& b) {
+     return equal(a, b);
+}
+
+template <class T>
 T sum(const Matrix<T>& a) {
      return sum(a.vector());
 }

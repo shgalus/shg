@@ -9,7 +9,7 @@ SHELL = /bin/sh
 
 DEFS = -DMCHECK -D_GLIBCXX_DEBUG -DSHG_IEEE_EXCEPTIONS
 
-CXX = clang -O2
+CXX = clang-3.8.0 -O2
 DEBUG = -g
 INCLUDE = -I../include
 WARNINGS = -pedantic -Weverything -Wno-documentation -Wno-c++98-compat	\

@@ -92,14 +92,24 @@ void geometric() {
           0.0001, 0.001, 0.01, 0.1, 0.5, 0.9, 0.99, 0.999, 0.9999
      };
      MZT g;
-     unsigned int s = 0;
 
+     unsigned int s = 0;
      for (size_t i = 0; i < p.size(); i++) {
           const double pi = p[i];
           for (int j = 0; j < 1000; j++)
                s += g.geometric(pi);
      }
      SHG_ASSERT(s == 11278386u);
+
+     double d = 0.0;
+     for (size_t i = 0; i < 1000; i++) {
+          try {
+               d += g.geometric(1e-8);
+          } catch (std::overflow_error) {
+               SHG_ASSERT(false);
+          }
+     }
+     SHG_ASSERT(std::abs(d - 100262203685.0) < 1e-20);
 }
 
 void gamma() {

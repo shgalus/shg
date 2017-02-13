@@ -21,4 +21,14 @@
     `-- data         data for testing
 \endverbatim
 
+\section general_todos General todos.
+
+\todo Add -Wconversion -Wsign-conversion and analyse the warnings.
+
+\todo The files in aux/ are obsolete.
+
+\todo Analyse warnings from clang.
+
+\todo Change doc/Doxygen for 1.8.11.
+
 */

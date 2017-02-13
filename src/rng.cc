@@ -20,6 +20,7 @@ using std::numeric_limits;
 using std::overflow_error;
 using std::exp;
 using std::log;
+using std::log1p;
 using std::floor;
 using std::tan;
 using std::sqrt;
@@ -117,9 +118,14 @@ unsigned long RNG::logarithmic(double p) {
 
 unsigned int RNG::geometric(double p) {
      SHG_VALIDATE(p > 0.0 && p <= 1.0);
-     return p < 1.0 ?
-          static_cast<unsigned int>(log(unipos()) / log(1.0 - p) + 1)
-          : 1;
+     if (p < 1.0) {
+          const double r = log(unipos()) / log1p(-p) + 1;
+          if (r > numeric_limits<unsigned int>::max())
+               throw overflow_error(__func__);
+          return static_cast<unsigned long>(r);
+     } else {
+          return 1;
+     }
 }
 
 double RNG::gamma(const double a, const double b) {

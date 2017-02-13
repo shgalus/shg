@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <limits>
 #include "shg/except.h"
 #include "shg/vector.h"
 #include "shg/utils.h"
@@ -338,6 +339,16 @@ void test_integer_division() {
      test_int_div<long long int>();
 }
 
+void test_round() {
+     const double eps = 4.0 * std::numeric_limits<double>::min();
+     SHG_ASSERT(std::abs(round(112.495, 2) - 112.5) < eps);
+     SHG_ASSERT(std::abs(round(-112.495, 2) + 112.5) < eps);
+     SHG_ASSERT(std::abs(round(112.495, 0) - 112.0) < eps);
+     SHG_ASSERT(std::abs(round(-112.495, 0) + 112.0) < eps);
+     SHG_ASSERT(std::abs(round(112.495, -2) - 100.0) < eps);
+     SHG_ASSERT(std::abs(round(-112.495, -2) + 100.0) < eps);
+}
+
 // Factorial for small integers.
 long fact(int n) {
      long f = 1;
@@ -394,6 +405,7 @@ void test_utils() {
      test_gcd();
      test_max();
      test_integer_division();
+     test_round();
      test_comblex();
 }
 

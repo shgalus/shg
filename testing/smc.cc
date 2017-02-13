@@ -17,7 +17,7 @@
 namespace SHG {
 namespace Testing {
 
-using std::auto_ptr;
+using std::unique_ptr;
 using SHG::Vecint;
 using SHG::Vecdouble;
 using SHG::SMC;
@@ -36,7 +36,7 @@ int generate(SHG::MZT& g, SMC::STD& d) {
 
 void test_STD() {
      SHG::MZT g;
-     auto_ptr<SMC::STD> a;
+     unique_ptr<SMC::STD> a;
      int s = 0;
 
      Vecint x(3);

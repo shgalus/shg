@@ -28,7 +28,7 @@ namespace {
 double newy(ifstream& f) {
      string s;
      skipcomment(f, s);
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      return atof(s.c_str());
 }
 
@@ -60,7 +60,7 @@ void test_digamma() {
 
 void test_specfunc() {
      ifstream f(datapath("specfunc.txt").c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      double x, y, z;
 
      // loggamma
@@ -132,7 +132,7 @@ void test_specfunc() {
                     z = SHG::cdffdist(m, n, x);
                     SHG_ASSERT(abs(y - z) < 3e-8);
                }
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      // Make sure the file was exhausted.
      string s;
      skipcomment(f, s);

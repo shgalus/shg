@@ -260,6 +260,12 @@ template <class T>
 inline bool equal(const Vector<T>& a, const Vector<T>& b);
 
 /**
+ * \copydoc equal(const Vector<T>& a, const Vector<T>& b)
+ */
+template <class T>
+inline bool operator==(const Vector<T>& a, const Vector<T>& b);
+
+/**
  * Returns the sum of all the elements of the vector. Operator \a +=
  * must be defined for the type \a T. If the vector has length 0, the
  * behaviour is undefined.

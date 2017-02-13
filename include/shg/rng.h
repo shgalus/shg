@@ -141,10 +141,11 @@ public:
       *
       * \exception SHG::Invalid_argument unless p > 0.0 and p <= 1.0
       *
-      * \implementation See \cite knuth-2002b, p. 145.
+      * \exception std::overflow_error if the generated number exceeds
+      * std::numeric_limits<unsigned long>::max(), what may happen for
+      * p close to 0
       *
-      * \todo For small p > 0.0, eg. p = 0.00000000000000005, there is
-      * an error here as log(1.0 - p) = 0.
+      * \implementation See \cite knuth-2002b, p. 145.
       */
      unsigned int geometric(double p);
 

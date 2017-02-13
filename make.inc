@@ -9,7 +9,7 @@ SHELL = /bin/sh
 
 DEFS = -DMCHECK -D_GLIBCXX_DEBUG -DSHG_IEEE_EXCEPTIONS
 
-CXX = g++ -O2
+CXX = g++-5.4.0 -O2
 DEBUG = -g
 INCLUDE = -I../include
 WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast
@@ -19,9 +19,9 @@ LDFLAGS = -static
 LOADLIBES = -L../lib
 LDLIBS = -lshg
 
-AR = /usr/bin/ar
+AR = gcc-ar-5.4.0
 ARFLAGS = rc
-RANLIB = /usr/bin/ranlib
+RANLIB = gcc-ranlib-5.4.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

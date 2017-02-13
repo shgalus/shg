@@ -168,7 +168,7 @@ void Test_shg::run(int argc, char* argv[]) {
           }
      logfile.close();
      cout << "Total number of tests:  " << setw(3) << total
-          << ".  (" << fixed << setprecision(3) << setw(6)
+          << ". (" << fixed << setprecision(3) << setw(6)
           << total_elapsed << " seconds)\n"
           << "Number of tests passed: " << setw(3) << passed << ".\n"
           << "Number of tests failed: " << setw(3)
@@ -190,7 +190,9 @@ Test_shg::Test_shg() : mm() {
      register_test(test_mzt, "mzt");
      register_test(test_normmix, "normmix");
      register_test(test_ols, "ols");
+     register_test(test_opdts, "opdts");
      register_test(test_permentr, "permentr");
+     register_test(test_permut, "permut");
      register_test(test_runs, "runs");
      register_test(test_smc, "smc");
      register_test(test_specfunc, "specfunc");

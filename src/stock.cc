@@ -701,7 +701,7 @@ void Select::select() {
 
      // Output data.
      std::ofstream f(ofn.c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      f << std::fixed << std::setprecision(7);
      for (size_t i = 0; i < v.size(); i++) {
           const Series& s = v[i];
@@ -715,7 +715,7 @@ void Select::select() {
      f.close();
 
      f.open(lfn.c_str());
-     SHG_ASSERT(f);
+     SHG_ASSERT(bool(f));
      f << std::fixed << std::setprecision(1);
      const string ld = d.date()[q].common();
      f << " 1.       2.          3.         4.       5.    6. "

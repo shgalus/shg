@@ -3,8 +3,8 @@
 include ../make.inc
 
 OBJECTS = bdstest.o date.o drbnwtsn.o except.o hmm.o ieee.o laplace.o	\
-     mathprog.o mstat.o mzt.o normmix.o ols.o rng.o runs.o smc.o	\
-     specfunc.o stock.o strdlr.o unicode.o utils.o version.o
+     mathprog.o mstat.o mzt.o normmix.o ols.o permut.o rng.o runs.o	\
+     smc.o specfunc.o stock.o strdlr.o unicode.o utils.o version.o
 
 VERSION = $(shell sed -n                                             \
 	'/SHG_VERSION "/ s/^\([^0-9]*\)\([.0-9]*\)\(.*$$\)/\2/ p'    \

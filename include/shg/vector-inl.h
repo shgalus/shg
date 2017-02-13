@@ -301,6 +301,11 @@ bool equal(const Vector<T>& a, const Vector<T>& b) {
 }
 
 template <class T>
+bool operator==(const Vector<T>& a, const Vector<T>& b) {
+     return equal(a, b);
+}
+
+template <class T>
 T sum(const Vector<T>& v) {
      return std::accumulate(v.begin(), v.end(), 0);
 }

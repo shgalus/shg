@@ -199,6 +199,26 @@ T Integer_division<T>::remainder(T a, T b) {
 }
 
 /**
+ * Returns a float rounded to n decimal digits.
+ *
+ * Examples:
+ *
+ * \li round(112.495, 2) = 112.5
+ * \li round(-112.495, 2) = -112.5
+ * \li round(112.495, 0) = 112.0
+ * \li round(-112.495, 0) = -112.0
+ * \li round(112.495, -2) = 100.0
+ * \li round(-112.495, -2) = -100.0
+ */
+template <class T>
+T round(T x, int n) {
+     static_assert(std::is_floating_point<T>::value,
+                   "T must be a floating-point type.");
+     const T d = std::pow(static_cast<T>(10.0), n);
+     return std::round(x * d) / d;
+}
+
+/**
  * Writes a variable to a binary stream.
  */
 template <class T>
