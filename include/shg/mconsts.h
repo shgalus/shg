@@ -82,6 +82,13 @@ template<class T> inline T iln2() {
 }
 
 /**
+ * Returns the constant \f$\sqrt{2}\f$.
+ */
+template<class T> inline T sqrt2() {
+     return static_cast<T>(1.4142135623730950488016887242096980785697L);
+}
+
+/**
  * Returns the constant \f$1 / \sqrt{2}\f$.
  */
 template<class T> inline T isqrt2() {

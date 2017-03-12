@@ -39,7 +39,9 @@ void generate(const int prec, stringstream& ss) {
      {
           const mpf_class one(1.0, prec);
           const mpf_class two(2.0, prec);
+          const mpf_class sqrt2 = sqrt(two);
           const mpf_class isqrt2 = one / sqrt(two);
+          ss << "sqrt2    = " << sqrt2 << "; // sqrt(2)\n";
           ss << "isqrt2   = " << isqrt2 << "; // 1 / sqrt(2)\n";
      }
      ss << "sqrpi8   = " << pi * pi / 8.0 << "; // pi * pi / 8\n";

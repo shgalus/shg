@@ -27,6 +27,7 @@ void test_brent();
 void test_date();
 void test_drbnwtsn();
 void test_except();
+void test_gsgts();
 void test_hmm();
 void test_laplace();
 void test_mathprog();

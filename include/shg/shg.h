@@ -14,6 +14,7 @@
 #include "shg/date.h"
 #include "shg/drbnwtsn.h"
 #include "shg/except.h"
+#include "shg/gsgts.h"
 #include "shg/hmm.h"
 #include "shg/ieee.h"
 #include "shg/laplace.h"
