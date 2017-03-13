@@ -4,6 +4,7 @@
 /doc/*.aux
 /doc/*.log
 /doc/*.pdf
+!/doc/StatGaus.pdf
 /doc/doxwarn.txt
 /lib/
 mtrace
