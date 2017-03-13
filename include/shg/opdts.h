@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <stdexcept>
 #include <vector>
 
@@ -82,11 +83,11 @@ OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d)
           throw std::invalid_argument(__func__);
      const sztp imax = n - d + 1;
      x += i0;
-     if (d == 2)
-          calc2(x, imax);
-     else if (d == 3)
-          calc3(x, imax);
-     else
+     // if (d == 2)
+     //      calc2(x, imax);
+     // else if (d == 3)
+     //      calc3(x, imax);
+     // else
           calc(x, imax, d);
 }
 
@@ -101,30 +102,13 @@ void OPDTS<T>::print(std::ostream& f) {
 
 template <class T>
 void OPDTS<T>::calc(const T x[], sztp imax, sztp d) {
-     pattern p(d);              // current pattern
-     std::vector<bool> u(d);    // u[k] == true if x[i + k] has
-                                // already been used
-     sztp i, j, k, l;
-     T m;
-
-     for (i = 0; i < imax; i++) {
-          std::fill(u.begin(), u.end(), false);
-          l = 0;
-          for (;;) {
-               for (j = 0; j < d && u[j]; j++) ;
-               if (j >= d)
-                    break;
-               k = j;
-               m = x[i + k];
-               while (++j < d)
-                    if (!u[j])
-                         if (x[i + j] < m) {
-                              k = j;
-                              m = x[i + k];
-                         }
-               p[l++] = k;
-               u[k] = true;
-          }
+     pattern p(d);
+     for (sztp i = 0; i < imax; i++) {
+          std::iota(p.begin(), p.end(), 0);
+          std::stable_sort(p.begin(), p.end(),
+                           [i, &x, &p](const sztp k, const sztp l) {
+                                return x[i + k] < x[i + l];
+                           });
           frequency[p]++;
      }
 }
