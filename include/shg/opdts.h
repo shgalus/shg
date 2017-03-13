@@ -83,11 +83,11 @@ OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d)
           throw std::invalid_argument(__func__);
      const sztp imax = n - d + 1;
      x += i0;
-     // if (d == 2)
-     //      calc2(x, imax);
-     // else if (d == 3)
-     //      calc3(x, imax);
-     // else
+     if (d == 2)
+          calc2(x, imax);
+     else if (d == 3)
+          calc3(x, imax);
+     else
           calc(x, imax, d);
 }
 
