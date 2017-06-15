@@ -20,7 +20,7 @@ CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++11 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
 LOADLIBES = -L../lib
-LDLIBS = -lshg -lstdc++ -lm
+LDLIBS = -lshg -lfftw3 -lgsl -lgslcblas -lstdc++ -lm
 
 AR = /usr/bin/ar
 ARFLAGS = rc
