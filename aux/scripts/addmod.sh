@@ -60,7 +60,7 @@ EOF
 #
 echo "Creating testing/$a.cc."
 cat <<EOF > testing/$a.cc
-/* date.cc: testing xxxxx */
+/* $a.cc: testing xxxxx */
 
 /**
  * \file testing/$a.cc
