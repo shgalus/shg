@@ -24,6 +24,7 @@
 #include "shg/mstat.h"
 #include "shg/mzt.h"
 #include "shg/normmix.h"
+#include "shg/numalg.h"
 #include "shg/ols.h"
 #include "shg/opdts.h"
 #include "shg/permentr.h"

@@ -7,9 +7,7 @@
  */
 
 #include <cmath>
-#ifdef HAVE_FFTW
 #include <fftw3.h>
-#endif
 #include "shg/mzt.h"
 #include "shg/gsgts.h"
 #include "testshg.h"
@@ -122,8 +120,6 @@ void test(SHG::GSGTS::Cosine_transform ct,
      }
 }
 
-#ifdef HAVE_FFTW
-
 void cosft_fftw(const std::vector<double>& h,
                 std::vector<double>& H) {
      /* FFTW User Manual says: If in != out, the transform is
@@ -157,15 +153,11 @@ void realft_fftw(const std::vector<std::complex<double>>& z,
      fftw_destroy_plan(p);
 }
 
-#endif
-
 }       // anonymous namespace
 
 void test_gsgts() {
      test(nullptr, nullptr);
-#ifdef HAVE_FFTW
      test(cosft_fftw, realft_fftw);
-#endif
 }
 
 }       // namespace Testing
