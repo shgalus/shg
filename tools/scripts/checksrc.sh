@@ -1,7 +1,7 @@
 #!/bin/bash
 # checksrc.sh: check source files
 
-ALLSOURCE="include/shg/*.h src/*.cc testing/*.h testing/*.cc aux/*.cc"\
+ALLSOURCE="include/shg/*.h src/*.cc testing/*.h testing/*.cc tools/*.cc"\
 " examples/*.cc"
 
 # Things you might add to FILTER:

@@ -25,12 +25,12 @@ doc:
 examples: lib
 	cd examples && $(MAKE)
 lint:
-	./aux/scripts/checksrc.sh $(module)
+	./tools/scripts/checksrc.sh $(module)
 addmod:
 ifndef module
 	@echo "ERROR! Say: make addmod module=<new module name>"
 else
-	./aux/scripts/addmod.sh $(module)
+	./tools/scripts/addmod.sh $(module)
 endif
 TAGS:
 	etags -lc++ include/shg/*.h src/*.cc
@@ -47,14 +47,14 @@ uninstall:
 	rm -f $(libdir)/libshg.*
 	rm -rf $(docdir)
 clean:
-	cd aux && $(MAKE) clean
+	cd tools && $(MAKE) clean
 	cd examples && $(MAKE) clean
 	cd src && $(MAKE) clean
 	cd testing && $(MAKE) clean
 	cd doc && $(MAKE) clean
 almost-spotless:
 	rm -f ChangeLog TAGS shg[0-9][0-9]*.tar.gz shg-[0-9.]*.tar.gz
-	cd aux && $(MAKE) spotless
+	cd tools && $(MAKE) spotless
 	cd examples && $(MAKE) spotless
 	cd src && $(MAKE) spotless
 	cd testing && $(MAKE) spotless

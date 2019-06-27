@@ -1,4 +1,4 @@
-# Makefile: description file for make in shg/aux directory
+# Makefile: description file for make in shg/tools directory
 
 include ../make.inc
 

@@ -9,7 +9,7 @@
 \section directory_structure Directory structure.
 \verbatim
 .
-|-- aux              auxiliary files
+|-- tools            auxiliary files
 |   |-- scripts      various scripts
 |   `-- strdlr       NIST StRD - Linear Regression
 |-- doc              documentation files
@@ -25,7 +25,7 @@
 
 \todo Add -Wconversion -Wsign-conversion and analyse the warnings.
 
-\todo The files in aux/ are obsolete.
+\todo The files in tools/ are obsolete.
 
 \todo Analyse warnings from clang.
 

@@ -1,5 +1,5 @@
 # specfunc.txt: tables for testing special functions
-# See aux/specfunc.cc and testing/specfunc.cc.
+# See tools/specfunc.cc and testing/specfunc.cc.
 
  0.00000000000000e+00
 -5.69030794606965e-03

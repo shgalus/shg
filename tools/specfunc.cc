@@ -9,7 +9,7 @@
 
 int main() {
      cout << "# specfunc.txt: tables for testing special functions\n";
-     cout << "# See aux/specfunc.cc and testing/specfunc.cc.\n\n";
+     cout << "# See tools/specfunc.cc and testing/specfunc.cc.\n\n";
 
      // loggamma(x) for x in 1.0(0.01)2.0 and 0.25(0.25)100.0.
      cout << scientific;
