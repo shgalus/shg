@@ -490,7 +490,7 @@ template <class T>
 T** alloc_c_matrix(std::size_t m, std::size_t n) {
      T** p = new T*[m];
      try {p[0] = new T[m * n];}
-     catch (std::bad_alloc) {delete[] p; throw;}
+     catch (const std::bad_alloc&) {delete[] p; throw;}
      for (std::size_t i = 1; i < m; i++)
           p[i] = p[i - 1] + n;
      return p;

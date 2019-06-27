@@ -110,12 +110,12 @@ void test_vector_members() {
           try {
                v.at(v.size())++;
                SHG_ASSERT(false);
-          } catch (out_of_range) {}
+          } catch (const out_of_range&) {}
           try {
                const int i = v.at(v.size());
                SHG_ASSERT(i == v.at(v.size() - 1));
                SHG_ASSERT(false);
-          } catch (out_of_range) {}
+          } catch (const out_of_range&) {}
      }
      {
           // resize(), assign(), c_vec(), swap()

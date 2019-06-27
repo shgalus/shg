@@ -119,7 +119,7 @@ void test_simplex() {
                        x3, f3, -1.0);
           SHG_ASSERT(false);
      }
-     catch (Simplex::Error) {}
+     catch (const Simplex::Error&) {}
      test_simplex(m4, n4, A4, b4, c4, e4, d4, nofeas4, nosol4,
                   x4, f4, eps4);
 }

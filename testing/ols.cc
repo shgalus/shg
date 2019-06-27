@@ -48,7 +48,7 @@ void test1() {
           try {
                OLS o(X, y, false);
           }
-          catch (OLS::Singular_covariance_matrix) {
+          catch (const OLS::Singular_covariance_matrix&) {
                SHG_ASSERT(0);
           }
      }
@@ -68,7 +68,7 @@ void test2() {
           OLS o(X, y, true);
           SHG_ASSERT(0);
      }
-     catch (OLS::Singular_covariance_matrix) {}
+     catch (const OLS::Singular_covariance_matrix&) {}
 }
 
 void test3() {                  // Test for zero degrees of freedom.
@@ -111,7 +111,7 @@ void test5() {                  // A test with too many regressors.
           OLS ols(X, y);
           SHG_ASSERT(false);
      }
-     catch (OLS::Invalid_argument) {}
+     catch (const OLS::Invalid_argument&) {}
 }
 
 void test6(ofstream& f) {       // Data from the book of Goldberger.
@@ -257,7 +257,7 @@ void test_nist(ofstream& f, StRDLR& d, size_t n) {
                  << "\nfstat = " << ols.fstat()
                  << ", orig fstat =  " << d.fstat() << '\n';
           }
-     } catch (OLS::Singular_covariance_matrix) {
+     } catch (const OLS::Singular_covariance_matrix&) {
           f << std::left << std::setw(10) << d.name() + string(": ")
             << std::right << "could not invert matrix" << '\n';
      }

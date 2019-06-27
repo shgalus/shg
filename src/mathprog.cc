@@ -216,7 +216,7 @@ int wolfe(const Vecdouble& p,
           B.resize(g);
           N.resize(h);
      }
-     catch (std::bad_alloc) {
+     catch (const std::bad_alloc&) {
           return 2;             // not enough memory
      }
 

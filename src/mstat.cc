@@ -481,7 +481,7 @@ void Assessment_of_discrete_distribution::run() {
                     return cdf_negative_binomial(x, t, p);
                };
                ksonedc(cdf, x, d, negbin_);
-          } catch (runtime_error) {
+          } catch (const runtime_error&) {
                // we assume that if p or t cannot be easy estimated,
                // the distribution is far from negative binomial
                negbin_ = 0;

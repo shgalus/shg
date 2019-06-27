@@ -196,11 +196,11 @@ void OLS::dw() {
      try {
           dw_pvalpos_ = dwcdf(n_, k_ - 1, x, true, 0.00001, 15);
      }
-     catch (std::range_error) {}
+     catch (const std::range_error&) {}
      try {
           dw_pvalneg_ = 1.0 - dwcdf(n_, k_ - 1, x, false, 0.00001, 15);
      }
-     catch (std::range_error) {}
+     catch (const std::range_error&) {}
 }
 
 void OLS::print(std::ostream& f) const {
@@ -343,7 +343,7 @@ void OLS::estimate(const Matdouble& X, const Vecdouble& y) {
      }
      try {
           cholesky(cov_, tolerance_);
-     } catch (std::range_error) {
+     } catch (const std::range_error&) {
           throw Singular_covariance_matrix();
      }
 

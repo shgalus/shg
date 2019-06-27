@@ -78,7 +78,7 @@ void test_constructor() {
           }
      }
      try {const Date d(5, Date::fri, Date::nov, 2011); SHG_ASSERT(0);}
-     catch (Date::Bad_date) {}
+     catch (const Date::Bad_date&) {}
 }
 
 void test_one_date(Date d) {
@@ -128,7 +128,7 @@ void test_date() {
 
      for (int i = 0; bad[i]; i++) {
           try  {Date d(bad[i]);}
-          catch (Date::Bad_date) {continue;}
+          catch (const Date::Bad_date&) {continue;}
           SHG_ASSERT(0);
      }
 
@@ -161,7 +161,7 @@ void test_date() {
      }
 
      try {Date d(31, Date::dec, 1582);}
-     catch (Date::Bad_date) {goto next;}
+     catch (const Date::Bad_date&) {goto next;}
      SHG_ASSERT(0);
 next:
      stringstream ss;

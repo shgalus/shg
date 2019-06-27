@@ -54,7 +54,7 @@ void test_strdlr() {
      try {
           d.active(d.nsets());
           SHG_ASSERT(false);
-     } catch (std::invalid_argument) {}
+     } catch (const std::invalid_argument&) {}
 }
 
 }       // namespace Testing

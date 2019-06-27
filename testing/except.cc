@@ -52,7 +52,7 @@ void test2(bool b) {
      try {
           SHG_ASSERT(!b);
      }
-     catch (const SHG::Exception) {}
+     catch (const SHG::Exception&) {}
 }
 
 // Test copy constructor and assignment operator.
@@ -155,7 +155,7 @@ void test_except() {
      try {
           test_invalid_argument(-3.0);
      }
-     catch (SHG::Invalid_argument) {
+     catch (const SHG::Invalid_argument&) {
           ok = true;
      }
      SHG_ASSERT(ok);

@@ -197,7 +197,7 @@ void check(const char* s, bool correct) {
           try {
                std::vector<std::uint32_t> v = SHG::utf8_decode(s);
                SHG_ASSERT(false);
-          } catch (std::invalid_argument) {}
+          } catch (const std::invalid_argument&) {}
      }
 }
 

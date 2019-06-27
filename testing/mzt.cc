@@ -105,7 +105,7 @@ void geometric() {
      for (size_t i = 0; i < 1000; i++) {
           try {
                d += g.geometric(1e-8);
-          } catch (std::overflow_error) {
+          } catch (const std::overflow_error&) {
                SHG_ASSERT(false);
           }
      }

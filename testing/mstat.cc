@@ -183,7 +183,7 @@ void test_run_length_distribution() {
           x[1] = 3;
           v = run_length_distribution(x, 3);
           SHG_ASSERT(0);
-     } catch (std::invalid_argument) {}
+     } catch (const std::invalid_argument&) {}
      x.resize(0);
      v = run_length_distribution(x, 3);
      SHG_ASSERT(v.size() == 3);
@@ -199,7 +199,7 @@ void test_mle_lsd() {
      try {
           const double x = mle_lsd(0.9999);
           SHG_ASSERT(0 && x == x);
-     } catch (SHG::Invalid_argument) {}
+     } catch (const SHG::Invalid_argument&) {}
 }
 
 void test_cdf_lsd() {

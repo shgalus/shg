@@ -327,7 +327,7 @@ void test_int_div() {
                          a == d.q * b + d.r &&
                          Integer_division<T>::quotient(a, b) == d.q &&
                          Integer_division<T>::remainder(a, b) == d.r);
-               } catch (std::invalid_argument) {
+               } catch (const std::invalid_argument&) {
                     SHG_ASSERT(b == 0);
                }
           }

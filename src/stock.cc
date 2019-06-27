@@ -104,7 +104,7 @@ Rawdata::~Rawdata() {}
 bool Rawdata::isvaliddate(const char* s) {
      Date dt;
      try {dt = Date(string(s));}
-     catch (Date::Bad_date) {return false;}
+     catch (const Date::Bad_date&) {return false;}
      Date::Day dof = dt.dayofweek();
      if (dof == Date::sat || dof == Date::sun)
           return false;
@@ -818,7 +818,7 @@ int sp500(const char* fname, vector<Closing_price>& data, int& line) {
           dt.erase(4, 1);
           dt.erase(6, 1);
           try {cp.date = Date(dt);}
-          catch (SHG::Date::Bad_date) {return 3;}
+          catch (const SHG::Date::Bad_date&) {return 3;}
           {
                const Date::Day dow = cp.date.dayofweek();
                int d, m, y;
@@ -872,7 +872,7 @@ int wig(const char* fname, vector<Closing_price>& data, int& line) {
           dt.erase(4, 1);
           dt.erase(6, 1);
           try {cp.date = Date(dt);}
-          catch (SHG::Date::Bad_date) {return 3;}
+          catch (const SHG::Date::Bad_date&) {return 3;}
           {
                const Date::Day dow = cp.date.dayofweek();
                int d, m, y;

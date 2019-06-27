@@ -81,7 +81,7 @@ void test_matrix_members() {
                try {
                     Matint e(3, 4, Vecint(11, 12));
                     SHG_ASSERT(false);
-               } catch (invalid_argument) {}
+               } catch (const invalid_argument&) {}
           }
 
           {
@@ -164,12 +164,12 @@ void test_matrix_members() {
           try {
                a.at(a.nrows(), 0)++;
                SHG_ASSERT(false);
-          } catch (out_of_range) {}
+          } catch (const out_of_range&) {}
           try {
                const int i = a.at(0, a.ncols());
                SHG_ASSERT(i == a.at(0, a.ncols() - 1));
                SHG_ASSERT(false);
-          } catch (out_of_range) {}
+          } catch (const out_of_range&) {}
      }
      {
           // resize, assign
@@ -417,7 +417,7 @@ void test_matrix_functions() {
                transpose_in_situ(a2);
                SHG_ASSERT(false);
           }
-          catch (invalid_argument) {}
+          catch (const invalid_argument&) {}
      }
      {
           // multiply
@@ -437,7 +437,7 @@ void test_matrix_functions() {
                try {
                     const Matint c = multiply(a, b);
                     SHG_ASSERT(false);
-               } catch (invalid_argument) {}
+               } catch (const invalid_argument&) {}
           }
      }
      {
@@ -464,7 +464,7 @@ void test_matrix_functions() {
                     right_multiply_and_assign(a, b);
                     SHG_ASSERT(false);
                }
-               catch (invalid_argument) {}
+               catch (const invalid_argument&) {}
           }
           {
                try {
@@ -472,7 +472,7 @@ void test_matrix_functions() {
                     right_multiply_and_assign(a, a);
                     SHG_ASSERT(false);
                }
-               catch (invalid_argument) {}
+               catch (const invalid_argument&) {}
           }
      }
      {
@@ -494,7 +494,7 @@ void test_matrix_functions() {
                          a[i][j] = a[j][i];
                try {
                     cholesky(b);
-               } catch (range_error) {
+               } catch (const range_error&) {
                     SHG_ASSERT(false);
                }
                for (size_t i = 0; i < n; i++)
@@ -530,7 +530,7 @@ void test_matrix_functions() {
                try {
                     const Vecint w = multiply(a, v);
                     SHG_ASSERT(false);
-               } catch (invalid_argument) {}
+               } catch (const invalid_argument&) {}
           }
           {
                const Matint a;
@@ -558,7 +558,7 @@ void test_matrix_functions() {
                try {
                     const Vecint w = multiply_transposed(a, v);
                     SHG_ASSERT(false);
-               } catch (invalid_argument) {}
+               } catch (const invalid_argument&) {}
           }
      }
 }

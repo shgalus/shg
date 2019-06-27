@@ -177,7 +177,7 @@ void second_test() {
      try {
           runs(600, 600, 300, true, pe1, pe2);
           SHG_ASSERT(false);
-     } catch (std::range_error) {}
+     } catch (const std::range_error&) {}
 }
 
 void test_count_runs() {

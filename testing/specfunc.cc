@@ -53,7 +53,7 @@ void test_digamma() {
      try {
           digamma(0.0);
           SHG_ASSERT(false);
-     } catch (std::invalid_argument) {}
+     } catch (const std::invalid_argument&) {}
 }
 
 }       // anonymous namespace

@@ -216,7 +216,7 @@ bool Date::correct(int d, int m, int y) {
 
 bool Date::correct(const string& s) {
      try {Date d(s);}
-     catch (Bad_date) {return false;}
+     catch (const Bad_date&) {return false;}
      return true;
 }
 

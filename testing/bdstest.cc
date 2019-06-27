@@ -198,7 +198,7 @@ void test_case4() {
           ok = false;
           try {
                SHG::BDS_test b(u, maxm, eps);
-          } catch (invalid_argument) {
+          } catch (const invalid_argument&) {
                ok = true;
           }
           SHG_ASSERT(ok);
@@ -210,7 +210,7 @@ void test_case4() {
           ok = false;
           try {
                SHG::BDS_test b(u, maxm, eps);
-          } catch (invalid_argument) {
+          } catch (const invalid_argument&) {
                ok = true;
           }
           SHG_ASSERT(ok);
@@ -222,7 +222,7 @@ void test_case4() {
           ok = true;
           try {
                SHG::BDS_test b(u, maxm, eps);
-          } catch (invalid_argument) {
+          } catch (const invalid_argument&) {
                ok = false;
           }
           SHG_ASSERT(ok);
@@ -234,7 +234,7 @@ void test_case4() {
           ok = false;
           try {
                SHG::BDS_test b(u, maxm, eps);
-          } catch (invalid_argument) {
+          } catch (const invalid_argument&) {
                ok = true;
           }
           SHG_ASSERT(ok);
@@ -246,7 +246,7 @@ void test_case4() {
           ok = false;
           try {
                SHG::BDS_test b(u, maxm, eps);
-          } catch (invalid_argument) {
+          } catch (const invalid_argument&) {
                ok = true;
           }
           SHG_ASSERT(ok);

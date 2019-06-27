@@ -123,7 +123,7 @@ void test_weighted_median() {
      try {
           weighted_median(x, w);
           SHG_ASSERT(0);
-     } catch (const std::invalid_argument) {}
+     } catch (const std::invalid_argument&) {}
 }
 
 void test_laplace_mixture() {
