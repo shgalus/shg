@@ -132,6 +132,7 @@ void cosft_fftw(const std::vector<double>& h,
           FFTW_ESTIMATE);
      fftw_execute(p);
      fftw_destroy_plan(p);
+     fftw_cleanup();
      for (std::size_t k = 0; k < H.size(); k++)
           H[k] *= 0.5;
 }
@@ -148,6 +149,7 @@ void realft_fftw(const std::vector<std::complex<double>>& z,
           out.data(),
           FFTW_ESTIMATE);
      fftw_execute(p);
+     fftw_cleanup();
      for (std::size_t i = 0; i < z.size(); i++)
           X[i] = c * out[i];
      fftw_destroy_plan(p);
