@@ -13,7 +13,7 @@ CXX = g++-8.3.0 -O2
 DEBUG = -g
 INCLUDE = -I../include
 WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast
-CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++11 $(WARNINGS) $(DEFS)
+CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
 LOADLIBES = -L../lib
