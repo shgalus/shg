@@ -13,6 +13,7 @@
 #include "shg/brent.h"
 #include "shg/date.h"
 #include "shg/drbnwtsn.h"
+#include "shg/encoding.h"
 #include "shg/except.h"
 #include "shg/gsgts.h"
 #include "shg/hmm.h"

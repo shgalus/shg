@@ -26,6 +26,7 @@ void test_bdstest();
 void test_brent();
 void test_date();
 void test_drbnwtsn();
+void test_encoding();
 void test_except();
 void test_gsgts();
 void test_hmm();
