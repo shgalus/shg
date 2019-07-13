@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-TARGET = specfunc ksone gmconsts gstrdlrd
+TARGET = specfunc ksone gmconsts gstrdlrd octal
 
 MKL = -lmkl_intel -lmkl_sequential -lmkl_core
 GMP = -lgmpxx -lgmp
