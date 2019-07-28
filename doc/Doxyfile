@@ -230,7 +230,7 @@ TAB_SIZE               = 8
 # newlines.
 
 ALIASES                =
-ALIASES += implementation="\par Implementation\n"
+ALIASES += implementation="\par Implementation"
 ALIASES += "example_program=\xrefitem example_programs \"Example program\" \"Example programs\""
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only).
@@ -1092,7 +1092,8 @@ HTML_EXTRA_STYLESHEET  =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = bdstest.pdf drbnwtsn.pdf nhmm.pdf StatGaus.pdf
+HTML_EXTRA_FILES       = bdstest.pdf drbnwtsn.pdf nhmm.pdf StatGaus.pdf \
+utf8test.txt
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the stylesheet and background images according to
