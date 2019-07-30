@@ -36,7 +36,6 @@
 #include "shg/specfunc.h"
 #include "shg/stock.h"
 #include "shg/strdlr.h"
-#include "shg/unicode.h"
 #include "shg/utils.h"
 #include "shg/vector.h"
 #include "shg/version.h"

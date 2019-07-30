@@ -201,7 +201,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_specfunc, "specfunc");
      register_test(test_stock, "stock");
      register_test(test_strdlr, "strdlr");
-     register_test(test_unicode, "unicode");
      register_test(test_utils, "utils");
      register_test(test_vector, "vector");
 

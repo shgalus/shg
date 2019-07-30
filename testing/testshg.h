@@ -46,7 +46,6 @@ void test_smc();
 void test_specfunc();
 void test_stock();
 void test_strdlr();
-void test_unicode();
 void test_utils();
 void test_vector();
 
