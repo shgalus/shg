@@ -7,12 +7,12 @@ SHELL = /bin/sh
 # -D_GLIBCXX_DEBUG      Use the libstdc++ debug mode.
 # -DSHG_IEEE_EXCEPTIONS Enable traps for IEEE exceptions.
 
-DEFS = -DMCHECK -D_GLIBCXX_DEBUG -DSHG_IEEE_EXCEPTIONS
+DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 
 CXX = g++-8.3.0 -O2
 DEBUG = -g
 INCLUDE = -I../include
-WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast
+WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
