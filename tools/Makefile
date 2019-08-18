@@ -4,13 +4,12 @@ include ../make.inc
 
 TARGET = specfunc ksone gmconsts gstrdlrd octal
 
-MKL = -lmkl_intel -lmkl_sequential -lmkl_core
 GMP = -lgmpxx -lgmp
 
 all: $(TARGET)
 
 specfunc: specfunc.cc
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) $(MKL) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) -o $@
 ksone: ksone.cc
 gmconsts: gmconsts.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) $(GMP) -o $@

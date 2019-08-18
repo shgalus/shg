@@ -1,9 +1,8 @@
 /* specfunc.cc: generates tables for testing special functions */
 
 #include <cassert>
-#include "mkl_vml.h"
-#include "mkl_vml_functions.h"
 #include "nr/nr3.h"
+#include "nr/erf.h"
 #include "nr/gamma.h"
 #include "nr/incgammabeta.h"
 
@@ -23,25 +22,20 @@ int main() {
      // alnorm(x) for x in -10.00(0.05)10.00.
      cout << fixed;
      {
-          double x[401], y[401];
-          for (int i = 0; i <= 400; i++)
-               x[i] = -10.0 + i * 0.05;
-          vdCdfNorm(401, x, y);
-          assert(vmlGetErrStatus() == VML_STATUS_OK);
-          for (int i = 0; i <= 400; i++)
-               cout << setprecision(15) << setw(17) << y[i] << '\n';
+          Normaldist nd;
+          for (int i = 0; i <= 400; i++) {
+               cout << setprecision(15) << setw(17) <<
+                    nd.cdf(-10.0 + i * 0.05) << '\n';
+          }
      }
 
      // ppnd7(x) for x in 0.005(0.005)0.995.
      cout << scientific;
      {
-          double x[199], y[199];
+          Normaldist nd;
           for (int i = 0; i < 199; i++)
-               x[i] = 0.005 * (i + 1);
-          vdCdfNormInv(199, x, y);
-          assert(vmlGetErrStatus() == VML_STATUS_OK);
-          for (int i = 0; i < 199; i++)
-               cout << setprecision(14) << setw(21) << y[i] << '\n';
+               cout << setprecision(14) << setw(21) <<
+                    nd.invcdf(0.005 * (i + 1)) << '\n';
      }
 
      // gammad(x, p) for x in 0.0(0.1)10.0, p in 1.0(0.1)10.0.
