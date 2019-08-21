@@ -16,3 +16,4 @@ gmconsts: gmconsts.cc
 clean:
 	rm -f $(TARGET) $(TARGET:%=%.d)
 spotless: clean
+	rm -f ppnd7.cc gammad.cc probst.cc betain.cc cdffdist.cc
