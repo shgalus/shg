@@ -9,6 +9,8 @@
 #ifndef TESTSHG_H
 #define TESTSHG_H
 
+#define NELEMS(a) (sizeof(a) / sizeof((a)[0]))
+
 #include <fstream>
 #include <string>
 #include "shg/except.h"
@@ -25,7 +27,7 @@ void footer(const std::string& s);
 void test_bdstest();
 void test_brent();
 void test_date();
-void test_drbnwtsn();
+void test_durbin_watson_statistic();
 void test_encoding();
 void test_except();
 void test_gsgts();

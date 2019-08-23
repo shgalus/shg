@@ -1,7 +1,13 @@
-Testing ppdw. See subroutine ppdtst in drbnwtsn.cc.
+#include "drbnwts2.h"
+
+namespace SHG {
+namespace Testing {
+
+extern const char* const savin_white_table1 =
+     R"(
 DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
-        K = 1        K = 2        K = 3        K = 4        K = 5   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K = 1        K = 2        K = 3        K = 4        K = 5
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
   6  0.390 1.142  0.000 0.000  0.000 0.000  0.000 0.000  0.000 0.000
   7  0.435 1.036  0.294 1.676  0.000 0.000  0.000 0.000  0.000 0.000
@@ -54,3 +60,7 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.664 1.684  1.653 1.693  1.643 1.704  1.633 1.715  1.623 1.725
 --------------------------------------------------------------------
 K IS THE NUMBER OF REGRESSORS EXCLUDING THE INTERCEPT
+)";
+
+}       // namespace Testing
+}       // namespace SHG

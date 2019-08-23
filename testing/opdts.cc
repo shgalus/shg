@@ -9,8 +9,6 @@
 #include "shg/opdts.h"
 #include "testshg.h"
 
-#define NELEMS(a) (sizeof(a) / sizeof((a)[0]))
-
 namespace SHG {
 namespace Testing {
 

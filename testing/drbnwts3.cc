@@ -1,6 +1,13 @@
+#include "drbnwts3.h"
+
+namespace SHG {
+namespace Testing {
+
+extern const char* const savin_white_table2 =
+     R"(
 DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
-        K = 1        K = 2        K = 3        K = 4        K = 5   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K = 1        K = 2        K = 3        K = 4        K = 5
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
   6  0.390 1.142  ----- -----  ----- -----  ----- -----  ----- -----
   7  0.435 1.036  0.294 1.676  ----- -----  ----- -----  ----- -----
@@ -53,8 +60,8 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.664 1.684  1.654 1.694  1.644 1.704  1.633 1.714  1.623 1.725
 --------------------------------------------------------------------
 
-        K = 6        K = 7        K = 8        K = 9        K =10   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K = 6        K = 7        K = 8        K = 9        K =10
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  11  0.124 2.892  ----- -----  ----- -----  ----- -----  ----- -----
  12  0.164 2.665  0.105 3.053  ----- -----  ----- -----  ----- -----
@@ -102,8 +109,8 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.613 1.735  1.603 1.746  1.592 1.757  1.582 1.768  1.571 1.779
 --------------------------------------------------------------------
 
-        K =11        K =12        K =13        K =14        K =15   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K =11        K =12        K =13        K =14        K =15
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  16  0.060 3.446  ----- -----  ----- -----  ----- -----  ----- -----
  17  0.084 3.286  0.053 3.506  ----- -----  ----- -----  ----- -----
@@ -146,8 +153,8 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.561 1.790  1.550 1.801  1.539 1.813  1.528 1.824  1.518 1.836
 --------------------------------------------------------------------
 
-        K =16        K =17        K =18        K =19        K =20   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K =16        K =17        K =18        K =19        K =20
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  21  0.035 3.671  ----- -----  ----- -----  ----- -----  ----- -----
  22  0.050 3.562  0.032 3.700  ----- -----  ----- -----  ----- -----
@@ -187,8 +194,8 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 K IS THE NUMBER OF REGRESSORS EXCLUDING THE INTERCEPT
 
 DURBIN-WATSON STATISTIC: 5 PER CENT SIGNIFICANCE POINTS OF DL AND DU
-        K = 1        K = 2        K = 3        K = 4        K = 5   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K = 1        K = 2        K = 3        K = 4        K = 5
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
   6  0.610 1.400  ----- -----  ----- -----  ----- -----  ----- -----
   7  0.700 1.356  0.467 1.896  ----- -----  ----- -----  ----- -----
@@ -241,8 +248,8 @@ DURBIN-WATSON STATISTIC: 5 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.758 1.779  1.748 1.789  1.738 1.799  1.728 1.809  1.718 1.820
 --------------------------------------------------------------------
 
-        K = 6        K = 7        K = 8        K = 9        K =10   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K = 6        K = 7        K = 8        K = 9        K =10
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  11  0.203 3.004  ----- -----  ----- -----  ----- -----  ----- -----
  12  0.268 2.832  0.171 3.149  ----- -----  ----- -----  ----- -----
@@ -290,8 +297,8 @@ DURBIN-WATSON STATISTIC: 5 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.707 1.831  1.697 1.841  1.686 1.852  1.675 1.863  1.665 1.874
 --------------------------------------------------------------------
 
-        K =11        K =12        K =13        K =14        K =15   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K =11        K =12        K =13        K =14        K =15
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  16  0.098 3.503  ----- -----  ----- -----  ----- -----  ----- -----
  17  0.138 3.378  0.087 3.557  ----- -----  ----- -----  ----- -----
@@ -334,8 +341,8 @@ DURBIN-WATSON STATISTIC: 5 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 200  1.654 1.885  1.643 1.897  1.632 1.908  1.621 1.920  1.610 1.931
 --------------------------------------------------------------------
 
-        K =16        K =17        K =18        K =19        K =20   
-  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU 
+        K =16        K =17        K =18        K =19        K =20
+  N   DL     DU    DL     DU    DL     DU    DL     DU    DL     DU
 --------------------------------------------------------------------
  21  0.057 3.705  ----- -----  ----- -----  ----- -----  ----- -----
  22  0.083 3.619  0.052 3.731  ----- -----  ----- -----  ----- -----
@@ -374,3 +381,7 @@ DURBIN-WATSON STATISTIC: 5 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 --------------------------------------------------------------------
 K IS THE NUMBER OF REGRESSORS EXCLUDING THE INTERCEPT
 
+)";
+
+}       // namespace Testing
+}       // namespace SHG
