@@ -11,7 +11,6 @@
 .
 |-- tools            auxiliary files
 |   |-- scripts      various scripts
-|   `-- strdlr       NIST StRD - Linear Regression
 |-- doc              documentation files
 |-- examples         example programs
 |-- include
@@ -29,5 +28,46 @@
 \todo Analyse warnings from clang.
 
 \todo Change doc/Doxygen for 1.8.11.
+
+\page strdlr NIST Statistical Reference Datasets Linear Regression
+
+Source of data for testing linear regression.
+The class SHG::StRDLR contains data for testing linear regression
+retrieved on 24 December 2010 from <a href =
+"http://www.itl.nist.gov/div898/strd/">NIST Statistical Reference
+Datasets</a>. The class contains 11 datasets, described at <a href =
+"http://www.itl.nist.gov/div898/strd/lls/lls.shtml">StRD Linear Least
+Squares Regression Datasets</a>:
+
+Dataset|Model|Number of Parameters|Number of Observations
+:------|:----|-------------------:|---------------------:
+Norris   |y = B0 + B1*x + e                                |  2 | 36
+Pontius  |y = B0 + B1*x + B2*(x**2)                        |  3 | 40
+NoInt1   |y = B1*x + e                                     |  1 | 11
+NoInt2   |y = B1*x + e                                     |  1 |  3
+Filip    |y = B0 + B1*x + B2*(x**2) + ... + B10*(x**10) + e| 11 | 82
+Longley  |y = B0 + B1*x1 + B2*x2 + B3*x3 + ... + B6*x6 + e |  7 | 16
+Wampler1 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler2 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler3 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler4 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler5 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+
+Local copies of retrieved data files:
+<a href = "Norris.dat">Norris.dat</a>,
+<a href = "Pontius.dat">Pontius.dat</a>,
+<a href = "NoInt1.dat">NoInt1.dat</a>,
+<a href = "NoInt2.dat">NoInt2.dat</a>,
+<a href = "Filip.dat">Filip.dat</a>,
+<a href = "Longley.dat">Longley.dat</a>,
+<a href = "Wampler1.dat">Wampler1.dat</a>,
+<a href = "Wampler2.dat">Wampler2.dat</a>,
+<a href = "Wampler3.dat">Wampler3.dat</a>,
+<a href = "Wampler4.dat">Wampler4.dat</a>,
+<a href = "Wampler5.dat">Wampler5.dat</a>.
+
+The program <a href = "gstrdlrd.cc">gstrdlrd.cc</a> generates the
+constant SHG::StRDLR::v_. This constant is differently formatted in
+src/strdlr.cc, so use <tt>diff -b</tt> for comparing.
 
 */

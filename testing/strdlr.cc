@@ -19,7 +19,9 @@ namespace Testing {
 
 namespace {
 
-// F statistics copied from NIST .dat files.
+/**
+ * F statistics copied from NIST data files. See page \ref strdlr.
+ */
 const char* const fstat[] = {
      "5436385.54079785",
      "185330865.995752",

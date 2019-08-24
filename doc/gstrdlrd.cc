@@ -3,15 +3,17 @@
 /*
  * This program generates the constant StRDLR::v_ in src/strdlr.cc.
  * This constant is differently formatted in src/strdlr.cc, so use
- * diff -w for comparing.
+ * diff -b for comparing.
  */
 
+#include <cassert>
 #include <cstddef>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <limits>
-#include "shg/shg.h"
+#include <shg/vector.h>
+#include <shg/matrix.h>
 
 using std::cout;
 using std::ifstream;
@@ -63,7 +65,7 @@ NISTStRD::NISTStRD(int dsn)
      : ds(dsn), dsname(), n(), k(), p(), X(), y(), b(), sdevb(),
        sdevres(), r2(), dfreg(), ssreg(), msreg(), fstat(), dfres(),
        ssres(), msres() {
-     SHG_ASSERT(ds >= norris && ds <= wampler5);
+     assert(ds >= norris && ds <= wampler5);
      dsname = data[ds].name;
      n = data[ds].n;
      k = data[ds].k;
@@ -77,9 +79,9 @@ NISTStRD::NISTStRD(int dsn)
      b.resize(p);
      sdevb.resize(p);
 
-     const string fn = "strdlr/" + dsname + ".dat";
+     const string fn = dsname + ".dat";
      ifstream f(fn.c_str());
-     SHG_ASSERT(f);
+     assert(static_cast<bool>(f));
      int line = 0;
      string s;
      while (getline(f, s) && ++line < 30) {/* VOID */}
@@ -89,10 +91,10 @@ NISTStRD::NISTStRD(int dsn)
      while (f >> s && s != "Regression") {/* VOID */}
      f >> dfreg >>  ssreg >>  msreg >> s;
      if (s == "Infinity") {
-          SHG_ASSERT(ds == wampler1 || ds == wampler2);
+          assert(ds == wampler1 || ds == wampler2);
           fstat = "std::numeric_limits<double>::infinity()";
      } else {
-          SHG_ASSERT(ds != wampler1 && ds != wampler2);
+          assert(ds != wampler1 && ds != wampler2);
           fstat = s;
      }
      f >> s >> dfres >> ssres >> msres >> s;
@@ -108,7 +110,7 @@ NISTStRD::NISTStRD(int dsn)
           }
      }
      f >> s;
-     SHG_ASSERT(f.eof() && !f.bad());
+     assert(f.eof() && !f.bad());
      f.close();
 }
 
@@ -178,9 +180,7 @@ int main() {
           for (int i = 0; i < 11; i++)
                NISTStRD(i).print(cout);
           cout << "};\n";
-     } catch (const SHG::Exception& e) {
-          e.print();
      } catch (const std::exception& e) {
-          SHG::error(e.what());
+          cout << e.what();
      }
 }
