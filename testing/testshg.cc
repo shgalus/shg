@@ -25,7 +25,6 @@ namespace Testing {
 
 const char* const prgname {"testshg"};
 std::ofstream logfile;
-const char* const data_path {"../testing/data/"};
 
 namespace {
 
@@ -38,10 +37,6 @@ std::string center(const std::string& s, std::size_t n) {
 }
 
 }       // anonymous namespace
-
-std::string datapath(const char* fname) {
-     return std::string(data_path) + fname;
-}
 
 void header(const std::string& s) {
      logfile << std::string(72, '=') << '\n';
