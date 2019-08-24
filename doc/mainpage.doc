@@ -18,7 +18,6 @@
 |   `-- shg          SHG include files
 |-- src              SHG source files
 `-- testing          source files for testing
-    `-- data         data for testing
 \endverbatim
 
 \section general_todos General todos.
