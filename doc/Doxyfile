@@ -230,7 +230,7 @@ TAB_SIZE               = 8
 # newlines.
 
 ALIASES                =
-ALIASES += implementation="\par Implementation"
+ALIASES += implementation="\par Implementation^^"
 ALIASES += "example_program=\xrefitem example_programs \"Example program\" \"Example programs\""
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only).
