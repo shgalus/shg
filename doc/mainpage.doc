@@ -25,13 +25,17 @@
 
 \todo The files in tools/ are obsolete.
 
-\todo Analyse warnings from clang.
+\todo It is good to compare freshly generated Doxyfile with current
+Doxyfile. Consider: GENERATE_TESTLIST, GENERATE_BUGLIST,
+GENERATE_DEPRECATEDLIST, JAVADOC_AUTOBRIEF, REPEAT_BRIEF,
+BRIEF_MEMBER_DESC.
 
-\todo Change doc/Doxygen for 1.8.11.
+\todo Move examples to testing.
+
+\todo std::isfinite.
 
 \page strdlr NIST Statistical Reference Datasets Linear Regression
 
-Source of data for testing linear regression.
 The class SHG::StRDLR contains data for testing linear regression
 retrieved on 24 December 2010 from <a href =
 "http://www.itl.nist.gov/div898/strd/">NIST Statistical Reference
