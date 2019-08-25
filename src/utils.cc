@@ -34,7 +34,12 @@ Vecchar wfread(const char* filename) {
                // ifstream::pos_type may be long long (64 bit), size_t
                // may be unsigned (32 bit), streamsize may be int (32
                // bit)
-               if (n > std::numeric_limits<Vecchar::size_type>::max() ||
+               const auto nn =
+                    static_cast<
+                    decltype(
+                         std::numeric_limits<Vecchar::size_type>::max())
+                    >(n);
+               if (nn > std::numeric_limits<Vecchar::size_type>::max() ||
                    n > std::numeric_limits<std::streamsize>::max())
                     throw std::runtime_error(__func__);
                SHG::Vecchar buf(static_cast<Vecchar::size_type>(n));
