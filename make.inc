@@ -12,7 +12,7 @@ DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 CXX = g++-8.3.0 -O2
 DEBUG = -g
 INCLUDE = -I../include
-WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast
+WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
