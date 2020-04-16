@@ -11,6 +11,7 @@
 
 #include "shg/bdstest.h"
 #include "shg/brent.h"
+#include "shg/csv.h"
 #include "shg/date.h"
 #include "shg/drbnwtsn.h"
 #include "shg/encoding.h"

@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-OBJECTS = bdstest.o date.o drbnwtsn.o encoding.o except.o hmm.o		\
+OBJECTS = bdstest.o csv.o date.o drbnwtsn.o encoding.o except.o hmm.o	\
      gsgts.o ieee.o laplace.o mathprog.o mstat.o mzt.o normmix.o	\
      numalg.o ols.o permut.o rng.o runs.o smc.o specfunc.o stock.o	\
      strdlr.o utils.o version.o

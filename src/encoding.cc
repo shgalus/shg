@@ -7,30 +7,32 @@
  */
 
 #include <map>
-#include <stdexcept>
+#include <algorithm>
 #include "shg/encoding.h"
 
 #include <iostream>
 
 using std::string, std::u16string, std::u32string;
-using std::invalid_argument;
 
 namespace SHG::Encoding {
+
+Conversion_error::Conversion_error()
+     : std::runtime_error("Conversion failed") {}
 
 namespace {
 
 /**
- * Decodes UTF-8 sequence contained in \e s starting from position \e
- * i. \returns the first code point found \exception
- * std::invalid_argument if the sequence is incorrect \note On return,
- * the position in \e i is set one character before the beginning of
- * the next sequence. If the exception is thrown, the position in \e i
- * remains undefinite.
+ * Decodes UTF-8 sequence starting from \e it. \returns the first code
+ * point found \exception std::invalid_argument if the sequence is
+ * incorrect \note On return, the position in \e it is set one
+ * character before the beginning of the next sequence. If the
+ * exception is thrown, the position in \e it remains undefinite.
  */
-char32_t getc(const std::string& s, std::string::size_type& i) {
+char32_t getc(std::string::const_iterator& it,
+              std::string::const_iterator end) {
      char32_t u;
      int nbytes;
-     unsigned char b = s[i];
+     unsigned char b = *it;
 
      if (b < 0x80u) {
           u = b;
@@ -50,7 +52,7 @@ char32_t getc(const std::string& s, std::string::size_type& i) {
           goto error;
      }
      for (int j = 0; j < nbytes; j++)
-          if (++i >= s.size() || ((b = s[i]) & 0xc0u) != 0x80u)
+          if (++it == end || ((b = *it) & 0xc0u) != 0x80u)
                goto error;
           else
                (u <<= 6) += b & 0x3fu;
@@ -71,15 +73,15 @@ char32_t getc(const std::string& s, std::string::size_type& i) {
           goto error;
      return u;
 error:
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
 }       // anonymous namespace
 
-std::u32string u8tou32(const std::string& s) {
+std::u32string utf8_to_utf32(const std::string& s) {
      u32string t;
-     for (string::size_type i = 0; i < s.size(); i++)
-          t += getc(s, i);
+     for (auto it = s.cbegin(); it != s.cend(); ++it)
+          t += getc(it, s.cend());
      return t;
 }
 
@@ -114,7 +116,7 @@ std::u32string u8tou32(const std::string& s) {
  * 11110zzz 10zzyyyy 10yyyyxx 10xxxxxx
  * </pre>
  */
-std::string u32tou8(char32_t c) {
+std::string utf32_to_utf8(char32_t c) {
      string::size_type nchars;
      unsigned char w[4];
 
@@ -146,13 +148,13 @@ std::string u32tou8(char32_t c) {
      }
      return string(reinterpret_cast<char*>(w), nchars);
 error:
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
-std::string u32tou8(const std::u32string& s) {
+std::string utf32_to_utf8(const std::u32string& s) {
      string t;
      for (auto c : s)
-          t += u32tou8(c);
+          t += utf32_to_utf8(c);
      return t;
 }
 
@@ -166,28 +168,29 @@ namespace {
  * the next sequence. If the exception is thrown, the position in \e i
  * remains undefinite.
  */
-char32_t getc(const std::u16string& s, std::u16string::size_type& i) {
+char32_t getc(std::u16string::const_iterator& it,
+              std::u16string::const_iterator end) {
      char32_t u;
-     char16_t w = s[i];
+     char16_t w = *it;
 
      if (!is_surrogate(w))
           return w;
-     if (!is_high_surrogate(w) || ++i >= s.size())
+     if (!is_high_surrogate(w) || ++it == end)
           goto error;
      u = w << 10;
-     if (!is_low_surrogate(w = s[i]))
+     if (!is_low_surrogate(w = *it))
           goto error;
      return  u + w - 0x35fdc00u;
 error:
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
 }       // anonymous namespace
 
-std::u32string u16tou32(const std::u16string& s) {
+std::u32string utf16_to_utf32(const std::u16string& s) {
      u32string t;
-     for (u16string::size_type i = 0; i < s.size(); i++)
-          t += getc(s, i);
+     for (auto it = s.cbegin(); it != s.cend(); ++it)
+          t += getc(it, s.cend());
      return t;
 }
 
@@ -203,7 +206,7 @@ std::u32string u16tou32(const std::u16string& s) {
  * w[1] = 110111xxxxxxxxxx = 0xdc00 + xxxxxxxxxx = low surrogate
  * </pre>
  */
-std::u16string u32tou16(char32_t c) {
+std::u16string utf32_to_utf16(char32_t c) {
      if (c < 0xd800u) {
           return u16string(1, c);
      } else if (c < 0xe000u) {
@@ -217,13 +220,13 @@ std::u16string u32tou16(char32_t c) {
           w[1] = 0xdc00 + c % 0x400u;
           return u16string(w, 2);
      }
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
-std::u16string u32tou16(const std::u32string& s) {
+std::u16string utf32_to_utf16(const std::u32string& s) {
      u16string t;
      for (auto c : s)
-          t += u32tou16(c);
+          t += utf32_to_utf16(c);
      return t;
 }
 
@@ -234,7 +237,7 @@ namespace {
  * Source: https://unicode.org/Public/MAPPINGS/ISO8859/8859-2.TXT
  * (June 2019).
  */
-constexpr char32_t iso88592[96] = {
+constexpr char16_t iso88592[96] = {
      0x00a0, 0x0104, 0x02d8, 0x0141, 0x00a4, 0x013d, 0x015a, 0x00a7,
      0x00a8, 0x0160, 0x015e, 0x0164, 0x0179, 0x00ad, 0x017d, 0x017b,
      0x00b0, 0x0105, 0x02db, 0x0142, 0x00b4, 0x013e, 0x015b, 0x02c7,
@@ -253,7 +256,7 @@ constexpr char32_t iso88592[96] = {
  * ISO 8859-2 equivalents of Unicode code points starting from 0x0080.
  * \sa iso88592
  */
-const std::map<char32_t, unsigned char> map_u32toiso88592 {
+const std::map<char16_t, unsigned char> map_utf32_to_iso88592 {
      {0x0080, 0x80}, {0x0081, 0x81}, {0x0082, 0x82}, {0x0083, 0x83},
      {0x0084, 0x84}, {0x0085, 0x85}, {0x0086, 0x86}, {0x0087, 0x87},
      {0x0088, 0x88}, {0x0089, 0x89}, {0x008a, 0x8a}, {0x008b, 0x8b},
@@ -290,33 +293,45 @@ const std::map<char32_t, unsigned char> map_u32toiso88592 {
 
 }       // anonymous namespace
 
-char32_t iso88592tou32(char c) {
+char32_t iso88592_to_utf32(char c) {
      return static_cast<unsigned char>(c) < 0xa0u ?
           static_cast<unsigned char>(c) :
           iso88592[static_cast<unsigned char>(c) - 0xa0u];
 }
 
-std::u32string iso88592tou32(const std::string& s) {
-     u32string t;
-     for (auto c : s)
-          t += iso88592tou32(c);
+
+namespace {
+
+/**
+ * Converts string \e s of type \e T1 to string of type \e T2 for
+ * strings of characters of constant width. \e f is a function to
+ * convert a character.
+ */
+template <class T1, class T2>
+T2 convert(const T1& s,
+           typename T2::value_type(*f)(typename T1::value_type)) {
+     T2 t(s.size(), typename T2::value_type());
+     std::transform(s.cbegin(), s.cend(), t.begin(), f);
      return t;
 }
 
-char u32toiso88592(char32_t c) {
+}       // anonymous namespace
+
+std::u32string iso88592_to_utf32(const std::string& s) {
+     return convert<string, u32string>(s, iso88592_to_utf32);
+}
+
+char utf32_to_iso88592(char32_t c) {
      if (c < 0xa0u)
           return c;
-     if (const auto f = map_u32toiso88592.find(c);
-         f != map_u32toiso88592.end())
+     if (const auto f = map_utf32_to_iso88592.find(c);
+         f != map_utf32_to_iso88592.end())
           return f->second;
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
-std::string u32toiso88592(const std::u32string& s) {
-     string t;
-     for (auto c : s)
-          t += u32toiso88592(c);
-     return t;
+std::string utf32_to_iso88592(const std::u32string& s) {
+     return convert<u32string, string>(s, utf32_to_iso88592);
 }
 
 namespace {
@@ -328,7 +343,7 @@ namespace {
  * (July 2019). \note Undefined characters: 0x81, 0x83, 0x88, 0x90,
  * 0x98 have the value 0x0000.
  */
-constexpr char32_t windows1250[128] = {
+constexpr char16_t windows1250[128] = {
      0x20ac, 0x0000, 0x201a, 0x0000, 0x201e, 0x2026, 0x2020, 0x2021,
      0x0000, 0x2030, 0x0160, 0x2039, 0x015a, 0x0164, 0x017d, 0x0179,
      0x0000, 0x2018, 0x2019, 0x201c, 0x201d, 0x2022, 0x2013, 0x2014,
@@ -351,7 +366,7 @@ constexpr char32_t windows1250[128] = {
  * Windows-1250 equivalents of Unicode code points starting from
  * 0x00a0. \sa windows1250
  */
-const std::map<char32_t, unsigned char> map_u32towindows1250 {
+const std::map<char16_t, unsigned char> map_utf32_to_windows1250 {
      {0x00a0, 0xa0}, {0x00a4, 0xa4}, {0x00a6, 0xa6}, {0x00a7, 0xa7},
      {0x00a8, 0xa8}, {0x00a9, 0xa9}, {0x00ab, 0xab}, {0x00ac, 0xac},
      {0x00ad, 0xad}, {0x00ae, 0xae}, {0x00b0, 0xb0}, {0x00b1, 0xb1},
@@ -387,50 +402,44 @@ const std::map<char32_t, unsigned char> map_u32towindows1250 {
 
 }       // anonymous namespace
 
-char32_t windows1250tou32(char c) {
+char32_t windows1250_to_utf32(char c) {
      const unsigned char uc = c;
      if (uc < 0x80u)
           return uc;
      const char32_t d = windows1250[uc - 0x80u];
      if (d == 0x0000u)
-          throw invalid_argument(__func__);
+          throw Conversion_error();
      return d;
 }
 
-std::u32string windows1250tou32(const std::string& s) {
-     u32string t;
-     for (auto c : s)
-          t += windows1250tou32(c);
-     return t;
+std::u32string windows1250_to_utf32(const std::string& s) {
+     return convert<string, u32string>(s, windows1250_to_utf32);
 }
 
-char u32towindows1250(char32_t c) {
+char utf32_to_windows1250(char32_t c) {
      if (c < 0xa0u)
           return c;
-     if (const auto f = map_u32towindows1250.find(c);
-         f != map_u32towindows1250.end())
+     if (const auto f = map_utf32_to_windows1250.find(c);
+         f != map_utf32_to_windows1250.end())
           return f->second;
-     throw invalid_argument(__func__);
+     throw Conversion_error();
 }
 
-std::string u32towindows1250(const std::u32string& s) {
-     string t;
-     for (auto c : s)
-          t += u32towindows1250(c);
-     return t;
+std::string utf32_to_windows1250(const std::u32string& s) {
+     return convert<u32string, string>(s, utf32_to_windows1250);
 }
 
-std::string::size_type u8len(const std::string& s) {
+std::string::size_type utf8_length(const std::string& s) {
      string::size_type n = 0;
-     for (string::size_type i = 0; i < s.size(); i++, n++)
-          getc(s, i);
+     for (auto it = s.cbegin(); it != s.cend(); ++it, n++)
+          getc(it, s.cend());
      return n;
 }
 
-std::u16string::size_type u16len(const std::u16string& s) {
+std::u16string::size_type utf16_length(const std::u16string& s) {
      u16string::size_type n = 0;
-     for (u16string::size_type i = 0; i < s.size(); i++, n++)
-          getc(s, i);
+     for (auto it = s.cbegin(); it != s.cend(); ++it, n++)
+          getc(it, s.cend());
      return n;
 }
 

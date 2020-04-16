@@ -6,7 +6,6 @@
  * Created on  7 July 2019.
  */
 
-#include <stdexcept>
 #include <set>
 #include "shg/encoding.h"
 #include "testshg.h"
@@ -15,17 +14,17 @@ namespace SHG {
 namespace Testing {
 
 using std::string, std::u16string, std::u32string;
-using std::invalid_argument;
-using SHG::Encoding::u8tou32;
-using SHG::Encoding::u32tou8;
-using SHG::Encoding::u16tou32;
-using SHG::Encoding::u32tou16;
-using SHG::Encoding::iso88592tou32;
-using SHG::Encoding::u32toiso88592;
-using SHG::Encoding::windows1250tou32;
-using SHG::Encoding::u32towindows1250;
-using SHG::Encoding::u8len;
-using SHG::Encoding::u16len;
+using SHG::Encoding::Conversion_error;
+using SHG::Encoding::utf8_to_utf32;
+using SHG::Encoding::utf32_to_utf8;
+using SHG::Encoding::utf16_to_utf32;
+using SHG::Encoding::utf32_to_utf16;
+using SHG::Encoding::iso88592_to_utf32;
+using SHG::Encoding::utf32_to_iso88592;
+using SHG::Encoding::windows1250_to_utf32;
+using SHG::Encoding::utf32_to_windows1250;
+using SHG::Encoding::utf8_length;
+using SHG::Encoding::utf16_length;
 using SHG::Encoding::is_valid_codepoint;
 
 namespace {
@@ -83,28 +82,28 @@ void test_strings() {
           "\U0001d417\U0001d418\U0001d419";
 
      SHG_ASSERT(pla32.size() == 72);
-     SHG_ASSERT(u16len(pla16) == 72);
-     SHG_ASSERT(u8len(pla8) == 72);
+     SHG_ASSERT(utf16_length(pla16) == 72);
+     SHG_ASSERT(utf8_length(pla8) == 72);
      SHG_ASSERT(plaiso88592.size() == 72);
      SHG_ASSERT(plawindows1250.size() == 72);
 
-     SHG_ASSERT(pla32 == u16tou32(pla16));
-     SHG_ASSERT(pla32 == u8tou32(pla8));
-     SHG_ASSERT(pla32 == iso88592tou32(plaiso88592));
-     SHG_ASSERT(pla32 == windows1250tou32(plawindows1250));
+     SHG_ASSERT(pla32 == utf16_to_utf32(pla16));
+     SHG_ASSERT(pla32 == utf8_to_utf32(pla8));
+     SHG_ASSERT(pla32 == iso88592_to_utf32(plaiso88592));
+     SHG_ASSERT(pla32 == windows1250_to_utf32(plawindows1250));
 
-     SHG_ASSERT(u32tou16(pla32) == pla16);
-     SHG_ASSERT(u32tou8(pla32) == pla8);
-     SHG_ASSERT(u32toiso88592(pla32) == plaiso88592);
-     SHG_ASSERT(u32towindows1250(pla32) == plawindows1250);
+     SHG_ASSERT(utf32_to_utf16(pla32) == pla16);
+     SHG_ASSERT(utf32_to_utf8(pla32) == pla8);
+     SHG_ASSERT(utf32_to_iso88592(pla32) == plaiso88592);
+     SHG_ASSERT(utf32_to_windows1250(pla32) == plawindows1250);
 
      SHG_ASSERT(mba32.size() == 26);
-     SHG_ASSERT(u16len(mba16) == 26);
-     SHG_ASSERT(u8len(mba8) == 26);
-     SHG_ASSERT(mba32 == u16tou32(mba16));
-     SHG_ASSERT(mba32 == u8tou32(mba8));
-     SHG_ASSERT(u32tou16(mba32) == mba16);
-     SHG_ASSERT(u32tou8(mba32) == mba8);
+     SHG_ASSERT(utf16_length(mba16) == 26);
+     SHG_ASSERT(utf8_length(mba8) == 26);
+     SHG_ASSERT(mba32 == utf16_to_utf32(mba16));
+     SHG_ASSERT(mba32 == utf8_to_utf32(mba8));
+     SHG_ASSERT(utf32_to_utf16(mba32) == mba16);
+     SHG_ASSERT(utf32_to_utf8(mba32) == mba8);
 }
 
 /**
@@ -127,50 +126,50 @@ void test_characters() {
 
      for (char32_t c = 0; c <= 0x110000; c++) {
           try {
-               const string s = u32tou8(c);
-               SHG_ASSERT(u8len(s) == 1);
-               const u32string t = u8tou32(s);
+               const string s = utf32_to_utf8(c);
+               SHG_ASSERT(utf8_length(s) == 1);
+               const u32string t = utf8_to_utf32(s);
                SHG_ASSERT(t.size() == 1 && t[0] == c);
-          } catch (const invalid_argument&) {
+          } catch (const Conversion_error&) {
                SHG_ASSERT(!is_valid_codepoint(c));
           }
           try {
-               const u16string s = u32tou16(c);
-               SHG_ASSERT(u16len(s) == 1);
-               const u32string t = u16tou32(s);
+               const u16string s = utf32_to_utf16(c);
+               SHG_ASSERT(utf16_length(s) == 1);
+               const u32string t = utf16_to_utf32(s);
                SHG_ASSERT(t.size() == 1 && t[0] == c);
-          } catch (const invalid_argument&) {
+          } catch (const Conversion_error&) {
                SHG_ASSERT(!is_valid_codepoint(c));
           }
      }
 
      for (int i = 0; i < 256; i++) {
           const char c = i;
-          const char32_t d = iso88592tou32(c);
+          const char32_t d = iso88592_to_utf32(c);
 
-          SHG_ASSERT(u32toiso88592(d) == c);
+          SHG_ASSERT(utf32_to_iso88592(d) == c);
           if (win_undef.find(c) == win_undef.end()) {
-               SHG_ASSERT(u32towindows1250(windows1250tou32(c)) == c);
+               SHG_ASSERT(utf32_to_windows1250(windows1250_to_utf32(c)) == c);
           } else {
                try {
-                    windows1250tou32(c);
+                    windows1250_to_utf32(c);
                     SHG_ASSERT(false);
-               } catch (const std::invalid_argument&) {}
+               } catch (const Conversion_error&) {}
           }
 
-          u32towindows1250(d);  // ok, all ISO 8859-2 characters are
-                                // in Windows-1250
+          utf32_to_windows1250(d);  // ok, all ISO 8859-2 characters
+                                    // are in Windows-1250
 
           if (win_undef.find(c) == win_undef.end()) {
-               const char32_t d = windows1250tou32(c);
+               const char32_t d = windows1250_to_utf32(c);
                if (win_undef_in_iso.find(c) ==
                    win_undef_in_iso.end()) {
-                    u32toiso88592(d);
+                    utf32_to_iso88592(d);
                } else {
                     try {
-                         u32toiso88592(d);
+                         utf32_to_iso88592(d);
                          SHG_ASSERT(false);
-                    } catch (const std::invalid_argument&) {}
+                    } catch (const Conversion_error&) {}
                }
           }
      }
@@ -317,9 +316,9 @@ void test_kuhn() {
 
      for (const auto &[s, correct] : kuhn_data)
           try {
-               u8tou32(s);
+               utf8_to_utf32(s);
                SHG_ASSERT(correct);
-          } catch (const invalid_argument&) {
+          } catch (const Conversion_error&) {
                SHG_ASSERT(!correct);
           }
 }
@@ -347,9 +346,9 @@ void test_invalid_utf16() {
 
      for (const auto& s : invalid_utf16)
           try {
-               u16tou32(s);
+               utf16_to_utf32(s);
                SHG_ASSERT(false);
-          } catch (const invalid_argument&) {}
+          } catch (const Conversion_error&) {}
 }
 
 }       // anonymous namespace

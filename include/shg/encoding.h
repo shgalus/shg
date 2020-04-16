@@ -10,6 +10,7 @@
 #define SHG_ENCODING_H
 
 #include <limits>
+#include <stdexcept>
 #include <string>
 
 /**
@@ -23,6 +24,10 @@
  * called surrogate code points and cannot be used. This makes 1114112
  * \- 2048 = 1112064 valid code points. Some code points remain
  * unassigned.
+ *
+ * \implementation Conversions among UTF-8, UTF-16, UTF-32, as
+ * described in \cite josuttis-2012, p. 901, are not used here as \e
+ * std::wstring_convert is deprecated in C++17.
  */
 namespace SHG::Encoding {
 
@@ -43,106 +48,106 @@ namespace SHG::Encoding {
 static_assert(std::numeric_limits<unsigned char>::max() == 0xffu);
 
 /**
- * Converts UTF-8 string \e s to UTF-32 string.
- * \exception std::invalid_argument if the string contains invalid
- * character sequence
+ * Exception class for encoding error.
  */
-std::u32string u8tou32(const std::string& s);
+class Conversion_error : public std::runtime_error {
+public:
+     Conversion_error();
+};
 
 /**
- * Converts UTF-32 character \e c to UTF-8 string.
- * \exception std::invalid_argument if \e c is not Unicode character
+ * Converts UTF-8 string \e s to UTF-32 string. \exception
+ * Conversion_error if the string contains invalid character sequence
  */
-std::string u32tou8(char32_t c);
+std::u32string utf8_to_utf32(const std::string& s);
 
 /**
- * Converts UTF-32 string \e s to UTF-8 string.
- * \exception std::invalid_argument if \e s contains invalid code
- * point
+ * Converts UTF-32 character \e c to UTF-8 string. \exception
+ * Conversion_error if \e c is not Unicode character
  */
-std::string u32tou8(const std::u32string& s);
+std::string utf32_to_utf8(char32_t c);
 
 /**
- * Converts UTF-16 string \e s to UTF-32 string.
- * \exception std::invalid_argument if the string contains invalid
- * character sequence
+ * Converts UTF-32 string \e s to UTF-8 string. \exception
+ * Conversion_error if \e s contains invalid code point
  */
-std::u32string u16tou32(const std::u16string& s);
+std::string utf32_to_utf8(const std::u32string& s);
 
 /**
- * Converts UTF-32 character \e c to UTF-16 string.
- * \exception std::invalid_argument if \e c is not Unicode character
+ * Converts UTF-16 string \e s to UTF-32 string. \exception
+ * Conversion_error if the string contains invalid character sequence
  */
-std::u16string u32tou16(char32_t c);
+std::u32string utf16_to_utf32(const std::u16string& s);
 
 /**
- * Converts UTF-32 string \e s to UTF-16 string.
- * \exception std::invalid_argument if \e s contains invalid code
- * point
+ * Converts UTF-32 character \e c to UTF-16 string. \exception
+ * Conversion_error if \e c is not Unicode character
  */
-std::u16string u32tou16(const std::u32string& s);
+std::u16string utf32_to_utf16(char32_t c);
+
+/**
+ * Converts UTF-32 string \e s to UTF-16 string. \exception
+ * Conversion_error if \e s contains invalid code point
+ */
+std::u16string utf32_to_utf16(const std::u32string& s);
 
 /**
  * Converts ISO 8859-2 character to UTF-32 character.
  */
-char32_t iso88592tou32(char c);
+char32_t iso88592_to_utf32(char c);
 
 /**
  * Converts ISO 8859-2 string to UTF-32 ctring.
  */
-std::u32string iso88592tou32(const std::string& s);
+std::u32string iso88592_to_utf32(const std::string& s);
 
 /**
- * Converts UTF-32 character to ISO 8859-2 character.
- * \exception std::invalid_argument if \e c has no representation in
- * ISO 8859-2
+ * Converts UTF-32 character to ISO 8859-2 character. \exception
+ * Conversion_error if \e c has no representation in ISO 8859-2
  */
-char u32toiso88592(char32_t c);
+char utf32_to_iso88592(char32_t c);
 
 /**
- * Converts UTF-32 string to ISO 8859-2 string.
- * \exception std::invalid_argument if there exists a character in \e
- * s which has no representation in ISO 8859-2
+ * Converts UTF-32 string to ISO 8859-2 string. \exception
+ * Conversion_error if there exists a character in \e s which has no
+ * representation in ISO 8859-2
  */
-std::string u32toiso88592(const std::u32string& s);
+std::string utf32_to_iso88592(const std::u32string& s);
 
 /**
  * Converts Windows-1250 character to UTF-32 character.
  */
-char32_t windows1250tou32(char c);
+char32_t windows1250_to_utf32(char c);
 
 /**
  * Converts Windows-1250 string to UTF-32 string.
  */
-std::u32string windows1250tou32(const std::string& s);
+std::u32string windows1250_to_utf32(const std::string& s);
 
 /**
- * Converts UTF-32 character to Windows-1250 character.
- * \exception std::invalid_argument if \e c has no representation in
- * Windows-1250
+ * Converts UTF-32 character to Windows-1250 character. \exception
+ * Conversion_error if \e c has no representation in Windows-1250
  */
-char u32towindows1250(char32_t c);
+char utf32_to_windows1250(char32_t c);
 
 /**
- * Converts UTF-32 string to Windows-1250 string.
- * \exception std::invalid_argument if there exists a character in \e
- * s which has no representation in Windows-1250
+ * Converts UTF-32 string to Windows-1250 string. \exception
+ * Conversion_error if there exists a character in \e s which has no
+ * representation in Windows-1250
  */
-std::string u32towindows1250(const std::u32string& s);
+std::string utf32_to_windows1250(const std::u32string& s);
 
 /**
- * Returns the number of characters in the UTF-8 string.
- * \exception std::invalid_argument if the string contains invalid
- * character sequence
+ * Returns the number of characters in the UTF-8 string. \exception
+ * Conversion_error if the string contains invalid character sequence
  */
-std::string::size_type u8len(const std::string& s);
+std::string::size_type utf8_length(const std::string& s);
 
 /**
- * Returns the number of characters in the UTF-16 string.
- * \exception std::invalid_argument if the string contains invalid
- * character sequence
+ * Returns the number of characters in the UTF-16 string. \exception
+ * Conversion_error if the string contains invalid character sequence
  */
-std::u16string::size_type u16len(const std::u16string& s);
+std::u16string::size_type utf16_length(const std::u16string& s);
 
 /**
  * Returns \c true iff \e c is a high surrogate code point.

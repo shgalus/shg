@@ -26,6 +26,7 @@ void footer(const std::string& s);
 // Module tests.
 void test_bdstest();
 void test_brent();
+void test_csv();
 void test_date();
 void test_durbin_watson_statistic();
 void test_encoding();
