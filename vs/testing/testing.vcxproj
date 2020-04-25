@@ -161,6 +161,17 @@
   <ItemGroup>
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\testing\betain.h" />
+    <ClInclude Include="..\..\testing\cdffdist.h" />
+    <ClInclude Include="..\..\testing\drbnwts1.h" />
+    <ClInclude Include="..\..\testing\drbnwts2.h" />
+    <ClInclude Include="..\..\testing\drbnwts3.h" />
+    <ClInclude Include="..\..\testing\gammad.h" />
+    <ClInclude Include="..\..\testing\ppnd7.h" />
+    <ClInclude Include="..\..\testing\probst.h" />
+    <ClInclude Include="..\..\testing\testshg.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
