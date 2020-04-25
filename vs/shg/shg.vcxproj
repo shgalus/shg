@@ -196,6 +196,31 @@
     <ClInclude Include="mathlibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\bdstest.cc" />
+    <ClCompile Include="..\..\src\csv.cc" />
+    <ClCompile Include="..\..\src\date.cc" />
+    <ClCompile Include="..\..\src\drbnwtsn.cc" />
+    <ClCompile Include="..\..\src\encoding.cc" />
+    <ClCompile Include="..\..\src\except.cc" />
+    <ClCompile Include="..\..\src\gsgts.cc" />
+    <ClCompile Include="..\..\src\hmm.cc" />
+    <ClCompile Include="..\..\src\ieee.cc" />
+    <ClCompile Include="..\..\src\laplace.cc" />
+    <ClCompile Include="..\..\src\mathprog.cc" />
+    <ClCompile Include="..\..\src\mstat.cc" />
+    <ClCompile Include="..\..\src\mzt.cc" />
+    <ClCompile Include="..\..\src\normmix.cc" />
+    <ClCompile Include="..\..\src\numalg.cc" />
+    <ClCompile Include="..\..\src\ols.cc" />
+    <ClCompile Include="..\..\src\permut.cc" />
+    <ClCompile Include="..\..\src\rng.cc" />
+    <ClCompile Include="..\..\src\runs.cc" />
+    <ClCompile Include="..\..\src\smc.cc" />
+    <ClCompile Include="..\..\src\specfunc.cc" />
+    <ClCompile Include="..\..\src\stock.cc" />
+    <ClCompile Include="..\..\src\strdlr.cc" />
+    <ClCompile Include="..\..\src\utils.cc" />
+    <ClCompile Include="..\..\src\version.cc" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="mathlibrary.cc" />
   </ItemGroup>

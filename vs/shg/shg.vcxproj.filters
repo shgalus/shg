@@ -16,6 +16,9 @@
     <Filter Include="Header Files\SHG Header Files">
       <UniqueIdentifier>{6c7961b9-51a3-4cb1-8b0b-ee793b8a8f70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SHG Source Files">
+      <UniqueIdentifier>{4f3e950d-3b6e-4a72-98e2-94d30141f980}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\shg\bdstest.h">
@@ -136,6 +139,81 @@
     </ClCompile>
     <ClCompile Include="mathlibrary.cc">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\bdstest.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\csv.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\date.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\drbnwtsn.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\encoding.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\except.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gsgts.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\hmm.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ieee.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\laplace.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mathprog.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mstat.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mzt.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\normmix.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\numalg.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ols.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\permut.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rng.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\runs.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\smc.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\specfunc.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\stock.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\strdlr.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utils.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\version.cc">
+      <Filter>Source Files\SHG Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
