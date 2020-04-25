@@ -87,9 +87,9 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shg;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -123,9 +123,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shg;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,7 +159,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="testing.cpp" />
+    <ClCompile Include="..\..\testing\bdstest.cc" />
+    <ClCompile Include="..\..\testing\betain.cc" />
+    <ClCompile Include="..\..\testing\brent.cc" />
+    <ClCompile Include="..\..\testing\cdffdist.cc" />
+    <ClCompile Include="..\..\testing\csv.cc" />
+    <ClCompile Include="..\..\testing\date.cc" />
+    <ClCompile Include="..\..\testing\drbnwts1.cc" />
+    <ClCompile Include="..\..\testing\drbnwts2.cc" />
+    <ClCompile Include="..\..\testing\drbnwts3.cc" />
+    <ClCompile Include="..\..\testing\drbnwtsn.cc" />
+    <ClCompile Include="..\..\testing\encoding.cc" />
+    <ClCompile Include="..\..\testing\except.cc" />
+    <ClCompile Include="..\..\testing\gammad.cc" />
+    <ClCompile Include="..\..\testing\gsgts.cc" />
+    <ClCompile Include="..\..\testing\hmm.cc" />
+    <ClCompile Include="..\..\testing\laplace.cc" />
+    <ClCompile Include="..\..\testing\mathprog.cc" />
+    <ClCompile Include="..\..\testing\matrix.cc" />
+    <ClCompile Include="..\..\testing\mstat.cc" />
+    <ClCompile Include="..\..\testing\mzt.cc" />
+    <ClCompile Include="..\..\testing\normmix.cc" />
+    <ClCompile Include="..\..\testing\numalg.cc" />
+    <ClCompile Include="..\..\testing\ols.cc" />
+    <ClCompile Include="..\..\testing\opdts.cc" />
+    <ClCompile Include="..\..\testing\permentr.cc" />
+    <ClCompile Include="..\..\testing\permut.cc" />
+    <ClCompile Include="..\..\testing\ppnd7.cc" />
+    <ClCompile Include="..\..\testing\probst.cc" />
+    <ClCompile Include="..\..\testing\runs.cc" />
+    <ClCompile Include="..\..\testing\smc.cc" />
+    <ClCompile Include="..\..\testing\specfunc.cc" />
+    <ClCompile Include="..\..\testing\stock.cc" />
+    <ClCompile Include="..\..\testing\strdlr.cc" />
+    <ClCompile Include="..\..\testing\testshg.cc" />
+    <ClCompile Include="..\..\testing\utils.cc" />
+    <ClCompile Include="..\..\testing\vector.cc" />
+    <ClCompile Include="testing.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\testing\betain.h" />
