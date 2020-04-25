@@ -39,7 +39,7 @@ OLS::OLS(const Matdouble& X,
      r2_(),
      rbar2_(),
      var_(),
-     stderr_(k_),
+     standard_err_(k_),
      cov_(k_, k_),
      fitted_(n_),
      residuals_(n_),
@@ -103,7 +103,7 @@ OLS::OLS(const Matdouble& X,
           rbar2_ = 1.0;
           var_ = 0.0;
           ser_ = 0.0;
-          stderr_ = 0.0;
+          standard_err_ = 0.0;
           cov_ = 0.0;
           return;
      }
@@ -146,7 +146,8 @@ OLS::OLS(const Matdouble& X,
      // Calculate covariance matrix of parameters, standard errors of
      // parameters and t statistics.
      for (int i = 0; i < k_; i++) {
-          const double s = stderr_(i) = std::sqrt(cov_(i, i) *= var_);
+          const double s = standard_err_(i)
+               = std::sqrt(cov_(i, i) *= var_);
           const double b = beta_(i);
           if (std::abs(b / std::numeric_limits<double>::max()) < s) {
                tstat_(i) = std::abs(b) / s;
@@ -229,7 +230,7 @@ void OLS::print(std::ostream& f) const {
      for (int i = 0; i < nparams(); i++) {
           f << setw(2) << i + 1 << ". "
             << setw(w_) << beta()[i] << " "
-            << setw(w_) << stderr()[i];
+            << setw(w_) << standard_err()[i];
           if (tstat()[i] >= 0.0)
                f << " " << setw(w_) << sgn(beta()[i]) * tstat()[i]
                  << " " << setw(w_) << pvalt()[i]

@@ -197,10 +197,11 @@ public:
 
      /**
       * Returns standard errors of coefficients
-      * \f$\hat{D}\hat{\beta_i}\f$. \a stderr()[i] is an estimate of
-      * \f$\hat{D}\hat{\beta}_{i + 1}\f$ for \f$0 \leq i < k\f$.
+      * \f$\hat{D}\hat{\beta_i}\f$. \a standard_err()[i] is an
+      * estimate of \f$\hat{D}\hat{\beta}_{i + 1}\f$ for \f$0 \leq i <
+      * k\f$.
       */
-     const Vecdouble& stderr() const {return stderr_;}
+     const Vecdouble& standard_err() const {return standard_err_;}
 
      /**
       * Returns mean of dependent variable \f$\bar{y}\f$.
@@ -374,7 +375,7 @@ private:
      double r2_;                ///< coefficient of determination
      double rbar2_;             ///< adjusted coeff. of determination
      double var_;               ///< variance of residuals
-     Vecdouble stderr_;         ///< standard errors of parameters
+     Vecdouble standard_err_;   ///< standard errors of parameters
      Matdouble cov_;            ///< covariance matrix of parameters
      Vecdouble fitted_;         ///< fitted values
      Vecdouble residuals_;      ///< residuals

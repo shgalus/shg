@@ -234,7 +234,7 @@ void test_nist(ofstream& f, StRDLR& d, size_t n) {
           // Compare values calculated by OLS with certified values.
           for (int i = 0; i < p; i++) {
                update(ols.beta()(i), d.b()(i));
-               update(ols.stderr()(i), d.sdevb()(i));
+               update(ols.standard_err()(i), d.sdevb()(i));
           }
           update(ols.ser(), d.sdevres());
           update(ols.r2(), d.r2());
