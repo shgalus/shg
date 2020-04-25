@@ -10,9 +10,9 @@ namespace SHG {
 /**
  * Writes records in CSV format. Empty records, ie. for which
  * <tt>rec.size() == 0</tt>, are not written. Each record ends with
- * CRLF. See <a href = "https://tools.ietf.org/html/rfc4180">Common
- * Format and MIME Type for Comma-Separated Values (CSV) Files</a> (11
- * X 2019).
+ * CRLF. See <a href = "rfc4180.txt">Common Format and MIME Type for
+ * Comma-Separated Values (CSV) Files</a> (<a href =
+ * "https://tools.ietf.org/html/rfc4180">source</a>, 11 X 2019).
  */
 class CSV_writer {
 public:

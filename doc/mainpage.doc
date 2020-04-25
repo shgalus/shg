@@ -30,6 +30,22 @@ Doxyfile. Consider: GENERATE_TESTLIST, GENERATE_BUGLIST,
 GENERATE_DEPRECATEDLIST, JAVADOC_AUTOBRIEF, REPEAT_BRIEF,
 BRIEF_MEMBER_DESC.
 
+\todo There is a file \e cstyle.tar.Z which comes from my archive file
+\e olddoc.tar.bz2 made in 2014. The original date of \e cstyle.tar.Z
+was 27 May 2003. After unpacking with \p tar zxvf cstyle.tar.Z, the
+file \e cstyle.ms dated on 26 June 1990 appears. After <tt>cat
+cstyle.ms | tbl | groff -ms -T pdf > cstyle.pdf</tt>, the following
+errors appear:
+
+\verbatim
+<standard input>:315: macro error: FE without FS
+<standard input>:952: macro error: DE without DS, ID, CD, LD or BD
+<standard input>:1221: macro error: DE without DS, ID, CD, LD or BD
+\endverbatim
+
+but the file \e cstyle.pdf is created. See also
+\cite kernighan-pike-1984 page 296.
+
 \todo Move examples to testing.
 
 \todo std::isfinite.
