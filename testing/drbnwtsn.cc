@@ -109,18 +109,16 @@ void test_percentage_points() {
 }
 
 void test_table() {
-     string s, t;
+     string s;
      stringstream ss;
      swtbl(ss);
-     istringstream f(savin_white_table2);
-     SHG_ASSERT(static_cast<bool>(f));
-     getline(f, t);
-     SHG_ASSERT(static_cast<bool>(f));
+     std::size_t i = 0;
      while (getline(ss, s)) {
-          rtrim(s);
-          getline(f, t);
-          SHG_ASSERT(s == t);
+          SHG_ASSERT(i < NELEMS(savin_white_table2));
+          SHG_ASSERT(s == savin_white_table2[i]);
+          i++;
      }
+     SHG_ASSERT(i == NELEMS(savin_white_table2));
 }
 
 }       // anonymous namespace
