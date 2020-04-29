@@ -201,7 +201,7 @@ void Vector<T>::write(std::ostream& f) const {
      f.write(reinterpret_cast<const char*>(&n), sizeof n);
      if (n > 0)
           f.write(reinterpret_cast<const char*>(c_vec()),
-                  n * sizeof(T));
+                  static_cast<std::streamsize>(n) * sizeof(T));
 }
 
 template <class T>
@@ -212,7 +212,7 @@ void Vector<T>::read(std::istream& f) {
           return;
      Vector<T> w(n);
      if (n > 0) {
-          const std::streamsize s = n * sizeof(T);
+          const std::streamsize s = static_cast<std::streamsize>(n) * sizeof(T);
           f.read(reinterpret_cast<char*>(w.c_vec()), s);
           if (f.fail())
                return;

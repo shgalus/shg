@@ -161,14 +161,15 @@ OLS::OLS(const Matdouble& X,
      const double eps = n_ / std::numeric_limits<double>::max();
      double q;
      if (tss_ > 0.0 && (q = rss_ / tss_) > eps) {
-          rbar2_ = 1.0 - static_cast<double>(n_ - 1) / dof_ * q;
+          rbar2_ = 1.0 - (n_ - 1.0) / dof_ * q;
           r2_ = 1.0 - q;
+          const double nk = static_cast<double>(n_) - k_;
           if (add_intercept && k_ > 1)
                // fstat_ = (ess_ / (k_ - 1)) / (rss_ / (n_ - k_));
-               fstat_ = (1.0 / q - 1.0) * (n_ - k_) / (k_ - 1);
+               fstat_ = (1.0 / q - 1.0) * nk / (k_ - 1.0);
           else
                // fstat_ = (ess_ / k_) / (rss_ / (n_ - k_));
-               fstat_ = (1.0 / q - 1.0) * (n_ - k_) / k_;
+               fstat_ = (1.0 / q - 1.0) * nk / k_;
           const int dfnum = add_intercept && k_ > 1 ? k_ - 1 : k_;
           pvalf_ = 1.0 - cdffdist(dfnum, n_ - k_, fstat_);
      } else {

@@ -105,7 +105,7 @@ BDS_test::BDS_test(const std::vector<double>& u,
                for (int j = 1; j < m; j++)
                     v += pow(c, 2 * j) * pow(k, m - j);
                v *= 2.0;
-               v += pow(k, m) + sqr((m - 1) * pow(c, m)) -
+               v += pow(k, m) + sqr((m - 1.0) * pow(c, m)) -
                     sqr(m) * k * sqr(pow(c, m - 1));
                v *= 4.0 / nd;
                v = sqrt(v);
@@ -130,7 +130,7 @@ std::vector<double> BDS_test::default_eps(
      std::vector<double> eps(7);
      const double s = 0.25 * stddev(u);
      for (std::vector<double>::size_type i = 0; i < 7; i++)
-          eps[i] = (i + 2) * s;
+          eps[i] = (i + 2.0) * s;
      return eps;
 }
 

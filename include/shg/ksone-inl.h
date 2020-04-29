@@ -22,7 +22,7 @@ void ksone(T& cdf, Vecdouble& x, double& d, double& prob) {
      std::sort(x.begin(), x.end());
      d = 0.0;
      for (int j = 0; j < n; j++) {
-          fn = (j + 1) / en;
+          fn = (j + 1.0) / en;
           ff = cdf(x[j]);
           dt = SHG::max(std::abs(fo - ff), std::abs(fn - ff));
           if (dt > d)

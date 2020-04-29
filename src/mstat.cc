@@ -47,7 +47,7 @@ double mean(const Vecdouble& x) {
      double s = 0.0;
      const int n = x.size();
      for (int i = 0; i < n; i++)
-          s += (x[i] - s) / (i + 1);
+          s += (x[i] - s) / (i + 1.0);
      return s;
 }
 
@@ -60,7 +60,7 @@ void mean_var(const Vecdouble& x, double& mean, double& var) {
      double d;
      for (int i = 1; i < n; i++) {
           d = x[i] - mean;
-          mean += d / (i + 1);
+          mean += d / (i + 1.0);
           var += (x[i] - mean) * d;
      }
      var /= n;
@@ -74,7 +74,7 @@ double stddev(const double* x, size_t n) {
      double m = x[0], s = 0.0, d;
      for (size_t i = 1; i < n; i++) {
           d = x[i] - m;
-          m += d / (i + 1);
+          m += d / (i + 1.0);
           s += (x[i] - m) * d;
      }
      s /= n;
@@ -96,7 +96,7 @@ void mean_var1(const Vecdouble& x, double& mean, double& var) {
           mean += d / (i + 1);
           var += (x[i] - mean) * d;
      }
-     var /= (n - 1);
+     var /= n - 1.0;
      if (var < 0.0)
           throw runtime_error(__func__);
 }
@@ -147,7 +147,7 @@ double chi2normtest(const Vecdouble& x, const int r) {
 
      /* Calculate beginnings of equiprobable intervals. */
      for (i = 0; i < r1; i++)
-          a(i) = m + s * ppnd7((i + 1) / static_cast<double>(r));
+          a(i) = m + s * ppnd7((i + 1.0) / r);
 
      /* Calculate interval frequency. */
      for (i = 0; i < n; i++) {
@@ -163,7 +163,7 @@ double chi2normtest(const Vecdouble& x, const int r) {
      for (i = 0; i < r; i++)
           chi2 += sqr(c(i) - np);
 
-     return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 3));
+     return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 3.0));
 }
 
 double chi2stdnormtest(const Vecdouble& x, int r) {
@@ -180,7 +180,7 @@ double chi2stdnormtest(const Vecdouble& x, int r) {
 
      /* Calculate beginnings of equiprobable intervals. */
      for (i = 0; i < r1; i++)
-          a(i) = ppnd7((i + 1) / static_cast<double>(r));
+          a(i) = ppnd7((i + 1.0) / r);
 
      /* Calculate interval frequency. */
      for (i = 0; i < n; i++) {
@@ -196,7 +196,7 @@ double chi2stdnormtest(const Vecdouble& x, int r) {
      for (i = 0; i < r; i++)
           chi2 += sqr(c(i) - np);
 
-     return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 1));
+     return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 1.0));
 }
 
 void ksnormtest(const Vecdouble& x, double& d, double& prob) {
@@ -453,7 +453,7 @@ void Assessment_of_discrete_distribution::run() {
           SHG_ASSERT(lambda > 0.0);
           auto cdf = [lambda](const double x) -> double {
                return x < 0.0 ?
-               0.0 : 1.0 - gammad(lambda, ifloor(x) + 1);
+               0.0 : 1.0 - gammad(lambda, std::floor(x) + 1.0);
           };
           double d;
           ksonedc(cdf, x, d, poisson_);
