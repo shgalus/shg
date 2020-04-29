@@ -52,7 +52,7 @@ double brent(T& func, const double x1, const double x2,
      auto sign = [](const double& a, const double& b)
           {return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);};
      const int maxit = 100;
-     const double eps = std::numeric_limits<double>::epsilon();
+     constexpr double eps = std::numeric_limits<double>::epsilon();
      // Dummy initialization of e for compiler.
      double a = x1, b = x2, c = x2, d = 0.0, e = 0.0, fa = func(a),
           fb = func(b), fc, p, q, r, s, tol1, xm;
