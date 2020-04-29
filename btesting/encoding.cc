@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <set>
 #include "shg/encoding.h"
-#include "testshg.h"
+#include <boost/test/unit_test.hpp>
 
 namespace SHG {
 namespace BTesting {

@@ -2,7 +2,7 @@
 #include <ios>
 #include <sstream>
 #include "shg/csv.h"
-#include "testshg.h"
+#include <boost/test/unit_test.hpp>
 
 namespace SHG {
 namespace BTesting {

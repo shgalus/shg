@@ -8,8 +8,8 @@ include ../make.inc
 # The option -isystem is used to suppress warnings from boost header
 # files.
 
-INCLUDE += -isystem/usr/local/boost_1_71_0/include
-LOADLIBES += -L/usr/local/boost_1_71_0/lib
+INCLUDE += -isystem/usr/local/boost_1_72_0/include
+LOADLIBES += -L/usr/local/boost_1_72_0/lib
 LDLIBS += -lboost_unit_test_framework
 
 OBJECTS = testshg.o encoding.o csv.o
