@@ -11,7 +11,7 @@
 
 #include <cmath>
 #include <algorithm>
-#include "shg/utils.h"
+//#include "shg/utils.h"
 
 namespace SHG {
 
@@ -24,7 +24,7 @@ void ksone(T& cdf, Vecdouble& x, double& d, double& prob) {
      for (int j = 0; j < n; j++) {
           fn = (j + 1.0) / en;
           ff = cdf(x[j]);
-          dt = SHG::max(std::abs(fo - ff), std::abs(fn - ff));
+          dt = std::max(std::abs(fo - ff), std::abs(fn - ff));
           if (dt > d)
                d = dt;
           fo = fn;
@@ -57,7 +57,7 @@ void ksoned(T& cdf, Vecint& x, double& d, double& prob) {
           fn = j / en;
           ff = cdf(x[j - 1]);
           fe = cdf(x[j - 1] - eps);
-          dt = SHG::max(std::abs(fo - fe), std::abs(fn - ff));
+          dt = std::max(std::abs(fo - fe), std::abs(fn - ff));
           if (dt > d)
                d = dt;
           fo = fn;

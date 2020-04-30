@@ -49,18 +49,6 @@ template<class T>
 inline T sqr(T a) {return a * a;}
 
 /**
- * Returns maximum of the two arguments.
- */
-template<class T>
-inline const T& max(const T& a, const T& b) {return a < b ? b : a;}
-
-/**
- * Returns minimum of the two arguments.
- */
-template<class T>
-inline const T& min(const T& a, const T& b) {return a < b ? a : b;}
-
-/**
  * Returns signum of the argument. \f[ \mathrm{sgn}(x) = \left\{
  * \begin{array}{rl} 1 & \mbox{if $x > 0$,} \\ 0 & \mbox{if $x = 0$,}
  * \\ -1 & \mbox{if $x < 0$.} \end{array} \right. \f]

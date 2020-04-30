@@ -35,7 +35,6 @@ using SHG::strtrim;
 using SHG::trim;
 using SHG::vbsearch;
 using SHG::white_space;
-using SHG::max;
 
 namespace {
 
@@ -308,11 +307,6 @@ void test_gcd() {
      SHG_ASSERT(gcd(-124, 0) == 124);
 }
 
-void test_max() {
-     double c = max(5.0 - 2.0, 6.0 / 2.0 - 44.0);
-     SHG_ASSERT(std::abs(c - 3.0) < 1e-15);
-}
-
 template <class T>
 void test_int_div() {
      using SHG::Integer_division;
@@ -403,7 +397,6 @@ void test_utils() {
      test_strrtok();
      test_indirect_sort();
      test_gcd();
-     test_max();
      test_integer_division();
      test_round();
      test_comblex();
