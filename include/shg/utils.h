@@ -34,6 +34,15 @@ namespace SHG {
  */
 
 /**
+ * Eliminates warnings for unused variables. See
+ * \cite misfeldt-bumgardner-gray-2004, page 124.
+ */
+template <typename T>
+void ignore_unused_variable(T v) {
+     static_cast<void>(v);
+}
+
+/**
  * Returns square of the argument.
  */
 template<class T>
