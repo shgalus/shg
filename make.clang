@@ -1,5 +1,3 @@
-# make.clang: file included by description files for make
-
 SHELL = /bin/sh
 
 # Things you might add to DEFS:
@@ -7,16 +5,13 @@ SHELL = /bin/sh
 # -D_GLIBCXX_DEBUG      Use the libstdc++ debug mode.
 # -DSHG_IEEE_EXCEPTIONS	Enable traps for IEEE exceptions.
 
-DEFS = -DMCHECK -D_GLIBCXX_DEBUG -DSHG_IEEE_EXCEPTIONS
+DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 
-CXX = clang-3.8.0 -O2
+CXX = clang-10 -O2
 DEBUG = -g
 INCLUDE = -I../include
-WARNINGS = -pedantic -Weverything -Wno-documentation -Wno-c++98-compat	\
--Wno-c++98-compat-pedantic -Wno-sign-conversion				\
--Wno-global-constructors -Wno-shadow -Wno-padded -Wno-weak-vtables	\
--Wno-exit-time-destructors
-CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++11 $(WARNINGS) $(DEFS)
+WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
+CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
 LOADLIBES = -L../lib
