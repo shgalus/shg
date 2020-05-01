@@ -243,21 +243,6 @@ inline void read_binary(T& a, std::istream& f) {
 Vecchar wfread(const char* filename);
 
 /**
- * Skips comment and returns the next non-empty line.
- *
- * The function reads the next line from the stream f into s. Then,
- * eventual comment and leading and trailing whitespace are discarded
- * from s. If s turns out to be empty, the function continues with the
- * next line. The function returns f. It is asserted at the end of the
- * function that s.size() > 0 if and only if (bool)f is true.
- *
- * A comment extends from the first occurence of c to the end of line.
- */
-std::istream& skipcomment(std::istream& f,
-                          std::string& s,
-                          const std::string& c = "#");
-
-/**
  * Constant string containing six whitespace characters.
  */
 extern const char* const white_space;

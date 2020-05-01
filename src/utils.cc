@@ -52,20 +52,6 @@ Vecchar wfread(const char* filename) {
      throw File_error(filename);
 }
 
-std::istream& skipcomment(std::istream& f,
-                          string& s,
-                          const string& c) {
-     string::size_type p;
-     while (std::getline(f, s)) {
-          if ((p = s.find(c)) != string::npos)
-               s.erase(p);
-          if (trim(s).size() > 0)
-               break;
-     }
-     SHG_ASSERT((f && s.size() > 0) || (!f && s.size() == 0));
-     return f;
-}
-
 const char* const white_space = " \f\n\r\t\v";
 
 string& ltrim(string& s, const string& trimchars) {
