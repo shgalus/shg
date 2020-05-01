@@ -77,8 +77,6 @@ void test_vector_members() {
           SHG_ASSERT(v3 == v0);
           const Vecint v4 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
           const Vecint v5 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-          v2 = move(v2);
-          SHG_ASSERT(v2.size() == 0);
           v2 = v4;
           v3 = v5;
           v2 = move(v3);
