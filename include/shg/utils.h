@@ -43,10 +43,32 @@ void ignore_unused_variable(T v) {
 }
 
 /**
+ * Explicit conversion function for conversion between two scalar
+ * numeric types. See \cite stroustrup-2013, section 11.5, page 299.
+ */
+template <typename Target, typename Source>
+Target narrow_cast(Source x) {
+     auto y = static_cast<Target>(x);
+     if (static_cast<Source>(y) != x)
+          throw std::runtime_error("narrow_cast<>() failed");
+     return y;
+}
+
+/**
  * Returns square of the argument.
  */
 template<class T>
-inline T sqr(T a) {return a * a;}
+inline T sqr(T x) noexcept {
+     return x * x;
+}
+
+/**
+ * Returns cube of the argument.
+ */
+template <class T>
+T cube(T x) noexcept {
+     return x * x * x;
+}
 
 /**
  * Returns signum of the argument. \f[ \mathrm{sgn}(x) = \left\{
@@ -65,9 +87,13 @@ I ifloor(F x) {
                    "I must be a signed integer type.");
      static_assert(std::is_signed<I>::value,
                    "I must be a signed integer type.");
-     static_assert(std::is_arithmetic<F>::value,
-                   "F must be an arithmetic type.");
-     return static_cast<I>(std::floor(x));
+     static_assert(std::is_floating_point<F>::value,
+                   "F must be a floating point type.");
+     const F y = std::floor(x);
+     if (y >= static_cast<F>(std::numeric_limits<I>::max()) ||
+         y <= static_cast<F>(std::numeric_limits<I>::min()))
+          throw std::overflow_error("overflow in ifloor");
+     return static_cast<I>(y);
 }
 
 /**
@@ -79,9 +105,13 @@ I iceil(F x) {
                    "I must be a signed integer type.");
      static_assert(std::is_signed<I>::value,
                    "I must be a signed integer type.");
-     static_assert(std::is_arithmetic<F>::value,
-                   "F must be an arithmetic type.");
-     return static_cast<I>(std::ceil(x));
+     static_assert(std::is_floating_point<F>::value,
+                   "F must be a floating point type.");
+     const F y = std::ceil(x);
+     if (y >= static_cast<F>(std::numeric_limits<I>::max()) ||
+         y <= static_cast<F>(std::numeric_limits<I>::min()))
+          throw std::overflow_error("overflow in iceil");
+     return static_cast<I>(y);
 }
 
 /**
