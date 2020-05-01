@@ -33,7 +33,6 @@ using SHG::split_string;
 using SHG::strrtok;
 using SHG::strtrim;
 using SHG::trim;
-using SHG::vbsearch;
 using SHG::white_space;
 
 namespace {
@@ -179,48 +178,6 @@ void test_strsplit() {
      SHG_ASSERT(v.size() == 1 && v[0] == " ");
 }
 
-template <class T>
-void test_vbsearch() {
-     auto comp = [](typename T::value_type x, typename T::value_type y)
-          {return x < y;};
-     T v {1, 3, 5, 7, 9};
-     typename T::size_type l, u, i;
-     typename T::value_type k;
-     bool found;
-
-     for (l = 0; l < v.size(); l++)
-          for (u = 0; u <= v.size(); u++)
-               for (k = 0; k <= 10; k++) {
-                    found = vbsearch(k, v, l, u, i);
-                    if (l >= u)
-                         SHG_ASSERT(!found);
-                    else if (k % 2 && v[l] <= k && k <= v[u - 1])
-                         SHG_ASSERT(found && v[i] == k);
-                    else
-                         SHG_ASSERT(!found);
-                    found = vbsearch(k, v, l, u, i, comp);
-                    if (l >= u)
-                         SHG_ASSERT(!found);
-                    else if (k % 2 && v[l] <= k && k <= v[u - 1])
-                         SHG_ASSERT(found && v[i] == k);
-                    else
-                         SHG_ASSERT(!found);
-               }
-
-     for (k = 0; k <= 10; k++) {
-          found = vbsearch(k, v, i);
-          if (k % 2)
-               SHG_ASSERT(found && v[i] == k);
-          else
-               SHG_ASSERT(!found);
-          found = vbsearch(k, v, i, comp);
-          if (k % 2)
-               SHG_ASSERT(found && v[i] == k);
-          else
-               SHG_ASSERT(!found);
-     }
-}
-
 void test_strtrim(void) {
      char s[100];
 #define TEST(s1, s2) SHG_ASSERT(!strcmp(strtrim(strcpy(s, s1)), s2))
@@ -280,31 +237,6 @@ void test_indirect_sort() {
      vector<dst> v = indirect_sort(w);
      for (size_t i = 1; i < w.size(); i++)
           SHG_ASSERT(w[v[i - 1]] <= w[v[i]]);
-}
-
-void test_gcd() {
-     using SHG::gcd;
-     {
-          signed char m = 12, n = 24;
-          SHG_ASSERT(gcd(m, n) == 12);
-     } {
-          int m = 12, n = 24;
-          SHG_ASSERT(gcd(m, n) == 12);
-     } {                        // Testing specialisation for unsigned.
-          unsigned m = 12, n = 24;
-          SHG_ASSERT(gcd(m, n) == 12);
-     } {
-          long m = 1, n = 1;
-          for (int i = 0; i < 30; i++)
-               m *= 2;
-          n = m / 2;
-          // m = 2^30, n = 2^29.
-          SHG_ASSERT(gcd(m, n) == n);
-     }
-     SHG_ASSERT(gcd(0, 124) == 124);
-     SHG_ASSERT(gcd(0, -124) == 124);
-     SHG_ASSERT(gcd(124, 0) == 124);
-     SHG_ASSERT(gcd(-124, 0) == 124);
 }
 
 template <class T>
@@ -391,12 +323,9 @@ void test_utils() {
      test_trim();
      test_clean_string();
      test_strsplit();
-     test_vbsearch<std::vector<int>>();
-     test_vbsearch<SHG::Vector<int>>();
      test_strtrim();
      test_strrtok();
      test_indirect_sort();
-     test_gcd();
      test_integer_division();
      test_round();
      test_comblex();

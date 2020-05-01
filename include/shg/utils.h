@@ -309,133 +309,6 @@ indirect_sort(const std::vector<T>& w) {
 }
 
 /**
- * Binary searching in a sorted subvector using relational operators.
- * Searches for a key in sorted v[l], ..., v[u - 1]. Returns true if
- * the key is found, then v[i] == key. If the key is not found, the
- * value of is unchanged. The function works with both std::vector and
- * SHG::Vector.
- *
- * \internal
- *
- * Previous version of this function was like this:
- *
- * template<class T>
- * bool vbsearch(const T& key, const std::vector<T>& v,
- *               typename std::vector<T>::size_type l,
- *               typename std::vector<T>::size_type u,
- *               typename std::vector<T>::size_type& i) {
- *      if (u-- == 0 || u < l)
- *           return false;
- *
- *      for(;;) {
- *           i = (l + u) / 2;
- *           if (key < v[i]) {
- *                if (i <= l)
- *                     return false;
- *                u = i - 1;
- *           } else if (key > v[i]) {
- *                if (i >= u)
- *                     return false;
- *                l = i + 1;
- *           } else
- *                return true;
- *      }
- * }
- */
-template<class T, class V, class I>
-bool vbsearch(const T& key, const V& v, I l, I u, I& i) {
-     if (u < l)
-          return false;
-     const auto end = v.begin() + u;
-     const auto it = std::lower_bound(v.begin() + l, end, key);
-     if (it != end && !(key < *it)) {
-          i = std::distance(v.begin(), it);
-          return true;
-     }
-     return false;
-}
-
-/**
- * Binary searching in a sorted vector using relational operators.
- * Searches for a key in sorted v. Returns true if the key is found,
- * then v[i] == key. If the key is not found, the value of is
- * unchanged. The function works with both std::vector and
- * SHG::Vector.
- */
-template<class T, class V, class I>
-inline bool vbsearch(const T& key, const V& v, I& i) {
-     return vbsearch(key, v, static_cast<I>(0),
-                     static_cast<I>(v.size()), i);
-}
-
-/**
- * Binary searching in a sorted subvector using comparing function.
- * Searches for a key in sorted v[l], ..., v[u - 1]. Returns true if
- * the key is found, then v[i] == key. If the key is not found, the
- * value of is unchanged. The comparing function must be such that
- * comp(x, y) == true if x < y. The function works with both
- * std::vector and SHG::Vector.
- */
-template<class T, class V, class I, class Compare>
-bool vbsearch(const T& key, const V& v, I l, I u, I& i, Compare comp) {
-     if (u < l)
-          return false;
-     const auto end = v.begin() + u;
-     const auto it = std::lower_bound(v.begin() + l, end, key, comp);
-     if (it != end && !comp(key, *it)) {
-          i = std::distance(v.begin(), it);
-          return true;
-     }
-     return false;
-}
-
-/**
- * Binary searching in a sorted vector using comparing function.
- * Searches for a key in sorted v. Returns true if the key is found,
- * then v[i] == key. If the key is not found, the value of is
- * unchanged. The comparing function must be such that comp(x, y) ==
- * true if x < y. The function works with both std::vector and
- * SHG::Vector.
- */
-template<class T, class V, class I, class Compare>
-inline bool vbsearch(const T& key, const V& v, I& i, Compare comp) {
-     return vbsearch(key, v, static_cast<I>(0),
-                     static_cast<I>(v.size()), i, comp);
-}
-
-/**
- * Searches for a key in an unsorted vector.
- *
- * Returns true if the key is found, otherwise returns false. If the
- * key is found, then v[i] == key.
- */
-template<class T>
-bool vsearch(const T& key, const std::vector<T>& v,
-             typename std::vector<T>::size_type& i) {
-     for (i = 0; i < v.size(); i++)
-          if (v[i] == key)
-               return true;
-     return false;
-}
-
-/**
- * Searches for a key in an unsorted vector.
- *
- * Returns index of the key in the vector v. If the key is not found,
- * it is added.
- */
-template<class T>
-typename std::vector<T>::size_type
-vadd(const T& key, std::vector<T>& v) {
-     typename std::vector<T>::size_type i;
-     for (i = 0; i < v.size(); i++)
-          if (v[i] == key)
-               return i;
-     v.push_back(key);
-     return i;
-}
-
-/**
  * Removes unneeded white space from a string.
  *
  * Removes white space from both sides of s and replaces every
@@ -491,31 +364,6 @@ void free_c_matrix(T** p) {
 }
 
 /**
- * Greatest common divisor. See \cite knuth-2002b.
- */
-template <class T>
-T gcd(T u, T v) {
-     T r;
-     if (u < 0)
-          u = -u;
-     if (v < 0)
-          v = -v;
-     while (v) {
-          r = u % v;
-          u = v;
-          v = r;
-     }
-     return u;
-}
-
-/**
- * Greatest common divisor for unsigned int type. Specialization
- * without checking if u < 0 or v < 0. \sa SHG::gcd.
- */
-template <>
-unsigned gcd<unsigned>(unsigned u, unsigned v);
-
-/**
  * Measures time intervals in seconds.
  */
 class Timer {
@@ -544,24 +392,6 @@ public:
 
 private:
      std::chrono::time_point<std::chrono::steady_clock> start_time;
-};
-
-/**
- * Wrapper class for a program.
- */
-class Program {
-public:
-     Program();
-     Program(int argc, char* argv[]);
-     virtual ~Program();
-     virtual int main();
-     virtual int help();
-     int run();
-     const char* getname() const;
-     void setname(const std::string& name);
-protected:
-     std::vector<std::string> argv;
-     std::string progname;
 };
 
 /**

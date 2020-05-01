@@ -144,58 +144,6 @@ char* strdup(const char* s) {
           nullptr : reinterpret_cast<char*>(std::memcpy(t, s, n));
 }
 
-template <>
-unsigned gcd<unsigned>(unsigned u, unsigned v) {
-     unsigned r;
-     while (v) {
-          r = u % v;
-          u = v;
-          v = r;
-     }
-     return u;
-}
-
-Program::Program() : argv(), progname() {}
-
-Program::Program(int argc, char* argv[]) : argv(), progname() {
-     if (argc > 0) {
-          progname = argv[0];
-          for (int i = 0; i < argc; i++)
-               this->argv.push_back(argv[i]);
-     }
-}
-
-Program::~Program() {}
-
-int Program::main() {return 0;}
-
-int Program::run() {
-     int status;
-     try {status = main();}
-     catch (const SHG::Exception& e) {
-          e.print(progname.c_str());
-          status = 1;
-     }
-     catch(const std::exception& e) {
-          error(e.what(), progname.c_str());
-          status = 1;
-     }
-     return status;
-}
-
-int Program::help() {
-     error("no help available", progname.c_str());
-     return 1;
-}
-
-const char* Program::getname() const {
-     return progname.c_str();
-}
-
-void Program::setname(const std::string& name) {
-     progname = name;
-}
-
 Comblex::Comblex(int n, int k)
      : k(k), n1(n - 1), k1(k - 1), j(k < n ? k - 1 : -1), a(k) {
      if (k <= 0 || n < k)
