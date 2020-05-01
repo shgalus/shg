@@ -49,10 +49,11 @@ void test_utils1() {
      double x;
 
      for (i = -100; i <= 100; ++i) {
-          m = ifloor(i);
-          n = iceil(i);
-          SHG_ASSERT(m == -iceil(-i));
-          SHG_ASSERT(n == -ifloor(-i));
+          x = i;
+          m = ifloor(x);
+          n = iceil(x);
+          SHG_ASSERT(m == -iceil(-x));
+          SHG_ASSERT(n == -ifloor(-x));
           SHG_ASSERT(i - 1 < m && m <= i && i <= n && n < i + 1);
      }
      for (i = -100; i <= 99; ++i)
