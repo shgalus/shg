@@ -106,8 +106,10 @@ unsigned long RNG::logarithmic(double p) {
      const double u = unipos();
      const double q = 1.0 - exp(r * u);
      if (v <= q * q) {
-          const double x  = 1.0 + log(v) / log(q);
-          if (x > numeric_limits<unsigned long>::max())
+          const double x = 1.0 + log(v) / log(q);
+          // See \cite ansi-cpp-2012, 4.9.2.
+          if (x >= static_cast<double>(
+                        numeric_limits<unsigned long>::max()))
                throw overflow_error("overflow in RNG::logarithmic");
           return static_cast<unsigned long>(x);
      }
