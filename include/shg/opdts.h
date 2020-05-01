@@ -106,7 +106,7 @@ void OPDTS<T>::calc(const T x[], sztp imax, sztp d) {
      for (sztp i = 0; i < imax; i++) {
           std::iota(p.begin(), p.end(), 0);
           std::stable_sort(p.begin(), p.end(),
-                           [i, &x, &p](const sztp k, const sztp l) {
+                           [i, &x](const sztp k, const sztp l) {
                                 return x[i + k] < x[i + l];
                            });
           frequency[p]++;
