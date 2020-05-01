@@ -195,7 +195,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_runs, "runs");
      register_test(test_smc, "smc");
      register_test(test_special_functions, "special functions");
-     register_test(test_stock, "stock");
      register_test(test_strdlr, "strdlr");
      register_test(test_utils, "utils");
      register_test(test_vector, "vector");
