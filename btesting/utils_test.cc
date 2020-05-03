@@ -1,14 +1,14 @@
+#include "shg/utils.h"
 #include <cmath>
 #include <cstring>
 #include <ios>
 #include <limits>
 #include <memory>
 #include <sstream>
-#include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/test/data/monomorphic.hpp>
 #include <boost/test/data/test_case.hpp>
-#include "shg/utils.h"
+#include <boost/test/unit_test.hpp>
 
 namespace SHG::BTesting {
 
@@ -425,7 +425,7 @@ BOOST_AUTO_TEST_CASE(strrtok_test) {
 }
 
 BOOST_AUTO_TEST_CASE(strdup_test) {
-     std::unique_ptr<char> s(strdup("abcdefgh"));
+     std::unique_ptr<char[]> s(strdup("abcdefgh"));
      if (s.get() != nullptr)
           BOOST_CHECK(!std::strcmp(s.get(), "abcdefgh"));
 }
