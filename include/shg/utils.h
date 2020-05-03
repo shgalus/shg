@@ -429,8 +429,6 @@ private:
  * There must be 0 < k <= n. The number of combinations is \f[{n
  * \choose k} = \frac{n!}{k!(n - k)!}.\f]
  *
- * \example_program \include comblex.cc
- *
  * \date Written on 17 May 2010.
  *
  * \implementation See \cite reingold-nievergelt-deo-1985, p. 181.

@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-TARGET = comblex matrixc matrixo matrixi matrixm wolfe
+TARGET = matrixc matrixo matrixi matrixm wolfe
 
 all: $(TARGET)
 
