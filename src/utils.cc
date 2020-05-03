@@ -66,6 +66,24 @@ string& trim(string& s, const string& trimchars) {
      return ltrim(rtrim(s, trimchars), trimchars);
 }
 
+char* strtrim(char* s) {
+     char *t = s, *u = s;
+
+     while (std::isspace(*u))
+          u++;
+     while ((*t++ = *u++))
+          if (std::isspace(*u)) {
+               while (std::isspace(*++u)) {/* VOID */}
+               if (*u) {
+                    *t++ = ' ';
+               } else {
+                    *t = '\0';
+                    break;
+               }
+          }
+     return s;
+}
+
 string& clean_string(string& s,
                      const string& trimchars,
                      char replace_char) {
@@ -96,24 +114,6 @@ std::vector<string> split_string(const string& s, const string& sep) {
           v.push_back(s.substr(p1, p2 - p1));
      }
      return v;
-}
-
-char* strtrim(char* s) {
-     char *t = s, *u = s;
-
-     while (std::isspace(*u))
-          u++;
-     while ((*t++ = *u++))
-          if (std::isspace(*u)) {
-               while (std::isspace(*++u)) {/* VOID */}
-               if (*u) {
-                    *t++ = ' ';
-               } else {
-                    *t = '\0';
-                    break;
-               }
-          }
-     return s;
 }
 
 char* strrtok(char* s, const char* delim, char** next) {

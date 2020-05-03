@@ -76,7 +76,7 @@ T cube(T x) noexcept {
  * \\ -1 & \mbox{if $x < 0$.} \end{array} \right. \f]
  */
 template<class T>
-inline int sgn(T x) {return x > 0 ? 1 : (x < 0 ? -1 : 0);}
+inline int sgn(T x) {return x > T(0) ? 1 : (x < T(0) ? -1 : 0);}
 
 /**
  * Integer version of floor.
@@ -296,6 +296,14 @@ std::string& trim(std::string& s,
                   const std::string& trimchars = white_space);
 
 /**
+ * Removes unneeded white space from a string.
+ *
+ * Removes white space from both sides of s and replaces every
+ * sequence of white space by a single space. Returns the string s.
+ */
+char* strtrim(char* s);
+
+/**
  * Cleans a string. Removes characters from both sides of a string and
  * replaces every sequence of characters by a single character.
  */
@@ -337,14 +345,6 @@ indirect_sort(const std::vector<T>& w) {
           });
      return v;
 }
-
-/**
- * Removes unneeded white space from a string.
- *
- * Removes white space from both sides of s and replaces every
- * sequence of white space by a single space. Returns the string s.
- */
-char* strtrim(char* s);
 
 /**
  * Reentrant version of strtok.
