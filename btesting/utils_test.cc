@@ -183,10 +183,6 @@ BOOST_AUTO_TEST_CASE(read_binary_test) {
      BOOST_CHECK(s.d == t.d);
 }
 
-BOOST_AUTO_TEST_CASE(wfread_test) {
-     BOOST_TEST_MESSAGE("wfread is not tested");
-}
-
 BOOST_AUTO_TEST_CASE(ltrim_test) {
      std::string s;
      s = "";
@@ -428,14 +424,6 @@ BOOST_AUTO_TEST_CASE(strdup_test) {
      std::unique_ptr<char[]> s(strdup("abcdefgh"));
      if (s.get() != nullptr)
           BOOST_CHECK(!std::strcmp(s.get(), "abcdefgh"));
-}
-
-BOOST_AUTO_TEST_CASE(alloc_c_matrix_test) {
-     BOOST_TEST_MESSAGE("alloc_c_matrix is not tested");
-}
-
-BOOST_AUTO_TEST_CASE(free_c_matrix_test) {
-     BOOST_TEST_MESSAGE("free_c_matrix is not tested");
 }
 
 BOOST_AUTO_TEST_CASE(timer_test) {
