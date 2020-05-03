@@ -491,6 +491,30 @@ BOOST_DATA_TEST_CASE(comblex_test,
      BOOST_CHECK(nr == tnr);
 }
 
+BOOST_AUTO_TEST_CASE(comblex_2_test) {
+     using std::getline;
+
+     std::stringstream ss;
+     const int n = 4, k = 3;
+     Comblex c(n, k);
+     do {
+          const std::vector<int>& v = c.get();
+          for (int i = 0; i < k; i++)
+               ss << v[i];
+          ss << '\n';
+     } while (c.next());
+     std::string s;
+     getline(ss, s);
+     BOOST_CHECK(s == "012");
+     getline(ss, s);
+     BOOST_CHECK(s == "013");
+     getline(ss, s);
+     BOOST_CHECK(s == "023");
+     getline(ss, s);
+     BOOST_CHECK(s == "123");
+     BOOST_CHECK(!getline(ss, s));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }  // namespace SHG::BTesting
