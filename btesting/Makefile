@@ -1,18 +1,10 @@
 include ../make.inc
 
-# "Using the GNU Compiler Collection (GCC)", chapter 3.15
-# (https://gcc.gnu.org/onlinedocs/gcc-8.3.0/gcc/
-# Directory-Options.html#Directory-Options) and "The C Preprocessor",
-# chapter 2.8
-# (https://gcc.gnu.org/onlinedocs/cpp/System-Headers.html#System-Headers).
-# The option -isystem is used to suppress warnings from boost header
-# files.
-
-INCLUDE += -isystem/usr/local/boost_1_72_0/include
-LOADLIBES += -L/usr/local/boost_1_72_0/lib
+INCLUDE += -isystem/usr/local/boost_1_73_0/include
+LOADLIBES += -L/usr/local/boost_1_73_0/lib
 LDLIBS += -lboost_unit_test_framework
 
-OBJECTS = testshg.o encoding.o csv.o
+OBJECTS = testshg.o utils_test.o encoding.o csv.o
 
 OBJDIR = ../build/btesting
 OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
@@ -20,9 +12,12 @@ OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
 $(OBJDIR)/%.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
-.PHONY: all FORCE check clean spotless
+.PHONY: all FORCE check clean run spotless
 
 all: ../bin/btestshg
+
+run: all
+	../bin/btestshg --log_level=test_suite --run_test=utils_test/*
 
 ../bin/btestshg: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
