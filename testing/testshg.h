@@ -48,7 +48,6 @@ void test_runs();
 void test_smc();
 void test_special_functions();
 void test_strdlr();
-void test_utils();
 void test_vector();
 
 }       // namespace Testing
