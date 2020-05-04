@@ -6,9 +6,6 @@
 #include <limits>
 #include <memory>
 #include <sstream>
-#include <boost/mpl/list.hpp>
-#include <boost/test/data/monomorphic.hpp>
-#include <boost/test/data/test_case.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace SHG::BTesting {
