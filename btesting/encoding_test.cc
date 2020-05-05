@@ -1,70 +1,77 @@
-#include <stdexcept>
-#include <set>
 #include "shg/encoding.h"
+#include <set>
+#include <stdexcept>
 #include <boost/test/unit_test.hpp>
 
-namespace SHG {
-namespace BTesting {
+namespace SHG::BTesting {
 
-BOOST_AUTO_TEST_SUITE(encoding)
+BOOST_AUTO_TEST_SUITE(encoding_test)
 
-using std::string, std::u16string, std::u32string;
 using SHG::Encoding::Conversion_error;
-using SHG::Encoding::utf8_to_utf32;
-using SHG::Encoding::utf32_to_utf8;
-using SHG::Encoding::utf16_to_utf32;
-using SHG::Encoding::utf32_to_utf16;
+using SHG::Encoding::is_valid_codepoint;
 using SHG::Encoding::iso88592_to_utf32;
+using SHG::Encoding::utf16_length;
+using SHG::Encoding::utf16_to_utf32;
 using SHG::Encoding::utf32_to_iso88592;
-using SHG::Encoding::windows1250_to_utf32;
+using SHG::Encoding::utf32_to_utf16;
+using SHG::Encoding::utf32_to_utf8;
 using SHG::Encoding::utf32_to_windows1250;
 using SHG::Encoding::utf8_length;
-using SHG::Encoding::utf16_length;
-using SHG::Encoding::is_valid_codepoint;
+using SHG::Encoding::utf8_to_utf32;
+using SHG::Encoding::windows1250_to_utf32;
+using std::string, std::u16string, std::u32string;
 
-BOOST_AUTO_TEST_CASE(test_string_conversions) {
+BOOST_AUTO_TEST_CASE(string_conversions_test) {
      // Polish alphabet in UTF-32
-     const u32string pla32 = U"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
+     const u32string pla32 =
+          U"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
           "\u0144o\u00F3pqrs\u015Btuvwxyz\u017A\u017C\n"
           "A\u0104BC\u0106DE\u0118FGHIJKL\u0141MN"
           "\u0143O\u00D3PQRS\u015ATUVWXYZ\u0179\u017B\n";
      // Polish alphabet in UTF-16
-     const u16string pla16 = u"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
+     const u16string pla16 =
+          u"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
           "\u0144o\u00F3pqrs\u015Btuvwxyz\u017A\u017C\n"
           "A\u0104BC\u0106DE\u0118FGHIJKL\u0141MN"
           "\u0143O\u00D3PQRS\u015ATUVWXYZ\u0179\u017B\n";
      // Polish alphabet in UTF-8
-     const string pla8 = u8"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
+     const string pla8 =
+          u8"a\u0105bc\u0107de\u0119fghijkl\u0142mn"
           "\u0144o\u00F3pqrs\u015Btuvwxyz\u017A\u017C\n"
           "A\u0104BC\u0106DE\u0118FGHIJKL\u0141MN"
           "\u0143O\u00D3PQRS\u015ATUVWXYZ\u0179\u017B\n";
      // Polish alphabet in ISO 8859-2
-     const string plaiso88592 = "a\261bc\346de\352fghijkl\263mn"
+     const string plaiso88592 =
+          "a\261bc\346de\352fghijkl\263mn"
           "\361o\363pqrs\266tuvwxyz\274\277\n"
           "A\241BC\306DE\312FGHIJKL\243MN"
           "\321O\323PQRS\246TUVWXYZ\254\257\n";
      // Polish alphabet in Windows-1250
-     const string plawindows1250 = "a\271bc\346de\352fghijkl\263mn"
+     const string plawindows1250 =
+          "a\271bc\346de\352fghijkl\263mn"
           "\361o\363pqrs\234tuvwxyz\237\277\n"
           "A\245BC\306DE\312FGHIJKL\243MN"
           "\321O\323PQRS\214TUVWXYZ\217\257\n";
 
      // Mathematical bold alphabet in UTF-32
-     const u32string mba32 = U"\U0001d400\U0001d401\U0001d402"
+     const u32string mba32 =
+          U"\U0001d400\U0001d401\U0001d402"
           U"\U0001d403\U0001d404\U0001d405\U0001d406\U0001d407"
           U"\U0001d408\U0001d409\U0001d40a\U0001d40b\U0001d40c"
           U"\U0001d40d\U0001d40e\U0001d40f\U0001d410\U0001d411"
           U"\U0001d412\U0001d413\U0001d414\U0001d415\U0001d416"
           U"\U0001d417\U0001d418\U0001d419";
      // Mathematical bold alphabet in UTF-16
-     const u16string mba16 = u"\U0001d400\U0001d401\U0001d402"
+     const u16string mba16 =
+          u"\U0001d400\U0001d401\U0001d402"
           u"\U0001d403\U0001d404\U0001d405\U0001d406\U0001d407"
           u"\U0001d408\U0001d409\U0001d40a\U0001d40b\U0001d40c"
           u"\U0001d40d\U0001d40e\U0001d40f\U0001d410\U0001d411"
           u"\U0001d412\U0001d413\U0001d414\U0001d415\U0001d416"
           u"\U0001d417\U0001d418\U0001d419";
      // Mathematical bold alphabet in UTF-8
-     const string mba8 = u8"\U0001d400\U0001d401\U0001d402"
+     const string mba8 =
+          u8"\U0001d400\U0001d401\U0001d402"
           u8"\U0001d403\U0001d404\U0001d405\U0001d406\U0001d407"
           u8"\U0001d408\U0001d409\U0001d40a\U0001d40b\U0001d40c"
           u8"\U0001d40d\U0001d40e\U0001d40f\U0001d410\U0001d411"
@@ -96,18 +103,15 @@ BOOST_AUTO_TEST_CASE(test_string_conversions) {
      BOOST_CHECK(utf32_to_utf8(mba32) == mba8);
 }
 
-BOOST_AUTO_TEST_CASE(test_character_conversions) {
+BOOST_AUTO_TEST_CASE(character_conversions_test) {
      // Characters undefined in Windows-1250.
-     const std::set<unsigned char> win_undef {
-          0x81, 0x83, 0x88, 0x90, 0x98
-               };
+     const std::set<unsigned char> win_undef{0x81, 0x83, 0x88, 0x90,
+                                             0x98};
      // Windows-1250 characters undefined in ISO 8859-2.
-     const std::set<unsigned char> win_undef_in_iso {
-          0x80, 0x82, 0x84, 0x85, 0x86, 0x87, 0x89, 0x8b,
-               0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x99,
-               0x9b, 0xa6, 0xa9, 0xab, 0xac, 0xae, 0xb1, 0xb5,
-               0xb6, 0xb7, 0xbb
-               };
+     const std::set<unsigned char> win_undef_in_iso{
+          0x80, 0x82, 0x84, 0x85, 0x86, 0x87, 0x89, 0x8b, 0x91,
+          0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x99, 0x9b, 0xa6,
+          0xa9, 0xab, 0xac, 0xae, 0xb1, 0xb5, 0xb6, 0xb7, 0xbb};
 
      for (char32_t c = 0; c <= 0x110000; c++) {
           try {
@@ -134,9 +138,8 @@ BOOST_AUTO_TEST_CASE(test_character_conversions) {
 
           BOOST_CHECK(utf32_to_iso88592(d) == c);
           if (win_undef.find(c) == win_undef.end())
-               BOOST_CHECK(
-                    utf32_to_windows1250(windows1250_to_utf32(c))
-                    == c);
+               BOOST_CHECK(utf32_to_windows1250(
+                                windows1250_to_utf32(c)) == c);
           else
                BOOST_CHECK_THROW(windows1250_to_utf32(c),
                                  Conversion_error);
@@ -192,7 +195,7 @@ const struct {
      {"\356\200\200", true},
      {"\357\277\275", true},
      {"\364\217\277\277", true},
-     {"\364\220\200\200", false},          // out of codespace
+     {"\364\220\200\200", false},  // out of codespace
      // 3. Malformed sequences.
      // 3.1. Unexpected continuation bytes.
      {"\200", false},
@@ -207,14 +210,17 @@ const struct {
       "\215\216\217\220\221\222\223\224\225\226\227\230\231"
       "\232\233\234\235\236\237\240\241\242\243\244\245\246"
       "\247\250\251\252\253\254\255\256\257\260\261\262\263"
-      "\264\265\266\267\270\271\272\273\274\275\276\277", false},
+      "\264\265\266\267\270\271\272\273\274\275\276\277",
+      false},
      // 3.2. Lonely start characters.
      {"\300 \301 \302 \303 \304 \305 \306 \307 "
       "\310 \311 \312 \313 \314 \315 \316 \317"
       "\320 \321 \322 \323 \324 \325 \326 \327 "
-      "\330 \331 \332 \333 \334 \335 \336 \337 ", false},
+      "\330 \331 \332 \333 \334 \335 \336 \337 ",
+      false},
      {"\340 \341 \342 \343 \344 \345 \346 \347 "
-      "\350 \351 \352 \353 \354 \355 \356 \357 ", false},
+      "\350 \351 \352 \353 \354 \355 \356 \357 ",
+      false},
      {"\360 \361 \362 \363 \364 \365 \366 \367 ", false},
      {"\370 \371 \372 \373 ", false},
      {"\374 \375 ", false},
@@ -232,7 +238,8 @@ const struct {
      // 3.4. Concatenation of incomplete sequences.
      {"\300\340\200\360\200\200\370\200\200\200\374\200\200"
       "\200\200\337\357\277\367\277\277\373\277\277\277\375"
-      "\277\277\277\277", false},
+      "\277\277\277\277",
+      false},
      // 3.5. Impossible bytes.
      {"\376", false},
      {"\377", false},
@@ -284,7 +291,8 @@ const struct {
       "\267\241\357\267\242\357\267\243\357\267\244\357\267"
       "\245\357\267\246\357\267\247\357\267\250\357\267\251"
       "\357\267\252\357\267\253\357\267\254\357\267\255\357"
-      "\267\256\357\267\257", true},
+      "\267\256\357\267\257",
+      true},
      {"\360\237\277\276\360\237\277\277\360\257\277\276\360"
       "\257\277\277\360\277\277\276\360\277\277\277\361\217"
       "\277\276\361\217\277\277\361\237\277\276\361\237\277"
@@ -294,13 +302,13 @@ const struct {
       "\277\277\362\277\277\276\362\277\277\277\363\217\277"
       "\276\363\217\277\277\363\237\277\276\363\237\277\277"
       "\363\257\277\276\363\257\277\277\363\277\277\276\363"
-      "\277\277\277\364\217\277\276\364\217\277\277", true}
-};
+      "\277\277\277\364\217\277\276\364\217\277\277",
+      true}};
 
-}       // anonymous namespace
+}  // anonymous namespace
 
-BOOST_AUTO_TEST_CASE(test_kuhn) {
-     for (const auto &[s, correct] : kuhn_data)
+BOOST_AUTO_TEST_CASE(kuhn_test) {
+     for (const auto& [s, correct] : kuhn_data)
           if (correct)
                utf8_to_utf32(s);
           else
@@ -311,29 +319,19 @@ namespace {
 
 const u16string invalid_utf16[] = {
      // high surrogate not followed by low surrogate
-     u"\xd800\xd800",
-     u"\xd801\xd800",
-     u"\xdbff\xd800",
-     u"\xd800\xd801",
-     u"\xd801\xd801",
-     u"\xdbff\xd801",
-     u"\xd800\x0001",
-     u"\xd801\x0001",
-     u"\xdbff\x0001",
+     u"\xd800\xd800", u"\xd801\xd800", u"\xdbff\xd800",
+     u"\xd800\xd801", u"\xd801\xd801", u"\xdbff\xd801",
+     u"\xd800\x0001", u"\xd801\x0001", u"\xdbff\x0001",
      // start with low surrogate
-     u"\xdc00",
-     u"\xdc01",
-     u"\xdfff"
-};
+     u"\xdc00", u"\xdc01", u"\xdfff"};
 
-}       // anonymous namespace
+}  // anonymous namespace
 
-BOOST_AUTO_TEST_CASE(test_invalid_utf16_strings) {
+BOOST_AUTO_TEST_CASE(invalid_utf16_strings_test) {
      for (const auto& s : invalid_utf16)
           BOOST_CHECK_THROW(utf16_to_utf32(s), Conversion_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace BTesting
-}       // namespace SHG
+}  // namespace SHG::BTesting
