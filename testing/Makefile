@@ -2,11 +2,11 @@
 
 include ../make.inc
 
-OBJECTS = testshg.o bdstest.o brent.o csv.o date.o encoding.o		\
-      except.o gsgts.o hmm.o laplace.o mathprog.o matrix.o mstat.o	\
-      mzt.o normmix.o numalg.o ols.o opdts.o permentr.o permut.o	\
-      runs.o smc.o specfunc.o ppnd7.o gammad.o probst.o betain.o	\
-      cdffdist.o strdlr.o vector.o
+OBJECTS = testshg.o bdstest.o brent.o csv.o date.o except.o gsgts.o	\
+      hmm.o laplace.o mathprog.o matrix.o mstat.o mzt.o normmix.o	\
+      numalg.o ols.o opdts.o permentr.o permut.o runs.o smc.o		\
+      specfunc.o ppnd7.o gammad.o probst.o betain.o cdffdist.o		\
+      strdlr.o vector.o
 
 OBJDIR = ../build/testing
 OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
