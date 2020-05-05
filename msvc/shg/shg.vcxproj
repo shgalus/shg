@@ -180,7 +180,6 @@
     <ClInclude Include="..\..\include\shg\shg.h" />
     <ClInclude Include="..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\include\shg\specfunc.h" />
-    <ClInclude Include="..\..\include\shg\stock.h" />
     <ClInclude Include="..\..\include\shg\strdlr.h" />
     <ClInclude Include="..\..\include\shg\utils.h" />
     <ClInclude Include="..\..\include\shg\vector-inl.h" />
@@ -209,7 +208,6 @@
     <ClCompile Include="..\..\src\runs.cc" />
     <ClCompile Include="..\..\src\smc.cc" />
     <ClCompile Include="..\..\src\specfunc.cc" />
-    <ClCompile Include="..\..\src\stock.cc" />
     <ClCompile Include="..\..\src\strdlr.cc" />
     <ClCompile Include="..\..\src\utils.cc" />
     <ClCompile Include="..\..\src\version.cc" />

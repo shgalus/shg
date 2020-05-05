@@ -165,10 +165,6 @@
     <ClCompile Include="..\..\testing\cdffdist.cc" />
     <ClCompile Include="..\..\testing\csv.cc" />
     <ClCompile Include="..\..\testing\date.cc" />
-    <ClCompile Include="..\..\testing\drbnwts1.cc" />
-    <ClCompile Include="..\..\testing\drbnwts2.cc" />
-    <ClCompile Include="..\..\testing\drbnwts3.cc" />
-    <ClCompile Include="..\..\testing\drbnwtsn.cc" />
     <ClCompile Include="..\..\testing\encoding.cc" />
     <ClCompile Include="..\..\testing\except.cc" />
     <ClCompile Include="..\..\testing\gammad.cc" />
@@ -190,10 +186,8 @@
     <ClCompile Include="..\..\testing\runs.cc" />
     <ClCompile Include="..\..\testing\smc.cc" />
     <ClCompile Include="..\..\testing\specfunc.cc" />
-    <ClCompile Include="..\..\testing\stock.cc" />
     <ClCompile Include="..\..\testing\strdlr.cc" />
     <ClCompile Include="..\..\testing\testshg.cc" />
-    <ClCompile Include="..\..\testing\utils.cc" />
     <ClCompile Include="..\..\testing\vector.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +198,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\testing\betain.h" />
     <ClInclude Include="..\..\testing\cdffdist.h" />
-    <ClInclude Include="..\..\testing\drbnwts1.h" />
-    <ClInclude Include="..\..\testing\drbnwts2.h" />
-    <ClInclude Include="..\..\testing\drbnwts3.h" />
     <ClInclude Include="..\..\testing\gammad.h" />
     <ClInclude Include="..\..\testing\ppnd7.h" />
     <ClInclude Include="..\..\testing\probst.h" />

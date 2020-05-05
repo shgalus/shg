@@ -33,18 +33,6 @@
     <ClCompile Include="..\..\testing\date.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\drbnwts1.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\drbnwts2.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\drbnwts3.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\drbnwtsn.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\encoding.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,16 +96,10 @@
     <ClCompile Include="..\..\testing\specfunc.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\stock.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\strdlr.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\testshg.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\utils.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\vector.cc">
@@ -129,15 +111,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\testing\cdffdist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\drbnwts1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\drbnwts2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\drbnwts3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\testing\gammad.h">

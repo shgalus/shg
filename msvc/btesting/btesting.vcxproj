@@ -88,7 +88,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>\opt\boost_1_72_0;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -168,16 +168,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\btesting\csv.cc" />
+    <ClCompile Include="..\..\btesting\drbnwtsn_test.cc" />
     <ClCompile Include="..\..\btesting\encoding.cc" />
     <ClCompile Include="..\..\btesting\testshg.cc" />
+    <ClCompile Include="..\..\btesting\utils_test.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\shg\shg.vcxproj">
       <Project>{53896448-30f9-47dc-aa88-ca9088f4c7a8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\btesting\testshg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
