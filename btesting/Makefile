@@ -4,8 +4,8 @@ INCLUDE += -isystem/usr/local/boost_1_73_0/include
 LOADLIBES += -L/usr/local/boost_1_73_0/lib
 LDLIBS += -lboost_unit_test_framework
 
-OBJECTS = testshg.o utils_test.o encoding_test.o csv_test.o	\
-          drbnwtsn_test.o
+OBJECTS = testshg.o utils_test.o vector_test.o encoding_test.o	\
+          csv_test.o drbnwtsn_test.o
 
 OBJDIR = ../build/btesting
 OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
@@ -18,7 +18,7 @@ $(OBJDIR)/%.o : %.cc
 all: ../bin/btestshg
 
 run: all
-	../bin/btestshg --log_level=test_suite --run_test=encoding_test/*
+	../bin/btestshg --log_level=test_suite --run_test=vector_test/*
 
 ../bin/btestshg: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
