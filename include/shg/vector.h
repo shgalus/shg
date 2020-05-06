@@ -251,10 +251,6 @@ typedef Vector<long double>     Veclongdouble;
  *
  * \returns true if the two vectors have the same size and a[i] ==
  * b[i] for all i in [0, a.size()), false otherwise.
- *
- * \todo Remove comparing sizes and change a call to std::equal to
- * std::equal(a.begin(), a.end(), b.begin(), b.end()) when it is
- * available.
  */
 template <class T>
 inline bool equal(const Vector<T>& a, const Vector<T>& b);

@@ -295,9 +295,7 @@ void Vector<T>::deallocate() {
 
 template <class T>
 bool equal(const Vector<T>& a, const Vector<T>& b) {
-     if (a.size() != b.size())
-          return false;
-     return std::equal(a.begin(), a.end(), b.begin());
+     return std::equal(a.begin(), a.end(), b.begin(), b.end());
 }
 
 template <class T>
