@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""This module checks source code."""
+"This module checks source code."
 
 import sys
 import glob
@@ -29,6 +29,7 @@ ALL_SOURCE += glob.glob("examples" + os.path.sep + "*.cc")
 N_ERRORS = 0
 
 def print_error(fname, line, message):
+    "Increases error count by 1 and prints error message."
     global N_ERRORS
     N_ERRORS += 1
     if not fname:
@@ -40,6 +41,7 @@ def print_error(fname, line, message):
     print(s)
 
 def check_file_as_binary(fname):
+    "Checks if all bytes of a file are less than 128."
     with open(fname, 'rb') as f:
         byte_array = f.read()
     for byte in byte_array:
@@ -47,7 +49,7 @@ def check_file_as_binary(fname):
             print_error(fname, 0, "non-ASCII character")
 
 def check_file_as_text(fname):
-    global N_ERRORS
+    "Checks file as UTF-8 text file."
     with open(fname, encoding="utf-8") as f:
         all_lines = f.read().splitlines()
     is_previous_line_empty = False
@@ -61,7 +63,6 @@ def check_file_as_text(fname):
                 print_error(fname, i, "non-ASCII character")
         if len(line) == 0:
             if is_previous_line_empty:
-                N_ERRORS += 1
                 print_error(fname, i, "consecutive blank lines")
             else:
                 is_previous_line_empty = True
@@ -83,6 +84,7 @@ def check_file_as_text(fname):
             print_error(fname, i, "found pragma")
 
 def check_version_numbers():
+    "Checks if version numbers in three places are the same."
     version1 = version2 = version3 = ""
     with open('include/shg/version.h', encoding="utf-8") as f:
         all_lines = f.read().splitlines()
@@ -111,26 +113,13 @@ def check_version_numbers():
         return
     print_error("", 0, "inconsistent version numbers")
 
-# \cite
-# define
-#  define
-# here is a tab:|	|
-# include
-#  include
-#define
-#include
-# fabs
-# fabs1
-#fabs
-#pragmatic
-# pragmatic
-#pragma tic
-
 def run():
+    """Runs the script. If no arguments, check all source and version
+    numbers."""
     source = sys.argv[1:]
     if len(source) == 0:
         source = ALL_SOURCE
-    check_version_numbers()
+        check_version_numbers()
     fname = None
     for fname in source:
         check_file_as_text(fname)
