@@ -45,7 +45,6 @@ void test_runs();
 void test_smc();
 void test_special_functions();
 void test_strdlr();
-void test_vector();
 
 }       // namespace Testing
 }       // namespace SHG

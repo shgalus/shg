@@ -193,7 +193,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_smc, "smc");
      register_test(test_special_functions, "special functions");
      register_test(test_strdlr, "strdlr");
-     register_test(test_vector, "vector");
 
      SHG_ASSERT
           (std::is_sorted(
