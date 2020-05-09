@@ -187,7 +187,7 @@ Vector<T>::operator std::vector<T>() const {
 
 template <class T>
 Vector<T>::operator std::basic_string<T>() const {
-     return std::basic_string<T>(c_vec(), size() * sizeof(T));
+     return std::basic_string<T>(c_vec(), size());
 }
 
 template <class T>
