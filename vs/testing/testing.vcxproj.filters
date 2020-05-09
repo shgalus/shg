@@ -27,13 +27,7 @@
     <ClCompile Include="..\..\testing\cdffdist.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\csv.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\date.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\encoding.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\except.cc">

@@ -163,9 +163,7 @@
     <ClCompile Include="..\..\testing\betain.cc" />
     <ClCompile Include="..\..\testing\brent.cc" />
     <ClCompile Include="..\..\testing\cdffdist.cc" />
-    <ClCompile Include="..\..\testing\csv.cc" />
     <ClCompile Include="..\..\testing\date.cc" />
-    <ClCompile Include="..\..\testing\encoding.cc" />
     <ClCompile Include="..\..\testing\except.cc" />
     <ClCompile Include="..\..\testing\gammad.cc" />
     <ClCompile Include="..\..\testing\gsgts.cc" />
