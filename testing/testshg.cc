@@ -180,7 +180,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_hmm, "hmm");
      register_test(test_laplace, "laplace");
      register_test(test_mathprog, "mathprog");
-     register_test(test_matrix, "matrix");
      register_test(test_mstat, "mstat");
      register_test(test_mzt, "mzt");
      register_test(test_normmix, "normmix");
