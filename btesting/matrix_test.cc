@@ -492,8 +492,8 @@ BOOST_DATA_TEST_CASE(matrix_hilbert_test, bdata::xrange(10), xr) {
 }
 
 BOOST_DATA_TEST_CASE(matrix_cholesky_test, bdata::xrange(7), xr) {
-     const double eps = 1e-10;
      const Matdouble::size_type n = xr;
+     const double eps = n > 5 ? 5e-10 : 1e-10;
 
      // Generate n x n Hilbert matrix, invert it, multiple the
      // inversion by the original matrix and check departure from
@@ -515,7 +515,7 @@ BOOST_DATA_TEST_CASE(matrix_cholesky_test, bdata::xrange(7), xr) {
                double s = i == j ? -1.0 : 0;
                for (Matdouble::size_type k = 0; k < n; k++)
                     s += a[i][k] * b[k][j];
-               BOOST_CHECK(abs(s) < eps);
+               BOOST_CHECK(std::abs(s) < eps);
           }
 }
 
