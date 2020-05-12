@@ -44,8 +44,8 @@ BOOST_AUTO_TEST_CASE(matrix_constructor_test) {
                     p[i][j] = i + j;
           Matint a(m, n, p);
           BOOST_CHECK(a.nrows() == m && a.ncols() == n);
-          for (size_t i = 0; i < a.nrows(); i++)
-               for (size_t j = 0; j < a.ncols(); j++)
+          for (std::size_t i = 0; i < a.nrows(); i++)
+               for (std::size_t j = 0; j < a.ncols(); j++)
                     BOOST_CHECK(a[i][j] == p[i][j]);
           free_c_matrix(p);
      }
