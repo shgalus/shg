@@ -1,4 +1,5 @@
 #include "shg/matrix.h"
+#include <iomanip>
 #include <boost/test/data/test_case.hpp>
 #include <boost/test/unit_test.hpp>
 #include "shg/utils.h"
@@ -527,6 +528,70 @@ BOOST_DATA_TEST_CASE(matrix_multiply_transposed_test,
      const Vecint w = multiply_transposed(a, v);
      const Vecint w1 = multiply(transpose(a), v);
      BOOST_CHECK(equal(w, w1));
+}
+
+BOOST_AUTO_TEST_CASE(constructor_from_c_matrix_example) {
+     const int m = 4, n = 5;
+     int** p = new int*[m];
+     for (int i = 0; i < m; i++)
+          p[i] = new int[n];
+     for (int i = 0; i < m; i++)
+          for (int j = 0; j < n; j++)
+               p[i][j] = i + j;
+     Matint a(m, n, p);
+     for (int i = m - 1; i >= 0; i--)
+          delete[] p[i];
+     delete[] p;
+     std::stringstream ss;
+     ss << a;
+     std::string s;
+     std::getline(ss, s);
+     BOOST_CHECK(s == "4 5");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "0 1 2 3 4");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "1 2 3 4 5");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "2 3 4 5 6");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "3 4 5 6 7");
+     BOOST_CHECK(!getline(ss, s));
+}
+
+BOOST_AUTO_TEST_CASE(output_operator_example) {
+     std::stringstream ss;
+     ss << std::setw(4) << Matint(2, 3, {1, 11, 111, 1111, 111, 11});
+     std::string s;
+     std::getline(ss, s);
+     BOOST_CHECK(s == "2 3");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "   1   11  111");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "1111  111   11");
+     BOOST_CHECK(!getline(ss, s));
+}
+
+BOOST_AUTO_TEST_CASE(output_as_initializer_list_example) {
+     std::stringstream ss;
+     print(Matint(2, 3, {1, 11, 111, 1111, 111, 11}), ss);
+     BOOST_CHECK(ss.str() == "{1, 11, 111, 1111, 111, 11}");
+}
+
+BOOST_AUTO_TEST_CASE(multiply_transposed_example) {
+     Matint a(2, 3, {1, 2, 3, 4, 5, 6});
+     Vecint v{7, 8};
+     std::stringstream ss;
+     ss << multiply_transposed(a, v);
+     std::string s;
+     std::getline(ss, s);
+     BOOST_CHECK(s == "3");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "39");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "54");
+     std::getline(ss, s);
+     BOOST_CHECK(s == "69");
+     BOOST_CHECK(!getline(ss, s));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

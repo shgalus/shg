@@ -51,8 +51,6 @@ public:
 
      /**
       * Constructs from C two-dimensional array.
-      *
-      * \example_program \include matrixc.cc
       */
      Matrix(std::size_t m, std::size_t n, const T* const* a);
 
@@ -337,8 +335,6 @@ inline void swap(Matrix<T>& a, Matrix<T>& b) noexcept(
  * all elements are printed with each row on a line with the width set
  * just before a call to this function. stream.fail() should be
  * checked after return.
- *
- * \example_program \include matrixo.cc
  */
 template <class T>
 std::ostream& operator<<(std::ostream& stream, const Matrix<T>& a);
@@ -355,8 +351,6 @@ std::istream& operator>>(std::istream& stream, Matrix<T>& a);
 /**
  * Outputs matrix to a text stream in the form of initializer list.
  * stream.fail() should be checked after return.
- *
- * \example_program \include matrixi.cc
  */
 template <class T>
 void print(const Matrix<T>& a, std::ostream& stream);
@@ -472,8 +466,6 @@ Vector<T> multiply(const Matrix<T>& a, const Vector<T>& v);
 /**
  * Returns the vector \f$a^Tv\f$.
  * \exception std::invalid_argument if a.nrows() != v.size()
- *
- * \example_program \include matrixm.cc
  */
 template <class T>
 Vector<T> multiply_transposed(const Matrix<T>& a, const Vector<T>& v);
