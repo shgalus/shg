@@ -17,7 +17,7 @@ CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
 LOADLIBES = -L../lib
-LDLIBS = -lshg -lfftw3 -lgsl -lgslcblas
+LDLIBS = -lshg -lgsl -lgslcblas
 
 AR = gcc-ar-8.3.0
 ARFLAGS = rc

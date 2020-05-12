@@ -7,7 +7,6 @@
  */
 
 #include <cmath>
-#include <fftw3.h>
 #include "shg/mzt.h"
 #include "shg/gsgts.h"
 #include "testshg.h"
@@ -120,46 +119,10 @@ void test(SHG::GSGTS::Cosine_transform ct,
      }
 }
 
-void cosft_fftw(const std::vector<double>& h,
-                std::vector<double>& H) {
-     /* FFTW User Manual says: If in != out, the transform is
-        out-of-place and the input array in is not modified. */
-     fftw_plan p = fftw_plan_r2r_1d(
-          h.size(),
-          const_cast<double*>(h.data()),
-          H.data(),
-          FFTW_REDFT00,
-          FFTW_ESTIMATE);
-     fftw_execute(p);
-     fftw_destroy_plan(p);
-     fftw_cleanup();
-     for (std::size_t k = 0; k < H.size(); k++)
-          H[k] *= 0.5;
-}
-
-void realft_fftw(const std::vector<std::complex<double>>& z,
-                 std::vector<double>& X) {
-     const double c = 1.0 / (2.0 * std::sqrt(z.size() - 1));
-     const std::size_t n = 2 * (z.size() - 1);
-     std::vector<double> out(n);
-     fftw_plan p = fftw_plan_dft_c2r_1d(
-          n,
-          reinterpret_cast<fftw_complex*>(
-               const_cast<std::complex<double>*>(z.data())),
-          out.data(),
-          FFTW_ESTIMATE);
-     fftw_execute(p);
-     fftw_cleanup();
-     for (std::size_t i = 0; i < z.size(); i++)
-          X[i] = c * out[i];
-     fftw_destroy_plan(p);
-}
-
 }       // anonymous namespace
 
 void test_gsgts() {
      test(nullptr, nullptr);
-     test(cosft_fftw, realft_fftw);
 }
 
 }       // namespace Testing

@@ -45,8 +45,43 @@ namespace SHG {
  * z_k\f$, \f$v_k = \Im z_k\f$ for all \f$k\f$.
  *
  * %Sample implementations of cosine transform and real transform
- * using <a href = "http://www.fftw.org/">FFTW library</a> are
- * presented in cosft_fftw() and realft_fftw().
+ * using <a href = "http://www.fftw.org/">FFTW library</a> could be as
+ * follows:
+ *
+ * \code
+ * void cosft_fftw(const std::vector<double>& h,
+ *                 std::vector<double>& H) {
+ *      fftw_plan p = fftw_plan_r2r_1d(
+ *           h.size(),
+ *           const_cast<double*>(h.data()),
+ *           H.data(),
+ *           FFTW_REDFT00,
+ *           FFTW_ESTIMATE);
+ *      fftw_execute(p);
+ *      fftw_destroy_plan(p);
+ *      fftw_cleanup();
+ *      for (std::size_t k = 0; k < H.size(); k++)
+ *           H[k] *= 0.5;
+ * }
+ * 
+ * void realft_fftw(const std::vector<std::complex<double>>& z,
+ *                  std::vector<double>& X) {
+ *      const double c = 1.0 / (2.0 * std::sqrt(z.size() - 1));
+ *      const std::size_t n = 2 * (z.size() - 1);
+ *      std::vector<double> out(n);
+ *      fftw_plan p = fftw_plan_dft_c2r_1d(
+ *           n,
+ *           reinterpret_cast<fftw_complex*>(
+ *                const_cast<std::complex<double>*>(z.data())),
+ *           out.data(),
+ *           FFTW_ESTIMATE);
+ *      fftw_execute(p);
+ *      fftw_cleanup();
+ *      for (std::size_t i = 0; i < z.size(); i++)
+ *           X[i] = c * out[i];
+ *      fftw_destroy_plan(p);
+ * }
+ * \endcode
  *
  * Implementations using
  * \cite press-teukolsky-vetterling-flannery-2007 could be as follows:
