@@ -56,7 +56,7 @@ void test_loggamma() {
      }
      for (int i = 0; i < 400; i++) {
           const double x = (i + 1) * 0.25;
-          const double y = SHG::loggamma((i + 1) * 0.25);
+          const double y = SHG::loggamma(x);
           const double z = std::lgamma(x);
           SHG_ASSERT(abs(y - z) < 2e-11);
      }
