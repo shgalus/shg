@@ -2,15 +2,12 @@
 
 include ../make.inc
 
-OBJECTS = testshg.o bdstest.o brent.o date.o except.o gsgts.o hmm.o	\
-      laplace.o mathprog.o mstat.o mzt.o normmix.o numalg.o ols.o	\
-      opdts.o permentr.o permut.o runs.o smc.o specfunc.o ppnd7.o	\
-      gammad.o probst.o betain.o cdffdist.o strdlr.o
+SOURCES := $(wildcard *.cc)
+OBJECTS := $(SOURCES:%.cc=%.o)
 
 OBJDIR = ../build/testing
 OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
 
-# To generate report, append this with 2>&1 | tee -a report.txt.
 $(OBJDIR)/%.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 

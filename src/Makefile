@@ -2,10 +2,12 @@
 
 include ../make.inc
 
-OBJECTS = bdstest.o csv.o date.o drbnwtsn.o encoding.o except.o hmm.o	\
-     gsgts.o ieee.o laplace.o mathprog.o mstat.o mzt.o normmix.o	\
-     numalg.o ols.o permut.o rng.o runs.o smc.o specfunc.o strdlr.o	\
-     utils.o version.o
+SOURCES := $(wildcard *.cc)
+OBJECTS := $(SOURCES:%.cc=%.o)
+# Other possibilities:
+# SOURCES = $(wildcard ../testing/*.cc)
+# SOURCES := $(shell find . -name '*.cc')
+# OBJECTS := $(addprefix $(BUILDDIR)/,$(SOURCES:%.c=%.o))
 
 VERSION = $(shell sed -n                                             \
 	'/SHG_VERSION "/ s/^\([^0-9]*\)\([.0-9]*\)\(.*$$\)/\2/ p'    \
@@ -15,7 +17,6 @@ SHOBJD = ../build/shared
 STOBJS = $(OBJECTS:%.o=$(STOBJD)/%.o)
 SHOBJS = $(OBJECTS:%.o=$(SHOBJD)/%.o)
 
-# To generate report, append this with 2>&1 | tee -a report.txt.
 $(STOBJD)/%.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(SHOBJD)/%.o : %.cc

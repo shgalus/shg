@@ -4,8 +4,8 @@ INCLUDE += -isystem/usr/local/boost_1_73_0/include
 LOADLIBES += -L/usr/local/boost_1_73_0/lib
 LDLIBS += -lboost_unit_test_framework
 
-OBJECTS = testshg.o utils_test.o vector_test.o matrix_test.o	\
-          encoding_test.o csv_test.o drbnwtsn_test.o
+SOURCES := $(wildcard *.cc)
+OBJECTS := $(SOURCES:%.cc=%.o)
 
 OBJDIR = ../build/btesting
 OBJS = $(OBJECTS:%.o=$(OBJDIR)/%.o)
