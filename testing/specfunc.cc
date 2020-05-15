@@ -47,16 +47,9 @@ void test_digamma() {
      } catch (const std::invalid_argument&) {}
 }
 
-void test_alnorm_and_normal_integral() {
-     for (int i = 0; i <= 400; i++) {
-          const double x = -10.0 + i * 0.05;
-          const double y1 = SHG::alnorm(x);
-          const double z1 = SHG::normal_integral(x);
-          SHG_ASSERT(abs(y1 - z1) < 5e-12);
-          const double y2 = SHG::alnorm(x, true);
-          const double z2 = SHG::normal_integral(x, true);
-          SHG_ASSERT(abs(y2 - z2) < 5e-12);
-     }
+void test_normal_integral() {
+     const double y = SHG::normal_integral(0.0);
+     SHG_ASSERT(abs(y - 0.5) < 1e-12);
 }
 
 void test_ppnd7() {
@@ -123,7 +116,7 @@ void test_cdffdist() {
 
 void test_special_functions() {
      test_digamma();
-     test_alnorm_and_normal_integral();
+     test_normal_integral();
      test_ppnd7();
      test_gammad();
      test_probst();

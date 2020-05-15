@@ -25,34 +25,19 @@ namespace SHG {
  *
  * Returns \f$F(x)\f$ (upper == false) or \f$1 - F(x)\f$ (upper ==
  * true), where \f$F(x)\f$ is the cumulative distribution function of
- * the standard normal distribution. Accuracy is about nine significant
- * decimal digits.
- *
- * Source: I. D. Hill, Algorithm AS 66, in: \cite griffiths-hill-1986,
- * p. 126-129.
- *
- * \note The Fortran code could be found on 11 August 2009 at StatLib -
- * Applied Statistics algorithms, http://lib.stat.cmu.edu/apstat/.
- *
- * \deprecated normal_integral() should be used since C++11.
- */
-double alnorm(double x, bool upper = false);
-
-/**
- * The normal integral.
- *
- * Returns \f$F(x)\f$ (upper == false) or \f$1 - F(x)\f$ (upper ==
- * true), where \f$F(x)\f$ is the cumulative distribution function of
  * the standard normal distribution.
  */
 template <class T>
 T normal_integral(T x, bool upper = false) {
-     return upper ?
-          static_cast<T>(0.5) *
-          std::erfc(SHG::Constants::isqrt2<T>() * x)
-          :
-          static_cast<T>(0.5) + static_cast<T>(0.5) *
-          std::erf(SHG::Constants::isqrt2<T>() * x);
+     static_assert(std::is_floating_point<T>::value,
+                   "T must be a floating point type");
+
+     return upper ? static_cast<T>(0.5) *
+                         std::erfc(SHG::Constants::isqrt2<T>() * x)
+                  : static_cast<T>(0.5) +
+                         static_cast<T>(0.5) *
+                              std::erf(SHG::Constants::isqrt2<T>() *
+                                       x);
 }
 
 /**
