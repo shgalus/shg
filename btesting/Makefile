@@ -18,7 +18,7 @@ $(OBJDIR)/%.o : %.cc
 all: ../bin/btestshg
 
 run: all
-	../bin/btestshg --log_level=test_suite --run_test=matrix_test/*
+	../bin/btestshg --log_level=test_suite --run_test=specfunc_test/*
 
 ../bin/btestshg: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
