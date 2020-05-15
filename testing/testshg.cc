@@ -183,7 +183,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_mstat, "mstat");
      register_test(test_mzt, "mzt");
      register_test(test_normmix, "normmix");
-     register_test(test_numalg, "numalg");
      register_test(test_ols, "ols");
      register_test(test_opdts, "opdts");
      register_test(test_permentr, "permentr");

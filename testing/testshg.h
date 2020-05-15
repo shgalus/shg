@@ -35,7 +35,6 @@ void test_mathprog();
 void test_mstat();
 void test_mzt();
 void test_normmix();
-void test_numalg();
 void test_ols();
 void test_opdts();
 void test_permentr();
