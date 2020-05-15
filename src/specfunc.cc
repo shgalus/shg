@@ -14,30 +14,6 @@
 
 namespace SHG {
 
-double loggamma(double x) {
-     using std::atan;
-     using std::log;
-
-     static const double a1 = log(8.0 * atan(1.0)) / 2.0;
-     static const double a2 = 1.0 / 1680.0;
-     static const double a3 = 1.0 / 1260.0;
-     static const double a4 = 1.0 / 360.0;
-     static const double a5 = 1.0 / 12.0;
-
-     if (x <= 0.0)
-          throw std::invalid_argument(__func__);
-     double f = 0.0, z;
-     if (x < 7.0) {
-          f = x++;
-          while (x < 7.0)
-               f *= x++;
-          f = -log(f);
-     }
-     z = 1.0 / (x * x);
-     return f + (x - 0.5) * log(x) - x + a1 +
-          (((-a2 * z + a3) * z - a4) * z + a5) / x;
-}
-
 double alnorm(double x, bool upper) {
      using std::numeric_limits;
      using std::log;

@@ -47,21 +47,6 @@ void test_digamma() {
      } catch (const std::invalid_argument&) {}
 }
 
-void test_loggamma() {
-     for (int i = 0; i <= 100; i++) {
-          const double x = 1.0 + i * 0.01;
-          const double y = SHG::loggamma(x);
-          const double z = std::lgamma(x);
-          SHG_ASSERT(abs(y - z) < 2e-11);
-     }
-     for (int i = 0; i < 400; i++) {
-          const double x = (i + 1) * 0.25;
-          const double y = SHG::loggamma(x);
-          const double z = std::lgamma(x);
-          SHG_ASSERT(abs(y - z) < 2e-11);
-     }
-}
-
 void test_alnorm_and_normal_integral() {
      for (int i = 0; i <= 400; i++) {
           const double x = -10.0 + i * 0.05;
@@ -138,7 +123,6 @@ void test_cdffdist() {
 
 void test_special_functions() {
      test_digamma();
-     test_loggamma();
      test_alnorm_and_normal_integral();
      test_ppnd7();
      test_gammad();

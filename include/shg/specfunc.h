@@ -21,26 +21,6 @@ namespace SHG {
  */
 
 /**
- * Natural logarithm of gamma function.
- *
- * Returns natural logarithm of \f$\Gamma(x)\f$ for \f$x > 0\f$.
- * Accuracy is at least 8 significant decimal digits except the result
- * is less than 0.1 when the accuracy is to at least 8 digits past
- * decimal point. The gamma function is defined by
- *
- * \f$\Gamma(x) = \int_{0}^{+\infty} t^{x - 1}e^{-t}dt\f$ for \f$ x >
- * 0\f$.
- *
- * \exception std::invalid_argument if \f$x \leq 0\f$
- *
- * Source: M. C. Pike, I. D. Hill, Algorithm ACM 291, in:
- * \cite griffiths-hill-1986, p. 243-246.
- *
- * \deprecated std::lgamma() should be used since C++11.
- */
-double loggamma(double x);
-
-/**
  * The normal integral.
  *
  * Returns \f$F(x)\f$ (upper == false) or \f$1 - F(x)\f$ (upper ==
