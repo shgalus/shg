@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(digamma_at_zero_test) {
 BOOST_AUTO_TEST_CASE(digamma_at_half_test) {
      using Constants::gamma;
      BOOST_CHECK(std::abs(digamma(0.5) + 2.0 * std::log(2.0) +
-                          gamma<double>()) < 9e-7);
+                          gamma<double>) < 9e-7);
 }
 
 // digamma(n) = -gamma + \sum_{k = 1}^{n - 1} (1 / k) for n >= 2
@@ -111,7 +111,7 @@ BOOST_DATA_TEST_CASE(digamma_at_int_test, bdata::xrange(19), xr1) {
      double s = 0.0;
      for (int k = n - 1; k > 0; k--)
           s += 1.0 / k;
-     s -= gamma<double>();
+     s -= gamma<double>;
      BOOST_CHECK(std::abs(digamma(n) - s) < 3e-7);
 }
 

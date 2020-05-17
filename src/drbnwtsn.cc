@@ -68,7 +68,7 @@ double dwcdf(const int n, const int k, const double x,
      double z;
 
      // Calculate w[i]. The number of w[i] is m.
-     double h = pi<double>() / n;
+     double h = pi<double> / n;
      int m = 0;
      if (lower) {
           il = 1;
@@ -86,7 +86,7 @@ double dwcdf(const int n, const int k, const double x,
      SHG_ASSERT(m < n - k);
 
      // Calculate prob as defined by \ref{eq:dwcdfprob}.
-     const double eps2 = pi<double>() * eps / 2.0;
+     const double eps2 = pi<double> * eps / 2.0;
      // Determine the upper limit of integration b by
      // \ref{eq:dwcdfupperlimit}.
      z = 2.0 / m;
@@ -94,7 +94,7 @@ double dwcdf(const int n, const int k, const double x,
      for (int i = 0; i < m; i++)
           b /= w[i];
      b = sqrt(abs(b));
-     b = b * z / (pi<double>() * eps2);
+     b = b * z / (pi<double> * eps2);
      b = std::pow(b, z);
      SHG_ASSERT(b != HUGE_VAL);
 
@@ -121,7 +121,7 @@ double dwcdf(const int n, const int k, const double x,
                s2 += f(y + j * h, w, m);
           i2 = (h / 6.0) * (s1 + 4.0 * s2);
           if (abs(i1 - i2) <= eps2) {
-               z = 0.5 + i2 / pi<double>();
+               z = 0.5 + i2 / pi<double>;
                if (z < 0.0)
                     z = 0.0;
                else if (z > 1.0)

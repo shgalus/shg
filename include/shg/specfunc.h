@@ -33,11 +33,10 @@ T normal_integral(T x, bool upper = false) {
                    "T must be a floating point type");
 
      return upper ? static_cast<T>(0.5) *
-                         std::erfc(SHG::Constants::isqrt2<T>() * x)
+                         std::erfc(SHG::Constants::isqrt2<T> * x)
                   : static_cast<T>(0.5) +
                          static_cast<T>(0.5) *
-                              std::erf(SHG::Constants::isqrt2<T>() *
-                                       x);
+                              std::erf(SHG::Constants::isqrt2<T> * x);
 }
 
 /**

@@ -158,7 +158,7 @@ double probst(const double t, const int df) {
      if (oe == 1) {
           if (df == 1)
                f = 0.0;
-          return 0.5 + (a * b * f + atan(a)) * ipi<double>();
+          return 0.5 + (a * b * f + atan(a)) * ipi<double>;
      }
      return 0.5 + 0.5 * a * sqrt(b) * f;
 }

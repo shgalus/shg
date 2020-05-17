@@ -230,7 +230,7 @@ void Unideggaumix::estimate() {
                s = 0.0;
                for (int k = 0; k < K1; k++) {
                     invsigma = 1.0 / sigma(k);
-                    psiik = SHG::Constants::isqrt2pi<double>() *
+                    psiik = SHG::Constants::isqrt2pi<double> *
                          invsigma *
                          exp(-0.5 * sqr((x(i) - mu(k)) * invsigma));
                     s += (psi(i, k) = pi(k) * psiik);

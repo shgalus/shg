@@ -28,84 +28,84 @@ namespace Constants {
  */
 
 /**
- * Returns the constant \f$\pi = 3.14\ldots\f$. The approximation is
- * taken from \cite knuth-2002a, p. 647.
+ * The constant \f$\pi = 3.14\ldots\f$. The approximation is taken
+ * from \cite knuth-2002a, p. 647.
  */
-template<class T> inline T pi() {
-     return static_cast<T>(3.1415926535897932384626433832795028841972L);
-}
+template <typename T>
+constexpr T pi =
+     static_cast<T>(3.1415926535897932384626433832795028841972L);
 
 /**
- * Returns the constant \f$e = 2.718\ldots\f$. The approximation is
- * taken from \cite knuth-2002a, p. 647.
- */
-template<class T> inline T e() {
-     return static_cast<T>(2.7182818284590452353602874713526624977572L);
-}
-
-/**
- * Returns the constant \f$\gamma = 0.577\ldots\f$. The approximation
- * is taken from \cite knuth-2002a, p. 647.
- */
-template<class T> inline T gamma() {
-     return static_cast<T>(0.5772156649015328606065120900824024310422L);
-}
-
-/**
- * Returns the constant \f$1 / \pi\f$. The approximation is taken from
+ * The constant \f$e = 2.718\ldots\f$. The approximation is taken from
  * \cite knuth-2002a, p. 647.
  */
-template<class T> inline T ipi() {
-     return static_cast<T>(0.3183098861837906715377675267450287240689L);
-}
+template <typename T>
+constexpr T e =
+     static_cast<T>(2.7182818284590452353602874713526624977572L);
 
 /**
- * Returns the constant \f$1 / \sqrt{2\pi}\f$.
+ * The constant \f$\gamma = 0.577\ldots\f$. The approximation
+ * is taken from \cite knuth-2002a, p. 647.
  */
-template<class T> inline T isqrt2pi() {
-     return static_cast<T>(0.3989422804014326779399460599343818684759L);
-}
+template <typename T>
+constexpr T gamma =
+     static_cast<T>(0.5772156649015328606065120900824024310422L);
 
 /**
- * Returns the constant \f$\sqrt{2\pi}\f$.
+ * The constant \f$1 / \pi\f$. The approximation is taken from
+ * \cite knuth-2002a, p. 647.
  */
-template<class T> inline T sqrt2pi() {
-     return static_cast<T>(2.5066282746310005024157652848110452530070L);
-}
+template <typename T>
+constexpr T ipi =
+     static_cast<T>(0.3183098861837906715377675267450287240689L);
 
 /**
- * Returns the constant \f$1 / \ln 2\f$. See \cite knuth-2002a, p.
+ * The constant \f$1 / \sqrt{2\pi}\f$.
+ */
+template <typename T>
+constexpr T isqrt2pi =
+     static_cast<T>(0.3989422804014326779399460599343818684759L);
+
+/**
+ * The constant \f$\sqrt{2\pi}\f$.
+ */
+template <typename T>
+constexpr T sqrt2pi =
+     static_cast<T>(2.5066282746310005024157652848110452530070L);
+
+/**
+ * The constant \f$1 / \ln 2\f$. See \cite knuth-2002a, p.
  * 647.
  */
-template<class T> inline T iln2() {
-     return static_cast<T>(1.4426950408889634073599246810018921374266L);
-}
+template <typename T>
+constexpr T iln2 =
+     static_cast<T>(1.4426950408889634073599246810018921374266L);
 
 /**
- * Returns the constant \f$\sqrt{2}\f$.
+ * The constant \f$\sqrt{2}\f$.
  */
-template<class T> inline T sqrt2() {
-     return static_cast<T>(1.4142135623730950488016887242096980785697L);
-}
+template <typename T>
+constexpr T sqrt2 =
+     static_cast<T>(1.4142135623730950488016887242096980785697L);
 
 /**
- * Returns the constant \f$1 / \sqrt{2}\f$.
+ * The constant \f$1 / \sqrt{2}\f$.
  */
-template<class T> inline T isqrt2() {
-     return static_cast<T>(0.7071067811865475244008443621048490392848L);
-}
+template <typename T>
+constexpr T isqrt2 =
+     static_cast<T>(0.7071067811865475244008443621048490392848L);
 
 /**
- * Returns the constant \f$\pi^2 / 8\f$.
+ * The constant \f$\pi^2 / 8\f$.
  */
-template<class T> inline T sqrpi8() {
-     return static_cast<T>(1.2337005501361698273543113749845188919142L);
-}
+template <typename T>
+constexpr T sqrpi8 =
+     static_cast<T>(1.2337005501361698273543113749845188919142L);
 
-/** \} */       // end of group mathematical_constants
+/** \} */  // end of group mathematical_constants
 
-}       // namespace Constants
+}  // namespace Constants
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

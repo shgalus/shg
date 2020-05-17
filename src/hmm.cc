@@ -273,7 +273,7 @@ double Normal_hmm::phi(size_t t, size_t j) {
      SHG_ASSERT(sigma(j) > 0.0);
      const double s = 1.0 / sigma[j];
      const double x = (y[t] - mu[j]) * s;
-     return Constants::isqrt2pi<double>() * s * exp(-0.5 * x * x);
+     return Constants::isqrt2pi<double> * s * exp(-0.5 * x * x);
 }
 
 void gen_nhmm(const Matdouble& P,
@@ -361,7 +361,7 @@ void corr_nhmm_abs(const Vecdouble& delta,
                    const int K,
                    Vecdouble& r) {
      static const double        // sqrt(2/pi)
-          C = 2.0 * SHG::Constants::isqrt2pi<double>();
+          C = 2.0 * SHG::Constants::isqrt2pi<double>;
      const int m = delta.size();
      double E = 0.0;            // E(X_t)
      double v = 0.0;            // var(X_t)

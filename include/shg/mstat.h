@@ -33,7 +33,7 @@ template <class T>
 inline T standard_normal_pdf(T x) {
      static_assert(std::is_floating_point<T>::value,
                    "T must be a floating-point type.");
-     return SHG::Constants::isqrt2pi<T>() *
+     return SHG::Constants::isqrt2pi<T> *
           std::exp(static_cast<T>(-0.5) * SHG::sqr(x));
 }
 

@@ -252,7 +252,7 @@ double RNG::gamma_large(const double a) {
      double x, y, v;
      do {
           do {
-               y = tan(pi<double>() * operator()());
+               y = tan(pi<double> * operator()());
                x = sqa * y + a - 1.0;
           } while (x <= 0.0);
           v = operator()();
@@ -265,7 +265,7 @@ double RNG::gamma_frac(const double a) {
      using Constants::e;
      if (a == 0.0)
           return 0.0;
-     const double p = e<double>() / (a + e<double>());
+     const double p = e<double> / (a + e<double>);
      double q, x, u, v;
      do {
           u = operator()();

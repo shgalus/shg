@@ -45,8 +45,8 @@ void GSGTS::generate(std::vector<double>& X,
           f = realft;
      /* We may take vector<double> z(2 * g.size()). */
      vector<complex<double>> z(g.size());
-     z[0] = SHG::Constants::sqrt2<double>() * normal() * g[0];
-     z[n] = SHG::Constants::sqrt2<double>() * normal() * g[n];;
+     z[0] = SHG::Constants::sqrt2<double> * normal() * g[0];
+     z[n] = SHG::Constants::sqrt2<double> * normal() * g[n];;
      for (size_t k = 1; k < n; k++) {
           z[k].real(normal() * g[k]);
           z[k].imag(normal() * g[k]);
@@ -57,7 +57,7 @@ void GSGTS::generate(std::vector<double>& X,
 void GSGTS::realft(const std::vector<std::complex<double>>& z,
                    std::vector<double>& X) {
      const size_t n = z.size() - 1;
-     const double w = SHG::Constants::pi<double>() / n;
+     const double w = SHG::Constants::pi<double> / n;
      const double c = 1.0 / sqrt(n);
      const double z0half = 0.5 * z[0].real();
      const double znhalf = 0.5 * z[n].real();
@@ -79,7 +79,7 @@ void GSGTS::realft(const std::vector<std::complex<double>>& z,
 void GSGTS::cosft(const std::vector<double>& h,
                   std::vector<double>& H) {
      const size_t n = h.size() - 1;
-     const double w = SHG::Constants::pi<double>() / n;
+     const double w = SHG::Constants::pi<double> / n;
      const double h0half = 0.5 * h[0];
      const double hnhalf = 0.5 * h[n];
      size_t j, k;

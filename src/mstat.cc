@@ -34,8 +34,8 @@ double ksdist(double x) {
      if (x < 0.18)
           return 0.0;
      if (x < 1.18) {
-          const double y = exp(-sqrpi8<double>() / sqr(x));
-          return sqrt2pi<double>() / x *
+          const double y = exp(-sqrpi8<double> / sqr(x));
+          return sqrt2pi<double> / x *
                (y + pow(y, 9) + pow(y, 25) + pow(y, 49));
      } else {
           const double y = exp(-2.0 * sqr(x));
