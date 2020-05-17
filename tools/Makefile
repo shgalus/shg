@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-TARGET = specfunc ksone gmconsts gstrdlrd octal
+TARGET = ksone gmconsts octal
 
 GMP = -lgmpxx -lgmp
 

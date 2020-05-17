@@ -41,7 +41,6 @@ void test_permentr();
 void test_permut();
 void test_runs();
 void test_smc();
-void test_special_functions();
 void test_strdlr();
 
 }       // namespace Testing
