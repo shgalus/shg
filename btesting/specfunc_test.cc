@@ -14,7 +14,22 @@ namespace SHG::BTesting {
 
 BOOST_AUTO_TEST_SUITE(specfunc_test)
 
+BOOST_AUTO_TEST_CASE(normal_integral_at_zero_test) {
+     using boost::math::normal_distribution;
+     const double y = normal_integral(0.0);
+     BOOST_CHECK(std::abs(y - 0.5) < 1e-12);
+}
+
 namespace bdata = boost::unit_test::data;
+
+BOOST_DATA_TEST_CASE(normal_integral_test, bdata::xrange(61), xr1) {
+     using boost::math::normal_distribution;
+     const double x = -3.0 + xr1 * 0.1;
+     const double y = normal_integral(x);
+     normal_distribution normal;
+     const double z = cdf(normal, x);
+     BOOST_CHECK(std::abs(y - z) < 1e-12);
+}
 
 BOOST_DATA_TEST_CASE(ppnd_test, bdata::xrange(199), xr1) {
      using boost::math::normal_distribution;
