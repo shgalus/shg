@@ -186,7 +186,6 @@
     <ClCompile Include="..\..\testing\specfunc.cc" />
     <ClCompile Include="..\..\testing\strdlr.cc" />
     <ClCompile Include="..\..\testing\testshg.cc" />
-    <ClCompile Include="..\..\testing\vector.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\shg\shg.vcxproj">
