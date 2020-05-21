@@ -91,6 +91,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +107,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,6 +125,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +145,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,7 +174,6 @@
     <ClInclude Include="..\..\include\shg\mstat.h" />
     <ClInclude Include="..\..\include\shg\mzt.h" />
     <ClInclude Include="..\..\include\shg\normmix.h" />
-    <ClInclude Include="..\..\include\shg\numalg.h" />
     <ClInclude Include="..\..\include\shg\ols.h" />
     <ClInclude Include="..\..\include\shg\opdts.h" />
     <ClInclude Include="..\..\include\shg\permentr.h" />
@@ -201,7 +204,6 @@
     <ClCompile Include="..\..\src\mstat.cc" />
     <ClCompile Include="..\..\src\mzt.cc" />
     <ClCompile Include="..\..\src\normmix.cc" />
-    <ClCompile Include="..\..\src\numalg.cc" />
     <ClCompile Include="..\..\src\ols.cc" />
     <ClCompile Include="..\..\src\permut.cc" />
     <ClCompile Include="..\..\src\rng.cc" />

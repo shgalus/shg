@@ -18,22 +18,13 @@
     <ClCompile Include="..\..\testing\bdstest.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\betain.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\brent.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\cdffdist.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\date.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\except.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\gammad.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\gsgts.cc">
@@ -48,9 +39,6 @@
     <ClCompile Include="..\..\testing\mathprog.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\matrix.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\mstat.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\normmix.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\numalg.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\ols.cc">
@@ -75,19 +60,10 @@
     <ClCompile Include="..\..\testing\permut.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\ppnd7.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\probst.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\runs.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\smc.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\specfunc.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\strdlr.cc">
@@ -98,21 +74,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\testing\betain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\cdffdist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\gammad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\ppnd7.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\testing\probst.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\testing\testshg.h">
       <Filter>Header Files</Filter>
     </ClInclude>

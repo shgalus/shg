@@ -93,6 +93,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;C:\Users\shgal\projects\shg\msvc\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;C:\Users\shgal\projects\shg\msvc\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +131,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;C:\Users\shgal\projects\shg\msvc\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,6 +153,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;C:\Users\shgal\projects\shg\msvc\shg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,30 +164,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\testing\bdstest.cc" />
-    <ClCompile Include="..\..\testing\betain.cc" />
     <ClCompile Include="..\..\testing\brent.cc" />
-    <ClCompile Include="..\..\testing\cdffdist.cc" />
     <ClCompile Include="..\..\testing\date.cc" />
     <ClCompile Include="..\..\testing\except.cc" />
-    <ClCompile Include="..\..\testing\gammad.cc" />
     <ClCompile Include="..\..\testing\gsgts.cc" />
     <ClCompile Include="..\..\testing\hmm.cc" />
     <ClCompile Include="..\..\testing\laplace.cc" />
     <ClCompile Include="..\..\testing\mathprog.cc" />
-    <ClCompile Include="..\..\testing\matrix.cc" />
     <ClCompile Include="..\..\testing\mstat.cc" />
     <ClCompile Include="..\..\testing\mzt.cc" />
     <ClCompile Include="..\..\testing\normmix.cc" />
-    <ClCompile Include="..\..\testing\numalg.cc" />
     <ClCompile Include="..\..\testing\ols.cc" />
     <ClCompile Include="..\..\testing\opdts.cc" />
     <ClCompile Include="..\..\testing\permentr.cc" />
     <ClCompile Include="..\..\testing\permut.cc" />
-    <ClCompile Include="..\..\testing\ppnd7.cc" />
-    <ClCompile Include="..\..\testing\probst.cc" />
     <ClCompile Include="..\..\testing\runs.cc" />
     <ClCompile Include="..\..\testing\smc.cc" />
-    <ClCompile Include="..\..\testing\specfunc.cc" />
     <ClCompile Include="..\..\testing\strdlr.cc" />
     <ClCompile Include="..\..\testing\testshg.cc" />
   </ItemGroup>
@@ -193,11 +189,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\testing\betain.h" />
-    <ClInclude Include="..\..\testing\cdffdist.h" />
-    <ClInclude Include="..\..\testing\gammad.h" />
-    <ClInclude Include="..\..\testing\ppnd7.h" />
-    <ClInclude Include="..\..\testing\probst.h" />
     <ClInclude Include="..\..\testing\testshg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
