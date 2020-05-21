@@ -39,4 +39,6 @@ In PowerShell:
     gsl:x64-windows                                    2.6
     gsl:x86-windows                                    2.6
 
+    .\vcpkg install boost
+    .\vcpkg install boost:x64-windows
 */
