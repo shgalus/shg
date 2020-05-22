@@ -9,8 +9,8 @@ PDFDOC = bdstest.pdf drbnwtsn.pdf nhmm.pdf
 
 all: html
 
-html: $(PDFDOC) ../src/*.cc ../include/shg/*.h ../testing/*.cc		\
-	../testing/*.h ../examples/*.cc ../tools/*.cc mainpage.doc
+html: $(PDFDOC) ../src/*.cc ../include/shg/*.h ../testing/*.cc	\
+	../testing/*.h ../tools/*.cc mainpage.doc
 	doxygen
 
 clean:
