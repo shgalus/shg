@@ -60,6 +60,31 @@ BOOST_AUTO_TEST_CASE(simplex_gass_82g) {
      BOOST_CHECK(s.status == 2);
 }
 
+/*
+ * Solves the problem
+ *
+ * minimize
+ *      -6x_1 + 2x_1^2 - 2x_1x_2 + 2x_2^2
+ * subject to
+ *      x_1 + x_2 <= 2
+ *      x_j >= 0
+ *
+ * Cf. wolfe_grabowski_256
+ */
+BOOST_AUTO_TEST_CASE(wolfe_example) {
+     const Vecdouble p{-6.0, 0.0, 0.0},
+          C{2.0, -1.0, 0.0, 2.0, 0.0, 0.0}, b{2.0};
+     Vecdouble x(3);
+     const Matdouble A(1, 3, {1.0, 1.0, 0.0});
+     double f;
+     const int st = SHG::wolfe(p, C, A, b, x, f);
+     BOOST_CHECK(st == 0);
+     BOOST_CHECK(std::abs(f + 5.5) < 1e-16);
+     BOOST_CHECK(std::abs(x[0] - 1.5) < 1e-16);
+     BOOST_CHECK(std::abs(x[1] - 0.5) < 1e-16);
+     BOOST_CHECK(std::abs(x[2] - 0.0) < 1e-16);
+}
+
 BOOST_AUTO_TEST_CASE(wolfe_grabowski_247) {
      const int m = 2, n = 4;
      Vecdouble p(n, 0.0);
