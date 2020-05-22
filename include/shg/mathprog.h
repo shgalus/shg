@@ -139,11 +139,6 @@ public:
  * & \quad x_j \geq 0 \f} (\cite gass-1980, p. 285) can be solved by
  * the following program.
  *
- * \example_program \include wolfe.cc
- *
- * The output means that \f$x_1 = 3/2\f$, \f$x_2 = 1/2\f$ and the
- * minimum is \f$-11/2\f$.
- *
  * \date Written on 10 May 2009.
  * \todo Check if the page 285 of the example is correct.
  *
