@@ -1,13 +1,13 @@
-/* date.cc: testing permutations */
+/* date.cc: testing number of inversions in a sequence */
 
 /**
- * \file testing/permut.cc
- * Testing permutations.
+ * \file testing/ninv.cc
+ * Testing number of inversions in a sequence.
  * Created on  3 March 2016.
  */
 
 #include <numeric>      // iota
-#include "shg/permut.h"
+#include "shg/ninv.h"
 #include "shg/vector.h"
 #include "testshg.h"
 
@@ -31,6 +31,8 @@ std::size_t ninv(const T* a, std::size_t n) {
      return ninv;
 }
 
+}
+
 void test_ninv() {
      for (std::size_t n = 0; n <= 7; n++) {
           SHG::Vector<int> a(n);
@@ -38,7 +40,7 @@ void test_ninv() {
           do {
                const std::size_t n1 = ninv(a.c_vec(), n);
                const std::size_t n2 =
-                    SHG::Permutations::ninv(a.c_vec(), n);
+                    SHG::ninv(a.c_vec(), n);
                SHG_ASSERT(n1 == n2);
           } while (std::next_permutation(a.begin(), a.end()));
      }
@@ -48,15 +50,9 @@ void test_ninv() {
           std::string s = std::to_string(n);
           const std::size_t n1 = ninv(s.c_str(), s.size());
           const std::size_t n2 =
-               SHG::Permutations::ninv(s.c_str(), s.size());
+               SHG::ninv(s.c_str(), s.size());
           SHG_ASSERT(n1 == n2);
      }
-}
-
-}       // anonymous namespace
-
-void test_permut() {
-     test_ninv();
 }
 
 }       // namespace Testing

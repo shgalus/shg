@@ -38,7 +38,7 @@ void test_normmix();
 void test_ols();
 void test_opdts();
 void test_permentr();
-void test_permut();
+void test_ninv();
 void test_runs();
 void test_smc();
 void test_strdlr();

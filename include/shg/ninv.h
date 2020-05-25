@@ -1,13 +1,13 @@
-/* permut.h: permutations */
+/* ninv.h: number of inversions in a sequence */
 
 /**
- * \file include/shg/permut.h
- * Permutations.
+ * \file include/shg/ninv.h
+ * Number of inversions in a sequence.
  * Created on  3 March 2016.
  */
 
-#ifndef SHG_PERMUT_H
-#define SHG_PERMUT_H
+#ifndef SHG_NINV_H
+#define SHG_NINV_H
 
 #include <cstddef>
 #include <algorithm>
@@ -16,9 +16,10 @@
 namespace SHG {
 
 /**
- * %Permutations.
+ * \addtogroup mathematical_statistics
+ *
+ * \{
  */
-namespace Permutations {
 
 /**
  * Returns the number of inversions in a sequence. The elements
@@ -69,7 +70,7 @@ std::size_t ninv(T* a, T* b, std::size_t n) {
 
 /**
  * Returns the number of inversions in a sequence. It is a wrapper
- * function for SHG::Permutations::ninv(T*, T*, std::size_t).
+ * function for SHG::ninv(T*, T*, std::size_t).
  *
  * \tparam T A type with defined operator <.
  *
@@ -102,7 +103,7 @@ std::size_t ninv(const T* a, std::size_t n) {
  */
 double nninv(std::size_t i, std::size_t n);
 
-}       // namespace Permutations
+/** \} */ /* end of group mathematical_statistics */
 
 }       // namespace SHG
 

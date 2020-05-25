@@ -1,16 +1,15 @@
-/* permut.cc: permutations */
+/* ninv.h: number of inversions in a sequence */
 
 /**
- * \file src/permut.cc
- * Permutations.
+ * \file src/ninv.cc
+ * Number of inversions in a sequence.
  * Created on  3 March 2016.
  */
 
 #include <stdexcept>
-#include "shg/permut.h"
+#include "shg/ninv.h"
 
 namespace SHG {
-namespace Permutations {
 
 double nninv(std::size_t i, std::size_t n) {
      if (n < 2)
@@ -23,5 +22,4 @@ double nninv(std::size_t i, std::size_t n) {
      return ni;
 }
 
-}       // namespace Permutations
 }       // namespace SHG
