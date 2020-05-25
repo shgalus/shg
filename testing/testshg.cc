@@ -179,10 +179,8 @@ Test_shg::Test_shg() : mm() {
      register_test(test_gsgts, "gsgts");
      register_test(test_hmm, "hmm");
      register_test(test_laplace, "laplace");
-     register_test(test_mathprog, "mathprog");
      register_test(test_mstat, "mstat");
      register_test(test_mzt, "mzt");
-     register_test(test_ninv, "ninv");
      register_test(test_normmix, "normmix");
      register_test(test_ols, "ols");
      register_test(test_opdts, "opdts");
