@@ -47,7 +47,7 @@ Vector<T>::Vector(const Vector& v) : Vector(v.size()) {
 }
 
 template <class T>
-Vector<T>::Vector(Vector&& v) : v_(v.v_), n_(v.n_) {
+Vector<T>::Vector(Vector&& v) noexcept : v_(v.v_), n_(v.n_) {
      v.v_ = nullptr;
      v.n_ = 0;
 }

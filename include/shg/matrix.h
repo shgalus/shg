@@ -80,7 +80,7 @@ public:
      /**
       * Move constructor.
       */
-     inline Matrix(Matrix&& a);
+     inline Matrix(Matrix&& a) noexcept;
 
      /**
       * Destructor.

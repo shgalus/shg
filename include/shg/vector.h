@@ -71,7 +71,7 @@ public:
      inline Vector(const Vector& v);
 
      /** Move constructor. */
-     inline Vector(Vector&& v);
+     inline Vector(Vector&& v) noexcept;
 
      /** Constructs a vector from std::vector \a v. */
      explicit Vector(const std::vector<T>& v);

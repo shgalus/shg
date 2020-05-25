@@ -102,7 +102,7 @@ Matrix<T>::Matrix(const Matrix& a)
 }
 
 template <class T>
-Matrix<T>::Matrix(Matrix&& a) : Matrix() {
+Matrix<T>::Matrix(Matrix&& a) noexcept : Matrix() {
      swap(a);
 }
 
