@@ -12,6 +12,11 @@
 
 #include <iostream>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4244)
+#endif
+
 using std::string, std::u16string, std::u32string;
 
 namespace SHG::Encoding {
@@ -444,3 +449,7 @@ std::u16string::size_type utf16_length(const std::u16string& s) {
 }
 
 }       // namespace SHG::Encoding
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
