@@ -32,7 +32,6 @@ void test_gsgts();
 void test_hmm();
 void test_laplace();
 void test_mstat();
-void test_mzt();
 void test_normmix();
 void test_ols();
 void test_opdts();
