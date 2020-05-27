@@ -173,11 +173,11 @@
     <ClInclude Include="..\..\include\shg\mconsts.h" />
     <ClInclude Include="..\..\include\shg\mstat.h" />
     <ClInclude Include="..\..\include\shg\mzt.h" />
+    <ClInclude Include="..\..\include\shg\ninv.h" />
     <ClInclude Include="..\..\include\shg\normmix.h" />
     <ClInclude Include="..\..\include\shg\ols.h" />
     <ClInclude Include="..\..\include\shg\opdts.h" />
     <ClInclude Include="..\..\include\shg\permentr.h" />
-    <ClInclude Include="..\..\include\shg\permut.h" />
     <ClInclude Include="..\..\include\shg\rng.h" />
     <ClInclude Include="..\..\include\shg\runs.h" />
     <ClInclude Include="..\..\include\shg\shg.h" />
@@ -203,9 +203,9 @@
     <ClCompile Include="..\..\src\mathprog.cc" />
     <ClCompile Include="..\..\src\mstat.cc" />
     <ClCompile Include="..\..\src\mzt.cc" />
+    <ClCompile Include="..\..\src\ninv.cc" />
     <ClCompile Include="..\..\src\normmix.cc" />
     <ClCompile Include="..\..\src\ols.cc" />
-    <ClCompile Include="..\..\src\permut.cc" />
     <ClCompile Include="..\..\src\rng.cc" />
     <ClCompile Include="..\..\src\runs.cc" />
     <ClCompile Include="..\..\src\smc.cc" />

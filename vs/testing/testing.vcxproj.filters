@@ -36,9 +36,6 @@
     <ClCompile Include="..\..\testing\laplace.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\mathprog.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\mstat.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\permentr.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\permut.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\runs.cc">

@@ -170,14 +170,12 @@
     <ClCompile Include="..\..\testing\gsgts.cc" />
     <ClCompile Include="..\..\testing\hmm.cc" />
     <ClCompile Include="..\..\testing\laplace.cc" />
-    <ClCompile Include="..\..\testing\mathprog.cc" />
     <ClCompile Include="..\..\testing\mstat.cc" />
     <ClCompile Include="..\..\testing\mzt.cc" />
     <ClCompile Include="..\..\testing\normmix.cc" />
     <ClCompile Include="..\..\testing\ols.cc" />
     <ClCompile Include="..\..\testing\opdts.cc" />
     <ClCompile Include="..\..\testing\permentr.cc" />
-    <ClCompile Include="..\..\testing\permut.cc" />
     <ClCompile Include="..\..\testing\runs.cc" />
     <ClCompile Include="..\..\testing\smc.cc" />
     <ClCompile Include="..\..\testing\strdlr.cc" />
