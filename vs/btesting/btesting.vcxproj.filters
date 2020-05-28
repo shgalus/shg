@@ -45,5 +45,8 @@
     <ClCompile Include="..\..\btesting\ninv_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\btesting\mzt_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

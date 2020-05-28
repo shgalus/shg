@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\btesting\encoding_test.cc" />
     <ClCompile Include="..\..\btesting\mathprog_test.cc" />
     <ClCompile Include="..\..\btesting\matrix_test.cc" />
+    <ClCompile Include="..\..\btesting\mzt_test.cc" />
     <ClCompile Include="..\..\btesting\ninv_test.cc" />
     <ClCompile Include="..\..\btesting\specfunc_test.cc" />
     <ClCompile Include="..\..\btesting\testshg.cc" />
