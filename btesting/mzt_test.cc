@@ -9,25 +9,20 @@ namespace SHG::BTesting {
 
 BOOST_AUTO_TEST_SUITE(mzt_test)
 
-namespace {
-
-// clang-format off
-constexpr int wz_t[35] {
-     6,   3,  11,   3,   0,   4,   0,
-    13,   8,  15,  11,  11,  14,   0,
-     6,  15,   0,   2,   3,  11,   0,
-     5,  14,   2,  14,   4,   8,   0,
-     7,  15,   7,  10,  12,   2,   0
-};
-// clang-format on
-
-}  // anonymous namespace
-
 // Test from Wieczorkowski, Zielinski, page 40.
 BOOST_AUTO_TEST_CASE(wiecz_ziel_test) {
      using std::floor;
      using std::fmod;
      using std::pow;
+     // clang-format off
+     const Vecint wz{
+          6,   3,  11,   3,   0,   4,   0,
+         13,   8,  15,  11,  11,  14,   0,
+          6,  15,   0,   2,   3,  11,   0,
+          5,  14,   2,  14,   4,   8,   0,
+          7,  15,   7,  10,  12,   2,   0
+     };
+     // clang-format on
      MZT g;
      int k = 0;
      for (int i = 1; i <= 20005; i++) {
@@ -35,7 +30,7 @@ BOOST_AUTO_TEST_CASE(wiecz_ziel_test) {
           if (i > 20000) {
                for (int j = 1; j <= 7; j++)
                     BOOST_CHECK(fmod(floor(pow(16.0, j) * x), 16.0) ==
-                                wz_t[k++]);
+                                wz[k++]);
           }
      }
 }
@@ -79,19 +74,13 @@ BOOST_AUTO_TEST_CASE(logarithmic_test) {
      BOOST_CHECK(s == 131);
 }
 
-namespace {
-
-constexpr double g_p[9]{0.0001, 0.001, 0.01,  0.1,   0.5,
-                        0.9,    0.99,  0.999, 0.9999};
-
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(geometric_test) {
      MZT g;
-
+     const Vecdouble p{0.0001, 0.001, 0.01,  0.1,   0.5,
+                       0.9,    0.99,  0.999, 0.9999};
      unsigned int s = 0;
-     for (std::size_t i = 0; i < std::size(g_p); i++) {
-          const double pi = g_p[i];
+     for (std::size_t i = 0; i < p.size(); i++) {
+          const double pi = p[i];
           for (int j = 0; j < 1000; j++)
                s += g.geometric(pi);
      }
@@ -135,16 +124,12 @@ BOOST_AUTO_TEST_CASE(binomial_test) {
           BOOST_CHECK(g.binomial(p, n) <= n);
 }
 
-namespace {
-
-constexpr double mu[]{0.01, 0.5, 1.0, 5.0, 10.0, 50.0, 100.0, 1000.0};
-
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(poisson_test) {
+     const Vecdouble mu{0.01, 0.5,  1.0,   5.0,
+                        10.0, 50.0, 100.0, 1000.0};
      MZT g;
      unsigned int s = 0;
-     for (std::size_t i = 0; i < std::size(mu); i++) {
+     for (std::size_t i = 0; i < mu.size(); i++) {
           const double mui = mu[i];
           for (int j = 0; j < 1000; j++)
                s += g.poisson(mui);
@@ -152,22 +137,18 @@ BOOST_AUTO_TEST_CASE(poisson_test) {
      BOOST_CHECK(s == 1166264u);
 }
 
-namespace {
-
-constexpr double nb_t[]{0.001, 0.01, 0.1,   0.5,
-                        1.0,   10.0, 100.0, 1000.0};
-constexpr double nb_p[]{0.0001, 0.001, 0.01,  0.1,   0.5,
-                        0.9,    0.99,  0.999, 0.9999};
-
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(negative_binomial_test) {
+     const Vecdouble t{0.001, 0.01, 0.1,   0.5,
+                       1.0,   10.0, 100.0, 1000.0};
+     const Vecdouble p{0.0001, 0.001, 0.01,  0.1,   0.5,
+                       0.9,    0.99,  0.999, 0.9999};
+
      MZT g;
      unsigned int s = 0;
-     for (std::size_t i = 0; i < std::size(nb_t); i++) {
-          const double ti = nb_t[i];
-          for (std::size_t j = 0; j < std::size(nb_p); j++) {
-               const double pj = nb_p[j];
+     for (std::size_t i = 0; i < t.size(); i++) {
+          const double ti = t[i];
+          for (std::size_t j = 0; j < p.size(); j++) {
+               const double pj = p[j];
                for (int k = 0; k < 1000; k++)
                     s += g.negative_binomial(ti, pj);
           }
