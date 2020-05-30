@@ -52,10 +52,10 @@ but the file \e cstyle.pdf is created. See also
 
 \page strdlr NIST Statistical Reference Datasets Linear Regression
 
-The class SHG::StRDLR contains data for testing linear regression
-retrieved on 24 December 2010 from <a href =
+Test cases in the file ols_test.cc use data for testing linear
+regression retrieved on 24 December 2010 from <a href =
 "http://www.itl.nist.gov/div898/strd/">NIST Statistical Reference
-Datasets</a>. The class contains 11 datasets, described at <a href =
+Datasets</a>. The data contain 11 datasets, described at <a href =
 "http://www.itl.nist.gov/div898/strd/lls/lls.shtml">StRD Linear Least
 Squares Regression Datasets</a>:
 
@@ -85,9 +85,5 @@ Local copies of retrieved data files:
 <a href = "Wampler3.dat">Wampler3.dat</a>,
 <a href = "Wampler4.dat">Wampler4.dat</a>,
 <a href = "Wampler5.dat">Wampler5.dat</a>.
-
-The program <a href = "gstrdlrd.cc">gstrdlrd.cc</a> generates the
-constant SHG::StRDLR::v_. This constant is differently formatted in
-src/strdlr.cc, so use <tt>diff -b</tt> for comparing.
 
 */
