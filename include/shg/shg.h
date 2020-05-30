@@ -34,7 +34,6 @@
 #include "shg/runs.h"
 #include "shg/smc.h"
 #include "shg/specfunc.h"
-#include "shg/strdlr.h"
 #include "shg/utils.h"
 #include "shg/vector.h"
 #include "shg/version.h"

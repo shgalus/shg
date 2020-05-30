@@ -180,12 +180,10 @@ Test_shg::Test_shg() : mm() {
      register_test(test_hmm, "hmm");
      register_test(test_laplace, "laplace");
      register_test(test_normmix, "normmix");
-     register_test(test_ols, "ols");
      register_test(test_opdts, "opdts");
      register_test(test_permentr, "permentr");
      register_test(test_runs, "runs");
      register_test(test_smc, "smc");
-     register_test(test_strdlr, "strdlr");
 
      SHG_ASSERT
           (std::is_sorted(
