@@ -1186,7 +1186,6 @@ HTML_EXTRA_FILES       = bdstest.pdf \
                          Wampler3.dat \
                          Wampler4.dat \
                          Wampler5.dat \
-                         gstrdlrd.cc \
                          rfc4180.txt
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
