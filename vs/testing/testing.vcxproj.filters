@@ -36,9 +36,6 @@
     <ClCompile Include="..\..\testing\laplace.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\mstat.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\normmix.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
