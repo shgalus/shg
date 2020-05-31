@@ -34,7 +34,6 @@ void test_laplace();
 void test_normmix();
 void test_opdts();
 void test_permentr();
-void test_runs();
 void test_smc();
 
 }       // namespace Testing
