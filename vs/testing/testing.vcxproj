@@ -165,7 +165,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\testing\bdstest.cc" />
     <ClCompile Include="..\..\testing\brent.cc" />
-    <ClCompile Include="..\..\testing\date.cc" />
     <ClCompile Include="..\..\testing\except.cc" />
     <ClCompile Include="..\..\testing\gsgts.cc" />
     <ClCompile Include="..\..\testing\hmm.cc" />

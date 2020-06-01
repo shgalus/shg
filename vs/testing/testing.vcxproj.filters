@@ -21,9 +21,6 @@
     <ClCompile Include="..\..\testing\brent.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\date.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\except.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
