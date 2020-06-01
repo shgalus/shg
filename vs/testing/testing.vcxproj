@@ -171,12 +171,9 @@
     <ClCompile Include="..\..\testing\hmm.cc" />
     <ClCompile Include="..\..\testing\laplace.cc" />
     <ClCompile Include="..\..\testing\normmix.cc" />
-    <ClCompile Include="..\..\testing\ols.cc" />
     <ClCompile Include="..\..\testing\opdts.cc" />
     <ClCompile Include="..\..\testing\permentr.cc" />
-    <ClCompile Include="..\..\testing\runs.cc" />
     <ClCompile Include="..\..\testing\smc.cc" />
-    <ClCompile Include="..\..\testing\strdlr.cc" />
     <ClCompile Include="..\..\testing\testshg.cc" />
   </ItemGroup>
   <ItemGroup>

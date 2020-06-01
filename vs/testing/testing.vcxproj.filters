@@ -39,22 +39,13 @@
     <ClCompile Include="..\..\testing\normmix.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\ols.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\opdts.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\permentr.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\runs.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\smc.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\strdlr.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\testing\testshg.cc">
