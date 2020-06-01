@@ -38,6 +38,8 @@ BOOST_AUTO_TEST_CASE(all_dates_test) {
      }
      BOOST_CHECK_THROW(Date d(5, Date::fri, Date::nov, 2011),
                        Date::Bad_date);
+     BOOST_CHECK_THROW(Date d(31, Date::dec, 1582), Date::Bad_date);
+     BOOST_CHECK_THROW(Date d(1, Date::jan, 10000), Date::Bad_date);
 }
 
 namespace {
@@ -114,13 +116,11 @@ public:
                  (iterator::last2 - iterator::first2 + 1) +
                  (iterator::last3 - iterator::first3 + 1);
      }
-     iterator begin() const {
-          return iterator();
-     }
+     iterator begin() const { return iterator(); }
 };
 
 const Date Date_dataset::iterator::first1 = Date::min();
-const Date Date_dataset::iterator::last1 = Date::min()+ 40000;
+const Date Date_dataset::iterator::last1 = Date::min() + 40000;
 const Date Date_dataset::iterator::first2 = Date(1, Date::jan, 1899);
 const Date Date_dataset::iterator::last2 = Date(31, Date::dec, 2400);
 const Date Date_dataset::iterator::first3 = Date::max() - 40000;
@@ -142,19 +142,87 @@ BOOST_AUTO_TEST_SUITE(date_test)
 BOOST_DATA_TEST_CASE(operator_test, Date_dataset()) {
      const Date d(sample);
      Date b = d;
-     b--; BOOST_CHECK(b < d && d != b);
-     b++; BOOST_CHECK(b <= d && b >= d);
-     --b; BOOST_CHECK(d > b && b != d);
-     ++b; BOOST_CHECK(b == d);
+     b--;
+     BOOST_CHECK(b < d && d != b);
+     b++;
+     BOOST_CHECK(b <= d && b >= d);
+     --b;
+     BOOST_CHECK(d > b && b != d);
+     ++b;
+     BOOST_CHECK(b == d);
      int day, month, year;
      d.split(day, month, year);
      BOOST_CHECK(day == d.day() && month == d.month() &&
-                year == d.year());
+                 year == d.year());
      BOOST_CHECK(Date::correct(day, month, year));
      std::string s = d.computer();
      Date d1(s);
      BOOST_CHECK(Date::correct(s));
      BOOST_CHECK(d1 == d);
+}
+
+namespace {
+
+/*
+ * Returns day and month of Easter in Gregorian year y. This function
+ * is written exactly on the algorithm given in Donald E. Knuth,
+ * Sztuka programowania, t. I, Algorytmy podstawowe, p. 165-166,
+ * 538-540.
+ */
+void knuth(int y, int* day, int* month) {
+     int g = y % 19 + 1;
+     int c = y / 100 + 1;
+     int x = (3 * c) / 4 - 12;
+     int z = (8 * c + 5) / 25 - 5;
+     int d = (5 * y) / 4 - x - 10;
+     int e = (11 * g + 20 + z - x) % 30;
+     if (y <= 1582) {
+          *day = *month = -1;
+          return;
+     }
+     if (e < 0)
+          e += 30;
+     if ((e == 25 && g > 11) || e == 24)
+          e++;
+     int n = 44 - e;
+     if (n < 21)
+          n += 30;
+     n = n + 7 - ((d + n) % 7);
+     if (n > 31) {
+          *day = n - 31;
+          *month = 4;
+     } else {
+          *day = n;
+          *month = 3;
+     }
+}
+
+}  // anonymous namespace
+
+BOOST_AUTO_TEST_CASE(easter_test) {
+     for (int y = Date::min().year(); y <= Date::max().year(); y++) {
+          int d, m;
+          knuth(y, &d, &m);
+          BOOST_CHECK(Date::easter(y) == Date(d, m, y));
+     }
+}
+
+BOOST_AUTO_TEST_CASE(plus_minus_days_test) {
+     for (Date d = Date(31, Date::dec, 2008);
+          d >= Date(1, Date::jan, 1945); --d) {
+          BOOST_CHECK((d - 30) + 30 == d);
+          BOOST_CHECK((30 + d) - 30 == d);
+          BOOST_CHECK((d + 30) - d == 30);
+          BOOST_CHECK(d - (30 + d) == -30);
+     }
+}
+
+BOOST_AUTO_TEST_CASE(input_output_test) {
+     std::stringstream ss;
+     ss << Date::min();
+     Date d;
+     ss >> d;
+     BOOST_CHECK(d == Date::min());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
