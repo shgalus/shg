@@ -56,7 +56,7 @@ void knuth(int y, int* day, int* month) {
 
 void test_constructor() {
      SHG::Vecint c(7);
-     for (int y = Date::min.year(); y <= Date::max.year(); y++) {
+     for (int y = Date::min().year(); y <= Date::max().year(); y++) {
           for (int m = 1; m <= 12; m++) {
                const int last = Date::lastdom(m, y);
                c = 0;
@@ -133,7 +133,7 @@ void test_date() {
      }
 
      Date last;
-     last = Date::min + 40000;
+     last = Date::min() + 40000;
      for (Date d = last - 40000; d <= last; ++d)
           test_one_date(d);
 
@@ -141,12 +141,12 @@ void test_date() {
      for (Date d = Date(1, Date::jan, 1899); d <= last; ++d)
           test_one_date(d);
 
-     last = Date::max;
+     last = Date::max();
      for (Date d = last - 40000; d <= last; ++d)
           test_one_date(d);
 
      /* Test the function easter against the Knuth function. */
-     for (int y = Date::min.year(); y <= Date::max.year(); y++) {
+     for (int y = Date::min().year(); y <= Date::max().year(); y++) {
           int d, m;
           knuth(y, &d, &m);
           SHG_ASSERT(Date::easter(y) == Date(d, m, y));
@@ -165,10 +165,10 @@ void test_date() {
      SHG_ASSERT(0);
 next:
      stringstream ss;
-     ss << Date::min;
+     ss << Date::min();
      Date d;
      ss >> d;
-     SHG_ASSERT(d == Date::min);
+     SHG_ASSERT(d == Date::min());
 }
 
 }       // namespace Testing

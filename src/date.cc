@@ -19,9 +19,6 @@ using std::string;
 using std::istream;
 using std::ostream;
 
-const Date Date::min = Date(1, jan, 1583);
-const Date Date::max = Date(31, dec, 9999);
-
 Date::Bad_date::Bad_date() : Exception("bad date") {}
 
 Date::Date() : abs() {}
@@ -193,6 +190,16 @@ char* Date::computer(char* s) const {
      split(d, m, y);
      sprintf(s, "%04d%02d%02d", y, m, d);
      return s;
+}
+
+Date Date::min() {
+     static const Date min(1, jan, 1583);
+     return min;
+}
+
+Date Date::max() {
+     static const Date max(31, dec, 9999);
+     return max;
 }
 
 Date Date::today() {

@@ -139,8 +139,7 @@ public:
      enum Day {sun, mon, tue, wed, thu, fri, sat};
      enum Month {jan = 1, feb, mar, apr, may, jun,
                  jul, aug, sep, oct, nov, dec};
-     static const Date min;     /**< Minimum date: 1 January 1583 */
-     static const Date max;     /**< Maximum date: 31 December 9999 */
+
      /**
       * An exception class thrown in case of incorrect date. The
       * what() function returns the text "bad date".
@@ -248,7 +247,14 @@ public:
       * characters long. \return \a s
       */
      char* computer(char* s) const;
-
+     /**
+      * Returns minimum date: 1 January 1583.
+      */
+     static Date min();
+     /**
+      * Returns maximum date: 31 December 9999.
+      */
+     static Date max();
      /**
       * Returns current date.
       * \exception Bad_date if the date is unavailable
