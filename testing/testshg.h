@@ -28,7 +28,6 @@ void test_bdstest();
 void test_brent();
 void test_except();
 void test_gsgts();
-void test_hmm();
 void test_opdts();
 void test_permentr();
 void test_smc();
