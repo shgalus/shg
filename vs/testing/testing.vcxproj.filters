@@ -27,15 +27,6 @@
     <ClCompile Include="..\..\testing\gsgts.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\hmm.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\laplace.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\testing\normmix.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\testing\opdts.cc">
       <Filter>Source Files</Filter>
     </ClCompile>

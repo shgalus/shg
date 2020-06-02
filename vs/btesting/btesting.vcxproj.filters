@@ -60,5 +60,11 @@
     <ClCompile Include="..\..\btesting\runs_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\btesting\hmm_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\btesting\laplace_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
