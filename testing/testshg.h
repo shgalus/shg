@@ -24,7 +24,6 @@ void header(const std::string& s);
 void footer(const std::string& s);
 
 // Module tests.
-void test_bdstest();
 void test_brent();
 void test_except();
 void test_gsgts();
