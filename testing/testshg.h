@@ -30,7 +30,6 @@ void test_except();
 void test_gsgts();
 void test_opdts();
 void test_permentr();
-void test_smc();
 
 }       // namespace Testing
 }       // namespace SHG

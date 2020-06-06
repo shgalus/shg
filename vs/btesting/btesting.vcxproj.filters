@@ -66,5 +66,8 @@
     <ClCompile Include="..\..\btesting\laplace_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\btesting\smc_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

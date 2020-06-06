@@ -184,6 +184,7 @@
     <ClCompile Include="..\..\btesting\ninv_test.cc" />
     <ClCompile Include="..\..\btesting\ols_test.cc" />
     <ClCompile Include="..\..\btesting\runs_test.cc" />
+    <ClCompile Include="..\..\btesting\smc_test.cc" />
     <ClCompile Include="..\..\btesting\specfunc_test.cc" />
     <ClCompile Include="..\..\btesting\testshg.cc" />
     <ClCompile Include="..\..\btesting\utils_test.cc" />
