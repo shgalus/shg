@@ -171,10 +171,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\btesting\bdstest_test.cc" />
     <ClCompile Include="..\..\btesting\csv_test.cc" />
     <ClCompile Include="..\..\btesting\date_test.cc" />
     <ClCompile Include="..\..\btesting\drbnwtsn_test.cc" />
     <ClCompile Include="..\..\btesting\encoding_test.cc" />
+    <ClCompile Include="..\..\btesting\gsgts_test.cc" />
     <ClCompile Include="..\..\btesting\hmm_test.cc" />
     <ClCompile Include="..\..\btesting\laplace_test.cc" />
     <ClCompile Include="..\..\btesting\mathprog_test.cc" />
@@ -183,6 +185,8 @@
     <ClCompile Include="..\..\btesting\mzt_test.cc" />
     <ClCompile Include="..\..\btesting\ninv_test.cc" />
     <ClCompile Include="..\..\btesting\ols_test.cc" />
+    <ClCompile Include="..\..\btesting\opdts_test.cc" />
+    <ClCompile Include="..\..\btesting\permentr_test.cc" />
     <ClCompile Include="..\..\btesting\runs_test.cc" />
     <ClCompile Include="..\..\btesting\smc_test.cc" />
     <ClCompile Include="..\..\btesting\specfunc_test.cc" />
