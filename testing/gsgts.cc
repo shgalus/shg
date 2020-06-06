@@ -64,31 +64,6 @@ const double result2[80] = {
       1.6053352,  0.3524270, -0.6395870, -0.1899812, -0.0128994
 };
 
-/*
- * Returns autocovariance function of AR(1) with white noise variance
- * sigma2 and phi1, ie. x(t) = phi1 * x(t - 1) + e(t), e(t) being
- * white noise with variance sigma2.
- *
- * acfar1(0) - variance
- * acfar1(1) = gamma(1)
- * gamma(h) = acfar1(h), h = 0, 1, ..., n - 1.
- *
- * brockwell-davis-2006, page 81.
- */
-std::vector<double> acfar1(double sigma2, double phi1, size_t n) {
-     SHG_ASSERT(n > 0);
-     SHG_ASSERT(std::abs(phi1) < 1.0);
-     std::vector<double> g(n);
-     g[0] = sigma2 / (1.0 - phi1 * phi1);
-     for (std::vector<double>::size_type i = 1; i < n; i++)
-          g[i] = phi1 * g[i - 1];
-     return g;
-}
-
-const double eps = 5e-8;
-const std::vector<double> acf1 = acfar1(1.0 / 64.0, 0.8, 129);
-const std::vector<double> acf2 = acfar1(0.5, 0.6, 80);
-
 SHG::MZT mzt;
 
 double normal() {
@@ -97,6 +72,10 @@ double normal() {
 
 void test(SHG::GSGTS::Cosine_transform ct,
           SHG::GSGTS::Real_transform rt) {
+     const double eps = 5e-8;
+     const std::vector<double> acf1 = SHG::acfar1(1.0 / 64.0, 0.8, 129);
+     const std::vector<double> acf2 = SHG::acfar1(0.5, 0.6, 80);
+
      std::vector<double>::size_type i;
 
      mzt = SHG::MZT();

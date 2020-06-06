@@ -95,4 +95,14 @@ void GSGTS::cosft(const std::vector<double>& h,
      }
 }
 
+std::vector<double> acfar1(double sigma2, double phi1, size_t n) {
+     if (n < 1 || std::abs(phi1) >= 1.0)
+          throw invalid_argument(__func__);
+     std::vector<double> g(n);
+     g[0] = sigma2 / (1.0 - phi1 * phi1);
+     for (std::vector<double>::size_type i = 1; i < n; i++)
+          g[i] = phi1 * g[i - 1];
+     return g;
+}
+
 }       // namespace SHG

@@ -200,6 +200,20 @@ private:
                        std::vector<double>& H);
 };
 
+/**
+ * Returns autocovariance function of AR(1). For x(t) = phi1 * x(t -
+ * 1) + e(t), e(t) being white noise with variance sigma2, the
+ * function returns the first n elements of autocovariance function:
+ * acfar1(0) - variance, acfar1(1) = gamma(1), gamma(h) = acfar1(h), h
+ * = 0, 1, ..., n - 1.
+ *
+ * \throws std::invalid_argument if n < 1 or |phi1| >= 1
+ *
+ * See \cite brockwell-davis-2006, page 81.
+ */
+std::vector<double> acfar1(double sigma2, double phi1, size_t n);
+
+
 /** \} */       /* end of group time_series */
 
 /** \} */       /* end of group mathematical_statistics */
