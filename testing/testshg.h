@@ -28,8 +28,6 @@ void test_bdstest();
 void test_brent();
 void test_except();
 void test_gsgts();
-void test_opdts();
-void test_permentr();
 
 }       // namespace Testing
 }       // namespace SHG

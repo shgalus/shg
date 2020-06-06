@@ -176,8 +176,6 @@ Test_shg::Test_shg() : mm() {
      register_test(test_brent, "brent");
      register_test(test_except, "except");
      register_test(test_gsgts, "gsgts");
-     register_test(test_opdts, "opdts");
-     register_test(test_permentr, "permentr");
 
      SHG_ASSERT
           (std::is_sorted(
