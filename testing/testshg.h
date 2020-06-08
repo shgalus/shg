@@ -26,7 +26,6 @@ void footer(const std::string& s);
 // Module tests.
 void test_brent();
 void test_except();
-void test_gsgts();
 
 }       // namespace Testing
 }       // namespace SHG
