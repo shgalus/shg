@@ -23,9 +23,6 @@ std::string datapath(const char* fname);
 void header(const std::string& s);
 void footer(const std::string& s);
 
-// Module tests.
-void test_except();
-
 }       // namespace Testing
 }       // namespace SHG
 

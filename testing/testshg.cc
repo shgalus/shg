@@ -172,8 +172,6 @@ void Test_shg::run(int argc, char* argv[]) {
 }
 
 Test_shg::Test_shg() : mm() {
-     register_test(test_except, "except");
-
      SHG_ASSERT
           (std::is_sorted(
                mm.begin(), mm.end(),
