@@ -64,12 +64,6 @@ const double result2[80] = {
       1.6053352,  0.3524270, -0.6395870, -0.1899812, -0.0128994
 };
 
-SHG::MZT mzt;
-
-double normal() {
-     return mzt.normal();
-}
-
 void test(SHG::GSGTS::Cosine_transform ct,
           SHG::GSGTS::Real_transform rt) {
      const double eps = 5e-8;
@@ -77,7 +71,8 @@ void test(SHG::GSGTS::Cosine_transform ct,
      const std::vector<double> acf2 = SHG::acfar1(0.5, 0.6, 80);
 
      std::vector<double>::size_type i;
-
+     SHG::MZT mzt;
+     auto normal = [&mzt](){return mzt.normal();};
      mzt = SHG::MZT();
      {
           std::vector<double> X(acf1.size());

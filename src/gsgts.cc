@@ -37,7 +37,7 @@ GSGTS::GSGTS(const std::vector<double>& acf, Cosine_transform f)
 }
 
 void GSGTS::generate(std::vector<double>& X,
-                     double normal(),
+                     std::function<double()> normal,
                      Real_transform f) {
      if (X.size() < g.size())
           throw invalid_argument(__func__);

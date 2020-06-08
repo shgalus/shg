@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <complex>
+#include <functional>
 #include <vector>
 
 namespace SHG {
@@ -166,7 +167,7 @@ public:
       *
       */
      void generate(std::vector<double>& X,
-                   double normal(),
+                   std::function<double()> normal,
                    Real_transform f);
 
 private:
