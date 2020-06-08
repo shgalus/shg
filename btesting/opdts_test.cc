@@ -14,7 +14,7 @@ private:
      MZT mzt;
 };
 
-Opdts_data::Opdts_data() : x(10000) {
+Opdts_data::Opdts_data() : x(10000), mzt() {
      for (std::vector<int>::size_type i = 0; i < x.size(); i++)
           x[i] = mzt.uni(2);
 }
