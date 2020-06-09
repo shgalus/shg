@@ -1,10 +1,10 @@
 #include "shg/hmm.h"
 #include <cmath>
 #include <cstddef>
-#include <boost/test/unit_test.hpp>
 #include "shg/except.h"
 #include "shg/hmm.h"
 #include "shg/mstat.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

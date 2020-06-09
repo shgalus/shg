@@ -1,6 +1,6 @@
 #include "shg/brent.h"
 #include <cmath>
-#include <boost/test/unit_test.hpp>
+#include "testing.h"
 
 namespace SHG::BTesting {
 

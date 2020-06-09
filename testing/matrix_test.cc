@@ -1,8 +1,7 @@
 #include "shg/matrix.h"
 #include <iomanip>
-#include <boost/test/data/test_case.hpp>
-#include <boost/test/unit_test.hpp>
 #include "shg/utils.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

@@ -1,8 +1,8 @@
 #include "shg/gsgts.h"
 #include <cmath>
-#include <boost/test/unit_test.hpp>
 #include "shg/mzt.h"
 #include "shg/utils.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

@@ -5,10 +5,9 @@
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/digamma.hpp>
 #include <boost/math/special_functions/gamma.hpp>
-#include <boost/test/data/test_case.hpp>
-#include <boost/test/unit_test.hpp>
 #include "shg/mconsts.h"
 #include "shg/utils.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

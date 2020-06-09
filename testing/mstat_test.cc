@@ -3,9 +3,8 @@
 #include <cstdlib>
 #include <limits>
 #include <vector>
-#include <boost/test/data/test_case.hpp>
-#include <boost/test/unit_test.hpp>
 #include "shg/mzt.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

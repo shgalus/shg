@@ -2,8 +2,8 @@
 #include <cmath>
 #include <ios>
 #include <sstream>
-#include <boost/test/unit_test.hpp>
 #include "shg/mzt.h"
+#include "testing.h"
 
 namespace SHG::BTesting {
 

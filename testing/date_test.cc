@@ -1,11 +1,9 @@
 #include "shg/date.h"
 #include <sstream>
 #include <string>
-#include <boost/test/data/monomorphic.hpp>
-#include <boost/test/data/test_case.hpp>
-#include <boost/test/unit_test.hpp>
 #include "shg/date.h"
 #include "shg/vector.h"
+#include "testing.h"
 
 namespace bdata = boost::unit_test::data;
 

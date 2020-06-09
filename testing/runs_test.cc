@@ -2,8 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
-#include <boost/mpl/list.hpp>
-#include <boost/test/unit_test.hpp>
+#include "testing.h"
 
 namespace SHG::BTesting {
 

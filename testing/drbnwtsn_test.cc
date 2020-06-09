@@ -6,7 +6,7 @@
 #include <limits>
 #include <memory>
 #include <sstream>
-#include <boost/test/unit_test.hpp>
+#include "testing.h"
 
 namespace SHG::BTesting {
 

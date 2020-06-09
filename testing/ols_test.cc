@@ -1,7 +1,7 @@
 #include "shg/ols.h"
 #include <cstring>
 #include <sstream>
-#include <boost/test/unit_test.hpp>
+#include "testing.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)
