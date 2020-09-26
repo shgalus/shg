@@ -3,13 +3,14 @@
 #include "shg/vector.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(ninv_test)
 
-namespace {
-
-// O(n^2) algorithm to count the number of inversions.
+/**
+ * Counting the number of inversions in a sequence. This is a
+ * \f$O(n^2)\f$ algorithm.
+ */
 template <class T>
 std::size_t ninvn2(const T* a, std::size_t n) {
      std::size_t ninv = 0;
@@ -21,8 +22,6 @@ std::size_t ninvn2(const T* a, std::size_t n) {
      }
      return ninv;
 }
-
-}  // namespace
 
 namespace bdata = boost::unit_test::data;
 
@@ -48,4 +47,4 @@ BOOST_DATA_TEST_CASE(ninv_sequences, bdata::xrange(10000), xr) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

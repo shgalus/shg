@@ -4,7 +4,7 @@
 #include <sstream>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 using std::equal;
 using std::ios_base;
@@ -13,7 +13,7 @@ using std::ostringstream;
 using std::string;
 using std::vector;
 
-namespace {
+BOOST_AUTO_TEST_SUITE(csv_test)
 
 struct Case {
      const vector<vector<string>> raw;
@@ -88,10 +88,6 @@ const vector<Case> vc{
      {{{"10", "20", "30"}, {"", "", ""}, {"70", "80", "90"}},
       {"10,20,30\r\n,,\r\n70,80,90\r\n"}},
 };
-
-}  // anonymous namespace
-
-BOOST_AUTO_TEST_SUITE(csv_test)
 
 BOOST_AUTO_TEST_CASE(csv_writer_test) {
      ostringstream ss(ios_base::out | ios_base::binary);
@@ -176,4 +172,4 @@ BOOST_AUTO_TEST_CASE(field_separator_followed_by_end_of_record_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(encoding_test)
 
@@ -160,8 +160,6 @@ BOOST_AUTO_TEST_CASE(character_conversions_test) {
      }
 }
 
-namespace {
-
 /**
  * Data from <a href =
  * "https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt">
@@ -305,8 +303,6 @@ const struct {
       "\277\277\277\364\217\277\276\364\217\277\277",
       true}};
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(kuhn_test) {
      for (const auto& [s, correct] : kuhn_data)
           if (correct)
@@ -314,8 +310,6 @@ BOOST_AUTO_TEST_CASE(kuhn_test) {
           else
                BOOST_CHECK_THROW(utf8_to_utf32(s), Conversion_error);
 }
-
-namespace {
 
 const u16string invalid_utf16[] = {
      // high surrogate not followed by low surrogate
@@ -325,8 +319,6 @@ const u16string invalid_utf16[] = {
      // start with low surrogate
      u"\xdc00", u"\xdc01", u"\xdfff"};
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(invalid_utf16_strings_test) {
      for (const auto& s : invalid_utf16)
           BOOST_CHECK_THROW(utf16_to_utf32(s), Conversion_error);
@@ -334,4 +326,4 @@ BOOST_AUTO_TEST_CASE(invalid_utf16_strings_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

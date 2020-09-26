@@ -4,7 +4,7 @@
 #include <string>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(except_test)
 
@@ -114,4 +114,4 @@ BOOST_AUTO_TEST_CASE(invalid_argument_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

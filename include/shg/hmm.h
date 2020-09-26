@@ -1,5 +1,3 @@
-/* hmm.h: hidden Markov models */
-
 /**
  * \file include/shg/hmm.h
  * Hidden Markov models.
@@ -30,10 +28,7 @@ namespace SHG {
 /**
  * Normal hidden Markov model.
  *
- * See <a href="nhmm.pdf">Normal hidden Markov models.</a>
- *
- * \todo Change SHG_ASSERT in implementation into a kind of internal
- * error.
+ * See <a href="shg.pdf">Normal hidden Markov models.</a>
  */
 class Normal_hmm {
 public:

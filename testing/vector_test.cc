@@ -2,7 +2,7 @@
 #include "shg/utils.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(vector_test)
 
@@ -236,7 +236,7 @@ namespace bdata = boost::unit_test::data;
 
 BOOST_DATA_TEST_CASE(vector_iterators_test, bdata::xrange(5), xr) {
      const int n = xr;
-     Vecint w = SHG::arithmetic_progression(n, 0, 1);
+     Vecint w = arithmetic_progression(n, 0, 1);
      const Vecint v(w);
      int k = 0;
      for (Vecint::iterator i = w.begin(); i != w.end(); ++i)
@@ -387,4 +387,4 @@ BOOST_AUTO_TEST_CASE(vector_non_member_functions_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

@@ -1,5 +1,4 @@
 #include "shg/bdstest.h"
-#include <cmath>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
@@ -7,7 +6,7 @@
 #include "shg/mzt.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(bdstest_test)
 
@@ -78,10 +77,8 @@ BOOST_AUTO_TEST_CASE(basic_test) {
      BOOST_REQUIRE(b.res().size() == 1);
      BOOST_REQUIRE(b.res()[0].size() == 6);
      for (int m = 0; m <= 5; m++) {
-          BOOST_CHECK(std::abs(b.res()[0][m].stat - result[m].stat) <
-                      5e-9);
-          BOOST_CHECK(std::abs(b.res()[0][m].pval - result[m].pval) <
-                      5e-9);
+          BOOST_CHECK(faeq(b.res()[0][m].stat, result[m].stat, 5e-9));
+          BOOST_CHECK(faeq(b.res()[0][m].pval, result[m].pval, 5e-9));
      }
 }
 
@@ -91,13 +88,13 @@ BOOST_AUTO_TEST_CASE(const_data_test) {
      BDS_test b(u, 6, epsu);
      BOOST_REQUIRE(b.res().size() == 1);
      BOOST_REQUIRE(b.res()[0].size() == 7);
-     BOOST_CHECK(std::abs(b.res()[0][0].stat) < 5e-12);
-     BOOST_CHECK(std::abs(b.res()[0][0].pval) < 5e-12);
-     BOOST_CHECK(std::abs(b.res()[0][1].stat) < 5e-12);
-     BOOST_CHECK(std::abs(b.res()[0][1].pval) < 5e-12);
+     BOOST_CHECK(faeq(b.res()[0][0].stat, 0.0, 5e-12));
+     BOOST_CHECK(faeq(b.res()[0][0].pval, 0.0, 5e-12));
+     BOOST_CHECK(faeq(b.res()[0][1].stat, 0.0, 5e-12));
+     BOOST_CHECK(faeq(b.res()[0][1].pval, 0.0, 5e-12));
      for (int m = 2; m <= 6; m++) {
-          BOOST_CHECK(std::abs(b.res()[0][m].stat) < 5e-12);
-          BOOST_CHECK(std::abs(b.res()[0][m].pval - 0.5) < 5e-12);
+          BOOST_CHECK(faeq(b.res()[0][m].stat, 0.0, 5e-12));
+          BOOST_CHECK(faeq(b.res()[0][m].pval, 0.5, 5e-12));
      }
 }
 
@@ -139,10 +136,10 @@ BOOST_AUTO_TEST_CASE(various_eps_test) {
                         static_cast<size_t>(maxm) + 1);
           const std::vector<BDS_test::Result>* p = &result[i];
           for (size_t j = 0; j < b.res()[i].size(); j++) {
-               BOOST_CHECK(std::abs(b.res()[i][j].stat -
-                                    (*p)[j].stat) < 6e-8);
-               BOOST_CHECK(std::abs(b.res()[i][j].pval -
-                                    (*p)[j].pval) < 5e-9);
+               BOOST_CHECK(
+                    faeq(b.res()[i][j].stat, (*p)[j].stat, 6e-8));
+               BOOST_CHECK(
+                    faeq(b.res()[i][j].pval, (*p)[j].pval, 5e-9));
           }
      }
 }
@@ -198,4 +195,4 @@ BOOST_AUTO_TEST_CASE(output_operator_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

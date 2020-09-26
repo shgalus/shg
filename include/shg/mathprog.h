@@ -134,13 +134,7 @@ public:
  * which contains the upper right triangle of the matrix \f$C\f$
  * written by rows.
  *
- * The problem \f{align*} \mbox{minimize} & \quad -6x_1 + 2x_1^2 -
- * 2x_1x_2 + 2x_2^2 \\ \mbox{subject to} & \quad x_1 + x_2 \leq 2, \\
- * & \quad x_j \geq 0 \f} (\cite gass-1980, p. 285) can be solved by
- * the following program.
- *
  * \date Written on 10 May 2009.
- * \todo Check if the page 285 of the example is correct.
  *
  * \internal
  * Implementation.

@@ -1,10 +1,9 @@
 #include "shg/gsgts.h"
-#include <cmath>
 #include "shg/mzt.h"
 #include "shg/utils.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(gsgts_test)
 
@@ -59,29 +58,29 @@ BOOST_AUTO_TEST_CASE(basic_test) {
      const std::vector<double> acf1 = acfar1(1.0 / 64.0, 0.8, 129);
      const std::vector<double> acf2 = acfar1(0.5, 0.6, 80);
      std::vector<double>::size_type i;
-     SHG::MZT mzt;
+     MZT mzt;
      auto normal = [&mzt]() { return mzt.normal(); };
      std::vector<double> X;
 
-     mzt = SHG::MZT();
+     mzt = MZT();
      X.resize(acf1.size());
      GSGTS gsgts1(acf1, ct);
      gsgts1.generate(X, normal, rt);
      BOOST_CHECK(X.size() == acf1.size());
      BOOST_REQUIRE(X.size() == result1.size());
      for (i = 0; i < X.size(); i++)
-          BOOST_CHECK(std::abs(X[i] - result1[i]) < eps);
+          BOOST_CHECK(faeq(X[i], result1[i], eps));
 
-     mzt = SHG::MZT();
+     mzt = MZT();
      X.resize(acf2.size());
      GSGTS gsgts2(acf2, ct);
      gsgts2.generate(X, normal, rt);
      BOOST_CHECK(X.size() == acf2.size());
      BOOST_REQUIRE(X.size() == result2.size());
      for (i = 0; i < X.size(); i++)
-          BOOST_CHECK(std::abs(X[i] - result2[i]) < eps);
+          BOOST_CHECK(faeq(X[i], result2[i], eps));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

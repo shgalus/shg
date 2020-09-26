@@ -8,7 +8,7 @@
 #pragma warning(disable : 26444)  // NO_UNNAMED_RAII_OBJECTS
 #endif
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(ols_test)
 
@@ -87,8 +87,6 @@ BOOST_AUTO_TEST_CASE(too_many_regressors_test) {
      BOOST_CHECK_THROW(OLS(X, y), OLS::Invalid_argument);
 }
 
-namespace {
-
 constexpr const char* const goldberger_test_results =
      R"(
 Ordinary least squares estimation results
@@ -120,8 +118,6 @@ p-value for positive autocorrelation:     *************
 p-value for negative autocorrelation:     *************
 )";
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(goldberger_book_test) {
      const Vecdouble y{0, 2, 1, 2, -1, 1};
      const Matdouble X(6, 2, {-1, 0, 0, 1, 1, 0, 2, 1, 0, -1, 0, 0});
@@ -134,8 +130,6 @@ BOOST_AUTO_TEST_CASE(goldberger_book_test) {
      BOOST_CHECK(std::strcmp(oss.str().c_str(),
                              goldberger_test_results) == 0);
 }
-
-namespace {
 
 // GRETL 1.7.5 sample data, Greene 7.8.
 
@@ -226,8 +220,6 @@ p-value for positive autocorrelation:        2.6701e-01
 p-value for negative autocorrelation:        1.0000e+00
 )";
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(greene_book_test) {
      Matdouble X(greene7_8_X);
      for (size_t i = 0; i < X.nrows(); i++)
@@ -242,8 +234,6 @@ BOOST_AUTO_TEST_CASE(greene_book_test) {
      BOOST_CHECK(
           std::strcmp(oss.str().c_str(), greene_test_results) == 0);
 }
-
-namespace {
 
 /**
  * Returns common logarithm of the relative error of approximation q
@@ -264,7 +254,7 @@ double log_error(double q, double c) {
      const double le =
           c == 0.0 ? -std::log10(std::abs(q))
                    : -std::log10(std::abs(q - c) / std::abs(c));
-     SHG_ASSERT(!std::isnan(le));
+     BOOST_REQUIRE(!std::isnan(le));
      return le;
 }
 
@@ -281,8 +271,6 @@ int ncsd(double q, double c) {
           nd = static_cast<int>(le);
      return nd;
 }
-
-}  // anonymous namespace
 
 /// See \ref strdlr.
 BOOST_AUTO_TEST_CASE(strdlr_norris_test) {
@@ -772,7 +760,6 @@ BOOST_AUTO_TEST_CASE(strdlr_wampler4_test) {
           214131,  -185192, 221249,  -138370, 315911,  -27644,
           455253,  197434,  783995,  608816,  1370781, 1303798,
           2205519, 2408860, 3444321,
-
      };
      BOOST_CHECK(X.nrows() == y.size());
      Matdouble X1(X.nrows(), 5);
@@ -895,7 +882,7 @@ BOOST_AUTO_TEST_CASE(strdlr_wampler5_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing
 
 #ifdef _MSC_VER
 #pragma warning(pop)

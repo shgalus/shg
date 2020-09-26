@@ -14,7 +14,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4244)
+#pragma warning(disable : 4244)
 #endif
 
 using std::string, std::u16string, std::u32string;
@@ -81,7 +81,7 @@ error:
      throw Conversion_error();
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 std::u32string utf8_to_utf32(const std::string& s) {
      u32string t;
@@ -185,12 +185,12 @@ char32_t getc(std::u16string::const_iterator& it,
      u = w << 10;
      if (!is_low_surrogate(w = *it))
           goto error;
-     return  u + w - 0x35fdc00u;
+     return u + w - 0x35fdc00u;
 error:
      throw Conversion_error();
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 std::u32string utf16_to_utf32(const std::u16string& s) {
      u32string t;
@@ -254,14 +254,13 @@ constexpr char16_t iso88592[96] = {
      0x0155, 0x00e1, 0x00e2, 0x0103, 0x00e4, 0x013a, 0x0107, 0x00e7,
      0x010d, 0x00e9, 0x0119, 0x00eb, 0x011b, 0x00ed, 0x00ee, 0x010f,
      0x0111, 0x0144, 0x0148, 0x00f3, 0x00f4, 0x0151, 0x00f6, 0x00f7,
-     0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9
-};
+     0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9};
 
 /**
  * ISO 8859-2 equivalents of Unicode code points starting from 0x0080.
  * \sa iso88592
  */
-const std::map<char16_t, unsigned char> map_utf32_to_iso88592 {
+const std::map<char16_t, unsigned char> map_utf32_to_iso88592{
      {0x0080, 0x80}, {0x0081, 0x81}, {0x0082, 0x82}, {0x0083, 0x83},
      {0x0084, 0x84}, {0x0085, 0x85}, {0x0086, 0x86}, {0x0087, 0x87},
      {0x0088, 0x88}, {0x0089, 0x89}, {0x008a, 0x8a}, {0x008b, 0x8b},
@@ -293,17 +292,15 @@ const std::map<char16_t, unsigned char> map_utf32_to_iso88592 {
      {0x0165, 0xbb}, {0x016e, 0xd9}, {0x016f, 0xf9}, {0x0170, 0xdb},
      {0x0171, 0xfb}, {0x0179, 0xac}, {0x017a, 0xbc}, {0x017b, 0xaf},
      {0x017c, 0xbf}, {0x017d, 0xae}, {0x017e, 0xbe}, {0x02c7, 0xb7},
-     {0x02d8, 0xa2}, {0x02d9, 0xff}, {0x02db, 0xb2}, {0x02dd, 0xbd}
-};
+     {0x02d8, 0xa2}, {0x02d9, 0xff}, {0x02db, 0xb2}, {0x02dd, 0xbd}};
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 char32_t iso88592_to_utf32(char c) {
-     return static_cast<unsigned char>(c) < 0xa0u ?
-          static_cast<unsigned char>(c) :
-          iso88592[static_cast<unsigned char>(c) - 0xa0u];
+     return static_cast<unsigned char>(c) < 0xa0u
+                 ? static_cast<unsigned char>(c)
+                 : iso88592[static_cast<unsigned char>(c) - 0xa0u];
 }
-
 
 namespace {
 
@@ -314,13 +311,13 @@ namespace {
  */
 template <class T1, class T2>
 T2 convert(const T1& s,
-           typename T2::value_type(*f)(typename T1::value_type)) {
+           typename T2::value_type (*f)(typename T1::value_type)) {
      T2 t(s.size(), typename T2::value_type());
      std::transform(s.cbegin(), s.cend(), t.begin(), f);
      return t;
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 std::u32string iso88592_to_utf32(const std::string& s) {
      return convert<string, u32string>(s, iso88592_to_utf32);
@@ -364,14 +361,13 @@ constexpr char16_t windows1250[128] = {
      0x0155, 0x00e1, 0x00e2, 0x0103, 0x00e4, 0x013a, 0x0107, 0x00e7,
      0x010d, 0x00e9, 0x0119, 0x00eb, 0x011b, 0x00ed, 0x00ee, 0x010f,
      0x0111, 0x0144, 0x0148, 0x00f3, 0x00f4, 0x0151, 0x00f6, 0x00f7,
-     0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9
-};
+     0x0159, 0x016f, 0x00fa, 0x0171, 0x00fc, 0x00fd, 0x0163, 0x02d9};
 
 /**
  * Windows-1250 equivalents of Unicode code points starting from
  * 0x00a0. \sa windows1250
  */
-const std::map<char16_t, unsigned char> map_utf32_to_windows1250 {
+const std::map<char16_t, unsigned char> map_utf32_to_windows1250{
      {0x00a0, 0xa0}, {0x00a4, 0xa4}, {0x00a6, 0xa6}, {0x00a7, 0xa7},
      {0x00a8, 0xa8}, {0x00a9, 0xa9}, {0x00ab, 0xab}, {0x00ac, 0xac},
      {0x00ad, 0xad}, {0x00ae, 0xae}, {0x00b0, 0xb0}, {0x00b1, 0xb1},
@@ -402,10 +398,9 @@ const std::map<char16_t, unsigned char> map_utf32_to_windows1250 {
      {0x2018, 0x91}, {0x2019, 0x92}, {0x201a, 0x82}, {0x201c, 0x93},
      {0x201d, 0x94}, {0x201e, 0x84}, {0x2020, 0x86}, {0x2021, 0x87},
      {0x2022, 0x95}, {0x2026, 0x85}, {0x2030, 0x89}, {0x2039, 0x8b},
-     {0x203a, 0x9b}, {0x20ac, 0x80}, {0x2122, 0x99}
-};
+     {0x203a, 0x9b}, {0x20ac, 0x80}, {0x2122, 0x99}};
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 char32_t windows1250_to_utf32(char c) {
      const unsigned char uc = c;
@@ -448,7 +443,7 @@ std::u16string::size_type utf16_length(const std::u16string& s) {
      return n;
 }
 
-}       // namespace SHG::Encoding
+}  // namespace SHG::Encoding
 
 #ifdef _MSC_VER
 #pragma warning(pop)

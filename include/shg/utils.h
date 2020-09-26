@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
@@ -32,6 +33,8 @@ namespace SHG {
  *
  * \{
  */
+
+constexpr double tolerance {100.0 * std::numeric_limits<double>::epsilon()};
 
 /**
  * Eliminates warnings for unused variables. See
@@ -223,6 +226,23 @@ T Integer_division<T>::remainder(T a, T b) {
           throw std::invalid_argument("Integer_division::remainder");
      const T r = a % b;
      return r < 0 ? r + std::abs(b) : r;
+}
+
+/**
+ * Returns floating-point modulo of \f$x\f$ and \f$y\f$:
+ * \f[
+ * \var{mod1}(x, y) = \begin{cases}
+ *  x - y * \lfloor x / y \rfloor & \text{if $y \neq 0$}, \\
+ *  x                    & \text{if $y = 0$}.
+ * \end{cases}
+ * \f]
+ * \f$T\f$ must be a floating-point type.
+ */
+template <class T>
+T mod1(T x, T y) {
+     static_assert(std::is_floating_point<T>::value,
+                   "floating-point type required");
+     return y == T(0) ? x : x - y * std::floor(x / y);
 }
 
 /**
@@ -486,6 +506,18 @@ bool isdegenerate(const std::gslice& g);
  * generates are within the range of the valarray of size \a n.
  */
 bool isvalid(std::size_t n, const std::gslice& g);
+
+/**
+ * Output operator for vectors.
+ */
+template <typename T>
+std::ostream& operator<<(std::ostream& stream,
+                         const std::vector<T>& v) {
+     stream.width(0);
+     for (typename std::vector<T>::size_type i = 0; i < v.size(); i++)
+          stream << i << ' ' << v[i] << '\n';
+     return stream;
+}
 
 /** \} */ /* end of group miscellaneous_utilities */
 

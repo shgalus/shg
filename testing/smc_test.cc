@@ -2,7 +2,7 @@
 #include "shg/mzt.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(smc_test)
 
@@ -177,16 +177,16 @@ BOOST_AUTO_TEST_CASE(unideggaumix_test) {
      BOOST_CHECK(K1 == sigma.size());
 
      for (Vecdouble::size_type k = 0; k < K; k++) {
-          BOOST_CHECK(std::abs(u.pi(k) - p[k]) < 1e-12);
+          BOOST_CHECK(faeq(u.pi(k), p[k], 1e-12));
           s += u.pi(k);
           if (k < K1) {
-               BOOST_CHECK(std::abs(u.mu(k) - mu[k]) < 1e-12);
-               BOOST_CHECK(std::abs(u.sigma(k) - sigma[k]) < 1e-12);
+               BOOST_CHECK(faeq(u.mu(k), mu[k], 1e-12));
+               BOOST_CHECK(faeq(u.sigma(k), sigma[k], 1e-12));
           }
      }
-     BOOST_CHECK(std::abs(s - 1.0) < 1e-12);
+     BOOST_CHECK(faeq(s, 1.0, 1e-12));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

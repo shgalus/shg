@@ -66,7 +66,7 @@ public:
       * \exception std::invalid_argument if \c p is not in \f$(0,
       * 1)\f$
       *
-      * \todo Choose better starting interval for bisection.
+      * A better starting interval for bisection may be chosen.
       */
      double invcdf(double p);
 

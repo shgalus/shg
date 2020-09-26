@@ -1,14 +1,11 @@
 #include "shg/runs.h"
 #include <algorithm>
-#include <cmath>
 #include <utility>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(runs_test)
-
-namespace {
 
 // Newton symbol.
 double newton(int n, int k) {
@@ -47,10 +44,7 @@ double cdf(int n1, int n2, int k) {
      return p;
 }
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(basic_test) {
-     using std::abs;
      using std::min;
      using std::size_t;
      double p1, p2;
@@ -58,57 +52,57 @@ BOOST_AUTO_TEST_CASE(basic_test) {
 
      n1 = n2 = k = 0;
      runs(n1, n2, k, true, p1, p2);
-     BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-     BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+     BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+     BOOST_CHECK(faeq(p1, 1.0, 1e-15));
      for (k = 1; k <= 10; k++) {
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 0.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 0.0, 1e-15));
      }
 
      for (n2 = 1; n2 <= 20; n2++) {
           k = 0;
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 0.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 0.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 1.0, 1e-15));
           k = 1;
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 1.0, 1e-15));
           for (k = 2; k <= 10; k++) {
                runs(n1, n2, k, true, p1, p2);
-               BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-               BOOST_CHECK(abs(p2 - 0.0) < 1e-15);
+               BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+               BOOST_CHECK(faeq(p2, 0.0, 1e-15));
           }
      }
      n2 = 0;
      for (n1 = 1; n1 <= 20; n1++) {
           k = 0;
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 0.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 0.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 1.0, 1e-15));
           k = 1;
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 1.0, 1e-15));
           for (k = 2; k <= 10; k++) {
                runs(n1, n2, k, true, p1, p2);
-               BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-               BOOST_CHECK(abs(p2 - 0.0) < 1e-15);
+               BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+               BOOST_CHECK(faeq(p2, 0.0, 1e-15));
           }
      }
      n1 = 5;
      n2 = 6;
      for (k = 0; k < 2; k++) {
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 0.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 1.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 0.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 1.0, 1e-15));
      }
      size_t k1 = (n1 != n2 ? 2 * min(n1, n2) + 1 : n1 + n2) + 1;
      for (k = k1; k <= k1 + 10; k++) {
           runs(n1, n2, k, true, p1, p2);
-          BOOST_CHECK(abs(p1 - 1.0) < 1e-15);
-          BOOST_CHECK(abs(p2 - 0.0) < 1e-15);
+          BOOST_CHECK(faeq(p1, 1.0, 1e-15));
+          BOOST_CHECK(faeq(p2, 0.0, 1e-15));
      }
 
      // Sum up all non-vanishing probabilities P(K = k) and check if
@@ -122,35 +116,34 @@ BOOST_AUTO_TEST_CASE(basic_test) {
                     runs(n1, n2, k, true, p1, p2);
                     const double p = p1 + p2 - 1.0;
                     BOOST_CHECK(p >= 0.0);
-                    BOOST_CHECK(abs(p - pdf(n1, n2, k)) < 1e-15);
-                    BOOST_CHECK(abs(p1 - cdf(n1, n2, k)) < 1e-14);
+                    BOOST_CHECK(faeq(p, pdf(n1, n2, k), 1e-15));
+                    BOOST_CHECK(faeq(p1, cdf(n1, n2, k), 1e-14));
                     s += p;
                }
-               BOOST_CHECK(abs(s - 1.0) < 2e-15);
+               BOOST_CHECK(faeq(s, 1.0, 2e-15));
           }
 }
 
 BOOST_AUTO_TEST_CASE(wolf_wolfowitz_example_test) {
-     using std::abs;
      double pe1, pe2, pa1, pa2;
      runs(50, 50, 34, true, pe1, pe2);
      runs(50, 50, 34, false, pa1, pa2);
-     BOOST_CHECK(abs(pe1 - 0.000411735) < 5e-10);
-     BOOST_CHECK(abs(pa1 - 0.000316224) < 5e-10);
+     BOOST_CHECK(faeq(pe1, 0.000411735, 5e-10));
+     BOOST_CHECK(faeq(pa1, 0.000316224, 5e-10));
 
      int n1 = 500, n2 = 500, k;
      double d, maxd = -1.0;
      for (k = n1 / 2; k <= 3 * (n1 / 2); k++) {
           runs(n1, n2, k, true, pe1, pe2);
           runs(n1, n2, k, false, pa1, pa2);
-          d = abs(pe1 - pa1);
+          d = std::abs(pe1 - pa1);
           if (d > maxd)
                maxd = d;
-          d = abs(pe2 - pa2);
+          d = std::abs(pe2 - pa2);
           if (d > maxd)
                maxd = d;
      }
-     BOOST_CHECK(maxd > 0.012620 && maxd < 0.012621);
+     BOOST_CHECK(faeq(maxd, 0.0126205, 5e-7));
 
      BOOST_CHECK_THROW(runs(600, 600, 300, true, pe1, pe2),
                        std::range_error);
@@ -196,4 +189,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(count_runs_test, T, test_types) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

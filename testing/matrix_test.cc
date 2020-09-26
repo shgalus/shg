@@ -3,7 +3,7 @@
 #include "shg/utils.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(matrix_test)
 
@@ -514,7 +514,7 @@ BOOST_DATA_TEST_CASE(matrix_cholesky_test, bdata::xrange(7), xr) {
                double s = i == j ? -1.0 : 0;
                for (Matdouble::size_type k = 0; k < n; k++)
                     s += a[i][k] * b[k][j];
-               BOOST_CHECK(std::abs(s) < eps);
+               BOOST_CHECK(faeq(s, 0.0, eps));
           }
 }
 
@@ -595,4 +595,4 @@ BOOST_AUTO_TEST_CASE(multiply_transposed_example) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

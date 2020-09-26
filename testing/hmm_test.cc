@@ -1,12 +1,11 @@
 #include "shg/hmm.h"
-#include <cmath>
 #include <cstddef>
 #include "shg/except.h"
 #include "shg/hmm.h"
 #include "shg/mstat.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(hmm_test)
 
@@ -87,13 +86,13 @@ BOOST_AUTO_TEST_CASE(basic_test) {
      }
      h.sort();
      h.viterbi();
-     BOOST_CHECK(std::abs(logL - reslogL) < eps);
+     BOOST_CHECK(faeq(logL, reslogL, eps));
      for (i = 0; i < s; i++) {
-          BOOST_CHECK(std::abs(h.p(i) - resp[i]) < eps);
+          BOOST_CHECK(faeq(h.p(i), resp[i], eps));
           for (j = 0; j < s; j++)
-               BOOST_CHECK(std::abs(h.P(i, j) - resP(i, j)) < eps);
-          BOOST_CHECK(std::abs(h.mu(i) - resmu[i]) < eps);
-          BOOST_CHECK(std::abs(h.sigma(i) - ressigma[i]) < eps);
+               BOOST_CHECK(faeq(h.P(i, j), resP(i, j), eps));
+          BOOST_CHECK(faeq(h.mu(i), resmu[i], eps));
+          BOOST_CHECK(faeq(h.sigma(i), ressigma[i], eps));
      }
      n = 0;
      for (t = 0; t < T; t++)
@@ -102,11 +101,11 @@ BOOST_AUTO_TEST_CASE(basic_test) {
      BOOST_CHECK(n == resnequal);
 
      // Check only resX.size() first values.
-     BOOST_CHECK(resX.size() < h.X.size());
+     BOOST_REQUIRE(resX.size() < h.X.size());
      for (std::size_t i = 0; i < resX.size(); i++)
           BOOST_CHECK(h.X(i) == resX(i));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

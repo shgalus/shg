@@ -7,6 +7,7 @@ import glob
 import re
 import os
 
+MAX_LINE_LENGTH = 70
 FILTER = "-legal/copyright,"\
          "-build/header_guard,"\
          "-runtime/references,"\
@@ -17,6 +18,7 @@ FILTER = "-legal/copyright,"\
          "-runtime/int,"\
          "-runtime/printf,"\
          "-runtime/arrays"
+CPPLINT = "cpplint --quiet --linelength={} --filter="
 
 ALL_SOURCE = glob.glob("include" + os.path.sep + "shg" +
                        os.path.sep + ".h")
@@ -54,7 +56,7 @@ def check_file_as_text(fname):
         all_lines = f.read().splitlines()
     is_previous_line_empty = False
     for i, line in enumerate(all_lines, start=1):
-        if len(line) > 70:
+        if len(line) > MAX_LINE_LENGTH:
             print_error(fname, i, "line too long")
         if re.search(r'\s$', line):
             print_error(fname, i, "line ends with white space")
@@ -124,7 +126,7 @@ def run():
     for fname in source:
         check_file_as_text(fname)
         check_file_as_binary(fname)
-    command = "cpplint --quiet --linelength=70 --filter="
+    command = CPPLINT.format(MAX_LINE_LENGTH)
     command += FILTER
     command += ' ' + ' '.join(source)
     errors = os.system(command)

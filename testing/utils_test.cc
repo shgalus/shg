@@ -1,5 +1,4 @@
 #include "shg/utils.h"
-#include <cmath>
 #include <cstring>
 #include <ios>
 #include <limits>
@@ -7,9 +6,11 @@
 #include <sstream>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(utils_test)
+
+namespace bdata = boost::unit_test::data;
 
 BOOST_AUTO_TEST_CASE(narrow_cast_test) {
      constexpr auto max = std::numeric_limits<signed char>::max();
@@ -125,6 +126,35 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(integer_division_test, T, test_types) {
                     BOOST_CHECK(b == 0);
                }
           }
+}
+
+struct Mod_case {
+     const double x;
+     const double y;
+     const double z;
+};
+
+std::ostream& operator<<(std::ostream& stream, const Mod_case& c) {
+     stream.width(0);
+     stream << c.x << "   " << c.y << "   " << c.z << '\n';
+     return stream;
+}
+
+const std::vector<Mod_case> mod1_case{
+     {-2.0, -2.0, 0.0},    {-1.99, -2.0, -1.99}, {-1.0, -2.0, -1.0},
+     {-0.01, -2.0, -0.01}, {0.0, -2.0, 0.0},     {0.01, -2.0, -1.99},
+     {1.0, -2.0, -1.0},    {1.99, -2.0, -0.01},  {2.0, -2.0, 0.0},
+
+     {-2.0, 0.0, -2.0},    {-1.99, 0.0, -1.99},  {-1.0, 0.0, -1.0},
+     {-0.01, 0.0, -0.01},  {0.0, 0.0, 0.0},      {0.01, 0.0, 0.01},
+     {1.0, 0.0, 1.0},      {1.99, 0.0, 1.99},    {2.0, 0.0, 2.0},
+
+     {-2.0, 2.0, 0.0},     {-1.99, 2.0, 0.01},   {-1.0, 2.0, 1.0},
+     {-0.01, 2.0, 1.99},   {0.0, 2.0, 0.0},      {0.01, 2.0, 0.01},
+     {1.0, 2.0, 1.0},      {1.99, 2.0, 1.99},    {2.0, 2.0, 0.0}};
+
+BOOST_DATA_TEST_CASE(mod1_test, bdata::make(mod1_case), c) {
+     BOOST_CHECK(faeq(mod1(c.x, c.y), c.z, tolerance));
 }
 
 BOOST_AUTO_TEST_CASE(round_test) {
@@ -302,8 +332,6 @@ BOOST_AUTO_TEST_CASE(trim_test) {
      BOOST_CHECK(trim(s) == "abc");
 }
 
-namespace {
-
 struct Case {
      const char* const input;
      const char* const output;
@@ -336,10 +364,6 @@ const std::vector<Case> vc{
      {" a  b c ", "a b c"},
      {" a  b  c ", "a b c"},
 };
-
-}  // anonymous namespace
-
-namespace bdata = boost::unit_test::data;
 
 BOOST_DATA_TEST_CASE(strtrim_test, bdata::make(vc), c) {
      using std::strcmp;
@@ -500,6 +524,18 @@ BOOST_AUTO_TEST_CASE(comblex_2_test) {
      BOOST_CHECK(!getline(ss, s));
 }
 
+BOOST_AUTO_TEST_CASE(output_operator_for_vectors_test) {
+     using SHG::operator<<;
+     const std::vector<int> v1{1, 2, 3};
+     const std::vector<int> v2{};
+     std::ostringstream buf;
+     buf << v1;
+     BOOST_CHECK(buf.str() == "0 1\n1 2\n2 3\n");
+     buf.str("");
+     buf << v2;
+     BOOST_CHECK(buf.str() == "");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

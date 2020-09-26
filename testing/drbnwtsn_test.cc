@@ -1,5 +1,4 @@
 #include "shg/drbnwtsn.h"
-#include <cmath>
 #include <cstring>
 #include <ios>
 #include <iterator>
@@ -8,11 +7,9 @@
 #include <sstream>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(drbnwtsn_test)
-
-namespace {
 
 struct Dwcdf_data {
      const double pdl;
@@ -1186,10 +1183,7 @@ const Dwcdf_data tab_nag[3465] = {
 const int tab_nag_n[20] = {6,  7,  8,  9,  10, 15, 20, 25,  30,  35,
                            40, 45, 50, 60, 70, 80, 90, 100, 150, 200};
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(dwcdf_test) {
-     using std::abs;
      using std::min;
      using std::size;
      using std::size_t;
@@ -1204,14 +1198,12 @@ BOOST_AUTO_TEST_CASE(dwcdf_test) {
                     const double pdl = dwcdf(n, k, x, true, 1e-7, 17);
                     const double pdu =
                          dwcdf(n, k, x, false, 1e-7, 17);
-                    BOOST_CHECK(abs(pdl - tab_nag[c].pdl) < 5e-5);
-                    BOOST_CHECK(abs(pdu - tab_nag[c].pdu) < 5e-5);
+                    BOOST_CHECK(faeq(pdl, tab_nag[c].pdl, 5e-5));
+                    BOOST_CHECK(faeq(pdu, tab_nag[c].pdu, 5e-5));
                }
      }
      BOOST_CHECK(c == size(tab_nag));
 }
-
-namespace {
 
 /**
  * Data for testing percentage points of the Durbin-Watson statistic.
@@ -1279,10 +1271,7 @@ DURBIN-WATSON STATISTIC: 1 PER CENT SIGNIFICANCE POINTS OF DL AND DU
 K IS THE NUMBER OF REGRESSORS EXCLUDING THE INTERCEPT
 )";
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(ppdw_test) {
-     using std::abs;
      using std::getline;
      using std::istringstream;
      using std::min;
@@ -1322,7 +1311,7 @@ BOOST_AUTO_TEST_CASE(ppdw_test) {
                     tol = 0.8e-3;
                if (n == 200 && k == 3)
                     tol = 0.8e-3;
-               BOOST_CHECK(abs(xl0 - xl[k - 1]) < tol);
+               BOOST_CHECK(faeq(xl0, xl[k - 1], tol));
                tol = 0.5e-3;
                // and 9 differences for d(u):
                if (n == 10 && k == 2)
@@ -1343,12 +1332,10 @@ BOOST_AUTO_TEST_CASE(ppdw_test) {
                     tol = 0.8e-3;
                if (n == 200 && k == 4)
                     tol = 0.8e-3;
-               BOOST_CHECK(abs(xu0 - xu[k - 1]) < tol);
+               BOOST_CHECK(faeq(xu0, xu[k - 1], tol));
           }
      }
 }
-
-namespace {
 
 /**
  * Data for testing printing of tables of the Durbin-Watson statistic.
@@ -1735,8 +1722,6 @@ const char* const savin_white_table2[376] = {
 };
 // clang-format on
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(swtbl_test) {
      using std::getline;
      using std::size;
@@ -1760,4 +1745,4 @@ BOOST_AUTO_TEST_CASE(swtbl_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

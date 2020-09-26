@@ -7,7 +7,7 @@
 
 namespace bdata = boost::unit_test::data;
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(date_test)
 
@@ -40,8 +40,6 @@ BOOST_AUTO_TEST_CASE(all_dates_test) {
      BOOST_CHECK_THROW(Date d(1, Date::jan, 10000), Date::Bad_date);
 }
 
-namespace {
-
 constexpr const char* const incorrect_input[] = {
      "02 stycznia 1901", "02 I 1901", "2.1.1901", "02.1.1901",
      "2.01.1901"};
@@ -49,8 +47,6 @@ constexpr const char* const incorrect_input[] = {
 constexpr const char* const correct_input[] = {
      "19010122", "22.01.1901", "22 stycznia 1901", "22 I 1901",
      "19010102", "02.01.1901", "2 stycznia 1901",  "2 I 1901"};
-
-}  // anonymous namespace
 
 BOOST_DATA_TEST_CASE(incorrect_constructor_input_test,
                      bdata::make(incorrect_input), s) {
@@ -64,9 +60,7 @@ BOOST_DATA_TEST_CASE(correct_constructor_input_test,
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
-
-namespace {
+}  // namespace SHG::Testing
 
 using SHG::Date;
 
@@ -124,8 +118,6 @@ const Date Date_dataset::iterator::last2 = Date(31, Date::dec, 2400);
 const Date Date_dataset::iterator::first3 = Date::max() - 40000;
 const Date Date_dataset::iterator::last3 = Date::max();
 
-}  // anonymous namespace
-
 namespace boost::unit_test::data::monomorphic {
 
 template <>
@@ -133,7 +125,7 @@ struct is_dataset<Date_dataset> : boost::mpl::true_ {};
 
 }  // namespace boost::unit_test::data::monomorphic
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(date_test)
 
@@ -159,13 +151,17 @@ BOOST_DATA_TEST_CASE(operator_test, Date_dataset()) {
      BOOST_CHECK(d1 == d);
 }
 
-namespace {
-
-/*
- * Returns day and month of Easter in Gregorian year y. This function
- * is written exactly on the algorithm given in Donald E. Knuth,
- * Sztuka programowania, t. I, Algorytmy podstawowe, p. 165-166,
- * 538-540.
+/**
+ * Calculates date of Easter in the given year.
+ * \param[in] y Gregorian year
+ * \param[out] day day of Easter
+ * \param[out] month month of Easter
+ *
+ * If the given year is less or equal 1582, the function returns -1 as
+ * day and month.
+ *
+ * The function is written exactly on the algorithm given in
+ * \cite knuth-2002a, pages 165-166, 538-540.
  */
 void knuth(int y, int* day, int* month) {
      int g = y % 19 + 1;
@@ -195,8 +191,6 @@ void knuth(int y, int* day, int* month) {
      }
 }
 
-}  // anonymous namespace
-
 BOOST_AUTO_TEST_CASE(easter_test) {
      for (int y = Date::min().year(); y <= Date::max().year(); y++) {
           int d, m;
@@ -225,4 +219,4 @@ BOOST_AUTO_TEST_CASE(input_output_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

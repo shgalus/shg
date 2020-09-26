@@ -42,8 +42,8 @@ namespace SHG {
  *
  * \ingroup mathematical_statistics
  *
- * \todo In invcdf(double) const choose better initial values for
- * bisection.
+ * In invcdf(double) const better initial values for bisection may be
+ * chosen.
  *
  * \implementation
  *

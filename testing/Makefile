@@ -18,7 +18,7 @@ $(OBJDIR)/%.o : %.cc
 all: ../bin/testing
 
 run: all
-	../bin/testing --log_level=test_suite --run_test=except_test/*
+	../bin/testing --log_level=message --run_test=packellp_test/*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
@@ -27,7 +27,7 @@ run: all
 FORCE:
 
 check: ../bin/testing
-	../bin/testing
+	../bin/testing --log_level=message
 
 $(OBJDIR) ../build:
 	mkdir -p $@

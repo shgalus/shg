@@ -21,36 +21,7 @@
 
 \section general_todos General todos.
 
-\todo Add -Wconversion -Wsign-conversion and analyse the warnings.
-
-\todo The files in tools/ are obsolete.
-
-\todo It is good to compare freshly generated Doxyfile with current
-Doxyfile. Consider: GENERATE_TESTLIST, GENERATE_BUGLIST,
-GENERATE_DEPRECATEDLIST, JAVADOC_AUTOBRIEF, REPEAT_BRIEF,
-BRIEF_MEMBER_DESC.
-
-\todo There is a file \e cstyle.tar.Z which comes from my archive file
-\e olddoc.tar.bz2 made in 2014. The original date of \e cstyle.tar.Z
-was 27 May 2003. After unpacking with \p tar zxvf cstyle.tar.Z, the
-file \e cstyle.ms dated on 26 June 1990 appears. After <tt>cat
-cstyle.ms | tbl | groff -ms -T pdf > cstyle.pdf</tt>, the following
-errors appear:
-
-\verbatim
-<standard input>:315: macro error: FE without FS
-<standard input>:952: macro error: DE without DS, ID, CD, LD or BD
-<standard input>:1221: macro error: DE without DS, ID, CD, LD or BD
-\endverbatim
-
-but the file \e cstyle.pdf is created. See also
-\cite kernighan-pike-1984 page 296.
-
-\todo Move examples to testing.
-
-\todo std::isfinite.
-
-\page strdlr NIST Statistical Reference Datasets Linear Regression
+\section strdlr NIST Statistical Reference Datasets Linear Regression.
 
 Test cases in the file ols_test.cc use data for testing linear
 regression retrieved on 24 December 2010 from <a href =
@@ -85,5 +56,129 @@ Local copies of retrieved data files:
 <a href = "Wampler3.dat">Wampler3.dat</a>,
 <a href = "Wampler4.dat">Wampler4.dat</a>,
 <a href = "Wampler5.dat">Wampler5.dat</a>.
+
+\section doxygen_boost_test Boost test in Doxygen.
+
+According to https://stackoverflow.com/questions/38643584, the
+following macros should be defined in Doxyfile to get clear Doxygen
+output:
+
+\verbatim
+PREDEFINED             = "BOOST_AUTO_TEST_CASE(name)=void name()" \
+                         "BOOST_AUTO_TEST_SUITE(name)=namespace BoostTest { class name {public:" \
+                         "BOOST_FIXTURE_TEST_SUITE(name,data)=namespace BoostTest { class name {public:" \
+                         "BOOST_AUTO_TEST_SUITE_END()=};}" \
+                         "BOOST_CONCEPT_REQUIRES(req,type)=type " \
+                         "BOOST_CONCEPT_ASSERT(req)= "
+\endverbatim
+
+I have modified `BOOST_AUTO_TEST_SUITE(name)` and
+`BOOST_AUTO_TEST_SUITE_END()` to allow nesting test suites. At the
+moment, `BOOST_FIXTURE_TEST_SUITE(name,data)`,
+`BOOST_CONCEPT_REQUIRES(req,type)` and `BOOST_CONCEPT_ASSERT(req)` are
+left untouched as I do not use them.
+
+I have experimented with adding
+
+\verbatim
+"BOOST_DATA_TEST_CASE(name, ...)=void name(__VA_ARGS__)"
+\endverbatim
+
+to Doxyfile, but Doxygen seems not to recognize `__VA_ARGS__`.
+The following
+
+\verbatim
+#define BOOST_DATA_TEST_CASE(name,...) void name(__VA_ARGS__)
+
+
+BOOST_DATA_TEST_CASE(operator_test, Date_dataset())
+
+BOOST_DATA_TEST_CASE(normal_integral_test, bdata::xrange(61), xr1)
+
+BOOST_DATA_TEST_CASE(gammad_test, bdata::xrange(101) * bdata::xrange(100), xr1, xr2)
+
+BOOST_DATA_TEST_CASE(betain_test, bdata::xrange(9) * bdata::xrange(10) * bdata::xrange(10), xr1, xr2, xr3)
+\endverbatim
+
+passed to the C preprocessor works excellent, producing
+
+\verbatim
+void operator_test(Date_dataset())
+
+void normal_integral_test(bdata::xrange(61), xr1)
+
+void gammad_test(bdata::xrange(101) * bdata::xrange(100), xr1, xr2)
+
+void betain_test(bdata::xrange(9) * bdata::xrange(10) * bdata::xrange(10), xr1, xr2, xr3)
+\endverbatim
+
+\section MSVC MSVC environment.
+
+[Visual C++ Documentation] (https://docs.microsoft.com/en-us/cpp/)
+
+[Microsoft C++ Build Tools]
+(https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+
+[C++ in Visual Studio]
+(https://docs.microsoft.com/en-us/cpp/overview/visual-cpp-in-visual-studio?view=vs-2019)
+
+[Walkthrough: Create and use your own Dynamic Link Library (C++)]
+(https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp?view=vs-2019)
+
+[Walkthrough: Create and use a static library]
+(https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=vs-2019)
+
+\subsection creating_visual_studio_solutions Creating Visual Studio solutions.
+
+Create project `shg` as a static library in solution vs2017. Add
+another project named `testing` as console application. For properies
+of both projects in all configurations and all platforms:
+- in section C/C++ Language choose ISO C++17 and disable language
+  extensions,
+- in section C/C++ Precompiled Headers choose Not Using Precompiled
+  Headers,
+- in section C/C++ Advanced disable warnings: 4996, 26451, 26812.
+
+Remove generated files `framework.h`, `pch.h`, `shg.cpp`, `pch.cpp`.
+Add header files from `include/shg` to both projects. Add files from
+`src` to project `shg`. Add files from directory `testing` to project
+`testing`. Do not add Makefiles. In C/C++ General in Additional
+Include Directories add the path `..\..\..\include`.
+
+Using NuGet package manager add for both porjects the following
+libraries:
+
+-# for VS 2017:
+     - `boost`,
+     - `boost_unit_test_framework-vc141`,
+     - `gsl-msvc-x64`,
+     - `gsl-msvc-x86`,
+-# for VS 2019:
+     - `boost`,
+     - `boost_unit_test_framework-vc142`,
+     - `gsl-msvc14-x64`,
+     - `gsl-msvc14-x86`
+
+\subsection nuget_configuration NuGet configuration.
+
+The file `NuGet.Config`:
+
+
+-# [Setup NuGet packages folder for project outside solution folder]
+   (https://stackoverflow.com/questions/40322066)
+
+-# [Common NuGet configurations]
+   (https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior)
+
+-# [nuget.config reference]
+   (https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file)
+
+\verbatim
+~/projects
+  shg
+    vs
+      vs2017
+        NuGet.Config
+\endverbatim
 
 */

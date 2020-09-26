@@ -15,85 +15,103 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\testing\bdstest_test.cc">
+    <ClInclude Include="..\..\..\testing\testing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\testing\bdstest_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\brent_test.cc">
+    <ClCompile Include="..\..\..\testing\brent_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\csv_test.cc">
+    <ClCompile Include="..\..\..\testing\csv_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\date_test.cc">
+    <ClCompile Include="..\..\..\testing\date_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\drbnwtsn_test.cc">
+    <ClCompile Include="..\..\..\testing\drbnwtsn_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\encoding_test.cc">
+    <ClCompile Include="..\..\..\testing\encoding_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\except_test.cc">
+    <ClCompile Include="..\..\..\testing\except_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\gsgts_test.cc">
+    <ClCompile Include="..\..\..\testing\fcmp_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\hmm_test.cc">
+    <ClCompile Include="..\..\..\testing\geometry_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\laplace_test.cc">
+    <ClCompile Include="..\..\..\testing\gsgts_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\mathprog_test.cc">
+    <ClCompile Include="..\..\..\testing\hmm_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\matrix_test.cc">
+    <ClCompile Include="..\..\..\testing\laplace_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\mstat_test.cc">
+    <ClCompile Include="..\..\..\testing\mathprog_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\mzt_test.cc">
+    <ClCompile Include="..\..\..\testing\matrix_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\ninv_test.cc">
+    <ClCompile Include="..\..\..\testing\mstat_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\normmix_test.cc">
+    <ClCompile Include="..\..\..\testing\mzt_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\ols_test.cc">
+    <ClCompile Include="..\..\..\testing\ninv_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\opdts_test.cc">
+    <ClCompile Include="..\..\..\testing\normmix_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\permentr_test.cc">
+    <ClCompile Include="..\..\..\testing\numalg_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\runs_test.cc">
+    <ClCompile Include="..\..\..\testing\ols_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\smc_test.cc">
+    <ClCompile Include="..\..\..\testing\opdts_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\specfunc_test.cc">
+    <ClCompile Include="..\..\..\testing\permentr_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\testing.cc">
+    <ClCompile Include="..\..\..\testing\runs_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\utils_test.cc">
+    <ClCompile Include="..\..\..\testing\smc_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\testing\vector_test.cc">
+    <ClCompile Include="..\..\..\testing\specfunc_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\testing.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\utils_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\vector_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\ipart_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\packellp_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\testing\testing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

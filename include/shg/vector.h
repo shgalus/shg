@@ -10,6 +10,7 @@
 #define SHG_VECTOR_H
 
 #include <cstddef>
+#include <complex>
 #include <initializer_list>
 #include <istream>
 #include <iterator>
@@ -240,6 +241,9 @@ typedef Vector<long long>       Veclonglong;
 typedef Vector<float>           Vecfloat;
 typedef Vector<double>          Vecdouble;
 typedef Vector<long double>     Veclongdouble;
+typedef Vector<std::complex<float>> Veccomplexfloat;
+typedef Vector<std::complex<double>> Veccomplex;
+typedef Vector<std::complex<long double>> Veccomplexlongdouble;
 
 /** \} */       /* vector typedefs for some fundamental types */
 

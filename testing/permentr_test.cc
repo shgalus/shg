@@ -1,8 +1,7 @@
 #include "shg/permentr.h"
-#include <cmath>
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(permentr_test)
 
@@ -14,8 +13,8 @@ BOOST_AUTO_TEST_CASE(basic_test) {
 
      for (std::vector<int>::size_type L = 2; L <= test_data.size();
           L++)
-          BOOST_CHECK(std::abs(permutation_entropy(test_data, L) -
-                               test_result[L - 2]) < 5e-6);
+          BOOST_CHECK(faeq(permutation_entropy(test_data, L),
+                           test_result[L - 2], 5e-6));
 }
 
 // Example from \cite bandt-pompe-2002, page 2.
@@ -27,16 +26,17 @@ BOOST_AUTO_TEST_CASE(bandt_pompe_test) {
 
      for (std::vector<int>::size_type L = 2; L <= test_data.size();
           L++)
-          BOOST_CHECK(std::abs(permutation_entropy(test_data, L) -
-                               test_result[L - 2]) < 5e-6);
+          BOOST_CHECK(faeq(permutation_entropy(test_data, L),
+                           test_result[L - 2], 5e-6));
 }
 
 BOOST_AUTO_TEST_CASE(const_test) {
      const std::vector<int> test_data(1000, 1);
      for (std::vector<int>::size_type L = 2; L <= 8; L++)
-          BOOST_CHECK(permutation_entropy(test_data, L) < 5e-6);
+          BOOST_CHECK(
+               faeq(permutation_entropy(test_data, L), 0.0, 5e-6));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

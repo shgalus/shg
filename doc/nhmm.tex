@@ -1,17 +1,4 @@
-% nhmm.tex: normal hidden Markov models
-\documentclass[a4paper,11pt]{article}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath}
-\DeclareMathOperator*{\argmax}{argmax}
-\DeclareMathOperator*{\sgn}{sgn}
-\renewcommand{\Pr}{\mathit{P}}
-
-\title{Normal hidden Markov models}
-\author{Stanis{\l}aw Galus}
-\date{13 January 2013}
-
-\begin{document}
-\maketitle
+\chapter{Normal hidden Markov models}
 
 \section{Forward-backward variables}
 
@@ -251,7 +238,3 @@ density of forecast according to formula
 \Pr(X_t = x\ |\ \mathbf{X}^{(t - 1)} = \mathbf{x}^{(t - 1)})
 = \frac{\alpha_{t - 1} \Gamma P(x) 1^T}{\alpha_{t - 1} 1^T}.
 \]
-
-\bibliographystyle{plain}
-\bibliography{sgalus}
-\end{document}

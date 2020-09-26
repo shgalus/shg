@@ -1,7 +1,7 @@
 #include "shg/normmix.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(normmix_test)
 
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(normmix_1_test) {
           const double p = i * 0.0001;
           const double x = nm.invcdf(p);
           const double q = nm.cdf(x);
-          BOOST_CHECK(std::abs(p - q) < 1e-10);
+          BOOST_CHECK(faeq(p, q, 1e-10));
      }
 
      const double mean = 0.0;
@@ -33,10 +33,10 @@ BOOST_AUTO_TEST_CASE(normmix_1_test) {
      const double m4 = (2.0 + 11.0 / 16.0) * 0.25 * 2 +
                        (3.0 / 4.0 / 4.0 / 4.0 / 4.0) * 0.5;
      const double curt = m4 / var / var - 3.0;
-     BOOST_CHECK(std::abs(nm.mean() - mean) < 1e-10);
-     BOOST_CHECK(std::abs(nm.sdev() - sdev) < 1e-10);
-     BOOST_CHECK(std::abs(nm.skew() - skew) < 1e-10);
-     BOOST_CHECK(std::abs(nm.curt() - curt) < 1e-10);
+     BOOST_CHECK(faeq(nm.mean(), mean, 1e-10));
+     BOOST_CHECK(faeq(nm.sdev(), sdev, 1e-10));
+     BOOST_CHECK(faeq(nm.skew(), skew, 1e-10));
+     BOOST_CHECK(faeq(nm.curt(), curt, 1e-10));
 }
 
 BOOST_AUTO_TEST_CASE(normmix_2_test) {
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(normmix_2_test) {
           const double p = i * 0.0001;
           const double x = nm.invcdf(p);
           const double q = nm.cdf(x);
-          BOOST_CHECK(std::abs(p - q) < 1e-10);
+          BOOST_CHECK(faeq(p, q, 1e-10));
      }
 
      const double mean = 0.65;
@@ -66,12 +66,12 @@ BOOST_AUTO_TEST_CASE(normmix_2_test) {
      const double skew = 0.069 / var / sdev;
      const double m4 = 0.26115625;
      const double curt = m4 / var / var - 3.0;
-     BOOST_CHECK(std::abs(nm.mean() - mean) < 1e-10);
-     BOOST_CHECK(std::abs(nm.sdev() - sdev) < 1e-10);
-     BOOST_CHECK(std::abs(nm.skew() - skew) < 1e-10);
-     BOOST_CHECK(std::abs(nm.curt() - curt) < 1e-10);
+     BOOST_CHECK(faeq(nm.mean(), mean, 1e-10));
+     BOOST_CHECK(faeq(nm.sdev(), sdev, 1e-10));
+     BOOST_CHECK(faeq(nm.skew(), skew, 1e-10));
+     BOOST_CHECK(faeq(nm.curt(), curt, 1e-10));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

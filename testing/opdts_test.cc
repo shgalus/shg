@@ -2,7 +2,7 @@
 #include "shg/mzt.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(opdts_test)
 
@@ -81,4 +81,4 @@ BOOST_FIXTURE_TEST_CASE(length_4_test, Opdts_data) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

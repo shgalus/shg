@@ -102,6 +102,20 @@ template <typename T>
 constexpr T sqrpi8 =
      static_cast<T>(1.2337005501361698273543113749845188919142L);
 
+/**
+ * The constant \f$180 / \pi\f$.
+ */
+template <typename T>
+constexpr T radian =
+     static_cast<T>(57.2957795130823208767981548141051703324055L);
+
+/**
+ * The constant \f$\pi / 180\f$.
+ */
+template <typename T>
+constexpr T degree =
+     static_cast<T>(0.0174532925199432957692369076848861271344L);
+
 /** \} */  // end of group mathematical_constants
 
 }  // namespace Constants

@@ -1,5 +1,3 @@
-/* ols.h: ordinary least squares */
-
 /**
  * \file include/shg/ols.h
  * Ordinary least squares.
@@ -29,7 +27,7 @@ namespace SHG {
  * \times 1\f$ vector of disturbances. The least squares estimator of
  * \f$\beta\f$ is \f$\hat{\beta} = (X^TX)^{-1}X^Ty\f$.
  *
- * \todo Add methods for prediction.
+ * Methods for prediction may be added.
  *
  * \ingroup mathematical_statistics
  */

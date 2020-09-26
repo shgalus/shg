@@ -1,0 +1,63 @@
+% If draft mode is on, package hyperref produces no links.
+% \documentclass[a4paper,11pt,draft]{report}
+\documentclass[a4paper,11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphics}
+\usepackage[colorlinks,linktocpage,linkcolor=blue,urlcolor=blue]{hyperref}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\arctg}{arctg}
+\renewcommand{\Pr}{\mathit{P}}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\newcommand{\var}[1]{\ensuremath{\mathit{#1}}}
+
+% \mathbf --> \mathbb?
+\newcommand{\naturaln}{\ensuremath{\mathbf{N}}}
+\newcommand{\naturalnz}{\ensuremath{\mathbf{N}_0}}
+\newcommand{\integern}{\ensuremath{\mathbf{Z}}}
+\newcommand{\rationaln}{\ensuremath{\mathbf{Q}}}
+\newcommand{\realn}{\ensuremath{\mathbf{R}}}
+\newcommand{\complexn}{\ensuremath{\mathbf{C}}}
+
+\newcommand{\para}[1]{\vspace{1em}\noindent{\bf#1}}
+\newcommand{\synopsis}{\para{Synopsis}}
+\newcommand{\pdescription}{\para{Description}}
+\newcommand{\note}{\para{Note}}
+\newcommand{\exception}{\para{Exception}}
+\newcommand{\returns}{\para{Returns}}
+\newcommand{\implementation}{\para{Implementation}}
+
+% LDCE = Longman Dictionary of Contemporary English
+\hyphenation{
+  sta-tis-tic  % LDCE, p. 1032
+  sta-tis-tics % LDCE, p. 1032
+}
+
+\title{SHG C++ Library}
+\author{Stanis{\l}aw Galus}
+\date{\today}
+
+\begin{document}
+
+% maketitle alone produces hyperref warning: destination with the same
+% identifier (name{page.1}) has been already used, duplicate ignored
+\begingroup
+\renewcommand{\thepage}{0}
+\maketitle
+\endgroup
+
+\tableofcontents
+
+\include{drbnwtsn} % \date{9 July 2012}
+\include{nhmm} % \date{13 January 2013}
+\include{bdstest} % \date{27 October 2013}
+
+\bibliographystyle{plain}
+\bibliography{sgalus}
+\end{document}

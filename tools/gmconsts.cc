@@ -22,6 +22,8 @@ void generate(const int prec, stringstream& ss) {
      ss << "isqrt2pi = " << 1.0 / sqrt(2.0 * pi)
         << "; // 1 / sqrt(2 * pi)\n";
      ss << "sqrt2pi  = " << sqrt(2.0 * pi) << "; // sqrt(2 * pi)\n";
+     ss << "radian   = " << 180.0 / pi << "; // 180 / pi\n";
+     ss << "degree   = " << pi / 180.0 << "; // pi / 180\n";
      {
           const mpf_class j(1.0, prec);
           mpf_class s(0.0, prec);

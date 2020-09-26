@@ -24,8 +24,8 @@ namespace SHG {
  * point at which the function should be evaluated,
  * \f$\mathit{lower}\f$ should be \f$\mathit{true}\f$ for \f$d_L\f$
  * and \f$\mathit{false}\f$ for \f$d_U\f$, \f$\mathit{eps} > 0\f$ is
- * the accuracy for calculating the result (see equation (4) on page 2
- * in <a href="drbnwtsn.pdf">Cumulative distribution function of the
+ * the accuracy for calculating the result (see <a
+ * href="shg.pdf">Cumulative distribution function of the
  * Durbin-Watson statistic.</a>), \f$\mathit{iter} \geq 1\f$ is the
  * maximum number of iterations in the Simpson method. In the
  * \f$i\f$-th iteration, \f$1 \leq i \leq \mathit{iter}\f$, \f$2^i\f$
@@ -42,7 +42,7 @@ namespace SHG {
  * \exception std::range_error if the number of iterations would be
  * greater than \f$\mathit{iter}\f$
  *
- * See <a href="drbnwtsn.pdf">Cumulative distribution function of the
+ * See <a href="shg.pdf">Cumulative distribution function of the
  * Durbin-Watson statistic.</a>
  *
  * \sa ppdw, swtbl

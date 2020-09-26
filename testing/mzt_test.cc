@@ -1,11 +1,10 @@
 #include "shg/mzt.h"
-#include <cmath>
 #include <ios>
 #include <sstream>
 #include "shg/mzt.h"
 #include "testing.h"
 
-namespace SHG::BTesting {
+namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(mzt_test)
 
@@ -89,7 +88,7 @@ BOOST_AUTO_TEST_CASE(geometric_test) {
      double d = 0.0;
      for (size_t i = 0; i < 1000; i++)
           BOOST_CHECK_NO_THROW(d += g.geometric(1e-8));
-     BOOST_CHECK(std::abs(d - 100262203685.0) < 1e-20);
+     BOOST_CHECK(faeq(d, 100262203685.0, 1e-20));
 }
 
 BOOST_AUTO_TEST_CASE(gamma_test) {
@@ -158,4 +157,4 @@ BOOST_AUTO_TEST_CASE(negative_binomial_test) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}  // namespace SHG::BTesting
+}  // namespace SHG::Testing

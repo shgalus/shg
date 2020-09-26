@@ -4,6 +4,10 @@
 /doc/*.aux
 /doc/*.log
 /doc/*.pdf
+/doc/*.bbl
+/doc/*.blg
+/doc/*.toc
+/doc/*.out
 !/doc/StatGaus.pdf
 /doc/doxwarn.txt
 /lib/

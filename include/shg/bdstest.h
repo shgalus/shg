@@ -24,7 +24,7 @@ namespace SHG {
 
 /**
  * BDS test for independence. For a description see <a
- * href="bdstest.pdf">BDS test for independence.</a>
+ * href="shg.pdf">BDS test for independence.</a>
  */
 class BDS_test {
 public:
