@@ -1,5 +1,3 @@
-/* utils.h: miscellaneous utilities */
-
 /**
  * \file include/shg/utils.h
  * Miscellaneous utilities.
@@ -9,12 +7,12 @@
 #ifndef SHG_UTILS_H
 #define SHG_UTILS_H
 
+#include <algorithm>
 #include <cassert>
+#include <chrono>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
-#include <chrono>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -22,7 +20,7 @@
 #include <type_traits>
 #include <valarray>
 #include <vector>
-#include "shg/vector.h"
+#include <shg/vector.h>
 
 namespace SHG {
 
@@ -34,7 +32,8 @@ namespace SHG {
  * \{
  */
 
-constexpr double tolerance {100.0 * std::numeric_limits<double>::epsilon()};
+constexpr double tolerance{100.0 *
+                           std::numeric_limits<double>::epsilon()};
 
 /**
  * Eliminates warnings for unused variables. See
@@ -60,7 +59,7 @@ Target narrow_cast(Source x) {
 /**
  * Returns square of the argument.
  */
-template<class T>
+template <class T>
 inline T sqr(T x) noexcept {
      return x * x;
 }
@@ -78,8 +77,10 @@ T cube(T x) noexcept {
  * \begin{array}{rl} 1 & \mbox{if $x > 0$,} \\ 0 & \mbox{if $x = 0$,}
  * \\ -1 & \mbox{if $x < 0$.} \end{array} \right. \f]
  */
-template<class T>
-inline int sgn(T x) {return x > T(0) ? 1 : (x < T(0) ? -1 : 0);}
+template <class T>
+inline int sgn(T x) {
+     return x > T(0) ? 1 : (x < T(0) ? -1 : 0);
+}
 
 /**
  * Integer version of floor.
@@ -172,8 +173,8 @@ struct Integer_division {
       * \exception std::invalid_argument if \f$b = 0\f$
       */
      Integer_division(T a, T b);
-     T q;                       /**< quotient */
-     T r;                       /**< remainder */
+     T q; /**< quotient */
+     T r; /**< remainder */
      /**
       * Returns quotient described in Integer_division.
       *
@@ -189,8 +190,7 @@ struct Integer_division {
 };
 
 template <class T>
-Integer_division<T>::Integer_division(T a, T b)
-     : q(), r() {
+Integer_division<T>::Integer_division(T a, T b) : q(), r() {
      if (b == 0)
           throw std::invalid_argument(
                "Integer_division::Integer_division");
@@ -215,9 +215,7 @@ T Integer_division<T>::quotient(T a, T b) {
      if (b == 0)
           throw std::invalid_argument("Integer_division::quotient");
      auto d = std::div(a, b);
-     return d.rem < 0 ?
-          b < 0 ? d.quot + 1 : d.quot - 1
-          : d.quot;
+     return d.rem < 0 ? b < 0 ? d.quot + 1 : d.quot - 1 : d.quot;
 }
 
 template <class T>
@@ -340,9 +338,8 @@ std::string& clean_string(std::string& s,
  * vector has no elements if s == "" or s does not contain characters
  * other than those from sep.
  */
-std::vector<std::string>
-split_string(const std::string& s,
-             const std::string& sep = white_space);
+std::vector<std::string> split_string(
+     const std::string& s, const std::string& sep = white_space);
 
 /**
  * Indirectly sorts a vector.
@@ -352,8 +349,8 @@ split_string(const std::string& s,
  * w.size() = n. The vector v is a permutation of 0, 1, ..., n - 1.
  */
 template <class T>
-std::vector<typename std::vector<T>::size_type>
-indirect_sort(const std::vector<T>& w) {
+std::vector<typename std::vector<T>::size_type> indirect_sort(
+     const std::vector<T>& w) {
      typedef typename std::vector<T>::size_type size_type;
      typedef typename std::vector<size_type>::size_type size_type1;
      const size_type1 n = w.size();
@@ -361,8 +358,8 @@ indirect_sort(const std::vector<T>& w) {
      for (size_type1 i = 0; i < n; i++)
           v[i] = i;
      std::sort(v.begin(), v.end(), [&w](size_type i, size_type j) {
-               return w[i] < w[j];
-          });
+          return w[i] < w[j];
+     });
      return v;
 }
 
@@ -394,8 +391,12 @@ char* strdup(const char* s);
 template <class T>
 T** alloc_c_matrix(std::size_t m, std::size_t n) {
      T** p = new T*[m];
-     try {p[0] = new T[m * n];}
-     catch (const std::bad_alloc&) {delete[] p; throw;}
+     try {
+          p[0] = new T[m * n];
+     } catch (const std::bad_alloc&) {
+          delete[] p;
+          throw;
+     }
      for (std::size_t i = 1; i < m; i++)
           p[i] = p[i - 1] + n;
      return p;
@@ -428,7 +429,7 @@ public:
       * Restarts measuring time. Remembers the moment of time at which
       * this function was called.
       */
-     void restart() {start_time = std::chrono::steady_clock::now();}
+     void restart() { start_time = std::chrono::steady_clock::now(); }
 
      /**
       * Returns the difference in seconds between the current time and
@@ -437,7 +438,8 @@ public:
      double elapsed() const {
           typedef std::chrono::duration<double> T;
           return std::chrono::duration_cast<T>(
-               std::chrono::steady_clock::now() - start_time).count();
+                      std::chrono::steady_clock::now() - start_time)
+               .count();
      }
 
 private:
@@ -472,7 +474,7 @@ public:
      /**
       * Returns current combination.
       */
-     const std::vector<int>& get() const {return a;}
+     const std::vector<int>& get() const { return a; }
 
 private:
      const int k;
@@ -521,6 +523,6 @@ std::ostream& operator<<(std::ostream& stream,
 
 /** \} */ /* end of group miscellaneous_utilities */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

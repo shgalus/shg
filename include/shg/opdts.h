@@ -1,5 +1,3 @@
-/* opdts.h: ordinal patterns distribution in time series */
-
 /**
  * \file include/shg/opdts.h
  * Ordinal patterns distribution in time series.
@@ -9,8 +7,8 @@
 #ifndef SHG_OPDTS_H
 #define SHG_OPDTS_H
 
-#include <cstddef>
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include <numeric>
@@ -34,9 +32,11 @@ namespace SHG {
  * returns the distribution of ordinal patterns of length \f$d\f$
  * existing in the sequence.
  */
-template <class T> class OPDTS {
+template <class T>
+class OPDTS {
 private:
      struct Less;
+
 public:
      typedef std::size_t sztp;
      typedef std::vector<sztp> pattern;
@@ -46,6 +46,7 @@ public:
 
      Map frequency;
      void print(std::ostream& f = std::cout);
+
 private:
      /**
       * \internal
@@ -68,16 +69,14 @@ struct OPDTS<T>::Less {
           for (pattern::size_type i = 0; i < x.size(); i++)
                if (x[i] < y[i])
                     return true;
-               else
-                    if (x[i] > y[i])
-                         return false;
+               else if (x[i] > y[i])
+                    return false;
           return false;
      }
 };
 
 template <class T>
-OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d)
-     : frequency() {
+OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d) : frequency() {
      const sztp n = i1 - i0;
      if (d <= 1 || i1 < i0 || n < d)
           throw std::invalid_argument(__func__);
@@ -93,7 +92,8 @@ OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d)
 
 template <class T>
 void OPDTS<T>::print(std::ostream& f) {
-     for (auto it = frequency.cbegin(); it != frequency.cend(); ++it) {
+     for (auto it = frequency.cbegin(); it != frequency.cend();
+          ++it) {
           for (pattern::size_type i = 0; i < it->first.size(); i++)
                f << it->first[i];
           f << "   " << it->second << '\n';
@@ -132,16 +132,14 @@ void OPDTS<T>::calc3(const T x[], sztp imax) {
                     frequency[{1, 2, 0}]++;
                else
                     frequency[{1, 0, 2}]++;
+          else if (x[i + 2] < x[i])
+               frequency[{2, 0, 1}]++;
+          else if (x[i + 2] < x[i + 1])
+               frequency[{0, 2, 1}]++;
           else
-               if (x[i + 2] < x[i])
-                    frequency[{2, 0, 1}]++;
-               else
-                    if (x[i + 2] < x[i + 1])
-                         frequency[{0, 2, 1}]++;
-                    else
-                         frequency[{0, 1, 2}]++;
+               frequency[{0, 1, 2}]++;
 }
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

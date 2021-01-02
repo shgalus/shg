@@ -1,7 +1,12 @@
+/**
+ * \file include/shg/packellp.h
+ * Packing ellipses.
+ */
+
 #ifndef SHG_PACKELLP_H
 #define SHG_PACKELLP_H
 
-#include "shg/geometry.h"
+#include <shg/geometry.h>
 
 /**
  * Packing ellipses.

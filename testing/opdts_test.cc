@@ -1,5 +1,5 @@
-#include "shg/opdts.h"
-#include "shg/mzt.h"
+#include <shg/opdts.h>
+#include <shg/mzt.h>
 #include "testing.h"
 
 namespace SHG::Testing {

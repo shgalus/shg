@@ -13,9 +13,9 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_min.h>
 #include <gsl/gsl_multimin.h>
-#include "shg/fcmp.h"
-#include "shg/vector.h"
-#include "shg/matrix.h"
+#include <shg/fcmp.h>
+#include <shg/matrix.h>
+#include <shg/vector.h>
 
 namespace SHG {
 

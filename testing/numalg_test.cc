@@ -1,15 +1,23 @@
+#include <shg/numalg.h>
 #include <algorithm>
-#include <iomanip>
 #include <cstring>
+#include <iomanip>
 #include <stdexcept>
-#include "shg/utils.h"
-#include "shg/mconsts.h"
-#include "shg/numalg.h"
+#include <shg/mconsts.h>
+#include <shg/utils.h>
 #include "testing.h"
 
 namespace SHG::Testing {
 
 BOOST_AUTO_TEST_SUITE(numalg_test)
+
+// Since version 1928 Microsoft compiler refuses to compile these two
+// test cases arguing that for T = std::complex<double>,
+// Vector<T>::operator std::basic_string<T>() cannot be compiled as T
+// is not a trivial standard-layout type. However, this operator is
+// not instantiated here.
+
+#if defined(_MSC_VER) && (_MSC_VER <= 1927)
 
 // GNU Scientific Library - Reference Manual, section 6.6.
 BOOST_AUTO_TEST_CASE(solve_polynomial_test) {
@@ -38,6 +46,8 @@ BOOST_AUTO_TEST_CASE(solve_polynomial_throws_test) {
      a = {-1.0, 0.0, 0.0, 1.0, 0.0};
      BOOST_CHECK_THROW(solve_polynomial(a, x), std::runtime_error);
 }
+
+#endif  // defined(_MSC_VER) && (_MSC_VER <= 1927)
 
 // GNU Scientific Library - Reference Manual, section 14.15.
 BOOST_AUTO_TEST_CASE(solve_linear_test) {

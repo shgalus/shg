@@ -1,30 +1,28 @@
-/* rng.cc: random number generator */
-
 /**
  * \file src/rng.cc
  * Random number generator.
  * \date Created on 11 December 2011.
  */
 
+#include <shg/rng.h>
 #include <cmath>
 #include <cstdlib>
 #include <limits>
 #include <stdexcept>
-#include "shg/except.h"
-#include "shg/mconsts.h"
-#include "shg/rng.h"
+#include <shg/except.h>
+#include <shg/mconsts.h>
 
 namespace SHG {
 
-using std::numeric_limits;
-using std::overflow_error;
 using std::exp;
+using std::floor;
 using std::log;
 using std::log1p;
-using std::floor;
-using std::tan;
-using std::sqrt;
+using std::numeric_limits;
+using std::overflow_error;
 using std::size_t;
+using std::sqrt;
+using std::tan;
 
 double RNG::unipos() {
      double x;
@@ -134,7 +132,7 @@ double RNG::gamma(const double a, const double b) {
      SHG_VALIDATE(a > 0.0 && b > 0.0);
      if (a >= numeric_limits<unsigned int>::max()) {
           return b *
-               (gamma_large(floor(a)) + gamma_frac(a - floor(a)));
+                 (gamma_large(floor(a)) + gamma_frac(a - floor(a)));
      } else {
           const unsigned int na = static_cast<int>(a);
           if (a == na)
@@ -257,7 +255,7 @@ double RNG::gamma_large(const double a) {
           } while (x <= 0.0);
           v = operator()();
      } while (v > (1.0 + y * y) *
-              exp((a - 1.0) * log(x / (a - 1.0)) - sqa * y));
+                       exp((a - 1.0) * log(x / (a - 1.0)) - sqa * y));
      return x;
 }
 
@@ -281,4 +279,4 @@ double RNG::gamma_frac(const double a) {
      return x;
 }
 
-}       // namespace SHG
+}  // namespace SHG

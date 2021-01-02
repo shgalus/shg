@@ -1,34 +1,33 @@
-/* mzt.cc: Marsaglia, Zaman and Tsang random number generator */
-
 /**
  * \file src/mzt.cc
  * Marsaglia, Zaman and Tsang random number generator.
  * \date Created on 2 June 2009.
  */
 
+#include <shg/mzt.h>
 #include <stdexcept>
-#include "shg/mzt.h"
 
 namespace SHG {
 
-MZT::MZT() : ip_(97), jp_(33), cc_(cc0_) {restart(12, 34, 56, 78);}
+MZT::MZT() : ip_(97), jp_(33), cc_(cc0_) {
+     restart(12, 34, 56, 78);
+}
 
 MZT::MZT(int i, int j, int k, int l) : ip_(97), jp_(33), cc_(cc0_) {
      restart(i, j, k, l);
 }
 
 void MZT::restart(int i, int j, int k, int l) {
-     if (i < 1 || i > 178 ||
-         j < 1 || j > 178 ||
-         k < 1 || k > 178 ||
-         l < 0 || l > 168 ||
-         (i == 1 && j == 1 && k == 1))
+     if (i < 1 || i > 178 || j < 1 || j > 178 || k < 1 || k > 178 ||
+         l < 0 || l > 168 || (i == 1 && j == 1 && k == 1))
           throw std::invalid_argument(__func__);
      for (int ii = 0; ii < 97; ii++) {
           double s = 0.0, t = 0.5;
           for (int jj = 0; jj < 24; jj++) {
                int m = (((i * j) % 179) * k) % 179;
-               i = j; j = k; k = m;
+               i = j;
+               j = k;
+               k = m;
                l = (53 * l + 1) % 169;
                if ((l * m) % 64 >= 32)
                     s += t;
@@ -88,4 +87,4 @@ const double MZT::cc0_ = 362436.0 / 16777216.0;
 const double MZT::cd_ = 7654321.0 / 16777216.0;
 const double MZT::cm_ = 16777213.0 / 16777216.0;
 
-}       // namespace SHG
+}  // namespace SHG

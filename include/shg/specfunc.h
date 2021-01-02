@@ -1,5 +1,3 @@
-/* specfunc.h: special functions */
-
 /**
  * \file include/shg/specfunc.h
  * Special functions.
@@ -10,7 +8,7 @@
 #define SHG_SPECFUNC_H
 
 #include <cmath>
-#include "shg/mconsts.h"
+#include <shg/mconsts.h>
 
 namespace SHG {
 
@@ -64,12 +62,12 @@ double ppnd7(double p);
  *
  * \note If a random variable \f$X\f$ has a gamma distribution with
  * probability density function \f[ f(x; b, p) = \left\{ \begin{array}
- * {ll} \frac{b^p}{\Gamma(p)} x^{p - 1} e^{-bx} & \mbox{for $x > 0$} \\
- * 0 & \mbox{for $x \leq 0$} \end{array} \right.\f] where \f$b\f$ and
- * \f$p\f$ are positive parameters, then \f$P(X < x) =
- * \mathit{gammad}(bx, p)\f$. If \f$X\f$ has a chi-squared distribution
- * with \f$n\f$ degrees of freedom (\f$p = n / 2\f$, \f$b = 1 / 2\f$),
- * then \f$P(X < x) = \mathit{gammad}(x / 2, n / 2)\f$.
+ * {ll} \frac{b^p}{\Gamma(p)} x^{p - 1} e^{-bx} & \mbox{for $x > 0$}
+ * \\ 0 & \mbox{for $x \leq 0$} \end{array} \right.\f] where \f$b\f$
+ * and \f$p\f$ are positive parameters, then \f$P(X < x) =
+ * \mathit{gammad}(bx, p)\f$. If \f$X\f$ has a chi-squared
+ * distribution with \f$n\f$ degrees of freedom (\f$p = n / 2\f$, \f$b
+ * = 1 / 2\f$), then \f$P(X < x) = \mathit{gammad}(x / 2, n / 2)\f$.
  *
  * Source: \cite shea-1988.
  */
@@ -82,8 +80,8 @@ double gammad(double x, double p);
  * For given \f$t \in \mathbf{R}\f$ and \f$\mathit{df} \geq 1\f$, the
  * function returns \f$\Pr(X \leq t)\f$, where \f$X\f$ is a random
  * variable with Student's central \f$t\f$ distribution with
- * \f$\mathit{df}\f$ degrees of freedom. The accuracy should be near to
- * the number of significant digits on a computer.
+ * \f$\mathit{df}\f$ degrees of freedom. The accuracy should be near
+ * to the number of significant digits on a computer.
  *
  * \exception std::invalid_argument if \f$\mathit{df} < 1\f$
  *
@@ -145,8 +143,8 @@ double betain(double x, double p, double q);
  * 2}} dt \f] for \f$x > 0\f$ and \f$F(x; m, n) = 0\f$ for \f$x \leq
  * 0\f$.
  *
- * For given \f$m \geq 1\f$, \f$n \geq 1\f$ and \f$x \in \mathbf{R}\f$,
- * the function returns \f$F(x; m, n)\f$.
+ * For given \f$m \geq 1\f$, \f$n \geq 1\f$ and \f$x \in
+ * \mathbf{R}\f$, the function returns \f$F(x; m, n)\f$.
  *
  * \exception std::invalid_argument if \f$m < 1\f$ or \f$n < 1\f$
  */
@@ -181,8 +179,8 @@ double cdffdist(int m, int n, double x);
  */
 float digamma(float x);
 
-/** \} */       // end of group specfunc
+/** \} */  // end of group specfunc
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

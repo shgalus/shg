@@ -1,4 +1,4 @@
-#include "shg/brent.h"
+#include <shg/brent.h>
 #include "testing.h"
 
 namespace SHG::Testing {

@@ -1,5 +1,3 @@
-/* mzt.h: Marsaglia, Zaman and Tsang random number generator */
-
 /**
  * \file include/shg/mzt.h
  * Marsaglia, Zaman and Tsang random number generator.
@@ -10,7 +8,7 @@
 #define SHG_MZT_H
 
 #include <iostream>
-#include "shg/rng.h"
+#include <shg/rng.h>
 
 namespace SHG {
 
@@ -61,6 +59,6 @@ private:
      static const double cc0_, cd_, cm_;
 };
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

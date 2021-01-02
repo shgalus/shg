@@ -1,27 +1,25 @@
-/* mathprog.cc: mathematical programming */
-
 /**
  * \file src/mathprog.cc
  * Mathematical programming.
  * \date Created on 16 July 2014.
  */
 
+#include <shg/mathprog.h>
 #include <cstdlib>
-#include <new>          // std::bad_alloc
-#include "shg/mathprog.h"
+#include <new>
 
 namespace SHG {
 
 using std::size_t;
 
 int revsimplex(const Matdouble& A, const Vecdouble& b,
-               const Vecdouble& c, Vecdouble& x,
-               double& f, const double eps) {
+               const Vecdouble& c, Vecdouble& x, double& f,
+               const double eps) {
      const size_t m = A.nrows();
      const size_t n = A.ncols();
-     if (m < 1 || n < 1 || eps <= 0.0 ||
-         b.size() != m || c.size() != n || x.size() != n)
-          return 1;             // invalid input
+     if (m < 1 || n < 1 || eps <= 0.0 || b.size() != m ||
+         c.size() != n || x.size() != n)
+          return 1;  // invalid input
 
      const size_t m2 = m + 2, m1 = m + 1;
      // Dummy initialization of k and l for compiler.
@@ -43,7 +41,7 @@ int revsimplex(const Matdouble& A, const Vecdouble& b,
      for (i = 0; i < m; i++) {
           w(i) = n + i;
           if (b(i) < 0.0)
-               return 1;        // invalid input
+               return 1;  // invalid input
           s -= (z(i) = b(i));
      }
      z(m) = 0.0;
@@ -67,14 +65,14 @@ int revsimplex(const Matdouble& A, const Vecdouble& b,
           }
           if (d > -eps) {
                if (phase)
-                    return 2;   // no feasible solution
+                    return 2;  // no feasible solution
                f = -z(p1);
                x = 0.0;
                for (i = 0; i < m; i++)
                     // w may contain artificial variables with value 0
                     if (w(i) < n)
                          x(w(i)) = z(i);
-               return 0;        // solution found
+               return 0;  // solution found
           }
           for (i = 0; i < p; i++) {
                s = u(i, m) * a1(k) + u(i, m1) * a2(k);
@@ -93,7 +91,7 @@ int revsimplex(const Matdouble& A, const Vecdouble& b,
                     ex = false;
                }
           if (ex)
-               return 3;        // unbounded solution
+               return 3;  // unbounded solution
           w(l) = k;
           s = 1.0 / y(l);
           for (j = 0; j < m; j++)
@@ -112,17 +110,12 @@ int revsimplex(const Matdouble& A, const Vecdouble& b,
 Simplex::Error::Error()
      : Exception("invalid argument in Simplex::Simpex()") {}
 
-Simplex::Simplex(const size_t m,
-                 const size_t n,
-                 const Matdouble& A,
-                 const Vecdouble& b,
-                 const Vecdouble& c,
-                 const Vecequality& e,
-                 const Direction d,
+Simplex::Simplex(const size_t m, const size_t n, const Matdouble& A,
+                 const Vecdouble& b, const Vecdouble& c,
+                 const Vecequality& e, const Direction d,
                  const double eps)
      : status(), f(), x() {
-     if (m <= 0 || n <= 0 ||
-         A.nrows() < m || A.ncols() < n ||
+     if (m <= 0 || n <= 0 || A.nrows() < m || A.ncols() < n ||
          b.size() < m || c.size() < n || e.size() < m || eps <= 0.0)
           throw Error();
 
@@ -175,49 +168,44 @@ Simplex::Simplex(const size_t m,
      }
 }
 
-int wolfe(const Vecdouble& p,
-          const Vecdouble& C,
-          const Matdouble& A,
-          const Vecdouble& b,
-          Vecdouble& x,
-          double& f) {
+int wolfe(const Vecdouble& p, const Vecdouble& C, const Matdouble& A,
+          const Vecdouble& b, Vecdouble& x, double& f) {
      static const double eps = 1e-11;
      static const int maxiter = 10000;
      const int m = A.nrows();
      const int n = A.ncols();
      if (m <= 0 || n <= 0)
-          return 1;             // invalid parameter m or n
+          return 1;  // invalid parameter m or n
      {
           const size_t ms = m;
           const size_t ns = n;
           if (p.size() != ns || C.size() != ns * (ns + 1) / 2 ||
-              A.nrows() != ms || A.ncols() != ns ||
-              b.size() != ms || x.size() != ns)
-               return 1;        // invalid dimensions
+              A.nrows() != ms || A.ncols() != ns || b.size() != ms ||
+              x.size() != ns)
+               return 1;  // invalid dimensions
      }
-     const int g = m + n;       // added row in simplex table
-     const int h = 2 * n + m;   // added column in simplex table
-     const int                  // intervals of variable numbers
-          // x:  0 .. nv - 1
-          nv = n,               // v: nv .. nu - 1
-          nu = 2 * n,           // u: nu .. nz - 1
-          nz = 2 * n + m,       // z: nz .. nw - 1
-          nw = 3 * n + m;       // w: nw .. 3 * n + 2 * m - 1
-     Matdouble t;               // simplex table
-     Vecint B, N;               // basis and non-basis variables
-     int q = m;                 // last row to leave the basis
-     bool initiation = true;    // true = initiation, false = recursion
+     const int g = m + n;      // added row in simplex table
+     const int h = 2 * n + m;  // added column in simplex table
+     const int                 // intervals of variable numbers
+                // x:  0 .. nv - 1
+          nv = n,             // v: nv .. nu - 1
+          nu = 2 * n,         // u: nu .. nz - 1
+          nz = 2 * n + m,     // z: nz .. nw - 1
+          nw = 3 * n + m;     // w: nw .. 3 * n + 2 * m - 1
+     Matdouble t;             // simplex table
+     Vecint B, N;             // basis and non-basis variables
+     int q = m;               // last row to leave the basis
+     bool initiation = true;  // true = initiation, false = recursion
      int iter = 0;
-     int i, j, k, l = 0;        // Dummy initialization for compiler.
+     int i, j, k, l = 0;  // Dummy initialization for compiler.
      double d, s;
 
      try {
           t.resize(g + 1, h + 1);
           B.resize(g);
           N.resize(h);
-     }
-     catch (const std::bad_alloc&) {
-          return 2;             // not enough memory
+     } catch (const std::bad_alloc&) {
+          return 2;  // not enough memory
      }
 
      // Initialize basis and non-basis variable numbers.
@@ -273,9 +261,9 @@ int wolfe(const Vecdouble& p,
           s += t[i][h];
      t[g][h] = s;
 
-     for (;;) {                 // for initiation and recursion
+     for (;;) {  // for initiation and recursion
           if (++iter > maxiter)
-               return 3;        // too many iteration steps
+               return 3;  // too many iteration steps
 
           // Find variable to enter the basis.
           s = 0.0;
@@ -292,13 +280,15 @@ int wolfe(const Vecdouble& p,
                          if (N[j] >= nv && N[j] < nu) {
                               // side condition for v
                               k = N[j] - n;
-                              for (i = 0; i < g && B[i] != k; i++) ;
+                              for (i = 0; i < g && B[i] != k; i++)
+                                   ;
                               if (i < g)
                                    continue;
                          } else if (N[j] < nv) {
                               // side condition for x
                               k = N[j] + n;
-                              for (i = 0; i < g && B[i] != k; i++) ;
+                              for (i = 0; i < g && B[i] != k; i++)
+                                   ;
                               if (i < g)
                                    continue;
                          } else if (N[j] >= nu && N[j] < nz &&
@@ -322,7 +312,7 @@ int wolfe(const Vecdouble& p,
                     // no feasible solution
                     return initiation ? 4 : 5;
                if (!initiation)
-                    break;      // finished successfully
+                    break;  // finished successfully
 
                // Change the phase.
                initiation = false;
@@ -381,7 +371,7 @@ int wolfe(const Vecdouble& p,
                     for (j = 0; j <= h; j++)
                          t[i][j] -= t[k][j] * d;
                }
-     }                          // for initiation and recursion
+     }  // for initiation and recursion
 
      // Put the solution.
      for (i = 0; i < n; i++)
@@ -404,4 +394,4 @@ int wolfe(const Vecdouble& p,
      return 0;
 }
 
-}       // namespace SHG
+}  // namespace SHG

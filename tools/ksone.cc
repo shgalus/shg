@@ -9,13 +9,13 @@
 
 #include <iomanip>
 #include <iostream>
-#include "nr/nr3.h"
-#include "nr/sort.h"
-#include "nr/ksdist.h"
-#include "nr/kstests.h"
-#include "nr/erf.h"
-#include "nr/moment.h"
-#include "shg/mzt.h"
+#include <nr/nr3.h>
+#include <nr/sort.h>
+#include <nr/ksdist.h>
+#include <nr/kstests.h>
+#include <nr/erf.h>
+#include <nr/moment.h>
+#include <shg/mzt.h>
 
 const int n = 2000;
 double mu, sigma;

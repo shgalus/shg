@@ -3,7 +3,7 @@
  * Partitions of integer numbers.
  */
 
-#include "shg/ipart.h"
+#include <shg/ipart.h>
 
 namespace SHG {
 

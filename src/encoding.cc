@@ -1,16 +1,13 @@
-/* encoding.cc: character encodings and character sets */
-
 /**
  * \file src/encoding.cc
  * Character encodings and character sets.
  * Created on 7 July 2019.
  */
 
-#include <map>
+#include <shg/encoding.h>
 #include <algorithm>
-#include "shg/encoding.h"
-
 #include <iostream>
+#include <map>
 
 #ifdef _MSC_VER
 #pragma warning(push)

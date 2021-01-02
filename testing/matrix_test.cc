@@ -1,6 +1,6 @@
-#include "shg/matrix.h"
+#include <shg/matrix.h>
 #include <iomanip>
-#include "shg/utils.h"
+#include <shg/utils.h>
 #include "testing.h"
 
 namespace SHG::Testing {

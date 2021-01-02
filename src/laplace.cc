@@ -1,32 +1,30 @@
-/* laplace.cc: Laplace distribution */
-
 /**
  * \file src/laplace.cc
  * Laplace distribution.
  * \date Created on 6 January 2013.
  */
 
+#include <shg/laplace.h>
+#include <algorithm>
 #include <cmath>
-#include <algorithm>            // sort
 #include <stdexcept>
 #include <string>
-#include "shg/except.h"
-#include "shg/utils.h"
-#include "shg/laplace.h"
+#include <shg/except.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
-using std::size_t;
-using std::exp;
-using std::abs;
-using std::log;
-using std::sqrt;
-using std::invalid_argument;
-using std::string;
 using SHG::sqr;
+using std::abs;
+using std::exp;
+using std::invalid_argument;
+using std::log;
+using std::size_t;
+using std::sqrt;
+using std::string;
 
-Laplace_distribution::Laplace_distribution(double mu, double lambda) :
-     mu(mu), lambda(lambda) {
+Laplace_distribution::Laplace_distribution(double mu, double lambda)
+     : mu(mu), lambda(lambda) {
      if (lambda <= 0.0)
           throw invalid_argument(
                "non-positive lambda in Laplace_distribution");
@@ -38,18 +36,15 @@ double Laplace_distribution::f(double x) {
 
 double Laplace_distribution::cdf(double x) {
      const double t = (x - mu) / lambda;
-     return (t > 0.0) ?
-          1.0 - 0.5 * exp(-t) :
-          0.5 * exp(t);
+     return (t > 0.0) ? 1.0 - 0.5 * exp(-t) : 0.5 * exp(t);
 }
 
 double Laplace_distribution::invcdf(double p) {
      if (p <= 0.0 || p >= 1.0)
           throw invalid_argument(
                "bad p in Laplace_distribution::invcdf");
-     return ((p *= 2.0) > 1.0) ?
-          mu - lambda * log(2.0 - p) :
-          mu + lambda * log(p);
+     return ((p *= 2.0) > 1.0) ? mu - lambda * log(2.0 - p)
+                               : mu + lambda * log(p);
 }
 
 double median(const SHG::Vecdouble& x) {
@@ -75,7 +70,7 @@ double weighted_median(const SHG::Vecdouble& x,
                throw invalid_argument(__func__);
           u -= w[i];
      }
-     if (u >= 0.0)              // all weights equal to 0
+     if (u >= 0.0)  // all weights equal to 0
           throw invalid_argument(__func__);
      int k = 0;
      do {
@@ -94,8 +89,16 @@ Unilapmixmod::Degenerate_distribution::Degenerate_distribution()
      : Exception("degenerate distribution in m-step") {}
 
 Unilapmixmod::Unilapmixmod(const SHG::Vecdouble& x, int K)
-     : n(x.size()), K(K), x(x), pi(K), mu(K), lambda(K), psi(n, K),
-       loglik(), x_sorted(n), order(n) {
+     : n(x.size()),
+       K(K),
+       x(x),
+       pi(K),
+       mu(K),
+       lambda(K),
+       psi(n, K),
+       loglik(),
+       x_sorted(n),
+       order(n) {
      SHG_ASSERT(K >= 1);
      SHG_ASSERT(n >= 1);
      std::vector<double> y(n);
@@ -117,9 +120,9 @@ double Unilapmixmod::estep() {
           const double xi = x(i);
           s = 0.0;
           for (k = 0; k < K; k++)
-               s += (psi(i, k) =
-                     pi(k) *
-                     Laplace_distribution(mu(k), lambda(k)).f(xi));
+               s += (psi(i, k) = pi(k) * Laplace_distribution(
+                                              mu(k), lambda(k))
+                                              .f(xi));
           SHG_ASSERT(s > 0.0);
           for (k = 0; k < K; k++)
                psi(i, k) /= s;
@@ -155,8 +158,15 @@ Laplace_mixture::Error::Error()
 Laplace_mixture::Laplace_mixture(const SHG::Vecdouble& w,
                                  const SHG::Vecdouble& mu,
                                  const SHG::Vecdouble& lambda)
-     : n_(w.size()), w(w), mu(mu), lambda(lambda),
-       moments_calculated(false), mean_(), sdev_(), skew_(), curt_() {
+     : n_(w.size()),
+       w(w),
+       mu(mu),
+       lambda(lambda),
+       moments_calculated(false),
+       mean_(),
+       sdev_(),
+       skew_(),
+       curt_() {
      if (n_ < 1 || mu.size() != n_ || lambda.size() != n_)
           throw Error();
      double s = 0.0;
@@ -199,10 +209,22 @@ double Laplace_mixture::invcdf(double p) const {
      return x;
 }
 
-double Laplace_mixture::mean() {moments(); return mean_;}
-double Laplace_mixture::sdev() {moments(); return sdev_;}
-double Laplace_mixture::skew() {moments(); return skew_;}
-double Laplace_mixture::curt() {moments(); return curt_;}
+double Laplace_mixture::mean() {
+     moments();
+     return mean_;
+}
+double Laplace_mixture::sdev() {
+     moments();
+     return sdev_;
+}
+double Laplace_mixture::skew() {
+     moments();
+     return skew_;
+}
+double Laplace_mixture::curt() {
+     moments();
+     return curt_;
+}
 
 void Laplace_mixture::generate(SHG::RNG& rng, int n,
                                SHG::Vecdouble& x) {
@@ -247,8 +269,8 @@ void Laplace_mixture::moments() {
           m1 += wi * mu1;
           m2 += wi * (mu2 + 2.0 * lambda2);
           m3 += wi * mu1 * (mu2 + 6.0 * lambda2);
-          m4 += wi * (mu2 * (mu2 + 12.0 * lambda2) +
-                      24.0 * sqr(lambda2));
+          m4 += wi *
+                (mu2 * (mu2 + 12.0 * lambda2) + 24.0 * sqr(lambda2));
      }
      mean_ = m1;
      const double sm = sqr(m1);
@@ -258,8 +280,9 @@ void Laplace_mixture::moments() {
      sdev_ = sqrt(var);
      skew_ = (m3 - 3.0 * m1 * m2 + 2.0 * m1 * sm) / sdev_ / var;
      curt_ = (m4 - 4.0 * m1 * m3 + 6.0 * sm * m2 - 3.0 * sqr(sm)) /
-          var / var - 3.0;
+                  var / var -
+             3.0;
      moments_calculated = true;
 }
 
-}       // namespace SHG
+}  // namespace SHG

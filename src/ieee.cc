@@ -1,5 +1,3 @@
-/* ieee.cc: IEEE exception handling */
-
 /**
  * \file src/ieee.cc
  * IEEE exception handling.
@@ -7,11 +5,11 @@
  */
 
 #if defined SHG_IEEE_EXCEPTIONS && defined __GNUG__
+#include <shg/ieee.h>
 #include <fenv.h>
 #include <signal.h>
 #include <iomanip>
 #include <iostream>
-#include "shg/ieee.h"
 
 namespace SHG {
 
@@ -24,7 +22,7 @@ void fatal_ieee_exception(int sig) {
      raise(sig);
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 void set_ieee_exception_handler() {
      signal(SIGFPE, fatal_ieee_exception);
@@ -38,6 +36,6 @@ void disable_ieee_exceptions() {
      fedisableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
 }
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

@@ -1,26 +1,24 @@
-/* smc.cc: semi-Markov chain */
-
 /**
  * \file src/smc.cc
  * Semi-Markov chain.
  * \date Created on 12 December 2011.
  */
 
+#include <shg/smc.h>
 #include <cmath>
 #include <limits>
 #include <string>
-#include "shg/mconsts.h"
-#include "shg/mstat.h"
-#include "shg/smc.h"
+#include <shg/mconsts.h>
+#include <shg/mstat.h>
 
 namespace SHG {
 
-using std::size_t;
 using std::abs;
 using std::exp;
 using std::log;
-using std::sqrt;
 using std::numeric_limits;
+using std::size_t;
+using std::sqrt;
 using std::string;
 
 SMC::STD::~STD() {}
@@ -50,7 +48,7 @@ SMC::Geometric::Geometric(double p) : p(p) {
 int SMC::Geometric::generate(RNG& g) const {
      const unsigned int x = g.geometric(p);
      SHG_ASSERT(x > 0 && x <= static_cast<unsigned int>(
-                     numeric_limits<int>::max()));
+                                   numeric_limits<int>::max()));
      return x;
 }
 
@@ -61,8 +59,8 @@ SMC::Negative_binomial::Negative_binomial(double t, double p)
 
 int SMC::Negative_binomial::generate(RNG& g) const {
      const unsigned int x = g.negative_binomial(t, p);
-     SHG_ASSERT(x < static_cast<unsigned int>(
-                     numeric_limits<int>::max()));
+     SHG_ASSERT(
+          x < static_cast<unsigned int>(numeric_limits<int>::max()));
      return x + 1;
 }
 
@@ -72,8 +70,8 @@ SMC::Logarithmic::Logarithmic(double p) : p(p) {
 
 int SMC::Logarithmic::generate(RNG& g) const {
      const unsigned long x = g.logarithmic(p);
-     SHG_ASSERT(x > 0 && x <=
-                static_cast<unsigned long>(numeric_limits<int>::max()));
+     SHG_ASSERT(x > 0 && x <= static_cast<unsigned long>(
+                                   numeric_limits<int>::max()));
      return x;
 }
 
@@ -83,13 +81,21 @@ SMC::Poisson::Poisson(double mu) : mu(mu) {
 
 int SMC::Poisson::generate(RNG& g) const {
      const unsigned int x = g.poisson(mu);
-     SHG_ASSERT(x < static_cast<unsigned int>(
-                     numeric_limits<int>::max()));
+     SHG_ASSERT(
+          x < static_cast<unsigned int>(numeric_limits<int>::max()));
      return x + 1;
 }
 
 SMC::SMC(std::size_t s)
-     : s_(s), alpha_(s), P_(s, s), std_(0), g_(0), X(), S(), J(), Z() {
+     : s_(s),
+       alpha_(s),
+       P_(s, s),
+       std_(0),
+       g_(0),
+       X(),
+       S(),
+       J(),
+       Z() {
      SHG_ASSERT(s > 0);
 }
 
@@ -190,9 +196,22 @@ int SMC::check_data() {
      return 0;
 }
 
-Unideggaumix::Unideggaumix(int n, int K) :
-     n(n), K(K), K1(K - 1), x(n), pi(K), mu(K1), sigma(K1), x0(),
-     fx0(), eps(), maxit(), psi(n, K), loglik(), iter(), status(1) {}
+Unideggaumix::Unideggaumix(int n, int K)
+     : n(n),
+       K(K),
+       K1(K - 1),
+       x(n),
+       pi(K),
+       mu(K1),
+       sigma(K1),
+       x0(),
+       fx0(),
+       eps(),
+       maxit(),
+       psi(n, K),
+       loglik(),
+       iter(),
+       status(1) {}
 
 void Unideggaumix::estimate() {
      double s = 0.0;
@@ -230,8 +249,8 @@ void Unideggaumix::estimate() {
                s = 0.0;
                for (int k = 0; k < K1; k++) {
                     invsigma = 1.0 / sigma(k);
-                    psiik = SHG::Constants::isqrt2pi<double> *
-                         invsigma *
+                    psiik =
+                         SHG::Constants::isqrt2pi<double> * invsigma *
                          exp(-0.5 * sqr((x(i) - mu(k)) * invsigma));
                     s += (psi(i, k) = pi(k) * psiik);
                }
@@ -254,7 +273,7 @@ void Unideggaumix::estimate() {
                }
                oldloglik = loglik;
           }
-          status = 6;           // maxiter exceeded
+          status = 6;  // maxiter exceeded
           if (iter >= maxit)
                return;
           // m-step
@@ -282,4 +301,4 @@ void Unideggaumix::estimate() {
      }
 }
 
-}       // namespace SHG
+}  // namespace SHG

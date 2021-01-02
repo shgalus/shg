@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\shg\alggeom.h" />
     <ClInclude Include="..\..\..\include\shg\bdstest.h" />
     <ClInclude Include="..\..\..\include\shg\brent.h" />
     <ClInclude Include="..\..\..\include\shg\csv.h" />
@@ -32,10 +33,8 @@
     <ClInclude Include="..\..\..\include\shg\hmm.h" />
     <ClInclude Include="..\..\..\include\shg\ieee.h" />
     <ClInclude Include="..\..\..\include\shg\ipart.h" />
-    <ClInclude Include="..\..\..\include\shg\ksone-inl.h" />
     <ClInclude Include="..\..\..\include\shg\laplace.h" />
     <ClInclude Include="..\..\..\include\shg\mathprog.h" />
-    <ClInclude Include="..\..\..\include\shg\matrix-inl.h" />
     <ClInclude Include="..\..\..\include\shg\matrix.h" />
     <ClInclude Include="..\..\..\include\shg\mconsts.h" />
     <ClInclude Include="..\..\..\include\shg\mstat.h" />
@@ -53,11 +52,11 @@
     <ClInclude Include="..\..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\..\include\shg\specfunc.h" />
     <ClInclude Include="..\..\..\include\shg\utils.h" />
-    <ClInclude Include="..\..\..\include\shg\vector-inl.h" />
     <ClInclude Include="..\..\..\include\shg\vector.h" />
     <ClInclude Include="..\..\..\include\shg\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\alggeom.cc" />
     <ClCompile Include="..\..\..\src\bdstest.cc" />
     <ClCompile Include="..\..\..\src\csv.cc" />
     <ClCompile Include="..\..\..\src\date.cc" />

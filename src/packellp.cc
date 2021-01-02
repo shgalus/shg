@@ -1,8 +1,8 @@
-#include "shg/mconsts.h"
-#include "shg/ipart.h"
-#include "shg/fcmp.h"
-#include "shg/numalg.h"
-#include "shg/packellp.h"
+#include <shg/packellp.h>
+#include <shg/fcmp.h>
+#include <shg/ipart.h>
+#include <shg/mconsts.h>
+#include <shg/numalg.h>
 
 namespace SHG::PACKING {
 

@@ -1,5 +1,3 @@
-/* normmix.h: mixtures of normal densities */
-
 /**
  * \file include/shg/normmix.h
  * Mixtures of normal densities.
@@ -10,8 +8,8 @@
 #define SHG_NORMMIX_H
 
 #include <cstdlib>
-#include "shg/except.h"
-#include "shg/vector.h"
+#include <shg/except.h>
+#include <shg/vector.h>
 
 namespace SHG {
 
@@ -75,16 +73,15 @@ public:
      struct Error : public virtual Exception {
           Error();
      };
-     Normal_mixture(const Vecdouble& w,
-                    const Vecdouble& mu,
+     Normal_mixture(const Vecdouble& w, const Vecdouble& mu,
                     const Vecdouble& sigma);
-     double p(double x) const;          ///< Probability density.
-     double cdf(double x) const;        ///< Distribution function.
-     double invcdf(double p) const;     ///< Percentage point.
-     double mean();                     ///< Return mean.
-     double sdev();                     ///< Return standard deviation.
-     double skew();                     ///< Return skewness.
-     double curt();                     ///< Return curtosis.
+     double p(double x) const;       ///< Probability density.
+     double cdf(double x) const;     ///< Distribution function.
+     double invcdf(double p) const;  ///< Percentage point.
+     double mean();                  ///< Return mean.
+     double sdev();                  ///< Return standard deviation.
+     double skew();                  ///< Return skewness.
+     double curt();                  ///< Return curtosis.
      /**
       * Write this class to an opened binary stream.
       *
@@ -99,18 +96,18 @@ public:
      static Normal_mixture read(std::istream& f);
 
 private:
-     const std::size_t n;               ///< Number of components.
-     const Vecdouble w;                 ///< Weights.
-     const Vecdouble mu;                ///< Means.
-     const Vecdouble sigma;             ///< Standard deviations.
-     bool moments_calculated;           ///< True if moments calculated.
-     double mean_;                      ///< Mean.
-     double sdev_;                      ///< Standard deviation.
-     double skew_;                      ///< Skewness.
-     double curt_;                      ///< Curtosis.
-     void moments();                    ///< Calculate moments.
+     const std::size_t n;      ///< Number of components.
+     const Vecdouble w;        ///< Weights.
+     const Vecdouble mu;       ///< Means.
+     const Vecdouble sigma;    ///< Standard deviations.
+     bool moments_calculated;  ///< True if moments calculated.
+     double mean_;             ///< Mean.
+     double sdev_;             ///< Standard deviation.
+     double skew_;             ///< Skewness.
+     double curt_;             ///< Curtosis.
+     void moments();           ///< Calculate moments.
 };
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

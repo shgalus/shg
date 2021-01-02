@@ -1,24 +1,22 @@
-/* drbnwtsn.cc: Durbin-Watson statistic */
-
 /**
  * \file src/drbnwtsn.cc
  * Durbin-Watson statistic.
  * \date Created on 12 July 2010.
  */
 
+#include <shg/drbnwtsn.h>
 #include <cmath>
 #include <iomanip>
 #include <stdexcept>
 #include <vector>
-#include "shg/except.h"
-#include "shg/mconsts.h"
-#include "shg/drbnwtsn.h"
+#include <shg/except.h>
+#include <shg/mconsts.h>
 
-using std::vector;
-using std::sqrt;
+using std::abs;
 using std::atan;
 using std::sin;
-using std::abs;
+using std::sqrt;
+using std::vector;
 
 namespace SHG {
 
@@ -44,7 +42,7 @@ double f(const double u, const vector<double>& w, const int m) {
      }
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
 double dwcdf(const int n, const int k, const double x,
              const bool lower, const double eps, const int iter) {
@@ -131,8 +129,8 @@ double dwcdf(const int n, const int k, const double x,
      }
 }
 
-void ppdw(const int n, const int k, const double p,
-          double* xl, double* xu, const double eps) {
+void ppdw(const int n, const int k, const double p, double* xl,
+          double* xu, const double eps) {
      static const double epscdf = 1e-6;
      static const int iter = 15;
 
@@ -165,10 +163,10 @@ void ppdw(const int n, const int k, const double p,
 void swtbl(std::ostream& f) {
      static const double eps = 4.9e-5;
 
-     using std::setw;
      using SHG::ppdw;
      using std::fixed;
      using std::setprecision;
+     using std::setw;
 
      f << fixed << setprecision(3);
 
@@ -204,13 +202,13 @@ void swtbl(std::ostream& f) {
                          if (n - k - 1 <= 3)
                               break;
                          j++;
-                         ppdw(n, k, alpha, &xl[j - 1], &xu[j - 1], eps);
+                         ppdw(n, k, alpha, &xl[j - 1], &xu[j - 1],
+                              eps);
                     }
                     f << setw(3) << n;
                     for (int k = 0; k < j; k++)
-                         f << ' '
-                           << setw(6) << xl[k]
-                           << setw(6) << xu[k];
+                         f << ' ' << setw(6) << xl[k] << setw(6)
+                           << xu[k];
                     for (int k = 0; k < 5 - j; k++)
                          f << "  ----- -----";
                     f << '\n';
@@ -227,4 +225,4 @@ void swtbl(std::ostream& f) {
      }
 }
 
-}       // namespace SHG
+}  // namespace SHG

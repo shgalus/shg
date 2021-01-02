@@ -1,5 +1,3 @@
-/* date.h: calendrical calculations */
-
 /**
  * \file include/shg/date.h
  * Calendrical calculations.
@@ -12,7 +10,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
-#include "shg/except.h"
+#include <shg/except.h>
 
 /**
  * The only namespace which contains all the library.
@@ -136,9 +134,21 @@ namespace SHG {
  */
 class Date {
 public:
-     enum Day {sun, mon, tue, wed, thu, fri, sat};
-     enum Month {jan = 1, feb, mar, apr, may, jun,
-                 jul, aug, sep, oct, nov, dec};
+     enum Day { sun, mon, tue, wed, thu, fri, sat };
+     enum Month {
+          jan = 1,
+          feb,
+          mar,
+          apr,
+          may,
+          jun,
+          jul,
+          aug,
+          sep,
+          oct,
+          nov,
+          dec
+     };
 
      /**
       * An exception class thrown in case of incorrect date. The
@@ -192,7 +202,7 @@ public:
      /**
       * \copydoc Date(const std::string&)
       */
-     explicit Date(const char *s);
+     explicit Date(const char* s);
 
      /**
       * \copybrief Date(int, int, int)
@@ -311,7 +321,7 @@ public:
 private:
      typedef std::int_fast32_t int32;
 
-     int32 abs;                 /**< Internal representation. */
+     int32 abs; /**< Internal representation. */
 
      /**
       * Constructor from internal representation.
@@ -328,14 +338,11 @@ private:
      static int32 pack(int d, int m, int y);
 
      static int a4toi(const char* s) {
-          if (!isdigit(s[0]) || !isdigit(s[1]) ||
-              !isdigit(s[2]) || !isdigit(s[3]))
+          if (!isdigit(s[0]) || !isdigit(s[1]) || !isdigit(s[2]) ||
+              !isdigit(s[3]))
                throw Bad_date();
-          return
-               (s[0] - '0') * 1000 +
-               (s[1] - '0') *  100 +
-               (s[2] - '0') *   10 +
-               (s[3] - '0');
+          return (s[0] - '0') * 1000 + (s[1] - '0') * 100 +
+                 (s[2] - '0') * 10 + (s[3] - '0');
      }
 
      static int a2toi(const char* s) {
@@ -405,6 +412,6 @@ std::istream& operator>>(std::istream& stream, Date& d);
 
 /** \} */ /* end of group calendrical_calculations */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

@@ -1,5 +1,3 @@
-/* ninv.h: number of inversions in a sequence */
-
 /**
  * \file include/shg/ninv.h
  * Number of inversions in a sequence.
@@ -9,8 +7,8 @@
 #ifndef SHG_NINV_H
 #define SHG_NINV_H
 
-#include <cstddef>
 #include <algorithm>
+#include <cstddef>
 #include <memory>
 
 namespace SHG {
@@ -105,6 +103,6 @@ double nninv(std::size_t i, std::size_t n);
 
 /** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

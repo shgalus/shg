@@ -20,13 +20,14 @@ public:
                          char field_separator = ',',
                          char quote_character = '\"');
      void write_record(const std::vector<std::string>& rec);
+
 private:
      const char field_separator_;
      const char quote_character_;
      const std::string special_;
      std::ostream& ostr_;
-     std::string rec_ {};
-     bool first_ {};
+     std::string rec_{};
+     bool first_{};
 
      void add_field(const std::string& s);
 };
@@ -41,20 +42,21 @@ public:
                          char field_separator = ',',
                          char quote_character = '\"');
      void getrec(std::vector<std::string>& rec);
+
 private:
      const char field_separator_;
      const char quote_character_;
      std::istream& istr_;
-     std::string fld_ {};
-     char c_ {};
-     bool inquote_ {false};
-     bool prevquote_ {false};
+     std::string fld_{};
+     char c_{};
+     bool inquote_{false};
+     bool prevquote_{false};
 
      void handle_quote();
      void handle_separator(std::vector<std::string>& rec);
      bool is_end_of_record();
 };
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

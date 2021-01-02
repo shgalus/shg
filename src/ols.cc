@@ -1,19 +1,17 @@
-/* ols.cc: ordinary least squares */
-
 /**
  * \file src/ols.cc
  * Ordinary least squares.
  * \date Created on 28 November 2010.
  */
 
+#include <shg/ols.h>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <limits>
-#include "shg/drbnwtsn.h"
-#include "shg/specfunc.h"
-#include "shg/utils.h"          // sqr
-#include "shg/ols.h"
+#include <shg/drbnwtsn.h>
+#include <shg/specfunc.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -26,37 +24,35 @@ OLS::Singular_covariance_matrix::Singular_covariance_matrix()
 OLS::Internal_error::Internal_error()
      : Exception("internal error in OLS") {}
 
-OLS::OLS(const Matdouble& X,
-         const Vecdouble& y,
-         bool add_intercept) :
-     problem_name_(),
-     n_(X.nrows()),
-     k_(add_intercept ? X.ncols() + 1: X.ncols()),
-     dof_(n_ - k_),
-     intercept_(add_intercept),
-     beta_(k_),
-     ser_(),
-     r2_(),
-     rbar2_(),
-     var_(),
-     standard_err_(k_),
-     cov_(k_, k_),
-     fitted_(n_),
-     residuals_(n_),
-     rss_(0.0),
-     tss_(0.0),
-     ess_(),
-     mean_y_(),
-     stddev_y_(0.0),
-     positive_y_(true),
-     variation_y_(),
-     tstat_(k_, -1.0),
-     pvalt_(k_),
-     fstat_(-1.0),
-     pvalf_(),
-     dw_d_(-1.0),
-     dw_pvalpos_(-1.0),
-     dw_pvalneg_(-1.0) {
+OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
+     : problem_name_(),
+       n_(X.nrows()),
+       k_(add_intercept ? X.ncols() + 1 : X.ncols()),
+       dof_(n_ - k_),
+       intercept_(add_intercept),
+       beta_(k_),
+       ser_(),
+       r2_(),
+       rbar2_(),
+       var_(),
+       standard_err_(k_),
+       cov_(k_, k_),
+       fitted_(n_),
+       residuals_(n_),
+       rss_(0.0),
+       tss_(0.0),
+       ess_(),
+       mean_y_(),
+       stddev_y_(0.0),
+       positive_y_(true),
+       variation_y_(),
+       tstat_(k_, -1.0),
+       pvalt_(k_),
+       fstat_(-1.0),
+       pvalf_(),
+       dw_d_(-1.0),
+       dw_pvalpos_(-1.0),
+       dw_pvalneg_(-1.0) {
      if (n_ < 1 || k_ < 1 || n_ < k_ ||
          static_cast<std::size_t>(n_) != y.size())
           throw Invalid_argument();
@@ -146,8 +142,8 @@ OLS::OLS(const Matdouble& X,
      // Calculate covariance matrix of parameters, standard errors of
      // parameters and t statistics.
      for (int i = 0; i < k_; i++) {
-          const double s = standard_err_(i)
-               = std::sqrt(cov_(i, i) *= var_);
+          const double s = standard_err_(i) =
+               std::sqrt(cov_(i, i) *= var_);
           const double b = beta_(i);
           if (std::abs(b / std::numeric_limits<double>::max()) < s) {
                tstat_(i) = std::abs(b) / s;
@@ -197,29 +193,28 @@ void OLS::dw() {
      dw_d_ = x;
      try {
           dw_pvalpos_ = dwcdf(n_, k_ - 1, x, true, 0.00001, 15);
+     } catch (const std::range_error&) {
      }
-     catch (const std::range_error&) {}
      try {
-          dw_pvalneg_ = 1.0 - dwcdf(n_, k_ - 1, x, false, 0.00001, 15);
+          dw_pvalneg_ =
+               1.0 - dwcdf(n_, k_ - 1, x, false, 0.00001, 15);
+     } catch (const std::range_error&) {
      }
-     catch (const std::range_error&) {}
 }
 
 void OLS::print(std::ostream& f) const {
      using std::setw;
-     const std::string na(w_, '*');      // not applicable
+     const std::string na(w_, '*');  // not applicable
      const std::ios_base::fmtflags opts = f.flags();
 
      f << std::scientific << std::setprecision(4)
        << "Ordinary least squares estimation results"
-       << "\nProblem: "
-       << get_problem_name()
-       << "\nNumber of observations:          "
-       << setw(5) << nobs()
-       << "\nNumber of explanatory variables: "
-       << setw(5) << nparams()
-       << "\nNumber of degrees of freedom:    "
-       << setw(5) << dof() << '\n';
+       << "\nProblem: " << get_problem_name()
+       << "\nNumber of observations:          " << setw(5) << nobs()
+       << "\nNumber of explanatory variables: " << setw(5)
+       << nparams()
+       << "\nNumber of degrees of freedom:    " << setw(5) << dof()
+       << '\n';
 
      if (intercept())
           f << "The first parameter is an intercept.";
@@ -229,9 +224,8 @@ void OLS::print(std::ostream& f) const {
      f << "\n\nParam.   Estimate    Std. error   t statistic"
           "       p-value\n";
      for (int i = 0; i < nparams(); i++) {
-          f << setw(2) << i + 1 << ". "
-            << setw(w_) << beta()[i] << " "
-            << setw(w_) << standard_err()[i];
+          f << setw(2) << i + 1 << ". " << setw(w_) << beta()[i]
+            << " " << setw(w_) << standard_err()[i];
           if (tstat()[i] >= 0.0)
                f << " " << setw(w_) << sgn(beta()[i]) * tstat()[i]
                  << " " << setw(w_) << pvalt()[i]
@@ -241,24 +235,24 @@ void OLS::print(std::ostream& f) const {
           f << '\n';
      }
 
-     f << "\nStandard error of regression:             "
-       << setw(w_) << ser()
-       << "\nCoefficient of determination:             "
-       << setw(w_) << r2()
-       << "\nAdjusted coefficient of determination:    "
-       << setw(w_) << rbar2()
-       << "\nVariance of residuals:                    "
-       << setw(w_) << var()
-       << "\nResidual sum of squares:                  "
-       << setw(w_) << rss()
-       << "\nExplained sum of squares:                 "
-       << setw(w_) << ess()
-       << "\nTotal sum of squares:                     "
-       << setw(w_) << tss()
-       << "\nMean of dependent variable:               "
-       << setw(w_) << mean_y()
-       << "\nStandard deviation of dependent variable: "
-       << setw(w_) << stddev_y()
+     f << "\nStandard error of regression:             " << setw(w_)
+       << ser()
+       << "\nCoefficient of determination:             " << setw(w_)
+       << r2()
+       << "\nAdjusted coefficient of determination:    " << setw(w_)
+       << rbar2()
+       << "\nVariance of residuals:                    " << setw(w_)
+       << var()
+       << "\nResidual sum of squares:                  " << setw(w_)
+       << rss()
+       << "\nExplained sum of squares:                 " << setw(w_)
+       << ess()
+       << "\nTotal sum of squares:                     " << setw(w_)
+       << tss()
+       << "\nMean of dependent variable:               " << setw(w_)
+       << mean_y()
+       << "\nStandard deviation of dependent variable: " << setw(w_)
+       << stddev_y()
        << "\nVariation of dependent variable:          ";
 
      if (positive_y())
@@ -377,4 +371,4 @@ const char* OLS::stars(double x) {
 const double OLS::tolerance_ =
      100.0 * std::numeric_limits<double>::epsilon();
 
-}       // namespace SHG
+}  // namespace SHG

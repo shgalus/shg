@@ -1,8 +1,7 @@
-#include "shg/date.h"
+#include <shg/date.h>
 #include <sstream>
 #include <string>
-#include "shg/date.h"
-#include "shg/vector.h"
+#include <shg/vector.h>
 #include "testing.h"
 
 namespace bdata = boost::unit_test::data;

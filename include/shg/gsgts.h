@@ -1,5 +1,3 @@
-/* gsgts.h: generating stationary Gaussian time series */
-
 /**
  * \file include/shg/gsgts.h
  * Generating stationary Gaussian time series.
@@ -9,8 +7,8 @@
 #ifndef SHG_GSGTS_H
 #define SHG_GSGTS_H
 
-#include <cstddef>
 #include <complex>
+#include <cstddef>
 #include <functional>
 #include <vector>
 
@@ -64,7 +62,7 @@ namespace SHG {
  *      for (std::size_t k = 0; k < H.size(); k++)
  *           H[k] *= 0.5;
  * }
- * 
+ *
  * void realft_fftw(const std::vector<std::complex<double>>& z,
  *                  std::vector<double>& X) {
  *      const double c = 1.0 / (2.0 * std::sqrt(z.size() - 1));
@@ -123,16 +121,16 @@ public:
      /**
       * Prototype for discrete cosine transform passed to constructor.
       */
-     typedef void (*Cosine_transform)
-     (const std::vector<double>& h, std::vector<double>& H);
+     typedef void (*Cosine_transform)(const std::vector<double>& h,
+                                      std::vector<double>& H);
 
      /**
       * Prototype for discrete Fourier transform passed to
       * constructor.
       */
-     typedef void (*Real_transform)
-     (const std::vector<std::complex<double>>& z,
-      std::vector<double>& X);
+     typedef void (*Real_transform)(
+          const std::vector<std::complex<double>>& z,
+          std::vector<double>& X);
 
      /**
       * The constructor requires the autocovariance function
@@ -167,8 +165,7 @@ public:
       *
       */
      void generate(std::vector<double>& X,
-                   std::function<double()> normal,
-                   Real_transform f);
+                   std::function<double()> normal, Real_transform f);
 
 private:
      const std::size_t n;
@@ -214,11 +211,10 @@ private:
  */
 std::vector<double> acfar1(double sigma2, double phi1, size_t n);
 
+/** \} */ /* end of group time_series */
 
-/** \} */       /* end of group time_series */
+/** \} */ /* end of group mathematical_statistics */
 
-/** \} */       /* end of group mathematical_statistics */
-
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

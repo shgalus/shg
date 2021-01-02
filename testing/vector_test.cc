@@ -1,5 +1,5 @@
-#include "shg/vector.h"
-#include "shg/utils.h"
+#include <shg/vector.h>
+#include <shg/utils.h>
 #include "testing.h"
 
 namespace SHG::Testing {

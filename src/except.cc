@@ -1,13 +1,11 @@
-/* except.cc: exception classes, auxiliary functions and macros */
-
 /**
  * \file src/except.cc
  * Exception classes, auxiliary functions and macros.
  * \date Created on 22 July 2010.
  */
 
+#include <shg/except.h>
 #include <cstring>
-#include "shg/except.h"
 
 namespace SHG {
 
@@ -57,7 +55,9 @@ Assertion::Assertion(const char* file, int line)
      : Exception("assertion failed"), file_(file), line_(line) {}
 
 Assertion::Assertion(const Assertion& a)
-     : Exception("assertion failed"), file_(a.file_), line_(a.line_) {}
+     : Exception("assertion failed"),
+       file_(a.file_),
+       line_(a.line_) {}
 
 Assertion& Assertion::operator=(const Assertion& a) {
      file_ = a.file_;
@@ -118,13 +118,11 @@ void validate(bool e, const char* func) {
           throw Invalid_argument(func);
 }
 
-File_error::File_error()
-     : Exception("file error") {
+File_error::File_error() : Exception("file error") {
      *filename_ = 0;
 }
 
-File_error::File_error(const char* filename)
-     : File_error() {
+File_error::File_error(const char* filename) : File_error() {
      this->filename(filename);
 }
 
@@ -136,8 +134,7 @@ const char* File_error::filename() const {
      return filename_;
 }
 
-void File_error::print(const char* progname,
-                       std::ostream& f) const {
+void File_error::print(const char* progname, std::ostream& f) const {
      if (progname && *progname)
           f << progname << ": ";
      f << what();
@@ -146,10 +143,11 @@ void File_error::print(const char* progname,
      f << '\n';
 }
 
-void error(const char* message, const char* progname, std::ostream& f) {
+void error(const char* message, const char* progname,
+           std::ostream& f) {
      if (progname && *progname)
           f << progname << ": ";
      f << ((message && *message) ? message : "error") << '\n';
 }
 
-}       // namespace SHG
+}  // namespace SHG

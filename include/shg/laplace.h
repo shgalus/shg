@@ -1,5 +1,3 @@
-/* laplace.h: Laplace distribution */
-
 /**
  * \file include/shg/laplace.h
  * Laplace distribution.
@@ -10,9 +8,9 @@
 #define SHG_LAPLACE_H
 
 #include <cstdlib>
-#include "shg/except.h"
-#include "shg/matrix.h"
-#include "shg/rng.h"
+#include <shg/except.h>
+#include <shg/matrix.h>
+#include <shg/rng.h>
 
 namespace SHG {
 
@@ -170,14 +168,14 @@ struct Unilapmixmod {
       */
      void mstep();
 
-     const int n;               ///< number of observations
-     const int K;               ///< number of components
-     const SHG::Vecdouble& x;   ///< observations
-     SHG::Vecdouble pi;         ///< weights
-     SHG::Vecdouble mu;         ///< mus of Laplace components
-     SHG::Vecdouble lambda;     ///< lambdas of Laplace components
-     Matdouble psi;             ///< the matrix psi
-     double loglik;             ///< loglikelihood found
+     const int n;              ///< number of observations
+     const int K;              ///< number of components
+     const SHG::Vecdouble& x;  ///< observations
+     SHG::Vecdouble pi;        ///< weights
+     SHG::Vecdouble mu;        ///< mus of Laplace components
+     SHG::Vecdouble lambda;    ///< lambdas of Laplace components
+     Matdouble psi;            ///< the matrix psi
+     double loglik;            ///< loglikelihood found
      SHG::Vecdouble x_sorted;
      SHG::Vecint order;
 };
@@ -208,13 +206,13 @@ public:
      Laplace_mixture(const SHG::Vecdouble& w,
                      const SHG::Vecdouble& mu,
                      const SHG::Vecdouble& lambda);
-     double p(double x) const;          ///< Probability density.
-     double cdf(double x) const;        ///< Distribution function.
-     double invcdf(double p) const;     ///< Percentage point.
-     double mean();                     ///< Return mean.
-     double sdev();                     ///< Return standard deviation.
-     double skew();                     ///< Return skewness.
-     double curt();                     ///< Return curtosis.
+     double p(double x) const;       ///< Probability density.
+     double cdf(double x) const;     ///< Distribution function.
+     double invcdf(double p) const;  ///< Percentage point.
+     double mean();                  ///< Return mean.
+     double sdev();                  ///< Return standard deviation.
+     double skew();                  ///< Return skewness.
+     double curt();                  ///< Return curtosis.
      /**
       * Generates a series from the mixture.
       *
@@ -238,22 +236,22 @@ public:
      static Laplace_mixture read(std::istream& f);
 
 private:
-     const std::size_t n_;              ///< Number of components.
-     const SHG::Vecdouble w;            ///< Weights.
-     const SHG::Vecdouble mu;           ///< Parameters mu.
-     const SHG::Vecdouble lambda;       ///< Parameters lambda.
-     bool moments_calculated;           ///< True if moments calculated.
-     double mean_;                      ///< Mean.
-     double sdev_;                      ///< Standard deviation.
-     double skew_;                      ///< Skewness.
-     double curt_;                      ///< Curtosis.
-     void moments();                    ///< Calculate moments.
+     const std::size_t n_;         ///< Number of components.
+     const SHG::Vecdouble w;       ///< Weights.
+     const SHG::Vecdouble mu;      ///< Parameters mu.
+     const SHG::Vecdouble lambda;  ///< Parameters lambda.
+     bool moments_calculated;      ///< True if moments calculated.
+     double mean_;                 ///< Mean.
+     double sdev_;                 ///< Standard deviation.
+     double skew_;                 ///< Skewness.
+     double curt_;                 ///< Curtosis.
+     void moments();               ///< Calculate moments.
 };
 
-/** \} */       /* end of group laplace_distribution */
+/** \} */ /* end of group laplace_distribution */
 
-/** \} */       /* end of group mathematical_statistics */
+/** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

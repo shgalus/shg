@@ -1,4 +1,4 @@
-#include "shg/permentr.h"
+#include <shg/permentr.h>
 #include "testing.h"
 
 namespace SHG::Testing {

@@ -1,5 +1,3 @@
-/* runs.h: Wald-Wolfowitz runs test */
-
 /**
  * \file include/shg/runs.h
  * Wald-Wolfowitz runs test.
@@ -9,7 +7,7 @@
 #ifndef SHG_RUNS_H
 #define SHG_RUNS_H
 
-#include "shg/vector.h"
+#include <shg/vector.h>
 
 namespace SHG {
 
@@ -74,12 +72,8 @@ void runs(std::size_t n1, std::size_t n2, std::size_t k, bool exact,
  * operation \f$<\f$ must be defined for the type \f$T\f$.
  */
 template <class T>
-void count_runs(
-     const SHG::Vector<T>& x,
-     T z,
-     std::size_t& n1,
-     std::size_t& n2,
-     std::size_t& k) {
+void count_runs(const SHG::Vector<T>& x, T z, std::size_t& n1,
+                std::size_t& n2, std::size_t& k) {
      const auto n = x.size();
      n1 = n2 = k = 0;
      if (n == 0)
@@ -102,6 +96,6 @@ void count_runs(
 
 /** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

@@ -1,5 +1,3 @@
-/* smc.h: semi-Markov chain */
-
 /**
  * \file include/shg/smc.h
  * Semi-Markov chain.
@@ -10,10 +8,10 @@
 #define SHG_SMC_H
 
 #include <cstdlib>
-#include "shg/except.h"
-#include "shg/matrix.h"
-#include "shg/rng.h"
-#include "shg/utils.h"
+#include <shg/except.h>
+#include <shg/matrix.h>
+#include <shg/rng.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -68,6 +66,7 @@ struct SMC {
      struct Finite : public STD {
           Finite(const Vecint& x, const Vecdouble& p);
           virtual int generate(RNG& g) const;
+
      private:
           const Vecint x;
           const Vecdouble p;
@@ -78,6 +77,7 @@ struct SMC {
      struct Geometric : public STD {
           explicit Geometric(double p);
           virtual int generate(RNG& g) const;
+
      private:
           const double p;
      };
@@ -87,6 +87,7 @@ struct SMC {
      struct Negative_binomial : public STD {
           Negative_binomial(double t, double p);
           virtual int generate(RNG& g) const;
+
      private:
           const double t;
           const double p;
@@ -97,6 +98,7 @@ struct SMC {
      struct Logarithmic : public STD {
           explicit Logarithmic(double p);
           virtual int generate(RNG& g) const;
+
      private:
           const double p;
      };
@@ -106,6 +108,7 @@ struct SMC {
      struct Poisson : public STD {
           explicit Poisson(double mu);
           virtual int generate(RNG& g) const;
+
      private:
           const double mu;
      };
@@ -138,15 +141,15 @@ struct SMC {
       */
      int generate(int T, bool cut = false);
 
-     const std::size_t s_;      ///< number of states: 0, ..., s_ - 1
-     Vecdouble alpha_;          ///< initial state distribution
-     Matdouble P_;              ///< transition matrix (P(i, i) = 0)
-     STD* std_;                 ///< sojourn time distribution
-     RNG* g_;                   ///< random number generator
-     Vecint X;                  ///< successive sojourn times
-     Vecint S;                  ///< time points state changes occur
-     Vecint J;                  ///< visited states
-     Vecint Z;                  ///< generated SMC
+     const std::size_t s_;  ///< number of states: 0, ..., s_ - 1
+     Vecdouble alpha_;      ///< initial state distribution
+     Matdouble P_;          ///< transition matrix (P(i, i) = 0)
+     STD* std_;             ///< sojourn time distribution
+     RNG* g_;               ///< random number generator
+     Vecint X;              ///< successive sojourn times
+     Vecint S;              ///< time points state changes occur
+     Vecint J;              ///< visited states
+     Vecint Z;              ///< generated SMC
 
 private:
      int check_data();
@@ -164,29 +167,29 @@ private:
 struct Unideggaumix {
      Unideggaumix(int n, int K);
      void estimate();
-     int get_status() {return status;}
-     const int n;               ///< number of observations
-     const int K;               ///< number of components
-     const int K1;              ///< number of Gaussian components
-     Vecdouble x;               ///< observations
-     Vecdouble pi;              ///< weights
-     Vecdouble mu;              ///< means of normal components
-     Vecdouble sigma;           ///< std. dev. of normal components
-     double x0;                 ///< point for degenerate distribution
-     double fx0;                ///< probability function at x0
-     double eps;                ///< when loglikelihoods converged
-     int maxit;                 ///< maximum number of iterations
-     Matdouble psi;             ///< the matrix psi
-     double loglik;             ///< loglikelihood found
-     int iter;                  ///< the number of iterations executed
+     int get_status() { return status; }
+     const int n;      ///< number of observations
+     const int K;      ///< number of components
+     const int K1;     ///< number of Gaussian components
+     Vecdouble x;      ///< observations
+     Vecdouble pi;     ///< weights
+     Vecdouble mu;     ///< means of normal components
+     Vecdouble sigma;  ///< std. dev. of normal components
+     double x0;        ///< point for degenerate distribution
+     double fx0;       ///< probability function at x0
+     double eps;       ///< when loglikelihoods converged
+     int maxit;        ///< maximum number of iterations
+     Matdouble psi;    ///< the matrix psi
+     double loglik;    ///< loglikelihood found
+     int iter;         ///< the number of iterations executed
 private:
-     int status;                ///< status returned by estimate
+     int status;  ///< status returned by estimate
 };
 
-/** \} */       /* end of group HSMM */
+/** \} */ /* end of group HSMM */
 
-/** \} */       /* end of group mathematical_statistics */
+/** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

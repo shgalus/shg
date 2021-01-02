@@ -1,7 +1,7 @@
-#include "shg/geometry.h"
+#include <shg/geometry.h>
 #include <iomanip>
 #include <sstream>
-#include "shg/mconsts.h"
+#include <shg/mconsts.h>
 #include "testing.h"
 
 namespace SHG::Testing {
@@ -957,13 +957,13 @@ BOOST_AUTO_TEST_CASE(distance_from_point_to_ellipse_test) {
 }
 
 BOOST_AUTO_TEST_CASE(is_tangent_point_test) {
-     Ellipse e1 {4.0, 2.0, 0.0, 0.0, 0.0};
-     Ellipse e2 {2.0, 1.0, 0.0, 6.0, 0.0};
-     Point p {4.0, 0.0};
+     Ellipse e1{4.0, 2.0, 0.0, 0.0, 0.0};
+     Ellipse e2{2.0, 1.0, 0.0, 6.0, 0.0};
+     Point p{4.0, 0.0};
 
      BOOST_CHECK(is_tangent_point(e1, e2, p));
 
-     const Point p0 {4.0, 0.0};
+     const Point p0{4.0, 0.0};
      const double phi = Constants::pi<double> / 3.0;
 
      e1.rotate(phi, p0);

@@ -1,8 +1,8 @@
+#include <shg/ipart.h>
 #include <algorithm>
 #include <iterator>
 #include <numeric>
-#include "shg/ipart.h"
-#include "shg/vector.h"
+#include <shg/vector.h>
 #include "testing.h"
 
 namespace SHG::Testing {

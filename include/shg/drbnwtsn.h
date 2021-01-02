@@ -1,5 +1,3 @@
-/* drbnwtsn.h: Durbin-Watson statistic */
-
 /**
  * \file include/shg/drbnwtsn.h
  * Durbin-Watson statistic.
@@ -47,28 +45,29 @@ namespace SHG {
  *
  * \sa ppdw, swtbl
  */
-double dwcdf(int n, int k, double x, bool lower, double eps, int iter);
+double dwcdf(int n, int k, double x, bool lower, double eps,
+             int iter);
 
 /**
  * The percentage points of the Durbin-Watson statistic.
  *
- * \f$n \geq 1\f$ denotes the number of observations, \f$k \geq 1\f$ is
- * the number of regressors excluding the intercept, \f$0 < p < 1\f$ is
- * the probability for which percentage point shoul be evaluated,
- * \f$\mathit{eps} > 0\f$ is the accuracy of calculating. There must be
- * \f$n - k - 1 > 1\f$.
+ * \f$n \geq 1\f$ denotes the number of observations, \f$k \geq 1\f$
+ * is the number of regressors excluding the intercept, \f$0 < p <
+ * 1\f$ is the probability for which percentage point shoul be
+ * evaluated, \f$\mathit{eps} > 0\f$ is the accuracy of calculating.
+ * There must be \f$n - k - 1 > 1\f$.
  *
  * On return, \f$x_L\f$ and \f$x_U\f$ contain values such that
  * \f$\Pr(d_L < x_L) = p\f$ and \f$\Pr(d_U < x_U) = p\f$.
  *
- * The method of bisection is used twice to solve equations \f$\Pr(d_L <
- * x_L) = p\f$ and \f$\Pr(d_U < x_U) = p\f$.
+ * The method of bisection is used twice to solve equations \f$\Pr(d_L
+ * < x_L) = p\f$ and \f$\Pr(d_U < x_U) = p\f$.
  *
  * \exception std::invalid_argument if \f$n \leq 0\f$, \f$k \leq 0\f$,
  * \f$n - k - 1 \leq 1\f$, \f$p \leq 0\f$ or \f$ p \geq 1\f$
  *
- * \exception std::range_error if the number of iterations in dwcdfwould
- * be greater than 15
+ * \exception std::range_error if the number of iterations in
+ * dwcdfwould be greater than 15
  *
  * \sa dwcdf, swtbl
  */
@@ -89,6 +88,6 @@ void swtbl(std::ostream& f = std::cout);
 
 /** \} */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

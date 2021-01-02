@@ -1,16 +1,15 @@
+#include <shg/csv.h>
 #include <stdexcept>
-#include "shg/csv.h"
 
 namespace SHG {
 
-CSV_writer::CSV_writer(std::ostream& ostr,
-                       char field_separator,
-                       char quote_character) :
-     field_separator_(field_separator),
-     quote_character_(quote_character),
-     special_(std::string() + field_separator_
-              + quote_character_ + '\r' + '\n'),
-     ostr_(ostr) {
+CSV_writer::CSV_writer(std::ostream& ostr, char field_separator,
+                       char quote_character)
+     : field_separator_(field_separator),
+       quote_character_(quote_character),
+       special_(std::string() + field_separator_ + quote_character_ +
+                '\r' + '\n'),
+       ostr_(ostr) {
      if (field_separator_ == quote_character_ ||
          field_separator_ == '\r' || field_separator_ == '\n' ||
          quote_character_ == '\r' || quote_character_ == '\n')
@@ -46,8 +45,7 @@ void CSV_writer::add_field(const std::string& s) {
      }
 }
 
-CSV_reader::CSV_reader(std::istream& istr,
-                       char field_separator,
+CSV_reader::CSV_reader(std::istream& istr, char field_separator,
                        char quote_character)
      : field_separator_(field_separator),
        quote_character_(quote_character),
@@ -122,4 +120,4 @@ bool CSV_reader::is_end_of_record() {
      return eol;
 }
 
-}       // namespace SHG
+}  // namespace SHG

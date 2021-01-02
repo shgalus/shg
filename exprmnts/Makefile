@@ -2,11 +2,11 @@ include ../make.inc
 
 .PHONY: all top clean spotless
 
-top: node
+top: field1
 
-all: myconv codecvt nodeshptr node
+all: field1 templinh
 
 clean:
-	rm -rf *.o *.d mtrace
+	rm -rf *.o *.d
 spotless: clean
-	rm -rf myconv codecvt nodeshptr node
+	rm -rf field1 templinh

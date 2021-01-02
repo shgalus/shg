@@ -1,28 +1,26 @@
-/* runs.cc: Wald-Wolfowitz runs test */
-
 /**
  * \file src/runs.cc
  * Wald-Wolfowitz runs test.
  * \date Created on 28 September 2013.
  */
 
+#include <shg/runs.h>
 #include <cmath>
 #include <limits>
 #include <stdexcept>
-#include <utility>      // swap
-#include "shg/except.h"
-#include "shg/runs.h"
+#include <utility>
+#include <shg/except.h>
 
 namespace SHG {
 
 using std::size_t;
 
-void runs(size_t n1, size_t n2, size_t k, bool exact,
-          double& p1, double& p2) {
-     using std::swap;
+void runs(size_t n1, size_t n2, size_t k, bool exact, double& p1,
+          double& p2) {
      using std::numeric_limits;
      using std::range_error;
      using std::sqrt;
+     using std::swap;
      if (n1 > 0 && n2 > 0) {
           if (n2 < n1)
                swap(n1, n2);
@@ -54,18 +52,18 @@ void runs(size_t n1, size_t n2, size_t k, bool exact,
                          const double d1 = c1;
                          const double d2 = c2;
                          c1 *= static_cast<double>(n1 - i) /
-                              static_cast<double>(i);
+                               static_cast<double>(i);
                          c2 *= static_cast<double>(n2 - i) /
-                              static_cast<double>(i);
+                               static_cast<double>(i);
                          p = d1 * c2 + c1 * d2;
                          p1 += p;
                     }
                }
-               p *= z;                  // p = P(K = k)
-               p1 *= z;                 // p1 = P(K <= k)
+               p *= z;   // p = P(K = k)
+               p1 *= z;  // p1 = P(K <= k)
                if (p1 > 1.0)
                     p1 = 1.0;
-               p2 = 1.0 - p1 + p;       // p2 = P(K >= k)
+               p2 = 1.0 - p1 + p;  // p2 = P(K >= k)
                SHG_ASSERT(p1 >= 0.0 && p1 <= 1.0);
                SHG_ASSERT(p2 >= 0.0 && p2 <= 1.0);
           } else {
@@ -100,4 +98,4 @@ void runs(size_t n1, size_t n2, size_t k, bool exact,
      }
 }
 
-}       // namespace SHG
+}  // namespace SHG

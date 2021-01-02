@@ -1,5 +1,3 @@
-/* version.h: library version */
-
 /**
  * \file include/shg/version.h
  * Library version.
@@ -9,14 +7,14 @@
 #ifndef SHG_VERSION_H
 #define SHG_VERSION_H
 
-#define SHG_VERSION "0.83"
+#define SHG_VERSION "0.84"
 #define SHG_MAJOR_VERSION 0
-#define SHG_MINOR_VERSION 83
+#define SHG_MINOR_VERSION 84
 
 namespace SHG {
 
 extern const char* const version;
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

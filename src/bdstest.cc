@@ -1,29 +1,26 @@
-/* bdstest.cc: BDS test for independence */
-
 /**
  * \file src/bdstest.cc
  * BDS test for independence.
  * \date Created on 12 October 2013.
  */
 
+#include <shg/bdstest.h>
 #include <stdexcept>
-#include "shg/mstat.h"
-#include "shg/bdstest.h"
+#include <shg/mstat.h>
 
 namespace SHG {
 
-BDS_test::BDS_test(const std::vector<double>& u,
-                   const int maxm,
+BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
                    const std::vector<double>& eps)
      : maxm_(maxm), eps_(eps), res_() {
      using std::abs;
-     using std::sqrt;
-     using std::pow;
      using std::erf;
      using std::erfc;
-     using std::isfinite;
      using std::invalid_argument;
+     using std::isfinite;
+     using std::pow;
      using std::range_error;
+     using std::sqrt;
      using std::vector;
 
      const vdst n = u.size();
@@ -36,7 +33,7 @@ BDS_test::BDS_test(const std::vector<double>& u,
      const double nd = n;
      vector<bool> p(n * (n - 1) / 2);
 
-     const auto sqr = [](double x) {return x * x;};
+     const auto sqr = [](double x) { return x * x; };
 
      // Returns true if |u[i] - u[j]| < eps.
      const auto chi = [&p](vdst i, vdst j) -> bool {
@@ -90,10 +87,10 @@ BDS_test::BDS_test(const std::vector<double>& u,
                     vdst i;
                     for (vdst s = 0; s < nm1; s++)
                          for (vdst t = s + 1; t < nm1; t++) {
-                              for (i = 0;
-                                   i < static_cast<vdst>(m) &&
-                                        chi(s + i, t + i);
-                                   i++) {/* VOID */}
+                              for (i = 0; i < static_cast<vdst>(m) &&
+                                          chi(s + i, t + i);
+                                   i++) { /* VOID */
+                              }
                               if (i == static_cast<vdst>(m))
                                    count++;
                          }
@@ -115,9 +112,7 @@ BDS_test::BDS_test(const std::vector<double>& u,
                res_[ieps][m].stat = w;
                w *= isqrt2;
                res_[ieps][m].pval =
-                    w < 0.0 ?
-                    0.5 + 0.5 * erf(w) :
-                    0.5 * erfc(w);
+                    w < 0.0 ? 0.5 + 0.5 * erf(w) : 0.5 * erfc(w);
           }
      }
 }
@@ -145,12 +140,10 @@ std::ostream& operator<<(std::ostream& stream, const BDS_test& b) {
           const vector<BDS_test::Result>& r = b.res()[i];
           for (vector<BDS_test::Result>::size_type j = 2;
                j < r.size(); j++)
-               stream << b.eps()[i] << ' '
-                      << j << ' '
-                      << r[j].stat << ' '
-                      << r[j].pval << '\n';
+               stream << b.eps()[i] << ' ' << j << ' ' << r[j].stat
+                      << ' ' << r[j].pval << '\n';
      }
      return stream;
 }
 
-}       // namespace SHG
+}  // namespace SHG

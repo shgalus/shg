@@ -1,4 +1,4 @@
-#include "shg/mathprog.h"
+#include <shg/mathprog.h>
 #include "testing.h"
 
 namespace SHG::Testing {

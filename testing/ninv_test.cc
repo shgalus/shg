@@ -1,6 +1,6 @@
-#include "shg/ninv.h"
+#include <shg/ninv.h>
 #include <numeric>
-#include "shg/vector.h"
+#include <shg/vector.h>
 #include "testing.h"
 
 namespace SHG::Testing {

@@ -1,9 +1,5 @@
 include ../make.inc
 
-INCLUDE += -isystem/usr/local/boost_1_73_0/include
-LOADLIBES += -L/usr/local/boost_1_73_0/lib
-LDLIBS += -lboost_unit_test_framework
-
 SOURCES := $(wildcard *.cc)
 OBJECTS := $(SOURCES:%.cc=%.o)
 
@@ -18,7 +14,7 @@ $(OBJDIR)/%.o : %.cc
 all: ../bin/testing
 
 run: all
-	../bin/testing --log_level=message --run_test=packellp_test/*
+	../bin/testing --log_level=message --run_test=alggeom_test/*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static

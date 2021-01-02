@@ -8,7 +8,7 @@
 
 #include <ostream>
 #include <vector>
-#include "shg/utils.h"
+#include <shg/utils.h>
 
 namespace SHG {
 

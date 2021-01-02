@@ -1,7 +1,7 @@
-#include "shg/mconsts.h"
-#include "shg/packellp.h"
+#include <shg/packellp.h>
+#include <shg/mconsts.h>
+#include <shg/utils.h>
 #include "testing.h"
-#include "shg/utils.h"
 
 namespace SHG::Testing {
 

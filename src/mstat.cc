@@ -1,42 +1,40 @@
-/* mstat.cc: mathematical statistics */
-
 /**
  * \file src/mstat.cc
  * Mathematical statistics.
  * \date Created on 16 June 2009.
  */
 
-#include <cmath>
+#include <shg/mstat.h>
 #include <algorithm>
-#include "shg/brent.h"
-#include "shg/except.h"         // SHG_ASSERT
-#include "shg/mconsts.h"
-#include "shg/specfunc.h"
-#include "shg/utils.h"          // iceil, ifloor, sqr
-#include "shg/mstat.h"
+#include <cmath>
+#include <shg/brent.h>
+#include <shg/except.h>
+#include <shg/mconsts.h>
+#include <shg/specfunc.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
 using std::abs;
 using std::exp;
-using std::sqrt;
-using std::pow;
-using std::size_t;
-using std::vector;
 using std::invalid_argument;
-using std::runtime_error;
-using std::range_error;
 using std::isfinite;
+using std::pow;
+using std::range_error;
+using std::runtime_error;
+using std::size_t;
+using std::sqrt;
+using std::vector;
 
 double ksdist(double x) {
-     using SHG::Constants::sqrt2pi;
      using SHG::Constants::sqrpi8;
+     using SHG::Constants::sqrt2pi;
      if (x < 0.18)
           return 0.0;
      if (x < 1.18) {
           const double y = exp(-sqrpi8<double> / sqr(x));
           return sqrt2pi<double> / x *
-               (y + pow(y, 9) + pow(y, 25) + pow(y, 49));
+                 (y + pow(y, 9) + pow(y, 25) + pow(y, 49));
      } else {
           const double y = exp(-2.0 * sqr(x));
           return 1.0 - 2.0 * (y - pow(y, 4) + pow(y, 9));
@@ -132,7 +130,8 @@ double chi2normtest(const Vecdouble& x, const int r) {
      if (n < 2 || r < 4)
           throw invalid_argument(__func__);
      const int r1 = r - 1;
-     const double np = static_cast<double>(n) / static_cast<double>(r);
+     const double np =
+          static_cast<double>(n) / static_cast<double>(r);
      double m, s, xi;
      int i, j;
 
@@ -171,7 +170,8 @@ double chi2stdnormtest(const Vecdouble& x, int r) {
      if (n < 2 || r < 4)
           throw invalid_argument(__func__);
      const int r1 = r - 1;
-     const double np = static_cast<double>(n) / static_cast<double>(r);
+     const double np =
+          static_cast<double>(n) / static_cast<double>(r);
      double xi;
      int i, j;
 
@@ -208,12 +208,12 @@ void ksnormtest(const Vecdouble& x, double& d, double& prob) {
           throw runtime_error("sigma equals to 0 in ksnormtest");
      for (size_t i = 0; i < v.size(); i++)
           v[i] = (v[i] - m) / s;
-     auto cdf = [](double x) {return normal_integral(x);};
+     auto cdf = [](double x) { return normal_integral(x); };
      ksone(cdf, v, d, prob);
 }
 
-Sample::Sample(const std::vector<double>& v) :
-     data(srt(v)), n(data.size()), en(n) {
+Sample::Sample(const std::vector<double>& v)
+     : data(srt(v)), n(data.size()), en(n) {
      if (n == 0)
           throw invalid_argument(__func__);
 }
@@ -276,9 +276,7 @@ Sample::Histdata Sample::histogram(int k) const {
           hd.f.resize(k);
           double z = 0.0, z1, d;
           for (int j = 0, j1 = 1; j < k; j++, j1++) {
-               z1 = j1 < k
-                    ? lcdf(hd.min + hd.h * j1)
-                    : 1.0;
+               z1 = j1 < k ? lcdf(hd.min + hd.h * j1) : 1.0;
                z1 /= hd.h;
                d = hd.f[j] = z1 - z;
                if (d > hd.maxheight)
@@ -308,8 +306,9 @@ std::vector<std::vector<int>> run_length_distribution(
           while (++k < x.size() && x[k] == a)
                ++l;
           if (a < 0 || a >= m)
-               throw invalid_argument("element out of range in"
-                                      " run_length_distribution");
+               throw invalid_argument(
+                    "element out of range in"
+                    " run_length_distribution");
           v[a].push_back(l);
      }
      return v;
@@ -321,7 +320,7 @@ double mle_lsd(const double mean) {
      SHG_VALIDATE(mean > 1.0);
      double a = numeric_limits<double>::epsilon();
      double b = 1.0 - a;
-     double p = 0.0;            // shut up compiler warnings
+     double p = 0.0;  // shut up compiler warnings
      auto fprim = [mean](const double p) -> double {
           const double z = 1.0 - p;
           return mean / p + 1.0 / log(z) / z;
@@ -357,7 +356,8 @@ double cdf_lsd(const double x, const double p) {
      return s;
 }
 
-void mle_negative_binomial(const SHG::Vecint& x, double& t, double& p) {
+void mle_negative_binomial(const SHG::Vecint& x, double& t,
+                           double& p) {
      const int n = x.size();
      if (n < 1)
           throw invalid_argument("n < 1 in mle_negative_binomial");
@@ -412,10 +412,15 @@ double cdf_negative_binomial(double x, double t, double p) {
 }
 
 Assessment_of_discrete_distribution::
-Assessment_of_discrete_distribution(const SHG::Vecint& x)
-     : n(x.size()), x(x), mean_(), var_(),
-       geometric_(-1.0), poisson_(-1.0),
-       logarithmic_(-1.0), negbin_(-1.0) {
+     Assessment_of_discrete_distribution(const SHG::Vecint& x)
+     : n(x.size()),
+       x(x),
+       mean_(),
+       var_(),
+       geometric_(-1.0),
+       poisson_(-1.0),
+       logarithmic_(-1.0),
+       negbin_(-1.0) {
      if (n < 2)
           throw invalid_argument("n < 2");
      SHG::Vecdouble z(n);
@@ -432,7 +437,7 @@ Assessment_of_discrete_distribution(const SHG::Vecint& x)
 void Assessment_of_discrete_distribution::run() {
      // geometric
      {
-          const double p = 1.0 / mean_;         // ML estimator of p
+          const double p = 1.0 / mean_;  // ML estimator of p
           if (0.0 < p && p < 1.0) {
                const double q = 1.0 - p;
                auto cdf = [q](const double x) -> double {
@@ -448,12 +453,13 @@ void Assessment_of_discrete_distribution::run() {
      }
      // poisson
      {
-          const double
-               lambda = 1.0 / mean_;    // ML estimator of lambda
+          const double lambda =
+               1.0 / mean_;  // ML estimator of lambda
           SHG_ASSERT(lambda > 0.0);
           auto cdf = [lambda](const double x) -> double {
-               return x < 0.0 ?
-               0.0 : 1.0 - gammad(lambda, std::floor(x) + 1.0);
+               return x < 0.0 ? 0.0
+                              : 1.0 - gammad(lambda,
+                                             std::floor(x) + 1.0);
           };
           double d;
           ksonedc(cdf, x, d, poisson_);
@@ -493,7 +499,13 @@ Unigaumixmod::Degenerate_distribution::Degenerate_distribution()
      : Exception("degenerate distribution in m-step") {}
 
 Unigaumixmod::Unigaumixmod(const Vecdouble& x, int K)
-     : n(x.size()), K(K), x(x), pi(K), mu(K), sigma(K), psi(n, K),
+     : n(x.size()),
+       K(K),
+       x(x),
+       pi(K),
+       mu(K),
+       sigma(K),
+       psi(n, K),
        loglik(0.0) {
      SHG_ASSERT(K >= 1);
      SHG_ASSERT(n >= 1);
@@ -507,8 +519,8 @@ double Unigaumixmod::estep() {
      for (i = 0; i < n; i++) {
           s = 0.0;
           for (k = 0; k < K; k++)
-               s += (psi(i, k) = pi(k) *
-                     normal_pdf(x(i), mu(k), sigma(k)));
+               s += (psi(i, k) =
+                          pi(k) * normal_pdf(x(i), mu(k), sigma(k)));
           SHG_ASSERT(s > 0.0);
           for (k = 0; k < K; k++)
                psi(i, k) /= s;
@@ -538,4 +550,4 @@ void Unigaumixmod::mstep() {
      }
 }
 
-}       // namespace SHG
+}  // namespace SHG

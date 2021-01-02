@@ -1,22 +1,20 @@
-/* hmm.cc: hidden Markov models */
-
 /**
  * \file src/hmm.cc
  * Hidden Markov models.
  * \date Created on 1 May 2011.
  */
 
+#include <shg/hmm.h>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
 #include <vector>
-#include "shg/except.h"
-#include "shg/mconsts.h"
-#include "shg/specfunc.h"
-#include "shg/utils.h"          // sqr, indirect_sort
-#include "shg/hmm.h"
+#include <shg/except.h>
+#include <shg/mconsts.h>
+#include <shg/specfunc.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -33,9 +31,22 @@ using std::vector;
 Normal_hmm::Normal_hmm(const Matdouble& P, const Vecdouble& p,
                        const Vecdouble& mu, const Vecdouble& sigma,
                        const Vecdouble& y)
-     : T_(y.size()), s_(p.size()), P(P), p(p), mu(mu), sigma(sigma),
-       y(y), logL(), gamma(T_, s_), logprob(), X(T_),
-       alpha(T_, s_), beta(T_, s_), c(T_), d(T_), aux(T_) {
+     : T_(y.size()),
+       s_(p.size()),
+       P(P),
+       p(p),
+       mu(mu),
+       sigma(sigma),
+       y(y),
+       logL(),
+       gamma(T_, s_),
+       logprob(),
+       X(T_),
+       alpha(T_, s_),
+       beta(T_, s_),
+       c(T_),
+       d(T_),
+       aux(T_) {
      if (P.nrows() != s_ || P.ncols() != s_ || mu.size() != s_ ||
          sigma.size() != s_ || T_ < 2 || s_ < 1)
           throw invalid_argument("invalid dimensions in Normal_hmm");
@@ -45,19 +56,22 @@ Normal_hmm::Normal_hmm(const Matdouble& P, const Vecdouble& p,
      for (i = 0, u = 0.0; i < s_; i++)
           u += p(i);
      if (abs(u - 1.0) > eps)
-          throw invalid_argument("initial state probabilities "
-                                 "not normalized in Normal_hmm");
+          throw invalid_argument(
+               "initial state probabilities "
+               "not normalized in Normal_hmm");
      for (i = 0; i < s_; i++) {
           for (j = 0, u = 0.0; j < s_; j++)
                u += P(i, j);
           if (abs(u - 1.0) > eps)
-               throw invalid_argument("transition matrix "
-                                      "not normalized in Normal_hmm");
+               throw invalid_argument(
+                    "transition matrix "
+                    "not normalized in Normal_hmm");
      }
      for (i = 0; i < s_; i++)
           if (sigma(i) <= 0.0)
-               throw invalid_argument("standard deviation "
-                                      "not positive in Normal_hmm");
+               throw invalid_argument(
+                    "standard deviation "
+                    "not positive in Normal_hmm");
 }
 
 int Normal_hmm::forwardbackward() {
@@ -83,10 +97,10 @@ int Normal_hmm::forwardbackward() {
                     sum += alpha(t1, i) * P(i, j);
                u += alpha(t, j) = sum * phi(t, j);
           }
-          // This may happen that in an iteration phi(t, j) is extremaly
-          // small but positive (like 1e-320). Thus alpha(t, j) may be
-          // set to an extremely big number which produces overflow in
-          // the next iteration.
+          // This may happen that in an iteration phi(t, j) is
+          // extremaly small but positive (like 1e-320). Thus alpha(t,
+          // j) may be set to an extremely big number which produces
+          // overflow in the next iteration.
           if (u < 1e-70)
                return 2;
           SHG_ASSERT(u > 0.0);
@@ -159,8 +173,8 @@ int Normal_hmm::baumwelch() {
                pij = P(i, j);
                u = 0.0;
                for (t = 0; t < T1; t++)
-                    u += d(t) * alpha(t, i) * beta(t + 1, j) *
-                         pij * phi(t + 1, j) / aux(t);
+                    u += d(t) * alpha(t, i) * beta(t + 1, j) * pij *
+                         phi(t + 1, j) / aux(t);
                P(i, j) = u / sg1i;
                SHG_ASSERT(P(i, j) >= 0.0 && P(i, j) - 1.0 < 1e-8);
           }
@@ -197,23 +211,22 @@ void Normal_hmm::viterbi() {
      for (i = 0; i < s_; i++)
           for (j = 0; j < s_; j++)
                logp(i, j) = P(i, j) > 0.0 ? log(P(i, j)) : mind;
-     for (i = 0; i < s_; i++)  {
-          delta(0, i) = p(i) > 0.0
-               ? log(p(i)) + log(phi(0, i))
-               : mind;
-          psi(0, i) = 0;        // unneeded
+     for (i = 0; i < s_; i++) {
+          delta(0, i) =
+               p(i) > 0.0 ? log(p(i)) + log(phi(0, i)) : mind;
+          psi(0, i) = 0;  // unneeded
      }
      for (t = 1; t < T_; t++) {
           t1 = t - 1;
           for (j = 0; j < s_; j++) {
                imax = 0;
                dmax = delta(t1, 0) > mind && logp(0, j) > mind
-                    ? delta(t1, 0) + logp(0, j)
-                    : mind;
+                           ? delta(t1, 0) + logp(0, j)
+                           : mind;
                for (i = 1; i < s_; i++) {
                     d = delta(t1, i) > mind && logp(i, j) > mind
-                         ? delta(t1, i) + logp(i, j)
-                         : mind;
+                             ? delta(t1, i) + logp(i, j)
+                             : mind;
                     if (d > dmax) {
                          dmax = d;
                          imax = i;
@@ -276,14 +289,9 @@ double Normal_hmm::phi(size_t t, size_t j) {
      return Constants::isqrt2pi<double> * s * exp(-0.5 * x * x);
 }
 
-void gen_nhmm(const Matdouble& P,
-              const Vecdouble& p,
-              const Vecdouble& mu,
-              const Vecdouble& sigma,
-              const std::size_t T,
-              Vecdouble& y,
-              Vecint& X,
-              MZT& g) {
+void gen_nhmm(const Matdouble& P, const Vecdouble& p,
+              const Vecdouble& mu, const Vecdouble& sigma,
+              const std::size_t T, Vecdouble& y, Vecint& X, MZT& g) {
      const size_t s = P.nrows();
      SHG_ASSERT(s == P.ncols() && s == p.size() && s == mu.size() &&
                 s == sigma.size());
@@ -304,20 +312,17 @@ void gen_nhmm(const Matdouble& P,
      }
 }
 
-void corr_hmm(const Vecdouble& delta,
-              const Matdouble& gamma,
-              const Vecdouble& G,
-              const double E,
-              const double v,
-              const int K,
-              Vecdouble& r) {
+void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
+              const Vecdouble& G, const double E, const double v,
+              const int K, Vecdouble& r) {
      SHG_ASSERT(K > 0);
      SHG_ASSERT(v > 0.0);
      const int m = delta.size();
      const double E2 = E * E;
      r.resize(K + 1);
      r(0) = 1.0;
-     Matdouble gammak = diagonal_matrix<double>(static_cast<size_t>(m));
+     Matdouble gammak =
+          diagonal_matrix<double>(static_cast<size_t>(m));
      double s, s1;
      int i, j, k;
      for (k = 1; k <= K; k++) {
@@ -336,14 +341,11 @@ void corr_hmm(const Vecdouble& delta,
 
 namespace {
 
-void corr_nhmm_id(const Vecdouble& delta,
-                  const Matdouble& gamma,
-                  const Vecdouble& mu,
-                  const Vecdouble& sigma,
-                  const int K,
-                  Vecdouble& r) {
-     double E = 0.0;            // E(X_t)
-     double v = 0.0;            // var(X_t)
+void corr_nhmm_id(const Vecdouble& delta, const Matdouble& gamma,
+                  const Vecdouble& mu, const Vecdouble& sigma,
+                  const int K, Vecdouble& r) {
+     double E = 0.0;  // E(X_t)
+     double v = 0.0;  // var(X_t)
 
      for (size_t i = 0; i < delta.size(); i++) {
           E += delta(i) * mu(i);
@@ -354,18 +356,15 @@ void corr_nhmm_id(const Vecdouble& delta,
      corr_hmm(delta, gamma, mu, E, v, K, r);
 }
 
-void corr_nhmm_abs(const Vecdouble& delta,
-                   const Matdouble& gamma,
-                   const Vecdouble& mu,
-                   const Vecdouble& sigma,
-                   const int K,
-                   Vecdouble& r) {
-     static const double        // sqrt(2/pi)
+void corr_nhmm_abs(const Vecdouble& delta, const Matdouble& gamma,
+                   const Vecdouble& mu, const Vecdouble& sigma,
+                   const int K, Vecdouble& r) {
+     static const double  // sqrt(2/pi)
           C = 2.0 * SHG::Constants::isqrt2pi<double>;
      const int m = delta.size();
-     double E = 0.0;            // E(X_t)
-     double v = 0.0;            // var(X_t)
-     Vecdouble G(m);            // E(g(X_t) | C_t = i)
+     double E = 0.0;  // E(X_t)
+     double v = 0.0;  // var(X_t)
+     Vecdouble G(m);  // E(g(X_t) | C_t = i)
      double mi, si, z;
 
      for (int i = 0; i < m; i++) {
@@ -374,7 +373,7 @@ void corr_nhmm_abs(const Vecdouble& delta,
           SHG_ASSERT(si > 0.0);
           z = mi / si;
           G(i) = C * si * exp(-0.5 * sqr(z)) +
-               mi * (1.0 - 2.0 * normal_integral(-z));
+                 mi * (1.0 - 2.0 * normal_integral(-z));
           E += delta(i) * G(i);
           v += delta(i) * (sqr(mi) + sqr(si));
      }
@@ -382,16 +381,13 @@ void corr_nhmm_abs(const Vecdouble& delta,
      corr_hmm(delta, gamma, G, E, v, K, r);
 }
 
-void corr_nhmm_sqr(const Vecdouble& delta,
-                   const Matdouble& gamma,
-                   const Vecdouble& mu,
-                   const Vecdouble& sigma,
-                   const int K,
-                   Vecdouble& r) {
+void corr_nhmm_sqr(const Vecdouble& delta, const Matdouble& gamma,
+                   const Vecdouble& mu, const Vecdouble& sigma,
+                   const int K, Vecdouble& r) {
      const int m = delta.size();
-     double E = 0.0;            // E(X_t)
-     double v = 0.0;            // var(X_t)
-     Vecdouble G(m);            // E(g(X_t) | C_t = i)
+     double E = 0.0;  // E(X_t)
+     double v = 0.0;  // var(X_t)
+     Vecdouble G(m);  // E(g(X_t) | C_t = i)
      double m2, s2, z;
 
      for (int i = 0; i < m; i++) {
@@ -406,21 +402,25 @@ void corr_nhmm_sqr(const Vecdouble& delta,
      corr_hmm(delta, gamma, G, E, v, K, r);
 }
 
-}       // anonymous namespace
+}  // anonymous namespace
 
-void corr_nhmm(const Vecdouble& delta,
-               const Matdouble& gamma,
-               const Vecdouble& mu,
-               const Vecdouble& sigma,
-               const int function_g,
-               const int K,
-               Vecdouble& r) {
+void corr_nhmm(const Vecdouble& delta, const Matdouble& gamma,
+               const Vecdouble& mu, const Vecdouble& sigma,
+               const int function_g, const int K, Vecdouble& r) {
      switch (function_g) {
-     case 0: corr_nhmm_id(delta, gamma, mu, sigma, K, r); break;
-     case 1: corr_nhmm_abs(delta, gamma, mu, sigma, K, r); break;
-     case 2: corr_nhmm_sqr(delta, gamma, mu, sigma, K, r); break;
-     default: SHG_ASSERT(0); break;
+          case 0:
+               corr_nhmm_id(delta, gamma, mu, sigma, K, r);
+               break;
+          case 1:
+               corr_nhmm_abs(delta, gamma, mu, sigma, K, r);
+               break;
+          case 2:
+               corr_nhmm_sqr(delta, gamma, mu, sigma, K, r);
+               break;
+          default:
+               SHG_ASSERT(0);
+               break;
      }
 }
 
-}       // namespace SHG
+}  // namespace SHG

@@ -1,4 +1,4 @@
-#include "shg/normmix.h"
+#include <shg/normmix.h>
 #include "testing.h"
 
 namespace SHG::Testing {

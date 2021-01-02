@@ -1,12 +1,12 @@
-#include "shg/specfunc.h"
+#include <shg/specfunc.h>
 #include <boost/math/distributions/fisher_f.hpp>
 #include <boost/math/distributions/normal.hpp>
 #include <boost/math/distributions/students_t.hpp>
 #include <boost/math/special_functions/beta.hpp>
 #include <boost/math/special_functions/digamma.hpp>
 #include <boost/math/special_functions/gamma.hpp>
-#include "shg/mconsts.h"
-#include "shg/utils.h"
+#include <shg/mconsts.h>
+#include <shg/utils.h>
 #include "testing.h"
 
 namespace SHG::Testing {

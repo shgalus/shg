@@ -1,25 +1,23 @@
-/* gsgts.cc: generating stationary Gaussian time series */
-
 /**
  * \file src/gsgts.cc
  * Generating stationary Gaussian time series.
  * Created on 26 February 2017.
  */
 
+#include <shg/gsgts.h>
 #include <cmath>
 #include <stdexcept>
-#include "shg/mconsts.h"
-#include "shg/gsgts.h"
+#include <shg/mconsts.h>
 
 namespace SHG {
 
+using std::complex;
+using std::cos;
+using std::invalid_argument;
+using std::sin;
 using std::size_t;
 using std::sqrt;
-using std::sin;
-using std::cos;
 using std::vector;
-using std::complex;
-using std::invalid_argument;
 
 GSGTS::GSGTS(const std::vector<double>& acf, Cosine_transform f)
      : n(acf.size() - 1), g(acf.size()) {
@@ -46,7 +44,7 @@ void GSGTS::generate(std::vector<double>& X,
      /* We may take vector<double> z(2 * g.size()). */
      vector<complex<double>> z(g.size());
      z[0] = SHG::Constants::sqrt2<double> * normal() * g[0];
-     z[n] = SHG::Constants::sqrt2<double> * normal() * g[n];;
+     z[n] = SHG::Constants::sqrt2<double> * normal() * g[n];
      for (size_t k = 1; k < n; k++) {
           z[k].real(normal() * g[k]);
           z[k].imag(normal() * g[k]);
@@ -105,4 +103,4 @@ std::vector<double> acfar1(double sigma2, double phi1, size_t n) {
      return g;
 }
 
-}       // namespace SHG
+}  // namespace SHG

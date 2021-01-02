@@ -1,5 +1,3 @@
-/* mstat.h: mathematical statistics */
-
 /**
  * \file include/shg/mstat.h
  * Mathematical statistics.
@@ -9,11 +7,13 @@
 #ifndef SHG_MSTAT_H
 #define SHG_MSTAT_H
 
+#include <algorithm>
+#include <cmath>
 #include <vector>
-#include "shg/except.h"
-#include "shg/matrix.h"
-#include "shg/mconsts.h"
-#include "shg/utils.h"
+#include <shg/except.h>
+#include <shg/matrix.h>
+#include <shg/mconsts.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -34,7 +34,7 @@ inline T standard_normal_pdf(T x) {
      static_assert(std::is_floating_point<T>::value,
                    "T must be a floating-point type.");
      return SHG::Constants::isqrt2pi<T> *
-          std::exp(static_cast<T>(-0.5) * SHG::sqr(x));
+            std::exp(static_cast<T>(-0.5) * SHG::sqr(x));
 }
 
 /**
@@ -193,7 +193,7 @@ double chi2stdnormtest(const Vecdouble& x, int r);
  * \cite press-teukolsky-vetterling-flannery-2007, p. 737. See also
  * \cite zielinski-zielinski-1990, p. 306.
  */
-template<class T>
+template <class T>
 void ksone(T& cdf, Vecdouble& x, double& d, double& prob);
 
 /**
@@ -201,7 +201,7 @@ void ksone(T& cdf, Vecdouble& x, double& d, double& prob);
  * ksone(T&, Vecdouble&, double&, double&), but \a x is not sorted
  * after return (\a x is copied to a local variable and then sorted).
  */
-template<class T>
+template <class T>
 void ksonec(T& cdf, const Vecdouble& x, double& d, double& prob);
 
 /**
@@ -216,7 +216,7 @@ void ksonec(T& cdf, const Vecdouble& x, double& d, double& prob);
  * "http://journal.r-project.org/">The R Journal</a> and
  * \cite press-teukolsky-vetterling-flannery-2007, page 738.
  */
-template<class T>
+template <class T>
 void ksoned(T& cdf, Vecint& x, double& d, double& prob);
 
 /**
@@ -225,7 +225,7 @@ void ksoned(T& cdf, Vecint& x, double& d, double& prob);
  * not sorted after return (\a x is copied to a local variable and
  * then sorted).
  */
-template<class T>
+template <class T>
 void ksonedc(T& cdf, const Vecint& x, double& d, double& prob);
 
 /**
@@ -247,7 +247,8 @@ void ksnormtest(const Vecdouble& x, double& d, double& prob);
  * The basic sample statistics.
  *
  * The class provides basic sample statistics based on ordering of the
- * sample. The constructor accepts a vector which contains observations.
+ * sample. The constructor accepts a vector which contains
+ * observations.
  *
  * The methods Sample::histogram() const and
  * Sample::histogram(int) const prepare data for plotting a histogram.
@@ -315,12 +316,11 @@ public:
       */
      struct Histdata {
           Histdata(double min, double max);
-          double min;           ///< begin of interval for the plot
-          double max;           ///< end of interval for the plot
-          double h;             ///< common width of the bars
-          double maxheight;     ///< the highest bar
-          std::vector<double>
-          f;                    ///< height of each bar
+          double min;             ///< begin of interval for the plot
+          double max;             ///< end of interval for the plot
+          double h;               ///< common width of the bars
+          double maxheight;       ///< the highest bar
+          std::vector<double> f;  ///< height of each bar
      };
      Histdata histogram() const;
      Histdata histogram(int k) const;
@@ -353,8 +353,7 @@ private:
  * such that \f$x_i < 0\f$ or \f$x_i \geq m\f$.
  */
 std::vector<std::vector<int>> run_length_distribution(
-     const std::vector<int>& x,
-     int m);
+     const std::vector<int>& x, int m);
 
 /**
  * Maximum likelihood estimation of the parameter of the logarithmic
@@ -395,7 +394,8 @@ double mle_lsd(double mean);
  * for \f$x \geq 1\f$ and 0 for \f$x < 1\f$.
  *
  * \param [in] x point at which the function is to be calculated
- * \param [in] p parameter of the distribution, must be in \f$(0, 1)\f$
+ * \param [in] p parameter of the distribution, must be in \f$(0,
+ * 1)\f$
  *
  * \exception SHG::Invalid_argument unless \f$p \in (0, 1) \f$
  * \exception std::range_error on range error
@@ -457,7 +457,8 @@ double cdf_lsd(double x, double p);
  * to calculate, what might be useful implementing an algorithm with
  * derivatives.
  */
-void mle_negative_binomial(const SHG::Vecint& x, double& t, double& p);
+void mle_negative_binomial(const SHG::Vecint& x, double& t,
+                           double& p);
 
 /**
  * Cumulative distribution function of the negative binomial
@@ -469,7 +470,8 @@ void mle_negative_binomial(const SHG::Vecint& x, double& t, double& p);
  *
  * \param [in] x point at which the function is to be calculated
  * \param [in] t parameter of the distribution, must be positive
- * \param [in] p parameter of the distribution, must be in \f$(0, 1)\f$
+ * \param [in] p parameter of the distribution, must be in \f$(0,
+ * 1)\f$
  *
  * \exception std::invalid_argument unless \f$t > 0\f$ and \f$p \in
  * (0, 1)\f$
@@ -487,7 +489,8 @@ public:
       * \exception std::invalid_argument in case of degenerate
       * distribution or negative values in the sample
       */
-     explicit Assessment_of_discrete_distribution(const SHG::Vecint& x);
+     explicit Assessment_of_discrete_distribution(
+          const SHG::Vecint& x);
      /**
       * Performs calculations.
       */
@@ -496,22 +499,22 @@ public:
       * Returns p-value of Kolmogorov-Smirnov statistic D for
       * geometric distribution.
       */
-     double geometric() const {return geometric_;}
+     double geometric() const { return geometric_; }
      /**
       * Returns p-value of Kolmogorov-Smirnov statistic D for Poisson
       * distribution.
       */
-     double poisson() const {return poisson_;}
+     double poisson() const { return poisson_; }
      /**
       * Returns p-value of Kolmogorov-Smirnov statistic D for
       * logarithmic distribution.
       */
-     double logarithmic() const {return logarithmic_;}
+     double logarithmic() const { return logarithmic_; }
      /**
       * Returns p-value of Kolmogorov-Smirnov statistic D for negative
       * binomial distribution.
       */
-     double negbin() const {return negbin_;}
+     double negbin() const { return negbin_; }
 
 private:
      const int n;
@@ -562,20 +565,80 @@ struct Unigaumixmod {
       */
      void mstep();
 
-     const int n;               ///< number of observations
-     const int K;               ///< number of components
-     const Vecdouble& x;        ///< observations
-     Vecdouble pi;              ///< weights
-     Vecdouble mu;              ///< means of normal components
-     Vecdouble sigma;           ///< std. dev. of normal components
-     Matdouble psi;             ///< the matrix psi
-     double loglik;             ///< loglikelihood found
+     const int n;         ///< number of observations
+     const int K;         ///< number of components
+     const Vecdouble& x;  ///< observations
+     Vecdouble pi;        ///< weights
+     Vecdouble mu;        ///< means of normal components
+     Vecdouble sigma;     ///< std. dev. of normal components
+     Matdouble psi;       ///< the matrix psi
+     double loglik;       ///< loglikelihood found
 };
+
+template <class T>
+void ksone(T& cdf, Vecdouble& x, double& d, double& prob) {
+     const int n = x.size();
+     double dt, en = n, ff, fn, fo = 0.0;
+     std::sort(x.begin(), x.end());
+     d = 0.0;
+     for (int j = 0; j < n; j++) {
+          fn = (j + 1.0) / en;
+          ff = cdf(x[j]);
+          dt = std::max(std::abs(fo - ff), std::abs(fn - ff));
+          if (dt > d)
+               d = dt;
+          fo = fn;
+     }
+     en = std::sqrt(en);
+     prob = 1.0 - ksdist(d * en);
+     // With approximation (14.3.18) from
+     // \cite press-teukolsky-vetterling-flannery-2007, p. 737, the
+     // last line would be prob = 1.0 - ksdist(d * (en + 0.12 + 0.11 /
+     // en));
+}
+
+template <class T>
+void ksonec(T& cdf, const Vecdouble& x, double& d, double& prob) {
+     Vecdouble v(x);
+     ksone(cdf, v, d, prob);
+}
+
+template <class T>
+void ksoned(T& cdf, Vecint& x, double& d, double& prob) {
+     // For discrete distributions with jumps in integer numbers this
+     // eps is enough.
+     static const double eps = 1e-5;
+     const int n = x.size();
+     double dt, en = n, ff, fn, fe, fo = 0.0;
+     std::sort(x.begin(), x.end());
+     d = 0.0;
+     for (int j = 0; j < n;) {
+          while (++j < n && x[j] == x[j - 1]) { /* VOID */
+          }
+          fn = j / en;
+          ff = cdf(x[j - 1]);
+          fe = cdf(x[j - 1] - eps);
+          dt = std::max(std::abs(fo - fe), std::abs(fn - ff));
+          if (dt > d)
+               d = dt;
+          fo = fn;
+     }
+     en = std::sqrt(en);
+     prob = 1.0 - ksdist(d * en);
+     // With approximation (14.3.18) from
+     // \cite press-teukolsky-vetterling-flannery-2007, p. 737, the
+     // last line would be prob = 1.0 - ksdist(d * (en + 0.12 + 0.11 /
+     // en));
+}
+
+template <class T>
+void ksonedc(T& cdf, const Vecint& x, double& d, double& prob) {
+     Vecint v(x);
+     ksoned(cdf, v, d, prob);
+}
 
 /** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
-
-#include "shg/ksone-inl.h"
+}  // namespace SHG
 
 #endif

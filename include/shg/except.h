@@ -1,5 +1,3 @@
-/* except.h: exception classes, auxiliary functions and macros */
-
 /**
  * \file include/shg/except.h
  * Exception classes, auxiliary functions and macros.
@@ -64,11 +62,11 @@ protected:
       * be copied and the string will be null-terminated.
       */
      static char* sstrncpy(char* t, const char* s);
-     static const std::size_t
-     maxlen_ = 63;              /**< Maximum length of a message. */
+     static const std::size_t maxlen_ =
+          63; /**< Maximum length of a message. */
 
 private:
-     char what_[maxlen_ + 1];   /**< The message. */
+     char what_[maxlen_ + 1]; /**< The message. */
 };
 
 /**
@@ -129,8 +127,8 @@ public:
                 std::ostream& f = std::cerr) const;
 
 private:
-     const char* file_;         /**< Source file name. */
-     int line_;                 /**< Line number in this file. */
+     const char* file_; /**< Source file name. */
+     int line_;         /**< Line number in this file. */
 };
 
 /**
@@ -182,7 +180,7 @@ public:
                 std::ostream& f = std::cerr) const;
 
 private:
-     const char* func_;         /**< Function name. */
+     const char* func_; /**< Function name. */
 };
 
 /**
@@ -219,8 +217,9 @@ public:
      const char* filename() const;
      void print(const char* progname = nullptr,
                 std::ostream& f = std::cerr) const;
+
 private:
-     char filename_[maxlen_ + 1];       /**< The file name. */
+     char filename_[maxlen_ + 1]; /**< The file name. */
 };
 
 /**
@@ -233,8 +232,8 @@ private:
 void error(const char* message, const char* progname = 0,
            std::ostream& f = std::cerr);
 
-/** \} */       // end of group error_and_exception_handling
+/** \} */  // end of group error_and_exception_handling
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

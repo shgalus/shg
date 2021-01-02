@@ -8,9 +8,9 @@
 #define SHG_OLS_H
 
 #include <string>
-#include "shg/except.h"
-#include "shg/matrix.h"
-#include "shg/utils.h"
+#include <shg/except.h>
+#include <shg/matrix.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -82,8 +82,7 @@ public:
       * \exception SHG::OLS::Internal_error in case of an internal
       * error
       */
-     OLS(const Matdouble& X,
-         const Vecdouble& y,
+     OLS(const Matdouble& X, const Vecdouble& y,
          bool add_intercept = true);
      OLS(const OLS&) = delete;
      OLS& operator=(const OLS&) = delete;
@@ -91,61 +90,65 @@ public:
      /**
       * Sets problem name.
       */
-     void set_problem_name(const std::string& s) {problem_name_ = s;}
+     void set_problem_name(const std::string& s) {
+          problem_name_ = s;
+     }
 
      /**
       * Returns the problem name.
       */
-     const std::string& get_problem_name() const {return problem_name_;}
+     const std::string& get_problem_name() const {
+          return problem_name_;
+     }
 
      /**
       * Returns the number of observations \f$n\f$.
       */
-     int nobs() const {return n_;}
+     int nobs() const { return n_; }
 
      /**
       * Returns the number of parameters \f$k\f$.
       *
-      * \warning If the object was constructed with \a add_intercept set
-      * to true, \f$k\f$ is greater by one than the number of columns in
-      * \f$X\f$.
+      * \warning If the object was constructed with \a add_intercept
+      * set to true, \f$k\f$ is greater by one than the number of
+      * columns in \f$X\f$.
       *
       */
-     int nparams() const {return k_;}
+     int nparams() const { return k_; }
 
      /**
       * Returns the number of degrees of freedom \f$n - k\f$.
       */
-     int dof() const {return dof_;}
+     int dof() const { return dof_; }
 
      /**
       * Returns true if and only if the object was constructed with \a
       * add_intercept set to true.
       */
-     bool intercept() const {return intercept_;}
+     bool intercept() const { return intercept_; }
 
      /**
       * Returns the vector of estimated parameters \f$\hat{\beta} =
       * (X^TX)^{-1}X^Ty\f$. \a beta()[i] is an estimate of \f$\beta_{i
       * + 1}\f$ for \f$0 \leq i < k\f$.
       */
-     const Vecdouble& beta() const {return beta_;}
+     const Vecdouble& beta() const { return beta_; }
 
      /**
       * Returns vector of fitted values \f$\hat{y} = X \hat{\beta}\f$.
       */
-     const Vecdouble& fitted() const {return fitted_;}
+     const Vecdouble& fitted() const { return fitted_; }
 
      /**
       * Returns the vector of residuals \f$\hat{u} = y - \hat{y}\f$.
       */
-     const Vecdouble& residuals() const {return residuals_;}
+     const Vecdouble& residuals() const { return residuals_; }
 
      /**
       * Returns residual sum of squares \f$\mathit{RSS} =
       * \hat{u}^T\hat{u} = \sum_{i = 1}^n \hat{u_i}^2\f$.
       */
-     double rss() const {return rss_;}
+     double rss() const { return rss_; }
 
      /**
       * Returns total sum of squares. Total sum of squares is defined
@@ -154,44 +157,44 @@ public:
       * \sum_{i = 1}^n y_i^2 = y^Ty & \mbox{if there is no intercept.}
       * \end{array} \right. \f]
       */
-     double tss() const {return tss_;}
+     double tss() const { return tss_; }
 
      /**
       * Returns explained sum of squares \f$\mathit{ESS} =
       * \mathit{TSS} - \mathit{RSS}\f$.
       */
-     double ess() const {return ess_;}
+     double ess() const { return ess_; }
 
      /**
       * Returns coefficient of determination \f$R^2 = 1 - \mathit{RSS}
       * / \mathit{TSS}\f$.
       */
-     double r2() const {return r2_;}
+     double r2() const { return r2_; }
 
      /**
       * Returns adjusted coefficient of determination. It is defined
       * by \f[ \bar{R}^2 = 1 - \frac{n - 1}{n - k}(1 - R^2).\f]
       */
-     double rbar2() const {return rbar2_;}
+     double rbar2() const { return rbar2_; }
 
      /**
       * Returns variance of residuals. It is defined by
       * \f[\hat{\sigma}^2 = \frac{1}{n - k}\hat{u}^T\hat{u}\f] if \f$k
       * < n\f$, 0 otherwise.
       */
-     double var() const {return var_;}
+     double var() const { return var_; }
 
      /**
       * Returns standard error of residuals. It is defined by
       * \f$\hat{\sigma} = \sqrt{\hat{\sigma}^2}\f$.
       */
-     double ser() const {return ser_;}
+     double ser() const { return ser_; }
 
      /**
       * Returns estimated covariance matrix of parameters \f$\hat{D}^2
       * \hat{\beta} = \hat{\sigma}^2 (X^TX)^{-1}\f$.
       */
-     const Matdouble& cov() const {return cov_;}
+     const Matdouble& cov() const { return cov_; }
 
      /**
       * Returns standard errors of coefficients
@@ -199,31 +202,31 @@ public:
       * estimate of \f$\hat{D}\hat{\beta}_{i + 1}\f$ for \f$0 \leq i <
       * k\f$.
       */
-     const Vecdouble& standard_err() const {return standard_err_;}
+     const Vecdouble& standard_err() const { return standard_err_; }
 
      /**
       * Returns mean of dependent variable \f$\bar{y}\f$.
       */
-     double mean_y() const {return mean_y_;}
+     double mean_y() const { return mean_y_; }
 
      /**
       * Returns standard deviation of dependent variable. It is
       * defined by \f[ \frac{1}{n} \sum_{i = 1}^n (y_i - \bar{y})^2.
       * \f]
       */
-     double stddev_y() const {return stddev_y_;}
+     double stddev_y() const { return stddev_y_; }
 
      /**
       * Returns true if \f$y_i > 0\f$ for all \f$1 \leq i \leq n\f$.
       */
-     bool positive_y() const {return positive_y_;}
+     bool positive_y() const { return positive_y_; }
 
      /**
       * Returns coefficient of variation of dependent variable. It is
       * defined by stddev_y() / mean_y() if positive_y() returns \a
       * true, otherwise it is set to 0.
       */
-     double variation_y() const {return variation_y_;}
+     double variation_y() const { return variation_y_; }
 
      /**
       * Returns the \f$F\f$-statistic. If there is an intercept and at
@@ -237,7 +240,7 @@ public:
       * the second case it says that all independent variables do not
       * influence dependent variable. \sa pvalf()
       */
-     double fstat() const {return fstat_;}
+     double fstat() const { return fstat_; }
 
      /**
       * Returns \f$p\f$-value for the \f$F\f$-statistic. If the
@@ -247,7 +250,7 @@ public:
       * variable with \f$F(k, n - k)\f$ distribution takes on a value
       * greater than calculated \f$F\f$. \sa fstat()
       */
-     double pvalf() const {return pvalf_;}
+     double pvalf() const { return pvalf_; }
 
      /**
       * Returns vector of \f$t\f$-statistics \f$t_i = \hat{\beta}_i /
@@ -255,7 +258,7 @@ public:
       * \f$t\f$-statistic for the parameter \f$\hat{\beta}_{i + 1}\f$
       * for \f$0 \leq i < k\f$. \sa pvalt()
       */
-     const Vecdouble& tstat() const {return tstat_;}
+     const Vecdouble& tstat() const { return tstat_; }
 
      /**
       * Returns \f$p\f$-values for the \f$t\f$-statistics. If the
@@ -266,7 +269,7 @@ public:
       * \f$t_i\f$. pvalt()[i] is the \f$p\f$-value for the statistic
       * tstat()[i]. \sa tstat()
       */
-     const Vecdouble& pvalt() const {return pvalt_;}
+     const Vecdouble& pvalt() const { return pvalt_; }
 
      /**
       * Calculates the Durbin-Watson \f$d\f$ statistic and its
@@ -323,7 +326,7 @@ public:
       * the interval \f$[0, 4]\f$. If the returned value is less than
       * 0, either dw() has not been called or it has failed.
       */
-     double dw_d() const {return dw_d_;}
+     double dw_d() const { return dw_d_; }
 
      /**
       * Returns \f$p\f$-value for positive autocorrelation of the
@@ -331,7 +334,7 @@ public:
       * value is less than 0, either dw() has not been called or it
       * has failed.
       */
-     double dw_pvalpos() const {return dw_pvalpos_;}
+     double dw_pvalpos() const { return dw_pvalpos_; }
 
      /**
       * Returns \f$p\f$-value for negative autocorrelation of the
@@ -339,7 +342,7 @@ public:
       * value is less than 0, either dw() has not been called or it
       * has failed.
       */
-     double dw_pvalneg() const {return dw_pvalneg_;}
+     double dw_pvalneg() const { return dw_pvalneg_; }
 
      /**
       * Prints results of estimation to the stream. The stream must
@@ -362,37 +365,36 @@ private:
      static const double tolerance_;
      static const int w_ = 13;  ///< field width to output float
 
-     std::string
-     problem_name_;             ///< used by print
-     const int n_;              ///< number of observations
-     const int k_;              ///< number of estimated parameters
-     const int dof_;            ///< number of degrees of freedom
-     const bool intercept_;     ///< true if intercept was added
-     Vecdouble beta_;           ///< estimated parameters
-     double ser_;               ///< standard error of regeression
-     double r2_;                ///< coefficient of determination
-     double rbar2_;             ///< adjusted coeff. of determination
-     double var_;               ///< variance of residuals
-     Vecdouble standard_err_;   ///< standard errors of parameters
-     Matdouble cov_;            ///< covariance matrix of parameters
-     Vecdouble fitted_;         ///< fitted values
-     Vecdouble residuals_;      ///< residuals
-     double rss_;               ///< residual sum of squares
-     double tss_;               ///< total sum of squares
-     double ess_;               ///< explained sum of squares
-     double mean_y_;            ///< mean of dependent variable
-     double stddev_y_;          ///< std. deviation of dependent var.
-     bool positive_y_;          ///< true if all y are positive
-     double variation_y_;       ///< coef. of variation of dep. var.
-     Vecdouble tstat_;          ///< t statistics
-     Vecdouble pvalt_;          ///< p-values for t statistics
-     double fstat_;             ///< F statistic
-     double pvalf_;             ///< p-value for F statistic
-     double dw_d_;              ///< Durbin-Watson statistic
-     double dw_pvalpos_;        ///< p-value positive autocorrelation
-     double dw_pvalneg_;        ///< p-value negative autocorrelation
+     std::string problem_name_;  ///< used by print
+     const int n_;               ///< number of observations
+     const int k_;               ///< number of estimated parameters
+     const int dof_;             ///< number of degrees of freedom
+     const bool intercept_;      ///< true if intercept was added
+     Vecdouble beta_;            ///< estimated parameters
+     double ser_;                ///< standard error of regeression
+     double r2_;                 ///< coefficient of determination
+     double rbar2_;              ///< adjusted coeff. of determination
+     double var_;                ///< variance of residuals
+     Vecdouble standard_err_;    ///< standard errors of parameters
+     Matdouble cov_;             ///< covariance matrix of parameters
+     Vecdouble fitted_;          ///< fitted values
+     Vecdouble residuals_;       ///< residuals
+     double rss_;                ///< residual sum of squares
+     double tss_;                ///< total sum of squares
+     double ess_;                ///< explained sum of squares
+     double mean_y_;             ///< mean of dependent variable
+     double stddev_y_;           ///< std. deviation of dependent var.
+     bool positive_y_;           ///< true if all y are positive
+     double variation_y_;        ///< coef. of variation of dep. var.
+     Vecdouble tstat_;           ///< t statistics
+     Vecdouble pvalt_;           ///< p-values for t statistics
+     double fstat_;              ///< F statistic
+     double pvalf_;              ///< p-value for F statistic
+     double dw_d_;               ///< Durbin-Watson statistic
+     double dw_pvalpos_;         ///< p-value positive autocorrelation
+     double dw_pvalneg_;         ///< p-value negative autocorrelation
 };
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

@@ -7,8 +7,8 @@
 #ifndef SHG_HMM_H
 #define SHG_HMM_H
 
-#include "shg/matrix.h"
-#include "shg/mzt.h"
+#include <shg/matrix.h>
+#include <shg/mzt.h>
 
 namespace SHG {
 
@@ -43,13 +43,13 @@ public:
      Vecdouble sigma;
      const Vecdouble y;
      double logL;
-     Matdouble gamma;           ///< pstate
-     double logprob;            ///< maximized log(prob) in Viterbi
-     Vecint X;                  ///< the best sequence given by Viterbi
+     Matdouble gamma;  ///< pstate
+     double logprob;   ///< maximized log(prob) in Viterbi
+     Vecint X;         ///< the best sequence given by Viterbi
      int forwardbackward();
      int baumwelch();
-     void viterbi();            ///< sets logprob and i0
-     void sort();               ///< sort the model by mu1 <= mu2 <= ...
+     void viterbi();  ///< sets logprob and i0
+     void sort();     ///< sort the model by mu1 <= mu2 <= ...
 
 private:
      Matdouble alpha, beta;
@@ -67,14 +67,9 @@ private:
  * state sigma. Uses the generator g. The vectors y and X are resized
  * in this function.
  */
-void gen_nhmm(const Matdouble& P,
-              const Vecdouble& p,
-              const Vecdouble& mu,
-              const Vecdouble& sigma,
-              std::size_t T,
-              Vecdouble& y,
-              Vecint& X,
-              MZT& g);
+void gen_nhmm(const Matdouble& P, const Vecdouble& p,
+              const Vecdouble& mu, const Vecdouble& sigma,
+              std::size_t T, Vecdouble& y, Vecint& X, MZT& g);
 
 /**
  * Autocorrelation function of a hidden Markov model.
@@ -118,12 +113,8 @@ void gen_nhmm(const Matdouble& P,
  * \param[in] K maximum lag
  * \param[out] r autocorrelations, r[0] == 1
  */
-void corr_hmm(const Vecdouble& delta,
-              const Matdouble& gamma,
-              const Vecdouble& G,
-              double E,
-              double v,
-              int K,
+void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
+              const Vecdouble& G, double E, double v, int K,
               Vecdouble& r);
 
 /**
@@ -162,18 +153,14 @@ void corr_hmm(const Vecdouble& delta,
  * \param[in] K maximum lag
  * \param[out] r autocorrelations, r[0] == 1
  */
-void corr_nhmm(const Vecdouble& delta,
-               const Matdouble& gamma,
-               const Vecdouble& mu,
-               const Vecdouble& sigma,
-               int function_g,
-               int K,
-               Vecdouble& r);
+void corr_nhmm(const Vecdouble& delta, const Matdouble& gamma,
+               const Vecdouble& mu, const Vecdouble& sigma,
+               int function_g, int K, Vecdouble& r);
 
-/** \} */       /* end of group HMM */
+/** \} */ /* end of group HMM */
 
-/** \} */       /* end of group mathematical_statistics */
+/** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

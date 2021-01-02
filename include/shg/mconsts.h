@@ -1,5 +1,3 @@
-/* mconsts.h: mathematical constants */
-
 /**
  * \file include/shg/mconsts.h
  *  Mathematical constants.

@@ -1,5 +1,3 @@
-/* brent.h: Brent method */
-
 /**
  * \file include/shg/brent.h
  * Brent method.
@@ -49,13 +47,14 @@ double brent(T& func, const double x1, const double x2,
      using std::abs;
      using std::invalid_argument;
      using std::runtime_error;
-     auto sign = [](const double& a, const double& b)
-          {return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);};
+     auto sign = [](const double& a, const double& b) {
+          return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
+     };
      const int maxit = 100;
      constexpr double eps = std::numeric_limits<double>::epsilon();
      // Dummy initialization of e for compiler.
      double a = x1, b = x2, c = x2, d = 0.0, e = 0.0, fa = func(a),
-          fb = func(b), fc, p, q, r, s, tol1, xm;
+            fb = func(b), fc, p, q, r, s, tol1, xm;
      if ((fa > 0.0 && fb > 0.0) || (fa < 0.0 && fb < 0.0))
           throw invalid_argument("root must be bracketed in brent");
      fc = fb;
@@ -75,7 +74,8 @@ double brent(T& func, const double x1, const double x2,
           }
           tol1 = 2.0 * eps * abs(b) + 0.5 * tol;
           xm = 0.5 * (c - b);
-          if (abs(xm) <= tol1 || fb == 0.0) return b;
+          if (abs(xm) <= tol1 || fb == 0.0)
+               return b;
           if (abs(e) >= tol1 && abs(fa) > abs(fb)) {
                s = fb / fa;
                if (a == c) {
@@ -84,11 +84,12 @@ double brent(T& func, const double x1, const double x2,
                } else {
                     q = fa / fc;
                     r = fb / fc;
-                    p = s * (2.0 * xm * q * (q - r) - (b - a) *
-                             (r - 1.0));
+                    p = s * (2.0 * xm * q * (q - r) -
+                             (b - a) * (r - 1.0));
                     q = (q - 1.0) * (r - 1.0) * (s - 1.0);
                }
-               if (p > 0.0) q = -q;
+               if (p > 0.0)
+                    q = -q;
                p = abs(p);
                const double min1 = 3.0 * xm * q - abs(tol1 * q);
                const double min2 = abs(e * q);
@@ -117,6 +118,6 @@ double brent(T& func, const double x1, const double x2,
 
 /** \} */ /* end of group numerical_analysis */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

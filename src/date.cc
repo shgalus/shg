@@ -1,23 +1,21 @@
-/* date.cc: calendrical calculations */
-
 /**
  * \file src/date.cc
  * Calendrical calculations.
  * \date Created on 15 April 2009.
  */
 
+#include <shg/date.h>
 #include <cctype>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <iostream>
-#include "shg/date.h"
 
 namespace SHG {
 
-using std::string;
 using std::istream;
 using std::ostream;
+using std::string;
 
 Date::Bad_date::Bad_date() : Exception("bad date") {}
 
@@ -34,7 +32,7 @@ Date::Date(const string& s) : abs() {
      *this = Date(s.c_str());
 }
 
-Date::Date(const char *s) : abs() {
+Date::Date(const char* s) : abs() {
      /* The longest name of the month in polish_month[] and
         roman_month[] is 13 characters long. */
      static const int lnom = 13;
@@ -43,16 +41,16 @@ Date::Date(const char *s) : abs() {
           /* "22 stycznia 1901" or "22 I 1901" */
           int m, d;
           switch (sep - s) {
-          case 1:
-               d = a1toi(s);
-               break;
-          case 2:
-               if (s[0] == '0')
+               case 1:
+                    d = a1toi(s);
+                    break;
+               case 2:
+                    if (s[0] == '0')
+                         throw Bad_date();
+                    d = a2toi(s);
+                    break;
+               default:
                     throw Bad_date();
-               d = a2toi(s);
-               break;
-          default:
-               throw Bad_date();
           }
           const char* sep1 = strchr(sep + 1, ' ');
           if (sep1 == 0 || sep1 == sep + 1)
@@ -136,7 +134,8 @@ void Date::split(int& d, int& m, int& y) const {
      ++x;
      x -= jan1(y);
      bool leap = Date::leap(y);
-     for (m = 1; x > daytab2[leap][m]; ++m) ;
+     for (m = 1; x > daytab2[leap][m]; ++m)
+          ;
      d = x - daytab2[leap][m - 1];
 }
 
@@ -203,27 +202,28 @@ Date Date::max() {
 }
 
 Date Date::today() {
-     using std::time_t;
-     using std::time;
-     using std::tm;
      using std::localtime;
+     using std::time;
+     using std::time_t;
+     using std::tm;
      const time_t rawtime = time(nullptr);
      if (rawtime == static_cast<time_t>(-1))
           throw Bad_date();
-     const tm *const lt = localtime(&rawtime);
+     const tm* const lt = localtime(&rawtime);
      return Date(lt->tm_mday, lt->tm_mon + 1, 1900 + lt->tm_year);
 }
 
 bool Date::correct(int d, int m, int y) {
-     return
-          y >= 1583 && y <= 9999 &&
-          m >= 1 && m <= 12 &&
-          d >= 1 && d <= daytab[leap(y)][m];
+     return y >= 1583 && y <= 9999 && m >= 1 && m <= 12 && d >= 1 &&
+            d <= daytab[leap(y)][m];
 }
 
 bool Date::correct(const string& s) {
-     try {Date d(s);}
-     catch (const Bad_date&) {return false;}
+     try {
+          Date d(s);
+     } catch (const Bad_date&) {
+          return false;
+     }
      return true;
 }
 
@@ -248,8 +248,7 @@ Date Date::easter(int y) {
      q = (2 * (y % 4) + 4 * (y % 7) - s + r) % 7;
      while (q < 0)
           q += 7;
-     return (s += q) > 9 ?
-          Date(s - 9, 4, y) : Date(s + 22, 3, y);
+     return (s += q) > 9 ? Date(s - 9, 4, y) : Date(s + 22, 3, y);
 }
 
 Date& Date::operator++() {
@@ -287,39 +286,53 @@ Date::int32 Date::pack(int d, int m, int y) {
 
 const int Date::daytab[2][13] = {
      {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-     {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-};
+     {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 
 const int Date::daytab2[2][13] = {
      {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365},
-     {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366}
-};
+     {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366}};
 
-const char* Date::roman_month[13] = {
-     0, "I", "II", "III", "IV", "V", "VI",
-     "VII", "VIII", "IX", "X", "XI", "XII"
-};
+const char* Date::roman_month[13] = {0,   "I",  "II",  "III",  "IV",
+                                     "V", "VI", "VII", "VIII", "IX",
+                                     "X", "XI", "XII"};
 
 const char* Date::polish_month[13] = {
-     0,
-     "stycznia", "lutego", "marca",
-     "kwietnia", "maja", "czerwca",
+     0, "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
      /* UTF-8 used below. */
-     "lipca", "sierpnia", "wrze\305\233nia",
-     "pa\305\272dziernika", "listopada", "grudnia"
-};
+     "lipca", "sierpnia", "wrze\305\233nia", "pa\305\272dziernika",
+     "listopada", "grudnia"};
 
-Date operator+(Date d, int n) {return Date(d.abs + n);}
-Date operator+(int n, Date d) {return Date(n + d.abs);}
-Date operator-(Date d, int n) {return Date(d.abs - n);}
-int operator-(Date d1, Date d2) {return d1.abs - d2.abs;}
+Date operator+(Date d, int n) {
+     return Date(d.abs + n);
+}
+Date operator+(int n, Date d) {
+     return Date(n + d.abs);
+}
+Date operator-(Date d, int n) {
+     return Date(d.abs - n);
+}
+int operator-(Date d1, Date d2) {
+     return d1.abs - d2.abs;
+}
 
-bool operator==(Date d1, Date d2) {return d1.abs == d2.abs;}
-bool operator!=(Date d1, Date d2) {return d1.abs != d2.abs;}
-bool operator<=(Date d1, Date d2) {return d1.abs <= d2.abs;}
-bool operator>=(Date d1, Date d2) {return d1.abs >= d2.abs;}
-bool operator<(Date d1, Date d2) {return d1.abs < d2.abs;}
-bool operator>(Date d1, Date d2) {return d1.abs > d2.abs;}
+bool operator==(Date d1, Date d2) {
+     return d1.abs == d2.abs;
+}
+bool operator!=(Date d1, Date d2) {
+     return d1.abs != d2.abs;
+}
+bool operator<=(Date d1, Date d2) {
+     return d1.abs <= d2.abs;
+}
+bool operator>=(Date d1, Date d2) {
+     return d1.abs >= d2.abs;
+}
+bool operator<(Date d1, Date d2) {
+     return d1.abs < d2.abs;
+}
+bool operator>(Date d1, Date d2) {
+     return d1.abs > d2.abs;
+}
 
 ostream& operator<<(ostream& stream, Date d) {
      stream << d.computer();
@@ -333,4 +346,4 @@ istream& operator>>(istream& stream, Date& d) {
      return stream;
 }
 
-}       // namespace SHG
+}  // namespace SHG

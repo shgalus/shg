@@ -1,4 +1,4 @@
-#include "shg/encoding.h"
+#include <shg/encoding.h>
 #include <set>
 #include <stdexcept>
 #include "testing.h"

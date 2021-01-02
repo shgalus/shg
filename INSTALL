@@ -4,12 +4,12 @@ SHG Installation
 Prerequisites
 -------------
 
-Development environment is Linux debian 4.9.0-12-amd64 (Debian
-Stretch). Additionaly, GCC 8.3.0 or Clang 10.0.0, Boost C++ Libraries
-1.73.0 and doxygen 1.8.18 are required for compilation and generating
+Development environment is Linux debian 4.19.0-13-amd64 (Debian
+Buster). Additionaly, GCC 10.2.0 or Clang 11.0.1, Boost C++ Libraries
+1.75.0 and doxygen 1.9.0 are required for compilation and generating
 documentation. To compile some inessential auxiliary programs, GNU
-Multiple Precision Arithmetic Library 6.0.0a and Numerical Recipes
-Third Edition (version 3.02) are required.
+Multiple Precision Arithmetic Library and Numerical Recipes Third
+Edition (version 3.02) are required.
 
 Compilation and testing
 -----------------------

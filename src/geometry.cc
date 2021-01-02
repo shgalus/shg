@@ -3,14 +3,14 @@
  * Geometric functions.
  */
 
+#include <shg/geometry.h>
 #include <cmath>
 #include <stdexcept>
 #include <utility>
-#include "shg/fcmp.h"
-#include "shg/mconsts.h"
-#include "shg/numalg.h"
-#include "shg/utils.h"
-#include "shg/geometry.h"
+#include <shg/fcmp.h>
+#include <shg/mconsts.h>
+#include <shg/numalg.h>
+#include <shg/utils.h>
 
 using std::atan;
 using std::cos;
@@ -142,10 +142,11 @@ Mutual_position mutual_position(const Line& line1, const Line& line2,
                return Mutual_position::overlap;
           return Mutual_position::parallel;
      } else if (faeq(line1.A() * line2.A(), -line1.B() * line2.B(),
-                     tol))
+                     tol)) {
           return Mutual_position::perpendicular;
-     else
+     } else {
           return Mutual_position::intersect;
+     }
 }
 
 double distance(const Line& line1, const Line& line2, double tol) {

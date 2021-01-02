@@ -1,8 +1,8 @@
-#include "shg/mstat.h"
+#include <shg/mstat.h>
 #include <cstdlib>
 #include <limits>
 #include <vector>
-#include "shg/mzt.h"
+#include <shg/mzt.h>
 #include "testing.h"
 
 namespace SHG::Testing {

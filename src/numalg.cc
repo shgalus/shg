@@ -3,6 +3,7 @@
  * Numerical algorithms.
  */
 
+#include <shg/numalg.h>
 #include <algorithm>
 #include <stdexcept>
 #include <string>
@@ -10,7 +11,6 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_poly.h>
-#include "shg/numalg.h"
 
 namespace SHG {
 
@@ -23,9 +23,9 @@ int solve_polynomial_internal(const Vecdouble& a, Veccomplex& x) {
      x.resize(a.size() - 1);
      gsl_poly_complex_workspace* w =
           gsl_poly_complex_workspace_alloc(a.size());
-     if (w == nullptr)
+     if (w == nullptr) {
           status = GSL_ENOMEM;
-     else {
+     } else {
           status = gsl_poly_complex_solve(
                a.c_vec(), a.size(), w,
                reinterpret_cast<gsl_complex_packed_ptr>(x.c_vec()));

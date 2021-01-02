@@ -1,5 +1,3 @@
-/* permentr.h: permutation entropy */
-
 /**
  * \file include/shg/permentr.h
  * Permutation entropy.
@@ -9,11 +7,11 @@
 #ifndef SHG_PERMENTR_H
 #define SHG_PERMENTR_H
 
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <algorithm>    // stable_sort
 #include <map>
-#include <numeric>      // iota
+#include <numeric>
 #include <stdexcept>
 #include <vector>
 
@@ -77,13 +75,12 @@ double permutation_entropy(const std::vector<T>& x,
           const double p = x.second / NL1;
           s -= p * std::log(p);
      }
-     return
-          1.4426950408889634073599246810018921374266    // 1 / ln 2
-          * s;
+     return 1.4426950408889634073599246810018921374266  // 1 / ln 2
+            * s;
 }
 
 /** \} */ /* end of group mathematical_statistics */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\..\testing\testing.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\testing\alggeom_test.cc" />
     <ClCompile Include="..\..\..\testing\bdstest_test.cc" />
     <ClCompile Include="..\..\..\testing\brent_test.cc" />
     <ClCompile Include="..\..\..\testing\csv_test.cc" />

@@ -1,23 +1,21 @@
-/* specfunc.cc: special functions */
-
 /**
  * \file src/specfunc.cc
  * Special functions.
  * \date Created on 10 July 2012.
  */
 
+#include <shg/specfunc.h>
 #include <cmath>
 #include <limits>
 #include <stdexcept>
-#include "shg/mconsts.h"
-#include "shg/specfunc.h"
+#include <shg/mconsts.h>
 
 namespace SHG {
 
 double ppnd7(const double p) {
      using std::abs;
-     using std::sqrt;
      using std::log;
+     using std::sqrt;
 
      static const double a0 = 3.3871327179e+0;
      static const double a1 = 5.0434271938e+1;
@@ -47,7 +45,7 @@ double ppnd7(const double p) {
      if (abs(q) <= 0.425) {
           r = 0.180625 - q * q;
           return q * (((a3 * r + a2) * r + a1) * r + a0) /
-               (((b3 * r + b2) * r + b1) * r + 1.0);
+                 (((b3 * r + b2) * r + b1) * r + 1.0);
      }
      r = q < 0.0 ? p : 1.0 - p;
      if (r <= 0.0)
@@ -55,18 +53,18 @@ double ppnd7(const double p) {
      if ((r = sqrt(-log(r))) > 5.0) {
           r -= 5.0;
           z = (((e3 * r + e2) * r + e1) * r + e0) /
-               ((f2 * r + f1) * r + 1.0);
+              ((f2 * r + f1) * r + 1.0);
      } else {
           r -= 1.6;
           z = (((c3 * r + c2) * r + c1) * r + c0) /
-               ((d2 * r + d1) * r + 1.0);
+              ((d2 * r + d1) * r + 1.0);
      }
      return q < 0.0 ? -z : z;
 }
 
 double gammad(double x, double p) {
-     using std::exp;
      using std::abs;
+     using std::exp;
      using std::lgamma;
      using std::log;
      using std::numeric_limits;
@@ -79,8 +77,8 @@ double gammad(double x, double p) {
      if (x < 0.0 || p <= 0.0)
           throw std::invalid_argument(__func__);
      bool fin;
-     double pn1, pn2, pn3, pn4, pn5, pn6,
-          a, b, c, arg, an, rn, min, gam;
+     double pn1, pn2, pn3, pn4, pn5, pn6, a, b, c, arg, an, rn, min,
+          gam;
 
      if (x == 0.0)
           return 0.0;
@@ -173,16 +171,23 @@ double betain(const double x, const double p, const double q,
 
      bool index;
      int ns;
-     double bti = 1.0, ai = 1.0, cx = 1.0 - x, pp, psq = p + q, qq, rx,
-          temp, term = 1.0, xx;
+     double bti = 1.0, ai = 1.0, cx = 1.0 - x, pp, psq = p + q, qq,
+            rx, temp, term = 1.0, xx;
      if (p <= 0.0 || q <= 0.0 || x < 0.0 || x > 1.0)
           throw std::invalid_argument(__func__);
      if (x == 0.0 || x == 1.0)
           return x;
      if (p < psq * x) {
-          xx = cx; cx = x; pp = q; qq = p; index = true;
+          xx = cx;
+          cx = x;
+          pp = q;
+          qq = p;
+          index = true;
      } else {
-          xx = x; pp = p; qq = q; index = false;
+          xx = x;
+          pp = p;
+          qq = q;
+          index = false;
      }
      ns = static_cast<int>(qq + cx * psq);
      rx = xx / cx;
@@ -193,7 +198,8 @@ double betain(const double x, const double p, const double q,
           bti += (term *= temp * rx / (pp + ai));
           temp = abs(term);
           if (temp <= accuracy && temp <= accuracy * bti) {
-               bti *= exp(pp * log(xx) + (qq - 1.0) * log(cx) - beta) /
+               bti *=
+                    exp(pp * log(xx) + (qq - 1.0) * log(cx) - beta) /
                     pp;
                return index ? 1.0 - bti : bti;
           }
@@ -202,7 +208,8 @@ double betain(const double x, const double p, const double q,
                temp = psq++;
           } else {
                temp = qq - ai;
-               if (ns == 0) rx = xx;
+               if (ns == 0)
+                    rx = xx;
           }
      }
 }
@@ -236,9 +243,9 @@ float digamma(float x) {
      r *= r;
      // The constants below are the third, fourth and fifth Stirling
      // coefficients.
-     dig -= r * (8.333333333E-02f - r *
-                 (8.3333333333E-03f - r * 3.968253968E-03f));
+     dig -= r * (8.333333333E-02f -
+                 r * (8.3333333333E-03f - r * 3.968253968E-03f));
      return dig;
 }
 
-}       // namespace SHG
+}  // namespace SHG

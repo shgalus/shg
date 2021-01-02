@@ -1,5 +1,3 @@
-/* bdstest.h: BDS test for independence */
-
 /**
  * \file include/shg/bdstest.h
  * BDS test for independence.
@@ -32,13 +30,13 @@ public:
           double stat;
           double pval;
      };
-     BDS_test(const std::vector<double>& u,
-              int maxm,
+     BDS_test(const std::vector<double>& u, int maxm,
               const std::vector<double>& eps);
      explicit BDS_test(const std::vector<double>& u);
      inline int maxm() const;
      inline const std::vector<double>& eps() const;
      inline const std::vector<std::vector<Result>>& res() const;
+
 private:
      typedef std::vector<double>::size_type vdst;
      static std::vector<double> default_eps(
@@ -62,11 +60,11 @@ const std::vector<double>& BDS_test::eps() const {
      return eps_;
 }
 
-const std::vector<std::vector<BDS_test::Result>>&
-BDS_test::res() const {
+const std::vector<std::vector<BDS_test::Result>>& BDS_test::res()
+     const {
      return res_;
 }
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

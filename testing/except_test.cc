@@ -1,4 +1,4 @@
-#include "shg/except.h"
+#include <shg/except.h>
 #include <cstring>
 #include <sstream>
 #include <string>

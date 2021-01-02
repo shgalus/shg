@@ -1,5 +1,3 @@
-# make.inc: file included by description files for make
-
 SHELL = /bin/sh
 
 # Things you might add to DEFS:
@@ -9,19 +7,19 @@ SHELL = /bin/sh
 
 DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 
-CXX = g++-8.3.0 -O2
+CXX = g++-10.2.0 -O2
 DEBUG = -g
-INCLUDE = -I../include
+INCLUDE = -I../include -isystem/usr/local/boost_1_75_0/include
 WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
-LOADLIBES = -L../lib
-LDLIBS = -lshg -lgsl -lgslcblas
+LOADLIBES = -L../lib -L/usr/local/boost_1_75_0/lib
+LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework
 
-AR = gcc-ar-8.3.0
+AR = gcc-ar-10.2.0
 ARFLAGS = rc
-RANLIB = gcc-ranlib-8.3.0
+RANLIB = gcc-ranlib-10.2.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

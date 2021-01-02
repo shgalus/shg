@@ -1,22 +1,20 @@
-/* normmix.cc: mixtures of normal densities */
-
 /**
  * \file src/normmix.cc
  * Mixtures of normal densities.
  * \date Created on 9 October 2010.
  */
 
+#include <shg/normmix.h>
 #include <cmath>
 #include <string>
-#include "shg/mstat.h"          // normal_pdf
-#include "shg/specfunc.h"
-#include "shg/utils.h"
-#include "shg/normmix.h"
+#include <shg/mstat.h>
+#include <shg/specfunc.h>
+#include <shg/utils.h>
 
 namespace SHG {
 
-using std::size_t;
 using std::abs;
+using std::size_t;
 using std::sqrt;
 using std::string;
 
@@ -26,9 +24,15 @@ Normal_mixture::Error::Error()
 Normal_mixture::Normal_mixture(const Vecdouble& w,
                                const Vecdouble& mu,
                                const Vecdouble& sigma)
-     : n(w.size()), w(w), mu(mu), sigma(sigma),
-       moments_calculated(false), mean_(), sdev_(),
-       skew_(), curt_() {
+     : n(w.size()),
+       w(w),
+       mu(mu),
+       sigma(sigma),
+       moments_calculated(false),
+       mean_(),
+       sdev_(),
+       skew_(),
+       curt_() {
      if (n < 1 || mu.size() != n || sigma.size() != n)
           throw Error();
      double s = 0.0;
@@ -71,10 +75,22 @@ double Normal_mixture::invcdf(double p) const {
      return x;
 }
 
-double Normal_mixture::mean() {moments(); return mean_;}
-double Normal_mixture::sdev() {moments(); return sdev_;}
-double Normal_mixture::skew() {moments(); return skew_;}
-double Normal_mixture::curt() {moments(); return curt_;}
+double Normal_mixture::mean() {
+     moments();
+     return mean_;
+}
+double Normal_mixture::sdev() {
+     moments();
+     return sdev_;
+}
+double Normal_mixture::skew() {
+     moments();
+     return skew_;
+}
+double Normal_mixture::curt() {
+     moments();
+     return curt_;
+}
 
 void Normal_mixture::write(std::ostream& f) const {
      using SHG::write;
@@ -116,8 +132,9 @@ void Normal_mixture::moments() {
      sdev_ = sqrt(var);
      skew_ = (m3 - 3.0 * m1 * m2 + 2.0 * m1 * sm) / sdev_ / var;
      curt_ = (m4 - 4.0 * m1 * m3 + 6.0 * sm * m2 - 3.0 * sqr(sm)) /
-          var / var - 3.0;
+                  var / var -
+             3.0;
      moments_calculated = true;
 }
 
-}       // namespace SHG
+}  // namespace SHG

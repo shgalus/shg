@@ -1,5 +1,3 @@
-/* mathprog.h: mathematical programming */
-
 /**
  * \file include/shg/mathprog.h
  * Mathematical programming.
@@ -9,8 +7,8 @@
 #ifndef SHG_MATHPROG_H
 #define SHG_MATHPROG_H
 
-#include "shg/except.h"
-#include "shg/matrix.h"
+#include <shg/except.h>
+#include <shg/matrix.h>
 
 namespace SHG {
 
@@ -49,8 +47,8 @@ namespace SHG {
  * 23-25.
  */
 int revsimplex(const Matdouble& A, const Vecdouble& b,
-               const Vecdouble& c, Vecdouble& x,
-               double& f, double eps = 1e-12);
+               const Vecdouble& c, Vecdouble& x, double& f,
+               double eps = 1e-12);
 
 /**
  * Simplex method. A simple wrapper for revsimplex().
@@ -68,16 +66,16 @@ public:
       * Kinds of signs in constraints.
       */
      enum Equality {
-          eq,                   ///< equality
-          le,                   ///< less than or equal
-          ge                    ///< greater than or equal
+          eq,  ///< equality
+          le,  ///< less than or equal
+          ge   ///< greater than or equal
      };
      /**
       * Directions of optimization.
       */
      enum Direction {
-          min,                  ///< minimization
-          max                   ///< maximization
+          min,  ///< minimization
+          max   ///< maximization
      };
      typedef Vector<Equality> Vecequality;
      /**
@@ -94,17 +92,12 @@ public:
       *
       * \exception SHG::Simplex::Error if invalid argument is given
       */
-     Simplex(std::size_t m,
-             std::size_t n,
-             const Matdouble& A,
-             const Vecdouble& b,
-             const Vecdouble& c,
-             const Vecequality& e,
-             Direction d,
-             double eps = 1e-12);
-     int status;                ///< return value from revsimplex()
-     double f;                  ///< value of objective function
-     Vecdouble x;               ///< point with optimum
+     Simplex(std::size_t m, std::size_t n, const Matdouble& A,
+             const Vecdouble& b, const Vecdouble& c,
+             const Vecequality& e, Direction d, double eps = 1e-12);
+     int status;   ///< return value from revsimplex()
+     double f;     ///< value of objective function
+     Vecdouble x;  ///< point with optimum
 };
 
 /**
@@ -247,15 +240,11 @@ public:
  * \cite grabowski-1980, p. 245-251,
  * \cite bronsztejn-siemiendiajew-musiol-muhlig-2004, p. 943-945
  */
-int wolfe(const Vecdouble& p,
-          const Vecdouble& C,
-          const Matdouble& A,
-          const Vecdouble& b,
-          Vecdouble& x,
-          double& f);
+int wolfe(const Vecdouble& p, const Vecdouble& C, const Matdouble& A,
+          const Vecdouble& b, Vecdouble& x, double& f);
 
 /** \} */ /* end of group mathematical_programming */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

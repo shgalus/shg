@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 "This module checks source code."
 
@@ -18,7 +18,7 @@ FILTER = "-legal/copyright,"\
          "-runtime/int,"\
          "-runtime/printf,"\
          "-runtime/arrays"
-CPPLINT = "cpplint --quiet --linelength={} --filter="
+CPPLINT = "cpplint.py --quiet --linelength={} --filter="
 
 ALL_SOURCE = glob.glob("include" + os.path.sep + "shg" +
                        os.path.sep + ".h")
@@ -63,7 +63,7 @@ def check_file_as_text(fname):
         for c in line:
             if ord(c) > 127:
                 print_error(fname, i, "non-ASCII character")
-        if len(line) == 0:
+        if not line:
             if is_previous_line_empty:
                 print_error(fname, i, "consecutive blank lines")
             else:
@@ -119,7 +119,7 @@ def run():
     """Runs the script. If no arguments, check all source and version
     numbers."""
     source = sys.argv[1:]
-    if len(source) == 0:
+    if not source:
         source = ALL_SOURCE
         check_version_numbers()
     fname = None
@@ -133,8 +133,7 @@ def run():
     if N_ERRORS > 0 or errors != 0:
         print("There were errors")
         return 1
-    else:
-        return 0
+    return 0
 
 if __name__ == '__main__':
     if run() != 0:

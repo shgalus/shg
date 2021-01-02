@@ -1,6 +1,6 @@
-#include "shg/laplace.h"
-#include "shg/mzt.h"
-#include "shg/utils.h"
+#include <shg/laplace.h>
+#include <shg/mzt.h>
+#include <shg/utils.h>
 #include "testing.h"
 
 namespace SHG::Testing {

@@ -1,5 +1,3 @@
-/* encoding.h: character encodings and character sets */
-
 /**
  * \file include/shg/encoding.h
  * Character encodings and character sets.
@@ -177,9 +175,9 @@ constexpr bool is_valid_codepoint(char32_t c) {
      return c < 0x110000u && !is_surrogate(c);
 }
 
-/** \} */       // end of group char_enc_char_sets
-/** \} */       // end of group miscellaneous_utilities
+/** \} */  // end of group char_enc_char_sets
+/** \} */  // end of group miscellaneous_utilities
 
-}       // namespace SHG::Encoding
+}  // namespace SHG::Encoding
 
 #endif

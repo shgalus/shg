@@ -1,11 +1,10 @@
-/* utils.cc: miscellaneous utilities */
-
 /**
  * \file src/utils.cc
  * Miscellaneous utilities.
  * \date Created on 3 June 2009.
  */
 
+#include <shg/utils.h>
 #include <cctype>
 #include <cstdarg>
 #include <cstdlib>
@@ -15,8 +14,7 @@
 #include <limits>
 #include <new>
 #include <numeric>
-#include "shg/except.h"
-#include "shg/utils.h"
+#include <shg/except.h>
 
 namespace SHG {
 
@@ -34,12 +32,11 @@ Vecchar wfread(const char* filename) {
                // ifstream::pos_type may be long long (64 bit), size_t
                // may be unsigned (32 bit), streamsize may be int (32
                // bit)
-               const auto nn =
-                    static_cast<
-                    decltype(
-                         std::numeric_limits<Vecchar::size_type>::max())
-                    >(n);
-               if (nn > std::numeric_limits<Vecchar::size_type>::max() ||
+               const auto nn = static_cast<decltype(
+                    std::numeric_limits<Vecchar::size_type>::max())>(
+                    n);
+               if (nn > std::numeric_limits<
+                             Vecchar::size_type>::max() ||
                    n > std::numeric_limits<std::streamsize>::max())
                     throw std::runtime_error(__func__);
                SHG::Vecchar buf(static_cast<Vecchar::size_type>(n));
@@ -73,7 +70,8 @@ char* strtrim(char* s) {
           u++;
      while ((*t++ = *u++))
           if (std::isspace(*u)) {
-               while (std::isspace(*++u)) {/* VOID */}
+               while (std::isspace(*++u)) { /* VOID */
+               }
                if (*u) {
                     *t++ = ' ';
                } else {
@@ -84,8 +82,7 @@ char* strtrim(char* s) {
      return s;
 }
 
-string& clean_string(string& s,
-                     const string& trimchars,
+string& clean_string(string& s, const string& trimchars,
                      char replace_char) {
      string::size_type low = s.find_first_not_of(trimchars);
      if (low == string::npos)
@@ -139,9 +136,10 @@ char* strrtok(char* s, const char* delim, char** next) {
 
 char* strdup(const char* s) {
      std::size_t n = strlen(s) + 1;
-     char* t = new(std::nothrow) char[n];
-     return t == nullptr ?
-          nullptr : reinterpret_cast<char*>(std::memcpy(t, s, n));
+     char* t = new (std::nothrow) char[n];
+     return t == nullptr
+                 ? nullptr
+                 : reinterpret_cast<char*>(std::memcpy(t, s, n));
 }
 
 Comblex::Comblex(int n, int k)
@@ -166,11 +164,11 @@ bool Comblex::next() {
 }
 
 bool isdegenerate(const std::gslice& g) {
-     using std::size_t;
-     using std::valarray;
-     using std::inner_product;
      using std::begin;
      using std::end;
+     using std::inner_product;
+     using std::size_t;
+     using std::valarray;
 
      const valarray<size_t>& l = g.size();
      const valarray<size_t>& d = g.stride();
@@ -179,8 +177,8 @@ bool isdegenerate(const std::gslice& g) {
           return true;
      if (l.min() < 1 || d.min() < 1)
           return true;
-     valarray<bool> addr(inner_product(begin(l), end(l), begin(d), 0)
-                         - d.sum() + 1);
+     valarray<bool> addr(
+          inner_product(begin(l), end(l), begin(d), 0) - d.sum() + 1);
      valarray<size_t> i(n);
      for (;;) {
           size_t kk = inner_product(begin(i), end(i), begin(d), 0);
@@ -197,19 +195,20 @@ bool isdegenerate(const std::gslice& g) {
 }
 
 bool isvalid(size_t n, const std::gslice& g) {
-     using std::size_t;
-     using std::valarray;
-     using std::inner_product;
      using std::begin;
      using std::end;
+     using std::inner_product;
+     using std::size_t;
+     using std::valarray;
 
      if (isdegenerate(g))
           return false;
      const valarray<size_t>& l = g.size();
      const valarray<size_t>& d = g.stride();
-     const size_t maxaddr = inner_product(
-          begin(l), end(l), begin(d), g.start()) - d.sum();
+     const size_t maxaddr =
+          inner_product(begin(l), end(l), begin(d), g.start()) -
+          d.sum();
      return maxaddr < n;
 }
 
-}       // namespace SHG
+}  // namespace SHG

@@ -1,5 +1,5 @@
-#include "shg/smc.h"
-#include "shg/mzt.h"
+#include <shg/smc.h>
+#include <shg/mzt.h>
 #include "testing.h"
 
 namespace SHG::Testing {

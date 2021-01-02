@@ -1,7 +1,6 @@
-#include "shg/mzt.h"
+#include <shg/mzt.h>
 #include <ios>
 #include <sstream>
-#include "shg/mzt.h"
 #include "testing.h"
 
 namespace SHG::Testing {

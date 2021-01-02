@@ -1,5 +1,3 @@
-/* ieee.h: IEEE exception handling */
-
 /**
  * \file include/shg/ieee.h
  * IEEE exception handling.
@@ -17,9 +15,9 @@ void set_ieee_exception_handler();
 void enable_ieee_exceptions();
 void disable_ieee_exceptions();
 
-}       // namespace SHG
+}  // namespace SHG
 
-#define SHG_SET_IEEE_EXCEPTION_HANDLER()        \
+#define SHG_SET_IEEE_EXCEPTION_HANDLER() \
      SHG::set_ieee_exception_handler()
 #define SHG_ENABLE_IEEE_EXCEPTIONS() SHG::enable_ieee_exceptions()
 #define SHG_DISABLE_IEEE_EXCEPTIONS() SHG::disable_ieee_exceptions()

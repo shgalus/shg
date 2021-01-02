@@ -1,9 +1,9 @@
-#include "shg/bdstest.h"
+#include <shg/bdstest.h>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include "shg/mzt.h"
+#include <shg/mzt.h>
 #include "testing.h"
 
 namespace SHG::Testing {

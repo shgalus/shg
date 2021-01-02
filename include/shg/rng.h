@@ -1,5 +1,3 @@
-/* rng.h: random number generator */
-
 /**
  * \file include/shg/rng.h
  * Random number generator.
@@ -10,7 +8,7 @@
 #define SHG_RNG_H
 
 #include <iostream>
-#include "shg/vector.h"
+#include <shg/vector.h>
 
 namespace SHG {
 
@@ -76,7 +74,8 @@ public:
       *
       * \exception SHG::Invalid_argument unless x.size() > 0
       *
-      * \implementation See \cite wieczorkowski-zielinski-1997, p. 104.
+      * \implementation See \cite wieczorkowski-zielinski-1997, p.
+      * 104.
       */
      void simplex_surface(Vecdouble& x);
 
@@ -265,6 +264,6 @@ private:
 
 /** \} */ /* end of group random_number_generator */
 
-}       // namespace SHG
+}  // namespace SHG
 
 #endif

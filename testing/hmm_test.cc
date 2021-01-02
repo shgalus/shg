@@ -1,8 +1,8 @@
-#include "shg/hmm.h"
+#include <shg/hmm.h>
 #include <cstddef>
-#include "shg/except.h"
-#include "shg/hmm.h"
-#include "shg/mstat.h"
+#include <shg/except.h>
+#include <shg/hmm.h>
+#include <shg/mstat.h>
 #include "testing.h"
 
 namespace SHG::Testing {
