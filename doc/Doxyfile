@@ -1,4 +1,4 @@
-# Doxyfile 1.9.0
+# Doxyfile 1.9.1
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -2189,7 +2189,7 @@ PREDEFINED             = "BOOST_AUTO_TEST_CASE(name)=void name()" \
                          "BOOST_FIXTURE_TEST_SUITE(name,data)=namespace BoostTest { class name {public:" \
                          BOOST_AUTO_TEST_SUITE_END()=}; \
                          "BOOST_CONCEPT_REQUIRES(req,type)=type" \
-                         "BOOST_CONCEPT_ASSERT(req)="
+                         BOOST_CONCEPT_ASSERT(req)=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
