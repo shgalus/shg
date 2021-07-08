@@ -8,7 +8,10 @@
 /doc/*.blg
 /doc/*.toc
 /doc/*.out
+/doc/*.mpx
+/doc/shg.[0-9]*
 !/doc/StatGaus.pdf
+!/doc/gebauerm.pdf
 /doc/doxwarn.txt
 /lib/
 mtrace

@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\shg\alggeom.h" />
+    <ClInclude Include="..\..\..\include\shg\algebra.h" />
     <ClInclude Include="..\..\..\include\shg\bdstest.h" />
+    <ClInclude Include="..\..\..\include\shg\binom.h" />
     <ClInclude Include="..\..\..\include\shg\brent.h" />
     <ClInclude Include="..\..\..\include\shg\csv.h" />
     <ClInclude Include="..\..\..\include\shg\date.h" />
@@ -29,14 +30,17 @@
     <ClInclude Include="..\..\..\include\shg\except.h" />
     <ClInclude Include="..\..\..\include\shg\fcmp.h" />
     <ClInclude Include="..\..\..\include\shg\geometry.h" />
+    <ClInclude Include="..\..\..\include\shg\gps.h" />
     <ClInclude Include="..\..\..\include\shg\gsgts.h" />
     <ClInclude Include="..\..\..\include\shg\hmm.h" />
     <ClInclude Include="..\..\..\include\shg\ieee.h" />
     <ClInclude Include="..\..\..\include\shg\ipart.h" />
     <ClInclude Include="..\..\..\include\shg\laplace.h" />
     <ClInclude Include="..\..\..\include\shg\mathprog.h" />
+    <ClInclude Include="..\..\..\include\shg\matrix-inl.h" />
     <ClInclude Include="..\..\..\include\shg\matrix.h" />
     <ClInclude Include="..\..\..\include\shg\mconsts.h" />
+    <ClInclude Include="..\..\..\include\shg\monomial.h" />
     <ClInclude Include="..\..\..\include\shg\mstat.h" />
     <ClInclude Include="..\..\..\include\shg\mzt.h" />
     <ClInclude Include="..\..\..\include\shg\ninv.h" />
@@ -46,30 +50,36 @@
     <ClInclude Include="..\..\..\include\shg\opdts.h" />
     <ClInclude Include="..\..\..\include\shg\packellp.h" />
     <ClInclude Include="..\..\..\include\shg\permentr.h" />
+    <ClInclude Include="..\..\..\include\shg\polynomial.h" />
+    <ClInclude Include="..\..\..\include\shg\polynomial_ring.h" />
     <ClInclude Include="..\..\..\include\shg\rng.h" />
     <ClInclude Include="..\..\..\include\shg\runs.h" />
     <ClInclude Include="..\..\..\include\shg\shg.h" />
     <ClInclude Include="..\..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\..\include\shg\specfunc.h" />
     <ClInclude Include="..\..\..\include\shg\utils.h" />
+    <ClInclude Include="..\..\..\include\shg\vector-inl.h" />
     <ClInclude Include="..\..\..\include\shg\vector.h" />
     <ClInclude Include="..\..\..\include\shg\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\alggeom.cc" />
+    <ClCompile Include="..\..\..\src\algebra.cc" />
     <ClCompile Include="..\..\..\src\bdstest.cc" />
+    <ClCompile Include="..\..\..\src\binom.cc" />
     <ClCompile Include="..\..\..\src\csv.cc" />
     <ClCompile Include="..\..\..\src\date.cc" />
     <ClCompile Include="..\..\..\src\drbnwtsn.cc" />
     <ClCompile Include="..\..\..\src\encoding.cc" />
     <ClCompile Include="..\..\..\src\except.cc" />
     <ClCompile Include="..\..\..\src\geometry.cc" />
+    <ClCompile Include="..\..\..\src\gps.cc" />
     <ClCompile Include="..\..\..\src\gsgts.cc" />
     <ClCompile Include="..\..\..\src\hmm.cc" />
     <ClCompile Include="..\..\..\src\ieee.cc" />
     <ClCompile Include="..\..\..\src\ipart.cc" />
     <ClCompile Include="..\..\..\src\laplace.cc" />
     <ClCompile Include="..\..\..\src\mathprog.cc" />
+    <ClCompile Include="..\..\..\src\monomial.cc" />
     <ClCompile Include="..\..\..\src\mstat.cc" />
     <ClCompile Include="..\..\..\src\mzt.cc" />
     <ClCompile Include="..\..\..\src\ninv.cc" />
@@ -77,6 +87,8 @@
     <ClCompile Include="..\..\..\src\numalg.cc" />
     <ClCompile Include="..\..\..\src\ols.cc" />
     <ClCompile Include="..\..\..\src\packellp.cc" />
+    <ClCompile Include="..\..\..\src\polynomial.cc" />
+    <ClCompile Include="..\..\..\src\polynomial_ring.cc" />
     <ClCompile Include="..\..\..\src\rng.cc" />
     <ClCompile Include="..\..\..\src\runs.cc" />
     <ClCompile Include="..\..\..\src\smc.cc" />
@@ -157,13 +169,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,13 +188,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -197,13 +209,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,13 +232,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -237,18 +249,26 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\..\..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages\boost.1.72.0.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets')" />
     <Import Project="..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets" Condition="Exists('..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" />
     <Import Project="..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets" Condition="Exists('..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" />
+    <Import Project="..\..\..\..\packages\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages\boost.1.76.0.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost.1.72.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost.1.76.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets'))" />
   </Target>
 </Project>

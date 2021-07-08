@@ -71,8 +71,8 @@ private:
 
 /**
  * A class for making assertions. \details It should be used by the
- * means of the macros SHG_ASSERT(e) and SHG_THROW(). \c what() is
- * always initialized to "assertion failed".
+ * means of the macros SHG_ASSERT(e). \c what() is always initialized
+ * to "assertion failed".
  */
 class Assertion : public virtual Exception {
 public:
@@ -130,11 +130,6 @@ private:
      const char* file_; /**< Source file name. */
      int line_;         /**< Line number in this file. */
 };
-
-/**
- * Throws SHG::Assertion(\__FILE__, \__LINE__).
- */
-#define SHG_THROW() throw SHG::Assertion(__FILE__, __LINE__)
 
 /**
  * Throws SHG::Assertion(file, line) if \c e is false.
@@ -231,6 +226,32 @@ private:
  */
 void error(const char* message, const char* progname = 0,
            std::ostream& f = std::cerr);
+
+/**
+ * Formats the message and throws the exception. If the message is
+ * "division by zero", the file is "division.cc" and line is 121, the
+ * message looks like "division.cc(121): division by zero". If the
+ * message is nullptr or empty, the word "error" is printed as the
+ * message.
+ */
+template <class T>
+[[noreturn]] void throw_exception(const char* file, int line,
+                                  const char* message = nullptr) {
+     std::string what{file};
+     what += "(" + std::to_string(line) + "): ";
+     what +=
+          message == nullptr || *message == '\0' ? "error" : message;
+     throw T(what);
+}
+
+#define SHG_THROW(T, message) \
+     SHG::throw_exception<T>(__FILE__, __LINE__, (message))
+
+#define SHG_THROW_IA(message) \
+     SHG_THROW(std::invalid_argument, (message))
+
+#define SHG_THROW_RE(message) \
+     SHG_THROW(std::runtime_error, (message))
 
 /** \} */  // end of group error_and_exception_handling
 

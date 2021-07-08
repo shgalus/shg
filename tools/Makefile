@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-TARGET = ksone gmconsts octal
+TARGET = ksone gmconsts octal genbuchb
 
 GMP = -lgmpxx -lgmp
 
@@ -13,7 +13,9 @@ specfunc: specfunc.cc
 ksone: ksone.cc
 gmconsts: gmconsts.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) $(GMP) -o $@
+genbuchb: genbuchb.cc
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) -lcocoa $(LDLIBS) $(GMP) -o $@
 clean:
-	rm -f $(TARGET) $(TARGET:%=%.d)
+	rm -f $(TARGET:%=%.d)
 spotless: clean
-	rm -f ppnd7.cc gammad.cc probst.cc betain.cc cdffdist.cc
+	rm -f $(TARGET)

@@ -1,0 +1,140 @@
+\chapter{GPS}
+
+Suppose that the Earth is a spheroid
+\begin{equation}
+  \label{eq:spheroid}
+  \frac{x^2}{a^2} + \frac{y^2}{a^2} + \frac{z^2}{b^2} = 1, \quad a
+  \geq b > 0,
+\end{equation}
+with its centre of symmetry in the origin of the Cartesian coordinate
+system and axes overlapping axes of coordinate system.
+
+Let $P$ be a point on the ellipsoid~\eqref{eq:spheroid}. Define
+geographical coordinates: latitude and longitude as follows. Latitude
+of $P$ is the angle between the normal to the ellipsoid at the point
+$P$ and the plane $z = 0$ (see figure \ref{fig:spheroid_coordinates}).
+Longitude of $P$ is the angle between the plane $y = 0$ and the plane
+perpendicular to the plane $z = 0$ passing through the point $P$ and
+the origin of the coordinate system.
+
+\begin{figure}[ht]
+\begin{center}
+\resizebox{6cm}{!}{\includegraphics{1.pdf}}
+\end{center}
+\caption{Cartesian and geographic coordinates on the spheroid.}
+\label{fig:spheroid_coordinates}
+\end{figure}
+
+Denote latitude by $-\frac{\pi}{2} \leq \varphi \leq \frac{\pi}{2}$,
+longitude by $-\pi \leq \lambda \leq \pi$. The $X$ axis passes through
+the point $(a, 0, 0)$ with latitude $0^\circ$ and longitude $0^\circ$
+($\varphi = 0, \lambda = 0$), the $Y$ axis passes through the point
+$(0, a, 0)$ with latitude $0^\circ$ and longitude $90^\circ$ east
+($\varphi = 0, \lambda = \frac{\pi}{2}$) and the $Z$ axis passes
+through the north pole $(0, 0, b)$ with latitude $90^\circ$ north
+($\varphi = \frac{\pi}{2}, -\pi \leq \lambda \leq \pi$).
+
+\section{Conversion of coordinates}
+
+Let $P$ be a point on the ellipsoid~\eqref{eq:spheroid} with latitude
+$0 < |\varphi| < \frac{\pi}{2}$ and longitude $-\pi \leq \lambda \leq
+\pi$. We are looking for its coordinates $(x, y, z)$. As the
+$Z$-coordinate depends only on $\varphi$, take a point $P'$ with
+latitude $\varphi$ and longitude $0$, lying on the plane $y = 0$ (see
+figure \ref{fig:plane_y_0}). The line passing through $P'$ and
+inclined to the $x$-axis at the angle $\varphi$ is a normal to the
+ellipse
+\begin{equation} \label{eq:ellipseXZ}
+  \frac{x^2}{a^2} + \frac{z^2}{b^2} = 1
+\end{equation}
+at a point $(x_0, z_0)$ and intersects the $x$-axis at the point
+$(x_1, 0)$.
+
+\begin{figure}[ht]
+\begin{center}
+\resizebox{6cm}{!}{\includegraphics{2.pdf}}
+\end{center}
+\caption{Position of the point $P'$ on the plane $y = 0$.}
+\label{fig:plane_y_0}
+\end{figure}
+
+\noindent Hence it follows that
+\begin{equation} \label{eq:first_eq_for_z}
+  \tg \varphi = \frac{z_0}{x_0 - x_1}.
+\end{equation}
+This normal has the equation
+\[
+z_0x - (x_0 - x_1)z - z_0x_1 = 0.
+\]
+On the other hand, a normal to the ellipse \eqref{eq:ellipseXZ} at its
+point $(x_0, z_0)$ has the equation \cite [pp.~215,~244]
+{bronsztejn-siemiendiajew-musiol-muhlig-2004}
+\[
+a^2z_0x - b^2x_0z - (a^2 - b^2)x_0z_0 = 0.
+\]
+These two lines must overlap, so there must be
+\[
+\frac{z_0}{a^2z_0} = \frac{x_0 - x_1}{b^2x_0} = \frac{z_0x_1}{(a^2 -
+  b^2)x_0z_0}
+\]
+and
+\begin{equation} \label{eq:x1}
+  x_0 - x_1 = \frac{b^2}{a^2}x_0, \quad x_1 = \frac{a^2 -
+    b^2}{a^2}x_0.
+\end{equation}
+From \eqref{eq:ellipseXZ} we have
+\begin{equation} \label{eq:x0_from_XZ}
+  x_0 = \frac{a}{b}\sqrt{b^2 - z_0^2}.
+\end{equation}
+Using \eqref{eq:x1} and \eqref{eq:x0_from_XZ} in
+\eqref{eq:first_eq_for_z} we obtain
+\[
+z_0 = p \frac{\sin \varphi}{\sqrt{1 - e^2\sin^2 \varphi}},
+\]
+where $p = b^2 / a$ \cite [p.~214]
+{bronsztejn-siemiendiajew-musiol-muhlig-2004} and
+\[
+e = \frac{\sqrt{a^2 - b^2}}{a}
+\]
+is the eccentricity of the ellipse~\eqref{eq:ellipseXZ} \cite [p.~214]
+{bronsztejn-siemiendiajew-musiol-muhlig-2004}.
+From~\eqref{eq:x0_from_XZ} we obtain
+\[
+x_0 = a \frac{\cos \varphi}{\sqrt{1 - e^2\sin^2 \varphi}}.
+\]
+$X$ and $Y$ coordinates can be calculated from the parametric equation
+of the circle $x^2 + y^2 = x_0^2$ for the angle $\lambda$: $x = x_0
+\cos \lambda$, $y = x_0 \sin \lambda$.
+
+The complete coordinates are
+\begin{align*}
+  x &= a \frac{\cos \varphi}{\sqrt{1 - e^2\sin^2 \varphi}} \cos \lambda \\
+  y &= a \frac{\cos \varphi}{\sqrt{1 - e^2\sin^2 \varphi}} \sin \lambda \\
+  z &= p \frac{\sin \varphi}{\sqrt{1 - e^2\sin^2 \varphi}}
+\end{align*}
+These formulas are valid also for $\varphi = 0$ and $\varphi = \pm
+\frac{\pi}{2}$.
+
+If a point lies on the normal with distance $h$ from the surface of
+the ellipsoid, then the corresponding values of $z_0$ and $x_0$ should
+be increased by $h \sin \varphi$ and $h \cos \varphi$, respectively.
+Therefore, if a point is specified by coordinates $(\varphi, \lambda,
+h)$, corresponding Cartesian coordinates are
+\begin{align}
+  \label{eq:x_coord}
+  x &= \left( \frac{a}{\sqrt{1 - e^2\sin^2 \varphi}} + h \right) \cos
+  \varphi \cos \lambda \\
+  \label{eq:y_coord}
+  y &= \left( \frac{a}{\sqrt{1 - e^2\sin^2 \varphi}} + h \right) \cos
+  \varphi \sin \lambda \\
+  \label{eq:z_coord}
+  z &= \left( \frac{p}{\sqrt{1 - e^2\sin^2 \varphi}} + h \right) \sin
+  \varphi
+\end{align}
+
+\section{Parameters of the spheroid}
+
+We specify the spheroid of the Earth by two parameters\footnote{See
+  \url{https://en.wikipedia.org/wiki/World_Geodetic_System}.}:
+semi-major axis $a = 6378137.0$ metres and inverse flattening $1 / f =
+298.257223563$, where $f = (a - b) / a$.

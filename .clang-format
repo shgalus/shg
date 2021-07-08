@@ -79,7 +79,7 @@ IncludeCategories:
     SortPriority:    0
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
-IndentCaseLabels: true
+IndentCaseLabels: false
 IndentGotoLabels: false
 IndentPPDirectives: None
 IndentWidth:     5
@@ -134,7 +134,7 @@ RawStringFormats:
     BasedOnStyle:    google
 ReflowComments:  true
 SortIncludes:    false
-SortUsingDeclarations: true
+SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true

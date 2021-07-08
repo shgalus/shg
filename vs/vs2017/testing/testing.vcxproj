@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\testing\buchbdat.h" />
+    <ClInclude Include="..\..\..\testing\gpsdata.h" />
     <ClInclude Include="..\..\..\testing\testing.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\testing\alggeom_test.cc" />
+    <ClCompile Include="..\..\..\testing\algebra_test.cc" />
     <ClCompile Include="..\..\..\testing\bdstest_test.cc" />
+    <ClCompile Include="..\..\..\testing\binom_test.cc" />
     <ClCompile Include="..\..\..\testing\brent_test.cc" />
+    <ClCompile Include="..\..\..\testing\buchbdat.cc" />
     <ClCompile Include="..\..\..\testing\csv_test.cc" />
     <ClCompile Include="..\..\..\testing\date_test.cc" />
     <ClCompile Include="..\..\..\testing\drbnwtsn_test.cc" />
@@ -32,12 +36,15 @@
     <ClCompile Include="..\..\..\testing\except_test.cc" />
     <ClCompile Include="..\..\..\testing\fcmp_test.cc" />
     <ClCompile Include="..\..\..\testing\geometry_test.cc" />
+    <ClCompile Include="..\..\..\testing\gpsdata.cc" />
+    <ClCompile Include="..\..\..\testing\gps_test.cc" />
     <ClCompile Include="..\..\..\testing\gsgts_test.cc" />
     <ClCompile Include="..\..\..\testing\hmm_test.cc" />
     <ClCompile Include="..\..\..\testing\ipart_test.cc" />
     <ClCompile Include="..\..\..\testing\laplace_test.cc" />
     <ClCompile Include="..\..\..\testing\mathprog_test.cc" />
     <ClCompile Include="..\..\..\testing\matrix_test.cc" />
+    <ClCompile Include="..\..\..\testing\monomial_test.cc" />
     <ClCompile Include="..\..\..\testing\mstat_test.cc" />
     <ClCompile Include="..\..\..\testing\mzt_test.cc" />
     <ClCompile Include="..\..\..\testing\ninv_test.cc" />
@@ -47,6 +54,8 @@
     <ClCompile Include="..\..\..\testing\opdts_test.cc" />
     <ClCompile Include="..\..\..\testing\packellp_test.cc" />
     <ClCompile Include="..\..\..\testing\permentr_test.cc" />
+    <ClCompile Include="..\..\..\testing\polynomial_ring_test.cc" />
+    <ClCompile Include="..\..\..\testing\polynomial_test.cc" />
     <ClCompile Include="..\..\..\testing\runs_test.cc" />
     <ClCompile Include="..\..\..\testing\smc_test.cc" />
     <ClCompile Include="..\..\..\testing\specfunc_test.cc" />
@@ -132,12 +141,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,12 +159,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,12 +179,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -192,12 +201,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <DisableSpecificWarnings>4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4305;4723;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -208,18 +217,26 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\..\..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages\boost.1.72.0.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets')" />
     <Import Project="..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets" Condition="Exists('..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" />
     <Import Project="..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets" Condition="Exists('..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" />
+    <Import Project="..\..\..\..\packages\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages\boost.1.76.0.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets')" />
+    <Import Project="..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets" Condition="Exists('..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost.1.72.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_unit_test_framework-vc141.1.72.0.0\build\boost_unit_test_framework-vc141.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost.1.76.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_unit_test_framework-vc141.1.76.0.0\build\boost_unit_test_framework-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\pugixml.1.11.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_date_time-vc141.1.76.0.0\build\boost_date_time-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_iostreams-vc141.1.76.0.0\build\boost_iostreams-vc141.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\boost_zlib-vc141.1.76.0.0\build\boost_zlib-vc141.targets'))" />
   </Target>
 </Project>

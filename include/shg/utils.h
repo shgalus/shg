@@ -36,13 +36,11 @@ constexpr double tolerance{100.0 *
                            std::numeric_limits<double>::epsilon()};
 
 /**
- * Eliminates warnings for unused variables. See
- * \cite misfeldt-bumgardner-gray-2004, page 124.
+ * Eliminates warnings for unused variables. For the previous
+ * implementation, see \cite misfeldt-bumgardner-gray-2004, page 124.
  */
-template <typename T>
-void ignore_unused_variable(T v) {
-     static_cast<void>(v);
-}
+template <typename... Types>
+void ignore_unused_variable(Types...) {}
 
 /**
  * Explicit conversion function for conversion between two scalar
@@ -57,10 +55,21 @@ Target narrow_cast(Source x) {
 }
 
 /**
+ * Returns true if and only if \c n is a prime number.
+ *
+ * \implementation Each integer number can be expressed as \f$6k +
+ * i\f$ for certain integer \f$k\f$ and \f$i \in \{-1, 0, 1, 2, 3, 4\}
+ * \f$. \f$6k + 0, 6k + 2, 6k + 3, 6k + 4\f$ are not prime and \f$6k -
+ * 1, 6k + 1\f$ may be prime. The algorith checks if \f$n\f$ is
+ * divisible by the numbers of the form \f$6k - 1, 6k + 1\f$.
+ */
+bool is_prime(int n);
+
+/**
  * Returns square of the argument.
  */
 template <class T>
-inline T sqr(T x) noexcept {
+constexpr inline T sqr(T x) noexcept {
      return x * x;
 }
 
@@ -224,6 +233,82 @@ T Integer_division<T>::remainder(T a, T b) {
           throw std::invalid_argument("Integer_division::remainder");
      const T r = a % b;
      return r < 0 ? r + std::abs(b) : r;
+}
+
+/**
+ * Extended Euclidean algorithm. For two given nonnegative integer
+ * numbers \f$u\f$ and \f$v\f$, the algorithm determines three numbers
+ * \f$u_1, u_2, u_3\f$ such that \f$uu_1 + vu_2 = u_3 =
+ * \mathrm{gcd}(u, v)\f$.
+ *
+ * \implementation See \cite knuth-2002b, section 4.5.2, page 366-367.
+ */
+template <class T>
+class Extended_gcd {
+     static_assert(std::is_integral<T>::value &&
+                        std::is_signed<T>::value,
+                   "T must be a signed integer type.");
+
+public:
+     Extended_gcd() = default;
+     Extended_gcd(const T& u, const T& v);
+     void calculate(const T& u, const T& v);
+     T u1{}, u2{}, u3{};
+
+private:
+     T v1{}, v2{}, v3{};
+     T t{};
+     T q{};
+};
+
+template <class T>
+Extended_gcd<T>::Extended_gcd(const T& u, const T& v) {
+     calculate(u, v);
+}
+
+// clang-format off
+
+template <class T>
+void Extended_gcd<T>::calculate(const T& u, const T& v) {
+     if (u < 0 || v < 0)
+          throw std::invalid_argument(__func__);
+     u1 = 1; u2 = 0; u3 = u;
+     v1 = 0; v2 = 1; v3 = v;
+     while (v3 != 0) {
+          q = u3 / v3;
+          t = u1 - v1 * q; u1 = v1; v1 = t;
+          t = u2 - v2 * q; u2 = v2; v2 = t;
+          t = u3 - v3 * q; u3 = v3; v3 = t;
+     }
+}
+
+// clang-format on
+
+/**
+ * Calculates \f$x^n\f$ (right-to-left binary method for
+ * exponentiation).
+ * \throws std::invalid_argument if \f$n < 0\f$.
+ * \implementation See \cite knuth-2002b, section 4.6.3, page 497.
+ */
+template <typename T>
+T pow(const T& x, int n);
+
+template <typename T>
+T pow(const T& x, int n) {
+     if (n < 0)
+          throw std::invalid_argument(__func__);
+     T y = T(1);
+     T z = x;
+     std::div_t dv;
+     for (;;) {
+          dv = std::div(n, 2);
+          if (dv.rem != 0)
+               y *= z;
+          n = dv.quot;
+          if (n == 0)
+               return y;
+          z *= z;
+     }
 }
 
 /**
@@ -519,6 +604,29 @@ std::ostream& operator<<(std::ostream& stream,
      for (typename std::vector<T>::size_type i = 0; i < v.size(); i++)
           stream << i << ' ' << v[i] << '\n';
      return stream;
+}
+
+/**
+ * Returns true if and only if the two vectors have the same content.
+ * \implementation std::is_permutation is used. Another possibility is
+ * to sort both vectors and then compare them directly, but this
+ * method requires that T is ordered with less than relation.
+ */
+template <typename T>
+bool have_equal_content(const std::vector<T>& v,
+                        const std::vector<T>& w) {
+     if (v.size() != w.size())
+          return false;
+     return std::is_permutation(v.cbegin(), v.cend(), w.cbegin());
+}
+
+/**
+ * Returns true if and only if the vector \c v contains the element \c
+ * e.
+ */
+template <typename T>
+inline bool contains(const std::vector<T>& v, const T& e) {
+     return std::find(v.cbegin(), v.cend(), e) != v.cend();
 }
 
 /** \} */ /* end of group miscellaneous_utilities */

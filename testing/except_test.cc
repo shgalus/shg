@@ -112,6 +112,15 @@ BOOST_AUTO_TEST_CASE(invalid_argument_test) {
      BOOST_CHECK_THROW(SHG_VALIDATE(1 < 0), Invalid_argument);
 }
 
+using throw_exception_test_types =
+     boost::mpl::list<std::invalid_argument, std::runtime_error,
+                      std::overflow_error>;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(throw_exception_test, T,
+                              throw_exception_test_types) {
+     BOOST_CHECK_THROW(SHG_THROW(T, nullptr), T);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }  // namespace SHG::Testing

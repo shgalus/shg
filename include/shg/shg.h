@@ -1,14 +1,14 @@
 /**
  * \file include/shg/shg.h
  * SHG library header file.
- * \date Created on 4 April 2010.
  */
 
 #ifndef SHG_SHG_H
 #define SHG_SHG_H
 
-#include <shg/alggeom.h>
+#include <shg/algebra.h>
 #include <shg/bdstest.h>
+#include <shg/binom.h>
 #include <shg/brent.h>
 #include <shg/csv.h>
 #include <shg/date.h>
@@ -17,6 +17,7 @@
 #include <shg/except.h>
 #include <shg/fcmp.h>
 #include <shg/geometry.h>
+#include <shg/gps.h>
 #include <shg/gsgts.h>
 #include <shg/hmm.h>
 #include <shg/ieee.h>
@@ -25,6 +26,7 @@
 #include <shg/mathprog.h>
 #include <shg/matrix.h>
 #include <shg/mconsts.h>
+#include <shg/monomial.h>
 #include <shg/mstat.h>
 #include <shg/mzt.h>
 #include <shg/ninv.h>
@@ -34,6 +36,8 @@
 #include <shg/opdts.h>
 #include <shg/packellp.h>
 #include <shg/permentr.h>
+#include <shg/polynomial.h>
+#include <shg/polynomial_ring.h>
 #include <shg/rng.h>
 #include <shg/runs.h>
 #include <shg/smc.h>

@@ -6,6 +6,10 @@
 
 \tableofcontents
 
+\section additional_documentation Additional documentation.
+
+Additional documentation is in <a href = "shg.pdf">shg.pdf</a>.
+
 \section directory_structure Directory structure.
 \verbatim
 .
@@ -180,5 +184,28 @@ The file `NuGet.Config`:
       vs2017
         NuGet.Config
 \endverbatim
+
+\section cocoalib_install Installing CoCoALib.
+
+Download CoCoALib-0.99712.tgz from http://cocoa.dima.unige.it/cocoalib/.
+
+    ./configure --with-boost=/usr/local/boost_1_75_0/include
+    make
+    make install
+    Installed CoCoA examples in "/usr/local/include/CoCoA/examples/"
+    Installed CoCoA documentation in "/usr/local/include/CoCoA/doc/"
+    Installed CoCoA headers in "/usr/local/include/CoCoA/"
+    Installed CoCoA library in "/usr/local/lib/"
+    cd src/CoCoA-5
+    make install
+    CoCoA-5 installed in /usr/local/bin
+
+Headers: file:////usr/local/include/CoCoA/, library:
+file:////usr/local/lib/. Links:
+[examples](file:////usr/local/include/CoCoA/examples/),
+[CoCoALib-0.99712
+documentation](file:///usr/local/include/CoCoA/doc/CoCoALib.pdf),
+[CoCoALib-0.99712
+documentation](file:///usr/local/include/CoCoA/doc/html/index.html)
 
 */

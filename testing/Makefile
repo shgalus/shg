@@ -14,7 +14,8 @@ $(OBJDIR)/%.o : %.cc
 all: ../bin/testing
 
 run: all
-	../bin/testing --log_level=message --run_test=alggeom_test/*
+	../bin/testing --log_level=message	\
+--run_test=polynomial_test/*:polynomial_ring_test/*:gps_test/*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static

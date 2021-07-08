@@ -12,6 +12,18 @@ BOOST_AUTO_TEST_SUITE(utils_test)
 
 namespace bdata = boost::unit_test::data;
 
+BOOST_AUTO_TEST_CASE(ignore_unused_variable_test) {
+     int i;
+     double c;
+     char const* s = "xxx";
+     char t[100];
+
+     ignore_unused_variable();
+     ignore_unused_variable(&i);
+     ignore_unused_variable(i, &c, s, t);
+     BOOST_CHECK(true);
+}
+
 BOOST_AUTO_TEST_CASE(narrow_cast_test) {
      constexpr auto max = std::numeric_limits<signed char>::max();
      constexpr auto min = std::numeric_limits<signed char>::min();
@@ -24,6 +36,19 @@ BOOST_AUTO_TEST_CASE(narrow_cast_test) {
                        std::runtime_error);
      BOOST_CHECK_THROW(narrow_cast<signed char>(mind - 1.0),
                        std::runtime_error);
+}
+
+BOOST_DATA_TEST_CASE(is_prime_test, bdata::xrange(1000), xr) {
+     const int n = xr;
+     bool is_prime1 = n > 1;
+     if (is_prime1) {
+          for (int i = 2; i * i <= n; i++)
+               if (n % i == 0) {
+                    is_prime1 = false;
+                    break;
+               }
+     }
+     BOOST_CHECK(is_prime1 == is_prime(n));
 }
 
 BOOST_AUTO_TEST_CASE(sqr_test) {
@@ -126,6 +151,70 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(integer_division_test, T, test_types) {
                     BOOST_CHECK(b == 0);
                }
           }
+}
+
+/**
+ * Basic test. See \cite knuth-2002b, section 4.5.2, page 367.
+ */
+BOOST_AUTO_TEST_CASE(extended_gcd_basic_test) {
+     {
+          Extended_gcd<int> xgcd;
+          xgcd.calculate(40902, 24140);
+          BOOST_CHECK(xgcd.u1 == 337 && xgcd.u2 == -571 &&
+                      xgcd.u3 == 34);
+     }
+     {
+          Extended_gcd xgcd(40902, 24140);
+          BOOST_CHECK(xgcd.u1 == 337 && xgcd.u2 == -571 &&
+                      xgcd.u3 == 34);
+     }
+}
+
+BOOST_DATA_TEST_CASE(extended_gcd_extended_test,
+                     bdata::xrange(20) * bdata::xrange(20), xr1,
+                     xr2) {
+     using std::gcd;
+     Extended_gcd<int> xgcd(xr1, xr2);
+     BOOST_CHECK(xr1 * xgcd.u1 + xr2 * xgcd.u2 == xgcd.u3);
+     BOOST_CHECK(xgcd.u3 == gcd(xr1, xr2));
+}
+
+template <typename T>
+T ipow(T x, int n) {
+     T y = T(1);
+     for (int i = 1; i <= n; i++)
+          y *= x;
+     return y;
+}
+
+BOOST_AUTO_TEST_CASE(pow_test) {
+     for (int x = -10; x <= 10; x++) {
+          for (int n = 0; n <= 5; n++) {
+               const int p = pow(x, n);
+               const int p2 = ipow(x, n);
+               BOOST_CHECK(p == p2);
+          }
+     }
+     for (int x = -3; x <= 3; x++) {
+          for (int n = 0; n <= 18; n++) {
+               const int p = pow(x, n);
+               const int p2 = ipow(x, n);
+               BOOST_CHECK(p == p2);
+          }
+     }
+     for (int x = -2; x <= 2; x++) {
+          for (int n = 0; n <= 31; n++) {
+               const int p = pow(x, n);
+               const int p2 = ipow(x, n);
+               BOOST_CHECK(p == p2);
+          }
+     }
+     const double x = 1.001;
+     for (int n = 0; n <= 1000; n++) {
+          const double p = pow(x, n);
+          const double p2 = std::pow(x, n);
+          BOOST_CHECK(faeq(p, p2, 8e-14));
+     }
 }
 
 struct Mod_case {
@@ -534,6 +623,40 @@ BOOST_AUTO_TEST_CASE(output_operator_for_vectors_test) {
      buf.str("");
      buf << v2;
      BOOST_CHECK(buf.str() == "");
+}
+
+BOOST_AUTO_TEST_CASE(have_equal_content_test) {
+     using SHG::have_equal_content;
+     {
+          const std::vector<int> v{1, 2, 3};
+          const std::vector<int> w{2, 3, 1};
+          BOOST_CHECK(have_equal_content(v, w));
+     }
+     {
+          const std::vector<int> v{1, 2, 3};
+          const std::vector<int> w{1, 2};
+          BOOST_CHECK(!have_equal_content(v, w));
+     }
+     {
+          const std::vector<int> v{};
+          const std::vector<int> w{};
+          BOOST_CHECK(have_equal_content(v, w));
+     }
+}
+
+BOOST_AUTO_TEST_CASE(contains_test) {
+     using SHG::have_equal_content;
+     {
+          const std::vector<int> v{1, 2, 3};
+          BOOST_CHECK(contains(v, 1));
+          BOOST_CHECK(contains(v, 2));
+          BOOST_CHECK(contains(v, 3));
+          BOOST_CHECK(!contains(v, 4));
+     }
+     {
+          const std::vector<int> v{};
+          BOOST_CHECK(!contains(v, 0));
+     }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

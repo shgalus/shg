@@ -4,9 +4,9 @@ include ../make.inc
 
 top: field1
 
-all: field1 templinh
+all: field1
 
 clean:
 	rm -rf *.o *.d
 spotless: clean
-	rm -rf field1 templinh
+	rm -rf field1

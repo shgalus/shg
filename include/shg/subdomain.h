@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <shg/utils.h>
 
 namespace SHG {
 
@@ -68,18 +69,12 @@ struct Nonnegative : public Subdomain<T, Nonnegative_predicate<T>> {
           : Subdomain<T, Nonnegative_predicate<T>>(x) {}
 };
 
-namespace ALGGEOM {
-bool is_prime(int n);
-}
-
 template <typename T>
 struct Prime_predicate {
      static_assert(std::is_integral<T>::value &&
                         std::is_signed<T>::value,
                    "T must be a signed integer type.");
-     static bool is_satisfied(const T& x) {
-          return ALGGEOM::is_prime(x);
-     }
+     static bool is_satisfied(const T& x) { return is_prime(x); }
      static std::string description() { return "is not prime"; }
 };
 

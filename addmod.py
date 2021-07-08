@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 "This module adds a new C++ module."
 
@@ -13,8 +13,6 @@ HEADER_FILE = """/**
 #ifndef SHG_{upp}_H
 #define SHG_{upp}_H
 
-#include <iostream>
-
 namespace SHG {{
 
 }}  // namespace SHG
@@ -26,13 +24,13 @@ SOURCE_FILE = """/**
  * ==== Insert description. ====
  */
 
-#include "shg/{low}.h"
+#include <shg/{low}.h>
 
 namespace SHG {{
 
 }}  // namespace SHG"""
 
-TEST_FILE = """#include "shg/{low}.h"
+TEST_FILE = """#include <shg/{low}.h>
 #include "testing.h"
 
 namespace SHG::Testing {{
@@ -47,12 +45,9 @@ BOOST_AUTO_TEST_SUITE_END()
 
 }}  // namespace SHG::Testing"""
 
-LIBRARY_HEADER_FILE_BEGIN = """/* shg.h: SHG library header file */
-
-/**
+LIBRARY_HEADER_FILE_BEGIN = """/**
  * \\file include/shg/shg.h
  * SHG library header file.
- * \\date Created on 4 April 2010.
  */
 
 #ifndef SHG_SHG_H
@@ -86,7 +81,7 @@ def add_module(module_name):
         all_lines = f.read().splitlines()
     include_lines = [s for s in all_lines if s.startswith("#include")]
     include_lines.sort()
-    new_line = '#include "shg/{low}.h"'.format(low=low)
+    new_line = '#include <shg/{low}.h>'.format(low=low)
     bisect.insort(include_lines, new_line)
     with open("include/shg/shg.h", 'w') as f:
         f.write(LIBRARY_HEADER_FILE_BEGIN)

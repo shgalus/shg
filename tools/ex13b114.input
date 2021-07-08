@@ -1,0 +1,26 @@
+-- Calculate Groebner bases for exercise 13b,
+-- \cite cox-little-oshea-2007, page 114.
+-- Execute with: )read ex13b114
+)clear all
+)set output algebra ex13b114
+)set output algebra on
+)set expose add constructor GDMP
+)set expose add constructor ODP
+Grlex3 := GDMP([x,y,z],FRAC INT,ODP(3,NNI,totalLex$ORDFUNS(3,NNI)))
+
+
+f11 : DMP([x,y,z],FRAC INT) := x^5+y^4+z^3-1
+f12 : DMP([x,y,z],FRAC INT) := x^3+y^3+z^2-1
+
+f21 : Grlex3 := x^5+y^4+z^3-1
+f22 : Grlex3 := x^3+y^3+z^2-1
+
+f31 : HDMP([x,y,z],FRAC INT) := x^5+y^4+z^3-1
+f32 : HDMP([x,y,z],FRAC INT) := x^3+y^3+z^2-1
+
+groebner([f11,f12])
+groebner([f21,f22])
+groebner([f31,f32])
+
+)set output algebra off
+)set output algebra console
