@@ -74,12 +74,6 @@ BOOST_AUTO_TEST_CASE(vector_constructor_test) {
                std::equal(v.begin(), v.end(), w.begin(), w.end()));
      }
      {
-          const std::basic_string<int> s{1, 3, 5, 7, 9};
-          const Vecint v(s);
-          BOOST_CHECK(
-               std::equal(s.begin(), s.end(), v.begin(), v.end()));
-     }
-     {
           const std::valarray<int> v{1, 3, 5, 7, 9};
           const Vecint w(v);
           BOOST_CHECK(std::equal(std::begin(v), std::end(v),
@@ -125,13 +119,6 @@ BOOST_AUTO_TEST_CASE(vector_assignment_test) {
           w = v;
           BOOST_CHECK(
                std::equal(v.begin(), v.end(), w.begin(), w.end()));
-     }
-     {
-          const std::basic_string<int> s{1, 3, 5, 7, 9};
-          Vecint v;
-          v = s;
-          BOOST_CHECK(
-               std::equal(s.begin(), s.end(), v.begin(), v.end()));
      }
      {
           const std::valarray<int> v{1, 3, 5, 7, 9};
@@ -197,12 +184,6 @@ BOOST_AUTO_TEST_CASE(vector_memeber_functions_test) {
           const std::vector<int> w(v);
           BOOST_CHECK(
                std::equal(v.begin(), v.end(), w.begin(), w.end()));
-     }
-     {
-          const Vecint v{1, 3, 5, 7, 9};
-          const std::basic_string<int> s(v);
-          BOOST_CHECK(
-               std::equal(s.begin(), s.end(), v.begin(), v.end()));
      }
      {
           const Vecint v{1, 3, 5, 7, 9};

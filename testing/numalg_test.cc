@@ -17,8 +17,6 @@ BOOST_AUTO_TEST_SUITE(numalg_test)
 // is not a trivial standard-layout type. However, this operator is
 // not instantiated here.
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1927)
-
 // GNU Scientific Library - Reference Manual, section 6.6.
 BOOST_AUTO_TEST_CASE(solve_polynomial_test) {
      const Vecdouble a{-1, 0, 0, 0, 0, 1};
@@ -46,8 +44,6 @@ BOOST_AUTO_TEST_CASE(solve_polynomial_throws_test) {
      a = {-1.0, 0.0, 0.0, 1.0, 0.0};
      BOOST_CHECK_THROW(solve_polynomial(a, x), std::runtime_error);
 }
-
-#endif  // defined(_MSC_VER) && (_MSC_VER <= 1927)
 
 // GNU Scientific Library - Reference Manual, section 14.15.
 BOOST_AUTO_TEST_CASE(solve_linear_test) {

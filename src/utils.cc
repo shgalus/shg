@@ -112,18 +112,6 @@ string& clean_string(string& s, const string& trimchars,
      }
 }
 
-std::vector<string> split_string(const string& s, const string& sep) {
-     std::vector<string> v;
-     string::size_type p1, p2 = 0;
-     while ((p1 = s.find_first_not_of(sep, p2)) != string::npos) {
-          p2 = s.find_first_of(sep, p1);
-          if (p2 == string::npos)
-               p2 = s.size();
-          v.push_back(s.substr(p1, p2 - p1));
-     }
-     return v;
-}
-
 char* strrtok(char* s, const char* delim, char** next) {
      char* tok;
 
@@ -220,6 +208,19 @@ bool isvalid(size_t n, const std::gslice& g) {
           inner_product(begin(l), end(l), begin(d), g.start()) -
           d.sum();
      return maxaddr < n;
+}
+
+std::string to_octal(std::string const& s) {
+     std::ostringstream oss;
+     unsigned char u;
+     for (auto c : s) {
+          u = reinterpret_cast<unsigned char&>(c);
+          if (u < 0x80)
+               oss << c;
+          else
+               oss << '\\' << std::oct << +u;
+     }
+     return oss.str();
 }
 
 }  // namespace SHG

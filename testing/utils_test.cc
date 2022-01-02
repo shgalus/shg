@@ -299,6 +299,20 @@ BOOST_AUTO_TEST_CASE(read_binary_test) {
      BOOST_CHECK(s.d == t.d);
 }
 
+BOOST_AUTO_TEST_CASE(write_read_string_binary_test) {
+     using std::stringstream;
+     using std::ios_base;
+     std::string const s0{"A\0B\0C\0", 6};
+     BOOST_REQUIRE(s0.size() == 6);
+     stringstream ss(ios_base::in | ios_base::out | ios_base::binary);
+     write_binary(s0, ss);
+     BOOST_CHECK(ss.good());
+     std::string s1;
+     read_binary(s1, ss);
+     BOOST_CHECK(ss.good());
+     BOOST_CHECK(s1 == s0);
+}
+
 BOOST_AUTO_TEST_CASE(ltrim_test) {
      std::string s;
      s = "";
@@ -467,7 +481,12 @@ BOOST_DATA_TEST_CASE(clean_string_test, bdata::make(vc), c) {
      BOOST_CHECK(clean_string(s) == c.output);
 }
 
-BOOST_AUTO_TEST_CASE(split_string_test) {
+std::vector<std::string> split_string(
+     std::string const& s, std::string const& sep = white_space) {
+     return split(s, sep);
+}
+
+BOOST_AUTO_TEST_CASE(split_test) {
      std::vector<std::string> v;
 
      v = split_string("");
@@ -657,6 +676,92 @@ BOOST_AUTO_TEST_CASE(contains_test) {
           const std::vector<int> v{};
           BOOST_CHECK(!contains(v, 0));
      }
+}
+
+struct insert_test_case {
+     std::vector<int> const before;
+     std::vector<int>::size_type const pos;
+     std::vector<int> const after;
+};
+
+insert_test_case const insert_test_data[] = {
+     {{1, 2, 3}, 0, {4, 1, 2, 3}},
+     {{1, 2, 3}, 1, {1, 4, 2, 3}},
+     {{1, 2, 3}, 2, {1, 2, 4, 3}},
+     {{1, 2, 3}, 3, {1, 2, 3, 4}},
+     {{1, 2}, 0, {4, 1, 2}},
+     {{1, 2}, 1, {1, 4, 2}},
+     {{1, 2}, 2, {1, 2, 4}},
+     {{1}, 0, {4, 1}},
+     {{1}, 1, {1, 4}},
+     {{}, 0, {4}}};
+
+BOOST_AUTO_TEST_CASE(insert_test) {
+     using SHG::insert;
+     for (std::size_t i = 0; i < std::size(insert_test_data); i++) {
+          auto const& d = insert_test_data[i];
+          auto b = d.before;
+          insert(b, d.pos, 4);
+          BOOST_CHECK(b == d.after);
+     }
+     std::vector<int> a{1, 2, 3};
+     BOOST_CHECK_THROW(insert(a, 4, 4), std::out_of_range);
+     a = {};
+     BOOST_CHECK_THROW(insert(a, 1, 4), std::out_of_range);
+}
+
+struct Rd_test_struct {
+     std::string s;
+     int i;
+};
+
+bool operator==(Rd_test_struct const& a, Rd_test_struct const& b) {
+     return a.s == b.s && a.i == b.i;
+}
+
+BOOST_AUTO_TEST_CASE(remove_duplicates_test) {
+     std::vector<Rd_test_struct> v1 = {
+          {"a", 1},
+          {"b", 2},
+          {"a", 1},
+     };
+     std::vector<Rd_test_struct> const v2 = {
+          {"a", 1},
+          {"b", 2},
+     };
+     remove_duplicates(v1);
+     BOOST_CHECK(v1 == v2);
+}
+
+constexpr char const* const to_octal_test_res0 =
+     "\001\002\003\004\005\006\007\010\011\012\013\014\015\016\017"
+     "\020\021\022\023\024\025\026\027\030\031\032\033\034\035\036"
+     "\037 "
+     "!\"#$%&'()*+,-./"
+     "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+     "abcdefghijklmnopqrstuvwxyz{|}~"
+     "\177\\200\\201\\202\\203\\204\\205\\206\\207\\210\\211\\212\\21"
+     "3\\214\\215\\216\\217\\220\\221\\222\\223\\224\\225\\226\\227\\"
+     "230\\231\\232\\233\\234\\235\\236\\237\\240\\241\\242\\243\\244"
+     "\\245\\246\\247\\250\\251\\252\\253\\254\\255\\256\\257\\260\\2"
+     "61\\262\\263\\264\\265\\266\\267\\270\\271\\272\\273\\274\\275"
+     "\\276\\277\\300\\301\\302\\303\\304\\305\\306\\307\\310\\311\\3"
+     "12\\313\\314\\315\\316\\317\\320\\321\\322\\323\\324\\325\\326"
+     "\\327\\330\\331\\332\\333\\334\\335\\336\\337\\340\\341\\342\\3"
+     "43\\344\\345\\346\\347\\350\\351\\352\\353\\354\\355\\356\\357"
+     "\\360\\361\\362\\363\\364\\365\\366\\367\\370\\371\\372\\373\\3"
+     "74\\375\\376\\377";
+
+BOOST_AUTO_TEST_CASE(to_octal_test) {
+     std::string res{to_octal_test_res0};
+     res.insert(0, 1, '\0');
+     BOOST_REQUIRE(res.size() == 640);
+
+     std::string s;
+     for (int i = 0; i < 256; i++)
+          s += static_cast<char>(i);
+     auto t = to_octal(s);
+     BOOST_CHECK(t == res);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

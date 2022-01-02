@@ -47,11 +47,6 @@ Vector<T>::Vector(const std::vector<T>& v) : Vector(v.size()) {
 }
 
 template <class T>
-Vector<T>::Vector(const std::basic_string<T>& s) : Vector(s.size()) {
-     s.copy(c_vec(), s.size());
-}
-
-template <class T>
 Vector<T>::Vector(const std::valarray<T>& v) : Vector(v.size()) {
      std::copy(std::begin(v), std::end(v), begin());
 }
@@ -72,8 +67,8 @@ Vector<T>& Vector<T>::operator=(const Vector& v) {
 
 template <class T>
 Vector<T>& Vector<T>::operator=(Vector&& v) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value &&
-              std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value&&
+                   std::is_nothrow_move_assignable<T>::value)) {
      swap(v);
      return *this;
 }
@@ -95,13 +90,6 @@ template <class T>
 Vector<T>& Vector<T>::operator=(const std::vector<T>& v) {
      resize(v.size());
      std::copy(v.begin(), v.end(), begin());
-     return *this;
-}
-
-template <class T>
-Vector<T>& Vector<T>::operator=(const std::basic_string<T>& s) {
-     resize(s.size());
-     s.copy(c_vec(), s.size());
      return *this;
 }
 
@@ -177,8 +165,8 @@ const T* Vector<T>::c_vec() const {
 
 template <class T>
 void Vector<T>::swap(Vector& v) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value &&
-              std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value&&
+                   std::is_nothrow_move_assignable<T>::value)) {
      std::swap(v_, v.v_);
      std::swap(n_, v.n_);
 }
@@ -186,11 +174,6 @@ void Vector<T>::swap(Vector& v) noexcept(
 template <class T>
 Vector<T>::operator std::vector<T>() const {
      return std::vector<T>(begin(), end());
-}
-
-template <class T>
-Vector<T>::operator std::basic_string<T>() const {
-     return std::basic_string<T>(c_vec(), size());
 }
 
 template <class T>
@@ -359,8 +342,8 @@ void clear(Vector<T>& v) {
 
 template <class T>
 void swap(Vector<T>& a, Vector<T>& b) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value &&
-              std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value&&
+                   std::is_nothrow_move_assignable<T>::value)) {
      a.swap(b);
 }
 

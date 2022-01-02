@@ -1188,7 +1188,7 @@ BOOST_AUTO_TEST_CASE(dwcdf_test) {
      using std::size;
      using std::size_t;
 
-     int c = 0;
+     size_t c = 0;
      for (size_t i = 0; i < size(tab_nag_n); i++) {
           const int n = tab_nag_n[i];
           const int maxk = min(10, n - 5);

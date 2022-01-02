@@ -13,14 +13,14 @@ else
 DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 endif
 
-CXX = g++-10.2.0 -O2
+CXX = g++-11.2.0 -O2
 DEBUG = -g
-INCLUDE = -I../include -isystem/usr/local/boost_1_76_0/include
+INCLUDE = -I../include -isystem/usr/local/boost_1_78_0/include
 WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
-LOADLIBES = -L../lib -L/usr/local/boost_1_76_0/lib
+LOADLIBES = -L../lib -L/usr/local/boost_1_78_0/lib
 ifdef pugixml
 LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams -lpugixml -lz
@@ -29,9 +29,9 @@ LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams
 endif
 
-AR = gcc-ar-10.2.0
+AR = gcc-ar-11.2.0
 ARFLAGS = rc
-RANLIB = gcc-ranlib-10.2.0
+RANLIB = gcc-ranlib-11.2.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

@@ -1,6 +1,9 @@
 /bin/
 /build/
 /doc/html/
+/doc/cvs/
+/doc/shg-cvs/
+/doc/shgutf8.bib
 /doc/*.aux
 /doc/*.log
 /doc/*.pdf
@@ -12,8 +15,11 @@
 /doc/shg.[0-9]*
 !/doc/StatGaus.pdf
 !/doc/gebauerm.pdf
+!/doc/cnf.pdf
+!/doc/mckenzie.pdf
 /doc/doxwarn.txt
 /lib/
+/exprmnts/tree_test
 mtrace
 testshg.log
 *.o

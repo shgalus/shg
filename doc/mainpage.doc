@@ -208,4 +208,10 @@ documentation](file:///usr/local/include/CoCoA/doc/CoCoALib.pdf),
 [CoCoALib-0.99712
 documentation](file:///usr/local/include/CoCoA/doc/html/index.html)
 
+\section installing_old_cvs_repository Installing old CVS repository.
+
+To install old CVS repository, change to directory `doc` and say `make
+cvs`. Then change to `cvs/shg` or `cvs/metashg` and issue issue normal
+cvs commands like `cvs log`.
+
 */

@@ -17,7 +17,6 @@
 #include <numeric>
 #include <ostream>
 #include <stdexcept>
-#include <string>
 #include <type_traits>
 #include <utility>
 #include <valarray>
@@ -80,9 +79,6 @@ public:
      /** Constructs a vector from std::vector \a v. */
      explicit Vector(const std::vector<T>& v);
 
-     /** Constructs a vector from std::basic_string \a s. */
-     explicit Vector(const std::basic_string<T>& s);
-
      /** Constructs a vector from std::valarray \a v. */
      explicit Vector(const std::valarray<T>& v);
 
@@ -98,8 +94,8 @@ public:
 
      /** Move assignment. */
      inline Vector& operator=(Vector&& v) noexcept(
-          noexcept(std::is_nothrow_move_constructible<T>::value &&
-                   std::is_nothrow_move_assignable<T>::value));
+          noexcept(std::is_nothrow_move_constructible<T>::value&&
+                        std::is_nothrow_move_assignable<T>::value));
 
      /** Assigns to all elements of this vector value \a a. */
      inline Vector& operator=(const T& a);
@@ -109,9 +105,6 @@ public:
 
      /** Assigns to this vector elements of std::vector \a v. */
      Vector& operator=(const std::vector<T>& v);
-
-     /** Assigns to this vector elements of std::basic_string \a s. */
-     Vector& operator=(const std::basic_string<T>& s);
 
      /** Assigns to this vector elements of std::valarray \a v. */
      Vector& operator=(const std::valarray<T>& v);
@@ -180,14 +173,11 @@ public:
       * \a *this.
       */
      inline void swap(Vector& v) noexcept(
-          noexcept(std::is_nothrow_move_constructible<T>::value &&
-                   std::is_nothrow_move_assignable<T>::value));
+          noexcept(std::is_nothrow_move_constructible<T>::value&&
+                        std::is_nothrow_move_assignable<T>::value));
 
      /** Conversion operator to std::vector. */
      inline explicit operator std::vector<T>() const;
-
-     /** Conversion operator to std::basic_string. */
-     inline explicit operator std::basic_string<T>() const;
 
      /** Conversion operator to std::valarray. */
      inline explicit operator std::valarray<T>() const;
@@ -335,8 +325,8 @@ inline void clear(Vector<T>& v);
  */
 template <class T>
 inline void swap(Vector<T>& a, Vector<T>& b) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value &&
-              std::is_nothrow_move_assignable<T>::value));
+     noexcept(std::is_nothrow_move_constructible<T>::value&&
+                   std::is_nothrow_move_assignable<T>::value));
 
 /**
  * Sorts the elements into ascending order using operator<.

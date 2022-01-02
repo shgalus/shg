@@ -2,7 +2,7 @@
 
 include ../make.inc
 
-TARGET = ksone gmconsts octal genbuchb
+TARGET = ksone gmconsts octal genbuchb pchrtype
 
 GMP = -lgmpxx -lgmp
 
@@ -15,6 +15,7 @@ gmconsts: gmconsts.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) $(GMP) -o $@
 genbuchb: genbuchb.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) -lcocoa $(LDLIBS) $(GMP) -o $@
+pchrtype: pchrtype.cc
 clean:
 	rm -f $(TARGET:%=%.d)
 spotless: clean

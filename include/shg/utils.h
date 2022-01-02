@@ -357,11 +357,37 @@ inline void write_binary(const T& a, std::ostream& f) {
 }
 
 /**
+ * Writes a string to a binary stream.
+ */
+template <>
+inline void write_binary(const std::string& a, std::ostream& f) {
+     write_binary(a.size(), f);
+     f.write(a.c_str(), a.size());
+}
+
+/**
  * Reads a variable from a binary stream.
  */
 template <class T>
 inline void read_binary(T& a, std::istream& f) {
      f.read(reinterpret_cast<char*>(&a), sizeof a);
+}
+
+/**
+ * Reads a string from a binary stream.
+ */
+template <>
+inline void read_binary(std::string& a, std::istream& f) {
+     std::string::size_type size;
+     read_binary(size, f);
+     char* t = new (std::nothrow) char[size];
+     if (t == nullptr) {
+          f.setstate(std::ios::failbit);
+     } else {
+          f.read(t, size);
+          a.assign(t, size);
+          delete[] t;
+     }
 }
 
 /**
@@ -423,8 +449,20 @@ std::string& clean_string(std::string& s,
  * vector has no elements if s == "" or s does not contain characters
  * other than those from sep.
  */
-std::vector<std::string> split_string(
-     const std::string& s, const std::string& sep = white_space);
+template <typename T>
+std::vector<std::basic_string<T>> split(
+     std::basic_string<T> const& s, std::basic_string<T> const& sep) {
+     using S = std::basic_string<T>;
+     std::vector<S> v;
+     typename S::size_type p1, p2 = 0;
+     while ((p1 = s.find_first_not_of(sep, p2)) != S::npos) {
+          p2 = s.find_first_of(sep, p1);
+          if (p2 == S::npos)
+               p2 = s.size();
+          v.push_back(s.substr(p1, p2 - p1));
+     }
+     return v;
+}
 
 /**
  * Indirectly sorts a vector.
@@ -627,6 +665,46 @@ bool have_equal_content(const std::vector<T>& v,
 template <typename T>
 inline bool contains(const std::vector<T>& v, const T& e) {
      return std::find(v.cbegin(), v.cend(), e) != v.cend();
+}
+
+/**
+ * Inserts \c value into \c v at position \c pos.
+ * \throws std::out_of_range if pos > v.size()
+ */
+template <typename T>
+void insert(std::vector<T>& v, typename std::vector<T>::size_type pos,
+            T const& value) {
+     auto const sz = v.size();
+     if (pos > sz)
+          throw std::out_of_range("invalid position in insert()");
+     v.resize(sz + 1);
+     for (auto i = sz; i > pos; i--)
+          v[i] = v[i - 1];
+     v[pos] = value;
+}
+
+/**
+ * Removes duplicates from \c v. Requires only operator==().
+ */
+template <typename T>
+void remove_duplicates(std::vector<T>& v) {
+     auto end = v.end();
+     for (auto it = v.begin(); it != end; ++it)
+          end = std::remove(it + 1, end, *it);
+     v.erase(end, v.end());
+}
+
+/**
+ * Returns \c s with each byte greater than 127 replaced by its octal
+ * code.
+ */
+std::string to_octal(std::string const& s);
+
+constexpr std::size_t length(char const* s) {
+     char const* t = s;
+     while (*t != '\0')
+          t++;
+     return t - s;
 }
 
 /** \} */ /* end of group miscellaneous_utilities */
