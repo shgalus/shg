@@ -209,6 +209,8 @@ public:
      /** Writes source word file. */
      void write_source_word_file(std::ostream& output,
                                  bool do_sort) const;
+     void add_source_word_file(std::istream& input);
+
      void load_word_file(std::istream& input);
      void write_word_file(std::ostream& output) const;
 

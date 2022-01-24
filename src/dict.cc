@@ -114,6 +114,10 @@ void Dictionary::write_source_word_file(std::ostream& output,
      pimpl_->write_source_word_file(output, do_sort);
 }
 
+void Dictionary::add_source_word_file(std::istream& input) {
+     pimpl_->add_source_word_file(input);
+}
+
 void Dictionary::load_word_file(std::istream& input) {
      try {
           pimpl_->load_word_file(input);
@@ -264,23 +268,8 @@ std::string lcp(std::vector<std::string>& v) {
 }
 
 void Dictionary::Impl::load_source_word_file(std::istream& input) {
-     Entry ent;
      clear();
-     input_ = &input;
-     lineno_ = 0;
-
-     while (get_raw_entry()) {
-          if (enttab_.size() ==
-              std::numeric_limits<unsigned long>::max())
-               throw Dictionary_error("too many entries", lineno_);
-          ent.type = entry_type_;
-          ent.stem = lcp(forms_);
-          int const p = inflexion_to_index(inflexion_);
-          ent.ending_index = insert_ending(p, forms_);
-          enttab_.push_back(std::move(ent));
-     }
-     sort_entries();
-     remove_duplicate_entries();
+     add_words(input);
 }
 
 void Dictionary::Impl::write_source_word_file(std::ostream& output,
@@ -345,6 +334,10 @@ void Dictionary::Impl::write_source_word_file(std::ostream& output,
           }
           put("", output);
      }
+}
+
+void Dictionary::Impl::add_source_word_file(std::istream& input) {
+     add_words(input);
 }
 
 void Dictionary::Impl::load_word_file(std::istream& input) {
@@ -453,6 +446,25 @@ std::vector<Dictionary::Table_row> Dictionary::Impl::report() const {
           v[e.type].nentries++;
      }
      return v;
+}
+
+void Dictionary::Impl::add_words(std::istream& input) {
+     Entry ent;
+     input_ = &input;
+     lineno_ = 0;
+
+     while (get_raw_entry()) {
+          if (enttab_.size() ==
+              std::numeric_limits<unsigned long>::max())
+               throw Dictionary_error("too many entries", lineno_);
+          ent.type = entry_type_;
+          ent.stem = lcp(forms_);
+          int const p = inflexion_to_index(inflexion_);
+          ent.ending_index = insert_ending(p, forms_);
+          enttab_.push_back(std::move(ent));
+     }
+     sort_entries();
+     remove_duplicate_entries();
 }
 
 bool Dictionary::Impl::find(char const* s, Setdesc* sd) const {

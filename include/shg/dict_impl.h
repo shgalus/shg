@@ -82,6 +82,7 @@ public:
      void load_source_word_file(std::istream& input);
      void write_source_word_file(std::ostream& output,
                                  bool do_sort) const;
+     void add_source_word_file(std::istream& input);
      void load_word_file(std::istream& input);
      void write_word_file(std::ostream& output) const;
 
@@ -106,6 +107,7 @@ private:
      using End_tab_szt = End_tab::size_type;
      using Ent_tab_szt = Ent_tab::size_type;
 
+     void add_words(std::istream& input);
      bool find(char const* s, Setdesc* v) const;
      Ending_index insert_ending(int a, Set_tab const& v);
      void sort_entries();

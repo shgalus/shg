@@ -28,6 +28,7 @@
 #include <shg/ieee.h>
 #include <shg/ipart.h>
 #include <shg/laplace.h>
+#include <shg/lexan.h>
 #include <shg/mathprog.h>
 #include <shg/matrix.h>
 #include <shg/mconsts.h>
@@ -35,6 +36,7 @@
 #include <shg/mstat.h>
 #include <shg/mzt.h>
 #include <shg/ninv.h>
+#include <shg/nkjp.h>
 #include <shg/normmix.h>
 #include <shg/numalg.h>
 #include <shg/numerals.h>
@@ -50,7 +52,6 @@
 #include <shg/smc.h>
 #include <shg/specfunc.h>
 #include <shg/subdomain.h>
-#include <shg/terminals.h>
 #include <shg/tree.h>
 #include <shg/utils.h>
 #include <shg/vector.h>

@@ -86,9 +86,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -98,9 +98,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\data\swf.txt $(TEMP)
+      <Command>copy /B /Y ..\..\..\data\basic.swf $(TEMP)
 copy /B /Y ..\..\..\data\solaris.txt $(TEMP)
-copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
+copy /B /Y ..\..\..\data\chlopcy.txt $(TEMP)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,9 +109,9 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -123,18 +123,18 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\data\swf.txt $(TEMP)
+      <Command>copy /B /Y ..\..\..\data\basic.swf $(TEMP)
 copy /B /Y ..\..\..\data\solaris.txt $(TEMP)
-copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
+copy /B /Y ..\..\..\data\chlopcy.txt $(TEMP)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -144,9 +144,9 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\data\swf.txt $(TEMP)
+      <Command>copy /B /Y ..\..\..\data\basic.swf $(TEMP)
 copy /B /Y ..\..\..\data\solaris.txt $(TEMP)
-copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
+copy /B /Y ..\..\..\data\chlopcy.txt $(TEMP)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,9 +155,9 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -169,9 +169,9 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\data\swf.txt $(TEMP)
+      <Command>copy /B /Y ..\..\..\data\basic.swf $(TEMP)
 copy /B /Y ..\..\..\data\solaris.txt $(TEMP)
-copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
+copy /B /Y ..\..\..\data\chlopcy.txt $(TEMP)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -207,12 +207,14 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
     <ClCompile Include="..\..\..\testing\hmm_test.cc" />
     <ClCompile Include="..\..\..\testing\ipart_test.cc" />
     <ClCompile Include="..\..\..\testing\laplace_test.cc" />
+    <ClCompile Include="..\..\..\testing\lexan_test.cc" />
     <ClCompile Include="..\..\..\testing\mathprog_test.cc" />
     <ClCompile Include="..\..\..\testing\matrix_test.cc" />
     <ClCompile Include="..\..\..\testing\monomial_test.cc" />
     <ClCompile Include="..\..\..\testing\mstat_test.cc" />
     <ClCompile Include="..\..\..\testing\mzt_test.cc" />
     <ClCompile Include="..\..\..\testing\ninv_test.cc" />
+    <ClCompile Include="..\..\..\testing\nkjp_test.cc" />
     <ClCompile Include="..\..\..\testing\normmix_test.cc" />
     <ClCompile Include="..\..\..\testing\numalg_test.cc" />
     <ClCompile Include="..\..\..\testing\numerals_data.cc" />
@@ -227,7 +229,6 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
     <ClCompile Include="..\..\..\testing\runs_test.cc" />
     <ClCompile Include="..\..\..\testing\smc_test.cc" />
     <ClCompile Include="..\..\..\testing\specfunc_test.cc" />
-    <ClCompile Include="..\..\..\testing\terminals_test.cc" />
     <ClCompile Include="..\..\..\testing\testing.cc" />
     <ClCompile Include="..\..\..\testing\tree_test.cc" />
     <ClCompile Include="..\..\..\testing\utils_test.cc" />
@@ -246,11 +247,11 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
     <Import Project="..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
     <Import Project="..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" />
-    <Import Project="..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost.1.78.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -259,10 +260,10 @@ copy /B /Y ..\..\..\data\solaris.swf $(TEMP)</Command>
     <Error Condition="!Exists('..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.78.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets'))" />
   </Target>
 </Project>

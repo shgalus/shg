@@ -10,6 +10,10 @@
 
 namespace SHG::Testing {
 
+/**
+ * \todo Change Dict_fixture to BOOST_FIXTURE_TEST_SUITE like in
+ * lexan_test.cc.
+ */
 BOOST_AUTO_TEST_SUITE(dict_test)
 
 namespace bdata = boost::unit_test::data;
@@ -115,6 +119,125 @@ BOOST_AUTO_TEST_CASE(load_write_test) {
      d.write_source_word_file(oss, false);
      BOOST_CHECK(oss.good());
      BOOST_CHECK(oss.str() == polish_dict);
+}
+
+constexpr char const* const first_dict =
+     "masculine-personal noun\n"
+     "frajer\n"
+     "frajera\n"
+     "frajerowi\n"
+     "frajera\n"
+     "frajerem\n"
+     "frajerze\n"
+     "frajerze\n"
+     "frajerzy\n"
+     "frajer\303\263w\n"
+     "frajerom\n"
+     "frajer\303\263w\n"
+     "frajerami\n"
+     "frajerach\n"
+     "frajerzy\n"
+     "\n"
+     "masculine-inanimate noun\n"
+     "spichrz\n"
+     "spichrza\n"
+     "spichrzowi\n"
+     "spichrz\n"
+     "spichrzem\n"
+     "spichrzu\n"
+     "spichrzu\n"
+     "spichrze\n"
+     "spichrzy\n"
+     "spichrzom\n"
+     "spichrze\n"
+     "spichrzami\n"
+     "spichrzach\n"
+     "spichrze\n"
+     "\n";
+
+constexpr char const* const second_dict =
+     "feminine noun\n"
+     "gadatliwo\305\233\304\207\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233\304\207\n"
+     "gadatliwo\305\233ci\304\205\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233ci\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "\n";
+
+constexpr char const* const third_dict =
+     "masculine-personal noun\n"
+     "frajer\n"
+     "frajera\n"
+     "frajerowi\n"
+     "frajera\n"
+     "frajerem\n"
+     "frajerze\n"
+     "frajerze\n"
+     "frajerzy\n"
+     "frajer\303\263w\n"
+     "frajerom\n"
+     "frajer\303\263w\n"
+     "frajerami\n"
+     "frajerach\n"
+     "frajerzy\n"
+     "\n"
+     "feminine noun\n"
+     "gadatliwo\305\233\304\207\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233\304\207\n"
+     "gadatliwo\305\233ci\304\205\n"
+     "gadatliwo\305\233ci\n"
+     "gadatliwo\305\233ci\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "-\n"
+     "\n"
+     "masculine-inanimate noun\n"
+     "spichrz\n"
+     "spichrza\n"
+     "spichrzowi\n"
+     "spichrz\n"
+     "spichrzem\n"
+     "spichrzu\n"
+     "spichrzu\n"
+     "spichrze\n"
+     "spichrzy\n"
+     "spichrzom\n"
+     "spichrze\n"
+     "spichrzami\n"
+     "spichrzach\n"
+     "spichrze\n"
+     "\n";
+
+BOOST_AUTO_TEST_CASE(add_source_word_file_test) {
+     istringstream iss(ios_base::in | ios_base::binary);
+     iss.str(first_dict);
+     Dictionary d;
+     d.load_source_word_file(iss);
+     BOOST_CHECK(iss.eof());
+     BOOST_CHECK(iss.fail());
+     BOOST_CHECK(!iss.bad());
+     iss.clear();
+     iss.str(second_dict);
+     d.add_source_word_file(iss);
+     ostringstream oss(ios_base::out | ios_base::binary);
+     d.write_source_word_file(oss, true);
+     BOOST_CHECK(oss.good());
+     BOOST_CHECK(oss.str() == third_dict);
 }
 
 struct Test_data {
@@ -225,13 +348,13 @@ BOOST_DATA_TEST_CASE(bad_data_test,
 }
 
 /**
- * Also testing if swf.txt is sorted.
+ * Also testing if basic.swf is sorted.
  */
 BOOST_AUTO_TEST_CASE(load_big_source_word_file_test) {
      namespace fs = std::filesystem;
      Dictionary dict;
-     fs::path const ip = fs::temp_directory_path() / "swf.txt";
-     fs::path const op = fs::temp_directory_path() / "swf2.txt";
+     fs::path const ip = fs::temp_directory_path() / "basic.swf";
+     fs::path const op = fs::temp_directory_path() / "basic2.swf";
      std::ifstream f(ip, ios_base::in | ios_base::binary);
      std::ofstream g(op, ios_base::out | ios_base::binary);
      BOOST_REQUIRE(f.good());
@@ -1956,12 +2079,12 @@ BOOST_AUTO_TEST_CASE(report_test) {
 }
 
 /**
- * Displays report on swf.txt.
+ * Displays report on basic.swf.
  */
-void swf_stat() {
+void basic_swf_stat() {
      namespace fs = std::filesystem;
      Dictionary dict;
-     fs::path const ip = fs::temp_directory_path() / "swf.txt";
+     fs::path const ip = fs::temp_directory_path() / "basic.swf";
      std::ifstream f(ip, ios_base::in | ios_base::binary);
      BOOST_REQUIRE(f.good());
      dict.load_source_word_file(f);

@@ -41,6 +41,7 @@
     <ClInclude Include="..\..\..\include\shg\ieee.h" />
     <ClInclude Include="..\..\..\include\shg\ipart.h" />
     <ClInclude Include="..\..\..\include\shg\laplace.h" />
+    <ClInclude Include="..\..\..\include\shg\lexan.h" />
     <ClInclude Include="..\..\..\include\shg\mathprog.h" />
     <ClInclude Include="..\..\..\include\shg\matrix-inl.h" />
     <ClInclude Include="..\..\..\include\shg\matrix.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="..\..\..\include\shg\mstat.h" />
     <ClInclude Include="..\..\..\include\shg\mzt.h" />
     <ClInclude Include="..\..\..\include\shg\ninv.h" />
+    <ClInclude Include="..\..\..\include\shg\nkjp.h" />
     <ClInclude Include="..\..\..\include\shg\normmix.h" />
     <ClInclude Include="..\..\..\include\shg\numalg.h" />
     <ClInclude Include="..\..\..\include\shg\numerals.h" />
@@ -64,7 +66,6 @@
     <ClInclude Include="..\..\..\include\shg\shg.h" />
     <ClInclude Include="..\..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\..\include\shg\specfunc.h" />
-    <ClInclude Include="..\..\..\include\shg\terminals.h" />
     <ClInclude Include="..\..\..\include\shg\tree-inl.h" />
     <ClInclude Include="..\..\..\include\shg\tree.h" />
     <ClInclude Include="..\..\..\include\shg\utils.h" />
@@ -95,11 +96,13 @@
     <ClCompile Include="..\..\..\src\ieee.cc" />
     <ClCompile Include="..\..\..\src\ipart.cc" />
     <ClCompile Include="..\..\..\src\laplace.cc" />
+    <ClCompile Include="..\..\..\src\lexan.cc" />
     <ClCompile Include="..\..\..\src\mathprog.cc" />
     <ClCompile Include="..\..\..\src\monomial.cc" />
     <ClCompile Include="..\..\..\src\mstat.cc" />
     <ClCompile Include="..\..\..\src\mzt.cc" />
     <ClCompile Include="..\..\..\src\ninv.cc" />
+    <ClCompile Include="..\..\..\src\nkjp.cc" />
     <ClCompile Include="..\..\..\src\normmix.cc" />
     <ClCompile Include="..\..\..\src\numalg.cc" />
     <ClCompile Include="..\..\..\src\numerals.cc" />
@@ -112,7 +115,6 @@
     <ClCompile Include="..\..\..\src\runs.cc" />
     <ClCompile Include="..\..\..\src\smc.cc" />
     <ClCompile Include="..\..\..\src\specfunc.cc" />
-    <ClCompile Include="..\..\..\src\terminals.cc" />
     <ClCompile Include="..\..\..\src\utils.cc" />
     <ClCompile Include="..\..\..\src\version.cc" />
   </ItemGroup>
@@ -187,7 +189,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -208,7 +210,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -229,7 +231,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -250,7 +252,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);HAVE_PUGIXML</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -272,11 +274,11 @@
     <Import Project="..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
     <Import Project="..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" />
-    <Import Project="..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost.1.78.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -285,10 +287,10 @@
     <Error Condition="!Exists('..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.76.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_unit_test_framework-vc142.1.76.0.0\build\boost_unit_test_framework-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.76.0.0\build\boost_date_time-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.76.0.0\build\boost_iostreams-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.76.0.0\build\boost_zlib-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.78.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_unit_test_framework-vc142.1.78.0\build\boost_unit_test_framework-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets'))" />
   </Target>
 </Project>

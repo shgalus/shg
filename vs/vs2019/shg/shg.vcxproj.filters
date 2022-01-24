@@ -165,10 +165,13 @@
     <ClInclude Include="..\..\..\include\shg\pcfg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\shg\terminals.h">
+    <ClInclude Include="..\..\..\include\shg\numerals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\shg\numerals.h">
+    <ClInclude Include="..\..\..\include\shg\nkjp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\shg\lexan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -293,10 +296,13 @@
     <ClCompile Include="..\..\..\src\complcat.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\terminals.cc">
+    <ClCompile Include="..\..\..\src\numerals.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\numerals.cc">
+    <ClCompile Include="..\..\..\src\nkjp.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lexan.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,13 +6,11 @@
 #ifndef SHG_GPS_H
 #define SHG_GPS_H
 
-#ifdef HAVE_PUGIXML
 #include <istream>
 #include <string>
 #include <filesystem>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <pugixml.hpp>
-#endif
 
 /**
  * GPS.
@@ -62,8 +60,6 @@ void convert(const Geogr_coord& g, Cart_coord& p);
  * Returns distance between two points by a straight line.
  */
 double distance(const Cart_coord& p, const Cart_coord& q);
-
-#ifdef HAVE_PUGIXML
 
 class GPX_data {
 public:
@@ -144,8 +140,6 @@ public:
 private:
      std::vector<Result> results_{};
 };
-
-#endif
 
 /** \} */ /* end of group gps */
 

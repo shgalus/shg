@@ -868,7 +868,8 @@ WARN_LOGFILE           = doxwarn.txt
 INPUT                  = . \
                          ../src \
                          ../include/shg \
-                         ../testing
+                         ../testing \
+                         ../plp
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -2229,8 +2230,7 @@ PREDEFINED             = "BOOST_AUTO_TEST_CASE(name)=void name()" \
                          "BOOST_FIXTURE_TEST_SUITE(name,data)=namespace BoostTest { class name {public:" \
                          BOOST_AUTO_TEST_SUITE_END()=}; \
                          "BOOST_CONCEPT_REQUIRES(req,type)=type" \
-                         BOOST_CONCEPT_ASSERT(req)= \
-                         HAVE_PUGIXML
+                         BOOST_CONCEPT_ASSERT(req)=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

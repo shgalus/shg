@@ -28,7 +28,7 @@ shgutf8.bib : shg.bib bibtoutf8.py
 
 html: shgutf8.bib $(PDFDOC) ../src/*.cc ../include/shg/*.h		\
 	../testing/*.cc ../testing/*.h ../tools/*.cc mainpage.doc	\
-	plpchrst.doc
+	plpchrst.doc notes.doc
 	doxygen
 	@if [ -s doxwarn.txt ]; \
 	then \

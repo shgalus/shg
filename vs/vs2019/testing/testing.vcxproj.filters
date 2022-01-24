@@ -173,13 +173,16 @@
     <ClCompile Include="..\..\..\testing\pcfg_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\testing\terminals_test.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\testing\numerals_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\testing\numerals_data.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\nkjp_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\testing\lexan_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

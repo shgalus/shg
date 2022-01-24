@@ -7,19 +7,20 @@ SHELL = /bin/sh
 
 DEFS = -DMCHECK -DSHG_IEEE_EXCEPTIONS
 
-CXX = clang++-11 -O2 --gcc-toolchain=/usr/local/gcc-10.2.0
+CXX = clang++-11 -O2 --gcc-toolchain=/usr/local/gcc-11.2.0
 DEBUG = -g
-INCLUDE = -I../include -isystem/usr/local/boost_1_75_0/include
+INCLUDE = -I../include -isystem/usr/local/boost_1_78_0/include
 WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++17 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
-LOADLIBES = -L../lib -L/usr/local/boost_1_75_0/lib
-LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework
+LOADLIBES = -L../lib -L/usr/local/boost_1_78_0/lib
+LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
+-lboost_iostreams -lpugixml -lz
 
-AR = gcc-ar-10.2.0
+AR = gcc-ar-11.2.0
 ARFLAGS = rc
-RANLIB = gcc-ranlib-10.2.0
+RANLIB = gcc-ranlib-11.2.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

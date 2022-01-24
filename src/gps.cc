@@ -9,13 +9,11 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
-#ifdef HAVE_PUGIXML
 #include <exception>
 #include <fstream>
 #include <sstream>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-#endif
 #include <shg/utils.h>
 #include <shg/geometry.h>
 
@@ -48,8 +46,6 @@ void convert(const Geogr_coord& g, Cart_coord& p) {
 double distance(const Cart_coord& p, const Cart_coord& q) {
      return std::hypot(p.x - q.x, p.y - q.y, p.z - q.z);
 }
-
-#ifdef HAVE_PUGIXML
 
 void GPX_data::parse(std::istream& f) {
      using std::runtime_error;
@@ -286,7 +282,5 @@ void Activity_statistics::run(std::filesystem::path const& dir) {
           results_.push_back(r);
      }
 }
-
-#endif
 
 }  // namespace SHG::GPS

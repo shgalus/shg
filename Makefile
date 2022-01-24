@@ -10,7 +10,7 @@ VERSION = $(shell sed -n                                              \
 '/SHG_VERSION "/ s/^\([^0-9]*\)\([.0-9]*\)\(.*$$\)/\2/ p'             \
 include/shg/version.h)
 
-.PHONY: all lib testing check doc exprmnts lint	\
+.PHONY: all lib testing plp check doc exprmnts lint	\
 install uninstall tar dist clean almost-spotless spotless
 
 all: lib testing check
@@ -19,6 +19,8 @@ lib:
 	cd src && $(MAKE)
 testing:
 	cd testing && $(MAKE)
+plp:
+	cd plp && $(MAKE)
 check:
 	cd testing && $(MAKE) check
 doc:
@@ -52,6 +54,7 @@ clean:
 	cd exprmnts && $(MAKE) clean
 	cd src && $(MAKE) clean
 	cd testing && $(MAKE) clean
+	cd plp && $(MAKE) clean
 	cd doc && $(MAKE) clean
 almost-spotless:
 	rm -f ChangeLog TAGS shg[0-9][0-9]*.tar.gz shg-[0-9.]*.tar.gz
@@ -59,6 +62,7 @@ almost-spotless:
 	cd exprmnts && $(MAKE) spotless
 	cd src && $(MAKE) spotless
 	cd testing && $(MAKE) spotless
+	cd plp && $(MAKE) spotless
 spotless: almost-spotless
 	cd doc && $(MAKE) spotless
 cleandoc:

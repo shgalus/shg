@@ -1,14 +1,12 @@
 #include <shg/gps.h>
 #include <cmath>
 #include <iomanip>
-#ifdef HAVE_PUGIXML
 #include <fstream>
 #include <ios>
 #include <sstream>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
-#endif
 #include "testing.h"
 #include "gpsdata.h"
 
@@ -83,8 +81,6 @@ BOOST_AUTO_TEST_CASE(distance_basic_test) {
      d = distance(p, q);
      BOOST_CHECK(facmp(d, 2.0 * semi_minor_axis, min_dbl) == 0);
 }
-
-#ifdef HAVE_PUGIXML
 
 constexpr char const* const gpx1 = R"(
 <?xml version="1.0" encoding="UTF-8"?>
@@ -594,30 +590,6 @@ BOOST_AUTO_TEST_CASE(activity_statistics_test,
      for (auto u : used)
           BOOST_CHECK(u);
 }
-
-#if 0
-
-// This is an extra tes case on my own unzipped import from
-// https://www.strava.com/
-BOOST_AUTO_TEST_CASE(activity_statistics_real_test) {
-     namespace fs = std::filesystem;
-     fs::path const p = "/home/sgalus/projects/strava/activities";
-     Activity_statistics as;
-     BOOST_REQUIRE_NO_THROW(as.run(p));
-     auto res = as.results();
-     for (auto it = res.cbegin(); it != res.cend(); ++it) {
-          std::cout << std::left << std::setw(20) << it->fname << "  "
-                    << it->status;
-          if (it->status == "ok")
-               std::cout << "  " << it->start_time << "  "
-                         << std::setprecision(10)
-                         << it->distance / 1000.0;
-          std::cout << '\n';
-     }
-}
-#endif  // #if 0
-
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 

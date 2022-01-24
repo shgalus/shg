@@ -12,13 +12,13 @@ $(OBJDIR)/%.o : %.cc
 .PHONY: all FORCE check clean run spotless
 
 all: ../bin/testing
-	cp ../data/swf.txt /tmp
+	cp ../data/basic.swf /tmp
 	cp ../data/solaris.txt /tmp
-	cp ../data/solaris.swf /tmp
+	cp ../data/chlopcy.txt /tmp
 
 run: all
 	../bin/testing --log_level=message			\
---run_test=numerals_test/*:terminals_test/*:dict_test/*:charset_test/*
+--run_test=lexan_test/*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
