@@ -7,9 +7,9 @@
 #ifndef SHG_VERSION_H
 #define SHG_VERSION_H
 
-#define SHG_VERSION "0.84"
+#define SHG_VERSION "0.85"
 #define SHG_MAJOR_VERSION 0
-#define SHG_MINOR_VERSION 84
+#define SHG_MINOR_VERSION 85
 
 namespace SHG {
 
