@@ -10,6 +10,10 @@ namespace {
 void help(boost::program_options::options_description const& opts) {
      std::cout << "Usage: " << progname
                << " command [argument]... [option]...\n\n";
+     std::cout << "Commands:\n";
+     std::cout << "  joindicts             Join given source word "
+                  "files.\n";
+     std::cout << "\n";
      std::cout << opts << "\n";
 }
 
