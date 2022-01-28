@@ -18,6 +18,7 @@ constexpr char const* const progname{"plp"};
 void run(int argc, char const* const argv[]);
 
 void join_dicts(Vecstring const& ifnames, std::string const& ofname);
+void dict_stat(Vecstring const& ifnames, std::string const& ofname);
 
 }  // namespace SHG::PROGPLP
 

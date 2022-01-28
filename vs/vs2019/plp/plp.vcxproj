@@ -154,6 +154,7 @@
     <ClInclude Include="..\..\..\plp\plp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\plp\dictstat.cc" />
     <ClCompile Include="..\..\..\plp\joindicts.cc" />
     <ClCompile Include="..\..\..\plp\main.cc" />
     <ClCompile Include="..\..\..\plp\run.cc" />

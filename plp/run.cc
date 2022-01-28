@@ -13,6 +13,8 @@ void help(boost::program_options::options_description const& opts) {
      std::cout << "Commands:\n";
      std::cout << "  joindicts             Join given source word "
                   "files.\n";
+     std::cout << "  dictstat              Source word files "
+                  "statistics.\n";
      std::cout << "\n";
      std::cout << opts << "\n";
 }
@@ -28,9 +30,13 @@ void run(int argc, char const* const argv[]) {
      namespace po = boost::program_options;
      po::options_description opts("Options");
      opts.add_options()("help,h", "Print short documentation.")(
-          "version,v", "Print information about the program.")(
-          "output,o", po::value<std::string>(),
-          "Use output file instead of standard output.");
+          "version,v",
+          "Print information about the program.")("output,o",
+                                                  po::value<
+                                                       std::string>(),
+                                                  "Use output file "
+                                                  "instead of "
+                                                  "standard output.");
 
      po::options_description args;
      args.add_options()("command", po::value<std::string>())(
@@ -65,6 +71,14 @@ void run(int argc, char const* const argv[]) {
                join_dicts(vm["argument"].as<Vecstring>(), s);
           else
                join_dicts(Vecstring(), s);
+     } else if (command == "dictstat") {
+          std::string s;
+          if (vm.count("output"))
+               s = vm["output"].as<std::string>();
+          if (vm.count("argument"))
+               dict_stat(vm["argument"].as<Vecstring>(), s);
+          else
+               dict_stat(Vecstring(), s);
      } else {
           std::string s{"unknown command: "};
           s += command;
