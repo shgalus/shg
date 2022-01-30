@@ -35,6 +35,7 @@
 #include <shg/monomial.h>
 #include <shg/mstat.h>
 #include <shg/mzt.h>
+#include <shg/neuralnet.h>
 #include <shg/ninv.h>
 #include <shg/nkjp.h>
 #include <shg/normmix.h>

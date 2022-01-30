@@ -213,6 +213,7 @@ copy /B /Y ..\..\..\data\chlopcy.txt $(TEMP)</Command>
     <ClCompile Include="..\..\..\testing\monomial_test.cc" />
     <ClCompile Include="..\..\..\testing\mstat_test.cc" />
     <ClCompile Include="..\..\..\testing\mzt_test.cc" />
+    <ClCompile Include="..\..\..\testing\neuralnet_test.cc" />
     <ClCompile Include="..\..\..\testing\ninv_test.cc" />
     <ClCompile Include="..\..\..\testing\nkjp_test.cc" />
     <ClCompile Include="..\..\..\testing\normmix_test.cc" />

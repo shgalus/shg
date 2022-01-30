@@ -49,6 +49,7 @@
     <ClInclude Include="..\..\..\include\shg\monomial.h" />
     <ClInclude Include="..\..\..\include\shg\mstat.h" />
     <ClInclude Include="..\..\..\include\shg\mzt.h" />
+    <ClInclude Include="..\..\..\include\shg\neuralnet.h" />
     <ClInclude Include="..\..\..\include\shg\ninv.h" />
     <ClInclude Include="..\..\..\include\shg\nkjp.h" />
     <ClInclude Include="..\..\..\include\shg\normmix.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="..\..\..\src\monomial.cc" />
     <ClCompile Include="..\..\..\src\mstat.cc" />
     <ClCompile Include="..\..\..\src\mzt.cc" />
+    <ClCompile Include="..\..\..\src\neuralnet.cc" />
     <ClCompile Include="..\..\..\src\ninv.cc" />
     <ClCompile Include="..\..\..\src\nkjp.cc" />
     <ClCompile Include="..\..\..\src\normmix.cc" />
