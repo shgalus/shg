@@ -43,18 +43,39 @@ namespace SHG {
  */
 class MNN {
 public:
-     MNN(int n, int m, std::vector<int> const& dim);
+     MNN(int n, int m, std::vector<int> const& p);
      virtual ~MNN();
      int n() const;
      int m() const;
      int k() const;
      std::vector<int> const& p() const;
 
+     /** Returns value \f$y = f(x)\f$. */
+     std::vector<double> y(std::vector<double> const& x) const;
+
 private:
-     int n_{};
-     int m_{};
-     int k_{};
-     std::vector<int> p_{};
+     virtual std::vector<double> do_y(
+          std::vector<double> const& x) const = 0;
+     int const n_;
+     int const m_;
+     int const k_;
+     std::vector<int> const p_;
+};
+
+/**
+ * Multilayer neural network with linear connections between layers.
+ *
+ * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
+ * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
+ * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
+ */
+class Linear_MNN : public MNN {
+public:
+     Linear_MNN(int n, int m, std::vector<int> const& p);
+
+private:
+     std::vector<double> do_y(
+          std::vector<double> const& x) const override;
 };
 
 inline int MNN::n() const {
