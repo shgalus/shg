@@ -4,12 +4,24 @@
  */
 
 #include <shg/neuralnet.h>
+#include <cmath>
 #include <algorithm>
 #include <boost/numeric/ublas/io.hpp>  // \todo Really necessary?
 #include <shg/except.h>
 #include <shg/utils.h>  // unused_variables
 
-namespace SHG {
+namespace SHG::Neural_networks {
+
+double sign(double x) {
+     SHG_ASSERT(std::isfinite(x));
+     return x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0);
+}
+
+double sigmoid(double x) {
+     double const y = 1.0 / (1.0 + std::exp(-x));
+     SHG_ASSERT(std::isfinite(y));
+     return y;
+}
 
 MNN::MNN(int n, int m, std::vector<int> const& p) {
      init(n, m, p);
@@ -45,4 +57,4 @@ std::vector<double> MNN::y(std::vector<double> const& x) const {
      return y;
 }
 
-}  // namespace SHG
+}  // namespace SHG::Neural_networks

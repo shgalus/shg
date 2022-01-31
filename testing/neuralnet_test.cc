@@ -6,7 +6,7 @@ namespace SHG::Testing {
 BOOST_AUTO_TEST_SUITE(neuralnet_test)
 
 BOOST_AUTO_TEST_CASE(mnn_basic_test) {
-     using SHG::MNN;
+     using SHG::Neural_networks::MNN;
      std::vector<int> const p{3, 3, 1};
      MNN mnn(5, 1, p);
      BOOST_CHECK(mnn.n() == 5);

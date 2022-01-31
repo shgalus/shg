@@ -9,22 +9,31 @@
 #include <vector>
 #include <boost/numeric/ublas/matrix.hpp>
 
-namespace SHG {
+/**
+ * Neural networks.
+ */
+namespace SHG::Neural_networks {
+
+/** Sign function. Returns
+ * \f$\begin{cases}
+ *  -1 & \text{if $x < 0$}, \\
+ *   0 & \text{if $x = 0$}, \\
+ *   1 & \text{if $x \geq 0$}.
+ * \end{cases}\f$
+ */
+double sign(double x);
+
+/** Sigmoid function. Returns \f$1 / (1 + e^{-x})\f$. */
+double sigmoid(double x);
 
 /**
  * Multilayer neural network.
  *
  * Let \f$k \in \naturaln\f$, \f$p_0, p_1, \ldots, p_{k + 1} \in
  * \naturaln\f$, \f$n = p_0\f$, \f$m = p_{k + 1}\f$.
- * Let, for \f$i = 1, \ldots, k + 1\f$,
- * \f{align*}{
- * \Sigma_i &\colon \realn^{p_{i - 1}} \rightarrow \realn^{p_i}, \\
- * \Phi_i &\colon \realn^{p_i} \rightarrow \realn^{p_i}, \\
- * \Phi_i(z_1, \ldots, z_{p_i}) &= (\varphi_{i1}(z_1), \ldots,
- * \varphi_{ip_i}(z_{pi})), \\
- * \varphi_{ij} &\colon \realn \rightarrow \realn, \quad j = 1,
- * \ldots, p_i.
- * \f}
+ * Let, for \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i \colon
+ * \realn^{p_{i - 1}} \rightarrow \realn^{p_i}\f$, \f$\Phi_i \colon
+ * \realn^{p_i} \rightarrow \realn^{p_i}\f$.
  * Let \f$x \in \realn^n\f$.
  * Denote \f{align*}{
  * h_1 &= \Phi_1(\Sigma_1(x)) \\
@@ -45,6 +54,11 @@ namespace SHG {
  * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
  * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
  * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
+ *
+ * For \f$i = 1, \ldots, k + 1\f$, \f$\Phi_i(v) = \left( \Phi_{i1}(v),
+ * \ldots, \Phi_{ip_i}(v) \right)\f$, where \f$\Phi_{ij} \colon
+ * \realn^{p_i} \rightarrow \realn\f$, \f$j = 1, \ldots, p_i\f$, and
+ * \f$v = (v_1, \ldots, v_{p_i})\f$.
  *
  */
 class MNN {
@@ -83,6 +97,6 @@ inline std::vector<int> const& MNN::p() const {
      return p_;
 }
 
-}  // namespace SHG
+}  // namespace SHG::Neural_networks
 
 #endif
