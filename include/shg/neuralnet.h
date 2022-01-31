@@ -43,8 +43,10 @@ namespace SHG {
  */
 class MNN {
 public:
+     MNN() = default;
      MNN(int n, int m, std::vector<int> const& p);
      virtual ~MNN();
+     void init(int n, int m, std::vector<int> const& p);
      int n() const;
      int m() const;
      int k() const;
@@ -56,10 +58,10 @@ public:
 private:
      virtual std::vector<double> do_y(
           std::vector<double> const& x) const = 0;
-     int const n_;
-     int const m_;
-     int const k_;
-     std::vector<int> const p_;
+     int n_{};
+     int m_{};
+     int k_{};
+     std::vector<int> p_{};
 };
 
 /**
@@ -71,7 +73,10 @@ private:
  */
 class Linear_MNN : public MNN {
 public:
+     Linear_MNN() = default;
      Linear_MNN(int n, int m, std::vector<int> const& p);
+     virtual ~Linear_MNN();
+     void init(int n, int m, std::vector<int> const& p);
 
 private:
      std::vector<double> do_y(
