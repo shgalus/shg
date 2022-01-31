@@ -7,6 +7,7 @@
 #define SHG_NEURALNET_H
 
 #include <vector>
+#include <boost/numeric/ublas/matrix.hpp>
 
 namespace SHG {
 
@@ -40,12 +41,18 @@ namespace SHG {
  * of the input layer, the vector \f$p = [p_1, \ldots, p_k]\f$
  * contains dimensionalities of the hidden layers, \f$m\f$ is the
  * dimensionality of the output layer.
+ *
+ * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
+ * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
+ * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
+ *
  */
 class MNN {
 public:
+     using Matrix = boost::numeric::ublas::matrix<double>;
+
      MNN() = default;
      MNN(int n, int m, std::vector<int> const& p);
-     virtual ~MNN();
      void init(int n, int m, std::vector<int> const& p);
      int n() const;
      int m() const;
@@ -56,31 +63,11 @@ public:
      std::vector<double> y(std::vector<double> const& x) const;
 
 private:
-     virtual std::vector<double> do_y(
-          std::vector<double> const& x) const = 0;
      int n_{};
      int m_{};
      int k_{};
      std::vector<int> p_{};
-};
-
-/**
- * Multilayer neural network with linear connections between layers.
- *
- * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
- * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
- * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
- */
-class Linear_MNN : public MNN {
-public:
-     Linear_MNN() = default;
-     Linear_MNN(int n, int m, std::vector<int> const& p);
-     virtual ~Linear_MNN();
-     void init(int n, int m, std::vector<int> const& p);
-
-private:
-     std::vector<double> do_y(
-          std::vector<double> const& x) const override;
+     std::vector<Matrix> w_{};
 };
 
 inline int MNN::n() const {

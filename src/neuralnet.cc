@@ -5,16 +5,15 @@
 
 #include <shg/neuralnet.h>
 #include <algorithm>
+#include <boost/numeric/ublas/io.hpp>  // \todo Really necessary?
 #include <shg/except.h>
-#include <shg/utils.h>
+#include <shg/utils.h>  // unused_variables
 
 namespace SHG {
 
 MNN::MNN(int n, int m, std::vector<int> const& p) {
      init(n, m, p);
 }
-
-MNN::~MNN() {}
 
 void MNN::init(int n, int m, std::vector<int> const& p) {
      SHG_ASSERT(n > 0);
@@ -26,25 +25,22 @@ void MNN::init(int n, int m, std::vector<int> const& p) {
      m_ = m;
      k_ = p.size();
      p_ = p;
+     w_.clear();
+     w_.resize(k_ + 1);
+     w_[0].resize(p_.at(0), n_);
+     for (std::vector<Matrix>::size_type i = 1; i < k_; i++)
+          w_[i].resize(p_.at(i), p_.at(i - 1));
+     w_[k_].resize(m_, p_.at(k_ - 1));
 }
 
 std::vector<double> MNN::y(std::vector<double> const& x) const {
-     return do_y(x);
-}
-
-Linear_MNN::Linear_MNN(int n, int m, std::vector<int> const& p) {
-     init(n, m, p);
-}
-
-void Linear_MNN::init(int n, int m, std::vector<int> const& p) {
-     MNN::init(n, m, p);
-}
-
-Linear_MNN::~Linear_MNN() {}
-
-std::vector<double> Linear_MNN::do_y(
-     std::vector<double> const& x) const {
+     using namespace boost::numeric::ublas;
      ignore_unused_variable(x);
+     matrix<double> m(3, 3);
+     for (unsigned i = 0; i < m.size1(); ++i)
+          for (unsigned j = 0; j < m.size2(); ++j)
+               m(i, j) = 3 * i + j;
+     std::cout << m << std::endl;
      std::vector<double> y;
      return y;
 }
