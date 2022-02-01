@@ -14,17 +14,59 @@
  */
 namespace SHG::Neural_networks {
 
+/** Identity function. Returns \f$x\f$. */
+double identity(double x);
+
 /** Sign function. Returns
  * \f$\begin{cases}
  *  -1 & \text{if $x < 0$}, \\
  *   0 & \text{if $x = 0$}, \\
- *   1 & \text{if $x \geq 0$}.
+ *   1 & \text{if $x > 0$}.
  * \end{cases}\f$
  */
 double sign(double x);
 
 /** Sigmoid function. Returns \f$1 / (1 + e^{-x})\f$. */
 double sigmoid(double x);
+
+/** Hyperbolic tangent. Returns \f$ \frac{e^x - e^{-x}}{e^x + e^{-x}}
+    \f$. */
+double tgh(double x);
+
+/** Rectified linear unit (ReLU). Returns
+ * \f$\begin{cases}
+ *  0 & \text{if $x \leq 0$}, \\
+ *  x & \text{if $x > 0$}.
+ * \end{cases}\f$
+ */
+double relu(double x);
+
+/** Hard hyperbolic tangent. Returns
+ * \f$\begin{cases}
+ *  -1 & \text{if $x < -1$}, \\
+ *   x & \text{if $-1 \leq x \leq 1$}, \\
+ *   1 & \text{if $x > 1$}.
+ * \end{cases}\f$
+ */
+double hardtanh(double x);
+
+/** Softmax. Returns \f$ e^{x_i} / (e^{x_1} + \ldots + e^{x_n})\f$ for
+ *  \f$i = 1, \ldots, n\f$, where \f$n\f$ is the number of
+ *  variables.
+ */
+std::vector<double> softmax(std::vector<double> const& x);
+
+enum class Activation_function {
+     identity,
+     sign,
+     sigmoid,
+     tgh,
+     relu,
+     hardtanh,
+     softmax
+};
+
+// clang-format off
 
 /**
  * Multilayer neural network.
@@ -51,6 +93,17 @@ double sigmoid(double x);
  * contains dimensionalities of the hidden layers, \f$m\f$ is the
  * dimensionality of the output layer.
  *
+ * An example of a 3-layer (\f$k = 3\f$) network is shown below.
+ *
+\verbatim
++---+              +---+              +---+              +---+              +---+
+|   |\Phi_1\Sigma_1|   |\Phi_2\Sigma_2|   |\Phi_3\Sigma_3|   |\Phi_4\Sigma_4|   |
+| x |------------->|h_1|------------->|h_2|------------->|h_3|------------->| y |
+|   |              |   |              |   |              |   |              |   |
++---+              +---+              +---+              +---+              +---+
+ R^n              R^{p_1}            R^{p_2}            R^{p_3}              R^m
+\endverbatim
+ *
  * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
  * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
  * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
@@ -61,13 +114,33 @@ double sigmoid(double x);
  * \f$v = (v_1, \ldots, v_{p_i})\f$.
  *
  */
+
+// clang-format on
+
 class MNN {
 public:
      using Matrix = boost::numeric::ublas::matrix<double>;
 
      MNN() = default;
      MNN(int n, int m, std::vector<int> const& p);
+     /**
+      * Initializes a network. \f$n \geq 1\f$ is a dimension of the
+      * input layer. \f$m \geq 1\f$ is a dimension of the output
+      * layer. The number of hidden layers \f$k \geq 1\f$ will be
+      * equal to \f$\var{p.size()}\f$.
+      */
      void init(int n, int m, std::vector<int> const& p);
+     /**
+      * Sets the activation function \f$f\f$ for the \f$i\f$-th layer.
+      * There must be \f$1 \leq i \leq k + 1\f$. If \f$i = k + 1\f$,
+      * activation function for the output layer is set. The parameter
+      * \f$x_0\f$ is a threshold and the parameter \f$s > 0\f$ is a
+      * scale. \f$x_0\f$ and \f$s\f$ are used only for activation
+      * functions of one variable: instead of \f$f(x)\f$, \f$f((x -
+      * x_0) / s)\f$ will be called.
+      */
+     void set_activation_function(int i, Activation_function f,
+                                  double x0 = 0.0, double s = 1.0);
      int n() const;
      int m() const;
      int k() const;
@@ -77,11 +150,21 @@ public:
      std::vector<double> y(std::vector<double> const& x) const;
 
 private:
+     struct Activation {
+          using F = double(double);
+          using F2 = std::vector<double>(std::vector<double>);
+          F* a{nullptr};
+          F2* b{nullptr};
+          double scale{1.0};
+          double threshold{0.0};
+     };
+
      int n_{};
      int m_{};
      int k_{};
      std::vector<int> p_{};
      std::vector<Matrix> w_{};
+     std::vector<Activation> phi_{};
 };
 
 inline int MNN::n() const {
