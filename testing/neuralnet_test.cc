@@ -36,6 +36,21 @@ BOOST_AUTO_TEST_CASE(mnn_basic_test) {
      BOOST_CHECK(mnn.p() == p);
 }
 
+BOOST_AUTO_TEST_CASE(xor_test) {
+     using SHG::Neural_networks::MNN;
+     using SHG::Neural_networks::Activation_function;
+
+     // There will be one hidden layer with two neurons.
+     std::vector<int> const p{2};
+     MNN mnn(2, 1, p);
+     BOOST_CHECK(mnn.n() == 2);
+     BOOST_CHECK(mnn.m() == 1);
+     BOOST_CHECK(mnn.k() == 1);
+     BOOST_CHECK(mnn.p() == p);
+     mnn.set_activation_function(1, Activation_function::sigmoid);
+     mnn.set_activation_function(2, Activation_function::identity);
+}
+
 BOOST_AUTO_TEST_CASE(basic_test) {
      BOOST_CHECK(true);
 }

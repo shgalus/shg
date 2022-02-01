@@ -6,7 +6,9 @@
 #include <shg/neuralnet.h>
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include <numeric>
+#include <stdexcept>
 #include <boost/numeric/ublas/io.hpp>  // \todo Really necessary?
 #include <shg/except.h>
 #include <shg/utils.h>  // unused_variables
@@ -88,6 +90,45 @@ void MNN::init(int n, int m, std::vector<int> const& p) {
      for (std::vector<Matrix>::size_type i = 1; i < k_; i++)
           w_[i].resize(p_.at(i), p_.at(i - 1));
      w_[k_].resize(m_, p_.at(k_ - 1));
+     phi_.clear();
+     phi_.resize(k_ + 1);
+}
+
+void MNN::set_activation_function(int i, Activation_function f,
+                                  double x0, double s) {
+     if (i < 1 || i > k_ + 1)
+          throw std::invalid_argument("invalid layer");
+     if (s < std::numeric_limits<double>::min())
+          throw std::invalid_argument("invalid scale");
+     Activation a;
+     switch (f) {
+     case Activation_function::identity:
+          a.f = identity;
+          break;
+     case Activation_function::sign:
+          a.f = sign;
+          break;
+     case Activation_function::sigmoid:
+          a.f = sigmoid;
+          break;
+     case Activation_function::tgh:
+          a.f = tgh;
+          break;
+     case Activation_function::relu:
+          a.f = relu;
+          break;
+     case Activation_function::hardtanh:
+          a.f = hardtanh;
+          break;
+     case Activation_function::softmax:
+          a.f2 = softmax;
+          break;
+     default:
+          throw std::invalid_argument("invalid activation function");
+     }
+     a.x0 = x0;
+     a.s = s;
+     phi_.at(--i) = a;
 }
 
 std::vector<double> MNN::y(std::vector<double> const& x) const {

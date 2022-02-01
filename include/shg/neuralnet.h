@@ -152,11 +152,11 @@ public:
 private:
      struct Activation {
           using F = double(double);
-          using F2 = std::vector<double>(std::vector<double>);
-          F* a{nullptr};
-          F2* b{nullptr};
-          double scale{1.0};
-          double threshold{0.0};
+          using F2 = std::vector<double>(std::vector<double> const&);
+          F* f{nullptr};
+          F2* f2{nullptr};
+          double x0{0.0};  // threshold
+          double s{1.0};   // scale
      };
 
      int n_{};
