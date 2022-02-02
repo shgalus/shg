@@ -1,5 +1,6 @@
 #include <shg/neuralnet.h>
 #include <cmath>
+#include <sstream>
 #include "testing.h"
 
 namespace SHG::Testing {
@@ -49,6 +50,19 @@ BOOST_AUTO_TEST_CASE(xor_test) {
      BOOST_CHECK(mnn.p() == p);
      mnn.set_activation_function(1, Activation_function::sigmoid);
      mnn.set_activation_function(2, Activation_function::identity);
+     mnn.set_random_weights();
+     std::ostringstream oss(binout);
+     mnn.write(oss);
+     BOOST_REQUIRE(oss.good());
+     MNN mnn1;
+     std::istringstream iss(bininp);
+     iss.str(oss.str());
+     mnn1.read(iss);
+     BOOST_REQUIRE(iss.good());
+     BOOST_CHECK(fcmp(mnn, mnn1, 1e-10));
+     auto const y = mnn.y({0.0, 0.0});
+     BOOST_REQUIRE(y.size() == 1);
+     BOOST_CHECK(facmp(y[0], 0.0732425, 5e-8) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(basic_test) {

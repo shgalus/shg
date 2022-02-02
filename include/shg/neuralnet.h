@@ -7,6 +7,8 @@
 #define SHG_NEURALNET_H
 
 #include <vector>
+#include <istream>
+#include <ostream>
 #include <boost/numeric/ublas/matrix.hpp>
 
 /**
@@ -119,8 +121,6 @@ enum class Activation_function {
 
 class MNN {
 public:
-     using Matrix = boost::numeric::ublas::matrix<double>;
-
      MNN() = default;
      MNN(int n, int m, std::vector<int> const& p);
      /**
@@ -141,6 +141,8 @@ public:
       */
      void set_activation_function(int i, Activation_function f,
                                   double x0 = 0.0, double s = 1.0);
+     void set_random_weights();
+
      int n() const;
      int m() const;
      int k() const;
@@ -149,15 +151,36 @@ public:
      /** Returns value \f$y = f(x)\f$. */
      std::vector<double> y(std::vector<double> const& x) const;
 
+     /** Writes this MNN to the stream. f.good() indicates success. */
+     void write(std::ostream& f) const;
+     /** Writes this MNN to the file. Returns true on success. */
+     bool write(char const* fname) const;
+
+     /** Reads this MNN from the stream. f.good() indicates success.
+      */
+     void read(std::istream& f);
+     /** Reads this MNN from the file. Returns true on success. */
+     bool read(char const* fname);
+
 private:
+     using Matrix = boost::numeric::ublas::matrix<double>;
+
+     /** Calculates \f$h = \Phi_k(u)\f$. */
+     void phi(std::vector<Matrix>::size_type k,
+              std::vector<double> const& u,
+              std::vector<double>& h) const;
+
      struct Activation {
           using F = double(double);
           using F2 = std::vector<double>(std::vector<double> const&);
+          Activation_function af;
           F* f{nullptr};
           F2* f2{nullptr};
           double x0{0.0};  // threshold
           double s{1.0};   // scale
      };
+
+     friend bool fcmp(MNN const& lhs, MNN const& rhs, double eps);
 
      int n_{};
      int m_{};
@@ -166,6 +189,8 @@ private:
      std::vector<Matrix> w_{};
      std::vector<Activation> phi_{};
 };
+
+bool fcmp(MNN const& lhs, MNN const& rhs, double eps);
 
 inline int MNN::n() const {
      return n_;
