@@ -19,7 +19,7 @@
 namespace SHG::Neural_networks {
 
 /**
- * Exception class for invalid floating-point numbers. Thrown if a
+ * %Exception class for invalid floating-point numbers. Thrown if a
  * function argument or function result is not a finite floating point
  * number as checked by std::isfinite();
  */
@@ -82,6 +82,27 @@ enum class Activation_function {
      hardtanh,
      softmax
 };
+
+/** Quadratic loss. Returns \f$\sum_{i = 1}^m (t_i - y_i)^2\f$. */
+double quadratic_loss(std::vector<double> const& t,
+                      std::vector<double> const& y);
+
+/** Hinge loss. Returns \f$\max\{0, 1 - ty\}\f$, \f$t\f$ and \f$y\f$
+    must be vectors of size 1. */
+double hinge_loss(std::vector<double> const& t,
+                  std::vector<double> const& y);
+
+using Loss_function = double(std::vector<double> const&,
+                             std::vector<double> const&);
+
+/**
+ * A table of loss functions. The first argument should be the true
+ * value, the second argument should be the approximation.
+ * Contents:
+ *   - 0: quadratic loss
+ *   - 1: hinge loss
+ */
+extern std::vector<Loss_function*> const loss_functions;
 
 /**
  * Multilayer neural network.
@@ -153,6 +174,7 @@ public:
      void set_activation_function(int i, Activation_function f,
                                   double x0 = 0.0, double s = 1.0);
      void set_random_weights();
+     void set_loss_function(int loss);
 
      int n() const;
      int m() const;
@@ -199,6 +221,7 @@ private:
      std::vector<int> p_{};
      std::vector<Matrix> w_{};
      std::vector<Activation> phi_{};
+     int loss_{-1};
 };
 
 inline void check(double x) {
@@ -207,7 +230,7 @@ inline void check(double x) {
 }
 
 /**
- * Compares two MNNs. \f$\eps > 0\f$ is used to absolutely compare
+ * Compares two MNNs. \f$\epsilon > 0\f$ is used to absolutely compare
  * weights, thresholds and scales.
  */
 bool fcmp(MNN const& lhs, MNN const& rhs, double eps);

@@ -20,6 +20,7 @@
 #endif
 #include <shg/fcmp.h>
 #include <shg/mzt.h>
+#include <shg/utils.h>
 
 namespace SHG::Neural_networks {
 
@@ -80,6 +81,28 @@ std::vector<double> softmax(std::vector<double> const& x) {
      }
      return y;
 }
+
+double quadratic_loss(std::vector<double> const& t,
+                      std::vector<double> const& y) {
+     assert(t.size() == y.size() && t.size() > 0);
+     double s = 0.0;
+     for (std::vector<double>::size_type i = 0; i < t.size(); i++)
+          s += sqr(t[i] - y[i]);
+     return s;
+}
+
+double hinge_loss(std::vector<double> const& t,
+                  std::vector<double> const& y) {
+     assert(t.size() == y.size() && t.size() == 1);
+     double const z = 1.0 - t[0] * y[0];
+     check(z);
+     return z > 0.0 ? z : 0.0;
+}
+
+std::vector<Loss_function*> const loss_functions{
+     quadratic_loss,
+     hinge_loss,
+};
 
 MNN::MNN(int n, int m, std::vector<int> const& p) {
      init(n, m, p);
@@ -152,6 +175,14 @@ void MNN::set_random_weights() {
      }
 }
 
+void MNN::set_loss_function(int loss) {
+     if (loss < 0 ||
+         static_cast<std::vector<Loss_function*>::size_type>(loss) >=
+              loss_functions.size())
+          throw std::invalid_argument("invalid loss function");
+     loss_ = loss;
+}
+
 std::vector<double> MNN::y(std::vector<double> const& x) const {
      if (x.size() != static_cast<std::vector<double>::size_type>(n_))
           throw std::invalid_argument("bad dimension");
@@ -197,6 +228,7 @@ void MNN::write(std::ostream& f) const {
             << a.x0 << '\n'
             << a.s << '\n';
      }
+     f << loss_ << '\n';
 }
 
 bool MNN::write(char const* fname) const {
@@ -207,7 +239,7 @@ bool MNN::write(char const* fname) const {
 }
 
 void MNN::read(std::istream& f) {
-     int n, m, k;
+     int n, m, k, loss;
      std::vector<int> p;
      if (f.fail())
           return;
@@ -250,6 +282,15 @@ void MNN::read(std::istream& f) {
                f.setstate(std::ios::failbit);
                return;
           }
+     }
+     f >> loss;
+     if (f.fail())
+          return;
+     try {
+          set_loss_function(loss);
+     } catch (std::invalid_argument const&) {
+          f.setstate(std::ios::failbit);
+          return;
      }
 }
 
@@ -316,6 +357,8 @@ bool fcmp(MNN const& lhs, MNN const& rhs, double eps) {
           if (facmp(la.s, ra.s, eps) != 0)
                return false;
      }
+     if (lhs.loss_ != rhs.loss_)
+          return false;
      return true;
 }
 

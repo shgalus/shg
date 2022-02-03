@@ -51,6 +51,7 @@ BOOST_AUTO_TEST_CASE(xor_test) {
      mnn.set_activation_function(1, Activation_function::sigmoid);
      mnn.set_activation_function(2, Activation_function::identity);
      mnn.set_random_weights();
+     mnn.set_loss_function(0);
      std::ostringstream oss(binout);
      mnn.write(oss);
      BOOST_REQUIRE(oss.good());
