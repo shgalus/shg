@@ -6,6 +6,8 @@
 #ifndef SHG_NEURALNET_H
 #define SHG_NEURALNET_H
 
+#include <cmath>
+#include <stdexcept>
 #include <vector>
 #include <istream>
 #include <ostream>
@@ -15,6 +17,19 @@
  * Neural networks.
  */
 namespace SHG::Neural_networks {
+
+/**
+ * Exception class for invalid floating-point numbers. Thrown if a
+ * function argument or function result is not a finite floating point
+ * number as checked by std::isfinite();
+ */
+class Invalid_number : public std::runtime_error {
+public:
+     Invalid_number();
+};
+
+/** Throws Invalid_number if !std::isfinite(x). */
+void check(double x);
 
 /** Identity function. Returns \f$x\f$. */
 double identity(double x);
@@ -68,8 +83,6 @@ enum class Activation_function {
      softmax
 };
 
-// clang-format off
-
 /**
  * Multilayer neural network.
  *
@@ -95,15 +108,15 @@ enum class Activation_function {
  * contains dimensionalities of the hidden layers, \f$m\f$ is the
  * dimensionality of the output layer.
  *
- * An example of a 3-layer (\f$k = 3\f$) network is shown below.
+ * An example of a 2-layer (\f$k = 2\f$) network is shown below.
  *
 \verbatim
-+---+              +---+              +---+              +---+              +---+
-|   |\Phi_1\Sigma_1|   |\Phi_2\Sigma_2|   |\Phi_3\Sigma_3|   |\Phi_4\Sigma_4|   |
-| x |------------->|h_1|------------->|h_2|------------->|h_3|------------->| y |
-|   |              |   |              |   |              |   |              |   |
-+---+              +---+              +---+              +---+              +---+
- R^n              R^{p_1}            R^{p_2}            R^{p_3}              R^m
++---+              +---+              +---+              +---+
+|   |\Phi_1\Sigma_1|   |\Phi_2\Sigma_2|   |\Phi_3\Sigma_3|   |
+| x |------------->|h_1|------------->|h_2|------------->| y |
+|   |              |   |              |   |              |   |
++---+              +---+              +---+              +---+
+ R^n              R^{p_1}            R^{p_2}              R^m
 \endverbatim
  *
  * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
@@ -116,8 +129,6 @@ enum class Activation_function {
  * \f$v = (v_1, \ldots, v_{p_i})\f$.
  *
  */
-
-// clang-format on
 
 class MNN {
 public:
@@ -190,6 +201,15 @@ private:
      std::vector<Activation> phi_{};
 };
 
+inline void check(double x) {
+     if (!std::isfinite(x))
+          throw Invalid_number();
+}
+
+/**
+ * Compares two MNNs. \f$\eps > 0\f$ is used to absolutely compare
+ * weights, thresholds and scales.
+ */
 bool fcmp(MNN const& lhs, MNN const& rhs, double eps);
 
 inline int MNN::n() const {

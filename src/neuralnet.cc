@@ -7,11 +7,9 @@
 
 #include <shg/neuralnet.h>
 #include <cassert>
-#include <cmath>
 #include <algorithm>
 #include <limits>
 #include <numeric>
-#include <stdexcept>
 #include <fstream>
 #include <ios>
 #include <iomanip>
@@ -20,43 +18,45 @@
 #include <iostream>
 #include <boost/numeric/ublas/io.hpp>
 #endif
-#include <shg/except.h>
 #include <shg/fcmp.h>
 #include <shg/mzt.h>
 
 namespace SHG::Neural_networks {
 
+Invalid_number::Invalid_number()
+     : std::runtime_error("Invalid number") {}
+
 double identity(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      return x;
 }
 
 double sign(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      return x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0);
 }
 
 double sigmoid(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      double const y = 1.0 / (1.0 + std::exp(-x));
-     SHG_ASSERT(std::isfinite(y));
+     check(y);
      return y;
 }
 
 double tgh(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      double const y = std::tanh(x);
-     SHG_ASSERT(std::isfinite(y));
+     check(y);
      return y;
 }
 
 double relu(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      return x < 0.0 ? 0.0 : x;
 }
 
 double hardtanh(double x) {
-     SHG_ASSERT(std::isfinite(x));
+     check(x);
      if (x < -1.0)
           return -1.0;
      if (x > 1.0)
@@ -65,10 +65,10 @@ double hardtanh(double x) {
 }
 
 std::vector<double> softmax(std::vector<double> const& x) {
-     SHG_ASSERT(
-          std::all_of(x.cbegin(), x.cend(), std::isfinite<double>));
+     std::for_each(x.cbegin(), x.cend(), check);
      auto const it = std::max_element(x.cbegin(), x.cend());
-     SHG_ASSERT(it != x.cend());
+     if (it == x.cend())
+          throw std::invalid_argument("invalid argument in softmax");
      double const s = std::accumulate(
           x.cbegin(), x.cend(), 0.0,
           [it](double a, double b) { return a + std::exp(b - *it); });
@@ -76,7 +76,7 @@ std::vector<double> softmax(std::vector<double> const& x) {
      std::vector<double> y(x.size());
      for (std::vector<double>::size_type i = 0; i < x.size(); i++) {
           y[i] = std::exp(x[i] - *it - logs);
-          SHG_ASSERT(std::isfinite(y[i]));
+          check(y[i]);
      }
      return y;
 }
