@@ -121,7 +121,8 @@ void MNN::init(int n, int m, std::vector<int> const& p) {
      w_.clear();
      w_.resize(k_ + 1);
      w_[0].resize(p_.at(0), n_);
-     for (std::vector<Matrix>::size_type i = 1; i < k_; i++)
+     for (std::vector<Matrix>::size_type i = 1;
+          i < static_cast<std::vector<Matrix>::size_type>(k_); i++)
           w_[i].resize(p_.at(i), p_.at(i - 1));
      w_[k_].resize(m_, p_.at(k_ - 1));
      phi_.clear();
@@ -189,7 +190,8 @@ std::vector<double> MNN::y(std::vector<double> const& x) const {
      std::vector<double> u;
      std::vector<double> h(x);
 
-     for (std::vector<Matrix>::size_type k = 0; k <= k_; k++) {
+     for (std::vector<Matrix>::size_type k = 0;
+          k <= static_cast<std::vector<Matrix>::size_type>(k_); k++) {
           auto const& w = w_[k];
 #ifdef NEURALNET_DEBUG
           std::cout << w << std::endl;

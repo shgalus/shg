@@ -203,10 +203,12 @@ private:
               std::vector<double> const& u,
               std::vector<double>& h) const;
 
+     /// \todo When write(), check f and f2 if all activations are
+     /// valid.
      struct Activation {
           using F = double(double);
           using F2 = std::vector<double>(std::vector<double> const&);
-          Activation_function af;
+          Activation_function af{};
           F* f{nullptr};
           F2* f2{nullptr};
           double x0{0.0};  // threshold
