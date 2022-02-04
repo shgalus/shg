@@ -18,7 +18,7 @@ all: ../bin/testing
 
 run: all
 	../bin/testing --log_level=message			\
---run_test=lexan_test/*
+--run_test=neuralnet_test/*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static
