@@ -95,7 +95,7 @@ std::string get_sentence(std::istream& stream);
 
 /**
  * Returns vector of tokens output by \c lexer for the string \c s.
- * The string \s may be the output of get_sentence().
+ * The string \c s may be the output of get_sentence().
  */
 std::vector<Token> tokenize_string(std::string const& s,
                                    Lexer& lexer);
