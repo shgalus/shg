@@ -28,7 +28,7 @@ public:
      Invalid_number();
 };
 
-/** Throws Invalid_number if !std::isfinite(x). */
+/** Throws Invalid_number if !%std::isfinite(x). */
 void check(double x);
 
 /** Identity function. Returns \f$x\f$. */
