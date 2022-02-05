@@ -82,6 +82,80 @@ std::vector<double> softmax(std::vector<double> const& x) {
      return y;
 }
 
+std::vector<double> identity(std::vector<double> const& x,
+                             std::vector<double> const& a,
+                             std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = identity(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> sign(std::vector<double> const& x,
+                         std::vector<double> const& a,
+                         std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = sign(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> sigmoid(std::vector<double> const& x,
+                            std::vector<double> const& a,
+                            std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = sigmoid(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> tgh(std::vector<double> const& x,
+                        std::vector<double> const& a,
+                        std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = tgh(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> relu(std::vector<double> const& x,
+                         std::vector<double> const& a,
+                         std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = relu(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> hardtanh(std::vector<double> const& x,
+                             std::vector<double> const& a,
+                             std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = hardtanh(a[i] + b[i] * x[i]);
+     return y;
+}
+
+std::vector<double> softmax(std::vector<double> const& x,
+                            std::vector<double> const& a,
+                            std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     std::vector<double> y(x.size());
+     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
+          y[i] = a[i] + b[i] * x[i];
+     return softmax(y);
+}
+
+std::vector<Act_func*> const activation_functions{
+     identity, sign, sigmoid, tgh, relu, hardtanh, softmax,
+};
+
 double quadratic_loss(std::vector<double> const& t,
                       std::vector<double> const& y) {
      assert(t.size() == y.size() && t.size() > 0);

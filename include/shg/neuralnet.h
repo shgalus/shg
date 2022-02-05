@@ -73,6 +73,40 @@ double hardtanh(double x);
  */
 std::vector<double> softmax(std::vector<double> const& x);
 
+std::vector<double> identity(std::vector<double> const& x,
+                             std::vector<double> const& a,
+                             std::vector<double> const& b);
+
+std::vector<double> sign(std::vector<double> const& x,
+                         std::vector<double> const& a,
+                         std::vector<double> const& b);
+
+std::vector<double> sigmoid(std::vector<double> const& x,
+                            std::vector<double> const& a,
+                            std::vector<double> const& b);
+
+std::vector<double> tgh(std::vector<double> const& x,
+                        std::vector<double> const& a,
+                        std::vector<double> const& b);
+
+std::vector<double> relu(std::vector<double> const& x,
+                         std::vector<double> const& a,
+                         std::vector<double> const& b);
+
+std::vector<double> hardtanh(std::vector<double> const& x,
+                             std::vector<double> const& a,
+                             std::vector<double> const& b);
+
+std::vector<double> softmax(std::vector<double> const& x,
+                            std::vector<double> const& a,
+                            std::vector<double> const& b);
+
+using Act_func = std::vector<double>(std::vector<double> const&,
+                                     std::vector<double> const&,
+                                     std::vector<double> const&);
+
+extern std::vector<Act_func*> const activation_functions;
+
 enum class Activation_function {
      identity,
      sign,
