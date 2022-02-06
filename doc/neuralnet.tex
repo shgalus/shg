@@ -1,0 +1,52 @@
+\chapter{Neural networks}
+
+\section{Multilayer neural network}
+
+Let $k \in \naturaln$, $p_0, p_1, \ldots, p_{k + 1} \in \naturaln$, $n
+= p_0$, $m = p_{k + 1}$. For $i = 1, \ldots, k + 1$, let
+\begin{align*}
+  \Sigma_i \colon &\realn^{p_{i - 1}} \rightarrow \realn^{p_i}, \\
+  \Phi_i \colon &\realn^{p_i} \rightarrow \realn^{p_i}.
+\end{align*}
+Let $x \in \realn^n$. Denote
+\begin{align*}
+h_1 &= \Phi_1(\Sigma_1(x)) \\
+h_{i + 1} &= \Phi_{i + 1}(\Sigma_{i + 1}(h_i)), \quad i = 1,
+\ldots, k - 1, \\
+y &= \Phi_{k + 1}(\Sigma_{k + 1}(h_k)).
+\end{align*}
+The function $f \colon \realn^n \rightarrow \realn^m$, $f(x) = y$ is
+called a $k$-layer neural network.
+
+The above definition follows \cite[section~1.2.2]{aggarwal-2018}. $x$
+is an input layer, $h_1, \ldots, h_k$ are hidden layers, $y$ is an
+output layer. $n$ is the dimensionality of the input layer, the vector
+$p = [p_1, \ldots, p_k]$ contains dimensionalities of the hidden
+layers, $m$ is the dimensionality of the output layer.
+Figure~\ref{fig:neural_network} shows an example of a multilayer
+neural network.
+
+\begin{figure}[ht]
+\begin{center}
+\setlength{\unitlength}{1cm}
+\begin{picture}(10,3)
+  \put(0,1){\framebox(1,2){$x$}}
+  \put(0.3,0.4){$\realn^n$}
+  \put(1,2){\vector(1,0){1.5}}
+  \put(1.1,2.2){$\Phi_1\circ\Sigma_1$}
+  \put(2.5,1){\framebox(1,2){$h_1$}}
+  \put(2.8,0.4){$\realn^{p_1}$}
+  \put(3.5,2){\vector(1,0){1.5}}
+  \put(3.6,2.2){$\Phi_2\circ\Sigma_2$}
+  \put(5,1){\framebox(1,2){$h_2$}}
+  \put(5.3,0.4){$\realn^{p_2}$}
+  \put(6,2){\vector(1,0){1.5}}
+  \put(6.1,2.2){$\Phi_3\circ\Sigma_3$}
+  \put(7.5,1){\framebox(1,2){$y$}}
+  \put(7.8,0.4){$\realn^{m}$}
+\end{picture}
+
+\end{center}
+\caption{A two-layer neural network.}
+\label{fig:neural_network}
+\end{figure}
