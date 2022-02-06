@@ -156,6 +156,21 @@ std::vector<Act_func*> const activation_functions{
      identity, sign, sigmoid, tgh, relu, hardtanh, softmax,
 };
 
+boost::numeric::ublas::matrix<double> didentity(
+     std::vector<double> const& x, std::vector<double> const& a,
+     std::vector<double> const& b) {
+     assert(x.size() == a.size() && x.size() == b.size());
+     boost::numeric::ublas::matrix<double> d(x.size(), x.size());
+     for (boost::numeric::ublas::matrix<double>::size_type i = 0;
+          i < d.size1(); i++) {
+          for (boost::numeric::ublas::matrix<double>::size_type j = 0;
+               j < d.size2(); j++)
+               d(i, j) = 0.0;
+          d(i, i) = b[i];
+     }
+     return d;
+}
+
 double quadratic_loss(std::vector<double> const& t,
                       std::vector<double> const& y) {
      assert(t.size() == y.size() && t.size() > 0);

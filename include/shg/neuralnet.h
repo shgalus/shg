@@ -107,6 +107,15 @@ using Act_func = std::vector<double>(std::vector<double> const&,
 
 extern std::vector<Act_func*> const activation_functions;
 
+using Derivative_of_activation_function =
+     boost::numeric::ublas::matrix<double>(
+          std::vector<double> const&, std::vector<double> const&,
+          std::vector<double> const&);
+
+boost::numeric::ublas::matrix<double> didentity(
+     std::vector<double> const& x, std::vector<double> const& a,
+     std::vector<double> const& b);
+
 enum class Activation_function {
      identity,
      sign,
