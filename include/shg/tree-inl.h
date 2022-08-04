@@ -96,6 +96,8 @@ Tree<Data>& Tree<Data>::operator=(Tree&& other) noexcept {
           std::swap(parent_, other.parent_);
           std::swap(pos_, other.pos_);
           std::swap(children_, other.children_);
+          for (Index i = 0; i < children_.size(); i++)
+               children_[i]->parent_ = this;
      }
      return *this;
 }
@@ -150,6 +152,16 @@ std::string Tree<Data>::to_string() const {
           s += ")";
      }
      return s;
+}
+
+template <typename Data>
+inline Tree<Data> const* Tree<Data>::parent() const {
+     return parent_;
+}
+
+template <typename Data>
+inline Tree<Data>* Tree<Data>::parent() {
+     return parent_;
 }
 
 template <typename Data>

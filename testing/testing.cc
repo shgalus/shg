@@ -25,3 +25,11 @@ void Global_fixture::teardown() {
 }
 
 BOOST_TEST_GLOBAL_FIXTURE(Global_fixture);
+
+namespace SHG::Testing {
+
+const char* const datadir = SHG_DATADIR;
+const char* const testdatadir = SHG_TESTDATADIR;
+const char* const externdir = SHG_EXTERNDIR;
+
+}  // namespace SHG::Testing

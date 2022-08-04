@@ -1,5 +1,7 @@
 include ../make.inc
 
+DEFS += -DSHG_DATADIR="\"../data/\""
+
 LDLIBS += -lboost_program_options
 
 SOURCES := $(wildcard *.cc)

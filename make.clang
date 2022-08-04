@@ -16,7 +16,8 @@ CPPFLAGS =
 LDFLAGS = -static
 LOADLIBES = -L../lib -L/usr/local/boost_1_78_0/lib
 LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
--lboost_iostreams -lpugixml -lz
+-lboost_iostreams -lboost_log -lboost_thread -lboost_filesystem	\
+-lpugixml -lpthread -lz
 
 AR = gcc-ar-11.2.0
 ARFLAGS = rc

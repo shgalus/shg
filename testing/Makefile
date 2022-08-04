@@ -1,5 +1,9 @@
 include ../make.inc
 
+DEFS += -DSHG_DATADIR="\"../data/\""
+DEFS += -DSHG_TESTDATADIR="\"../data/\""
+DEFS += -DSHG_EXTERNDIR="\"../extern/\""
+
 SOURCES := $(wildcard *.cc)
 OBJECTS := $(SOURCES:%.cc=%.o)
 
@@ -13,12 +17,10 @@ $(OBJDIR)/%.o : %.cc
 
 all: ../bin/testing
 	cp ../data/basic.swf /tmp
-	cp ../data/solaris.txt /tmp
-	cp ../data/chlopcy.txt /tmp
 
 run: all
 	../bin/testing --log_level=message			\
---run_test=neuralnet_test/*
+--run_test=*
 
 ../bin/testing: $(OBJDIR) $(OBJS) FORCE | ../bin
 	cd ../src && $(MAKE) static

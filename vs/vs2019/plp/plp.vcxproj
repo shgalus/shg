@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SHG_DATADIR=R"($(SolutionDir)..\..\data\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -103,7 +103,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions);SHG_DATADIR=R"($(SolutionDir)..\..\data\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -120,7 +120,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SHG_DATADIR=R"($(SolutionDir)..\..\data\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -137,7 +137,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions);SHG_DATADIR=R"($(SolutionDir)..\..\data\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;4267;4305;4723;4756;4996;26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -169,22 +169,28 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\..\..\packages19\boost.1.78.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" />
-    <Import Project="..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" />
-    <Import Project="..\..\..\..\packages19\boost_program_options-vc142.1.78.0\build\boost_program_options-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_program_options-vc142.1.78.0\build\boost_program_options-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\pugixml.1.12.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\packages19\pugixml.1.12.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\packages19\boost.1.79.0\build\boost.targets" Condition="Exists('..\..\..\..\packages19\boost.1.79.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_date_time-vc142.1.79.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_date_time-vc142.1.79.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_filesystem-vc142.1.79.0\build\boost_filesystem-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_filesystem-vc142.1.79.0\build\boost_filesystem-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_iostreams-vc142.1.79.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.79.0\build\boost_iostreams-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_log-vc142.1.79.0\build\boost_log-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_log-vc142.1.79.0\build\boost_log-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_program_options-vc142.1.79.0\build\boost_program_options-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_program_options-vc142.1.79.0\build\boost_program_options-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_thread-vc142.1.79.0\build\boost_thread-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_thread-vc142.1.79.0\build\boost_thread-vc142.targets')" />
+    <Import Project="..\..\..\..\packages19\boost_zlib-vc142.1.79.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\packages19\boost_zlib-vc142.1.79.0\build\boost_zlib-vc142.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.78.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.78.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.78.0\build\boost_date_time-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.78.0\build\boost_iostreams-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.78.0\build\boost_zlib-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\pugixml.1.11.0\build\native\pugixml.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages19\boost_program_options-vc142.1.78.0\build\boost_program_options-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_program_options-vc142.1.78.0\build\boost_program_options-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\pugixml.1.12.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\pugixml.1.12.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost.1.79.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost.1.79.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_date_time-vc142.1.79.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_date_time-vc142.1.79.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_filesystem-vc142.1.79.0\build\boost_filesystem-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_filesystem-vc142.1.79.0\build\boost_filesystem-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_iostreams-vc142.1.79.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_iostreams-vc142.1.79.0\build\boost_iostreams-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_log-vc142.1.79.0\build\boost_log-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_log-vc142.1.79.0\build\boost_log-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_program_options-vc142.1.79.0\build\boost_program_options-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_program_options-vc142.1.79.0\build\boost_program_options-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_thread-vc142.1.79.0\build\boost_thread-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_thread-vc142.1.79.0\build\boost_thread-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages19\boost_zlib-vc142.1.79.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages19\boost_zlib-vc142.1.79.0\build\boost_zlib-vc142.targets'))" />
   </Target>
 </Project>

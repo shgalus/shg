@@ -214,4 +214,14 @@ To install old CVS repository, change to directory `doc` and say `make
 cvs`. Then change to `cvs/shg` or `cvs/metashg` and issue issue normal
 cvs commands like `cvs log`.
 
+\section mnist_database The MNIST database of handwritten digits
+
+The directory testdata contains four files downloaded in March 2022
+from http://yann.lecun.com/exdb/mnist/ (<a href =
+"mnistdhd.html">local copy</a>):
+
+- t10k-images-idx3-ubyte.gz
+- t10k-labels-idx1-ubyte.gz
+- train-images-idx3-ubyte.gz
+- train-labels-idx1-ubyte.gz
 */

@@ -3,323 +3,388 @@
  * Multilayer neural networks.
  */
 
-//#define NEURALNET_DEBUG
-
 #include <shg/neuralnet.h>
-#include <cassert>
-#include <algorithm>
-#include <limits>
+#include <cmath>
 #include <numeric>
+#include <limits>
 #include <fstream>
 #include <ios>
 #include <iomanip>
-#include <type_traits>
-#ifdef NEURALNET_DEBUG
-#include <iostream>
-#include <boost/numeric/ublas/io.hpp>
-#endif
+#include <boost/numeric/ublas/banded.hpp>
+#include <boost/numeric/ublas/symmetric.hpp>
 #include <shg/fcmp.h>
-#include <shg/mzt.h>
 #include <shg/utils.h>
+#include <shg/mzt.h>
 
 namespace SHG::Neural_networks {
 
-Invalid_number::Invalid_number()
-     : std::runtime_error("Invalid number") {}
+Error::Error() : Error("neural network error") {}
+Error::Error(std::string const& what) : Error(what.c_str()) {}
+Error::Error(char const* what) : std::runtime_error(what) {}
 
-double identity(double x) {
-     check(x);
+Vecreal identity(Vecreal const& x) {
      return x;
 }
 
-double sign(double x) {
-     check(x);
-     return x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0);
-}
-
-double sigmoid(double x) {
-     check(x);
-     double const y = 1.0 / (1.0 + std::exp(-x));
-     check(y);
+Vecreal sign(Vecreal const& x) {
+     auto const f = [](Real x) {
+          return x < 0.0 ? -1.0 : (x > 0.0 ? 1.0 : 0.0);
+     };
+     Vecreal y(x.size());
+     std::transform(x.begin(), x.end(), y.begin(), f);
      return y;
 }
 
-double tgh(double x) {
-     check(x);
-     double const y = std::tanh(x);
-     check(y);
+Vecreal sigmoid(Vecreal const& x) {
+     auto const f = [](Real x) { return 1.0 / (1.0 + std::exp(-x)); };
+     Vecreal y(x.size());
+     std::transform(x.begin(), x.end(), y.begin(), f);
      return y;
 }
 
-double relu(double x) {
-     check(x);
-     return x < 0.0 ? 0.0 : x;
+Vecreal tgh(Vecreal const& x) {
+     auto const f = [](Real x) { return std::tanh(x); };
+     Vecreal y(x.size());
+     std::transform(x.begin(), x.end(), y.begin(), f);
+     return y;
 }
 
-double hardtanh(double x) {
-     check(x);
-     if (x < -1.0)
-          return -1.0;
-     if (x > 1.0)
-          return 1.0;
-     return x;
+Vecreal relu(Vecreal const& x) {
+     auto const f = [](Real x) { return x < 0.0 ? 0.0 : x; };
+     Vecreal y(x.size());
+     std::transform(x.begin(), x.end(), y.begin(), f);
+     return y;
 }
 
-std::vector<double> softmax(std::vector<double> const& x) {
-     std::for_each(x.cbegin(), x.cend(), check);
+Vecreal hardtanh(Vecreal const& x) {
+     auto const f = [](Real x) {
+          return x < -1.0 ? -1.0 : (x > 1.0 ? 1.0 : x);
+     };
+     Vecreal y(x.size());
+     std::transform(x.begin(), x.end(), y.begin(), f);
+     return y;
+}
+
+Vecreal softmax(Vecreal const& x) {
      auto const it = std::max_element(x.cbegin(), x.cend());
-     if (it == x.cend())
-          throw std::invalid_argument("invalid argument in softmax");
-     double const s = std::accumulate(
+     assert(it != x.cend());
+     Real const s = std::accumulate(
           x.cbegin(), x.cend(), 0.0,
           [it](double a, double b) { return a + std::exp(b - *it); });
-     double const logs = std::log(s);
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++) {
-          y[i] = std::exp(x[i] - *it - logs);
-          check(y[i]);
+     Real const logs = std::log(s);
+     Vecreal y(x.size());
+     std::transform(
+          x.begin(), x.end(), y.begin(),
+          [it, logs](Real x) { return std::exp(x - *it - logs); });
+     return y;
+}
+
+Matreal didentity(Vecreal const& x,
+                  [[maybe_unused]] Vecreal const& f) {
+     assert(x.size() == f.size());
+     return boost::numeric::ublas::identity_matrix<Real>(x.size());
+}
+
+Matreal dsign(Vecreal const& x, [[maybe_unused]] Vecreal const& f) {
+     assert(x.size() == f.size());
+     if (std::any_of(x.cbegin(), x.cend(),
+                     [](Real x) { return x == 0.0; }))
+          throw Error("no derivative in dsign");
+     return boost::numeric::ublas::zero_matrix<Real>(x.size(),
+                                                     x.size());
+}
+
+Matreal dsigmoid(Vecreal const& x, Vecreal const& f) {
+     assert(x.size() == f.size());
+     boost::numeric::ublas::banded_matrix<Real> df(x.size(),
+                                                   x.size());
+     for (Vecreal::size_type i = 0; i < x.size(); i++)
+          df(i, i) = f(i) * (1.0 - f(i));
+     return df;
+}
+
+Matreal dtgh(Vecreal const& x, [[maybe_unused]] Vecreal const& f) {
+     assert(x.size() == f.size());
+     boost::numeric::ublas::banded_matrix<Real> df(x.size(),
+                                                   x.size());
+     for (Vecreal::size_type i = 0; i < x.size(); i++)
+          df(i, i) = 1.0 - sqr(f(i));
+     return df;
+}
+
+Matreal drelu(Vecreal const& x, [[maybe_unused]] Vecreal const& f) {
+     assert(x.size() == f.size());
+     boost::numeric::ublas::banded_matrix<Real> df(x.size(),
+                                                   x.size());
+     for (Vecreal::size_type i = 0; i < x.size(); i++)
+          if (x(i) > 0.0)
+               df(i, i) = 1.0;
+          else if (x(i) < 0.0)
+               df(i, i) = 0.0;
+          else
+               throw Error("no derivative in drelu");
+     return df;
+}
+
+Matreal dhardtanh(Vecreal const& x,
+                  [[maybe_unused]] Vecreal const& f) {
+     assert(x.size() == f.size());
+     boost::numeric::ublas::banded_matrix<Real> df(x.size(),
+                                                   x.size());
+     for (Vecreal::size_type i = 0; i < x.size(); i++)
+          if (x(i) > 1.0 || x(i) < -1.0)
+               df(i, i) = 0.0;
+          else if (x(i) > -1.0 && x(i) < 1.0)
+               df(i, i) = 1.0;
+          else
+               throw Error("no derivative in drelu");
+     return df;
+}
+
+Matreal dsoftmax(Vecreal const& x, Vecreal const& f) {
+     using boost::numeric::ublas::upper;
+     using Symrealmat =
+          boost::numeric::ublas::symmetric_matrix<Real, upper>;
+     assert(x.size() == f.size());
+     Symrealmat df(x.size(), x.size());
+
+     for (Symrealmat::size_type i = 0; i < df.size1(); i++) {
+          df(i, i) = f(i) * (1.0 - f(i));
+          for (Symrealmat::size_type j = i + 1; j < df.size2(); j++)
+               df(i, j) = -f(i) * f(j);
      }
-     return y;
+     return df;
 }
 
-std::vector<double> identity(std::vector<double> const& x,
-                             std::vector<double> const& a,
-                             std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = identity(a[i] + b[i] * x[i]);
-     return y;
+Real quadratic(Vecreal const& aL, Vecreal const& y) {
+     assert(aL.size() == y.size());
+     Real s{0.0};
+     for (Vecreal::size_type i = 0; i < aL.size(); i++)
+          s += sqr(aL(i) - y(i));
+     return 0.5 * s;
 }
 
-std::vector<double> sign(std::vector<double> const& x,
-                         std::vector<double> const& a,
-                         std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = sign(a[i] + b[i] * x[i]);
-     return y;
+Real cross_entropy(Vecreal const& aL, Vecreal const& y) {
+     using boost::numeric::ublas::inner_prod;
+     assert(aL.size() == y.size());
+     Real const s = inner_prod(aL, y);
+     return -std::log(s);
 }
 
-std::vector<double> sigmoid(std::vector<double> const& x,
-                            std::vector<double> const& a,
-                            std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = sigmoid(a[i] + b[i] * x[i]);
-     return y;
+Vecreal dquadratic(Vecreal const& aL, Vecreal const& y) {
+     assert(aL.size() == y.size());
+     return aL - y;
 }
 
-std::vector<double> tgh(std::vector<double> const& x,
-                        std::vector<double> const& a,
-                        std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = tgh(a[i] + b[i] * x[i]);
-     return y;
+Vecreal dcross_entropy(Vecreal const& aL, Vecreal const& y) {
+     using boost::numeric::ublas::zero_vector;
+     assert(aL.size() == y.size());
+     Vecreal v = zero_vector<Real>(aL.size());
+     for (Vecreal::size_type i = 0; i < aL.size(); i++)
+          if (y(i) > 0.0) {
+               v(i) = -1.0 / aL(i);
+               if (!std::isfinite(v(i)))
+                    throw Error(
+                         "error calculating derivative of cross "
+                         "entropy");
+               return v;
+          }
+     throw std::invalid_argument(
+          "invalid argument in dcross_entropy");
 }
 
-std::vector<double> relu(std::vector<double> const& x,
-                         std::vector<double> const& a,
-                         std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = relu(a[i] + b[i] * x[i]);
-     return y;
+MNN::MNN() {
+     Vecuint n(2);
+     n(0) = n(1) = 1;
+     init(n);
 }
 
-std::vector<double> hardtanh(std::vector<double> const& x,
-                             std::vector<double> const& a,
-                             std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = hardtanh(a[i] + b[i] * x[i]);
-     return y;
+MNN::MNN(Vecuint const& n) {
+     init(n);
 }
 
-std::vector<double> softmax(std::vector<double> const& x,
-                            std::vector<double> const& a,
-                            std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     std::vector<double> y(x.size());
-     for (std::vector<double>::size_type i = 0; i < x.size(); i++)
-          y[i] = a[i] + b[i] * x[i];
-     return softmax(y);
-}
-
-std::vector<Act_func*> const activation_functions{
-     identity, sign, sigmoid, tgh, relu, hardtanh, softmax,
-};
-
-boost::numeric::ublas::matrix<double> didentity(
-     std::vector<double> const& x, std::vector<double> const& a,
-     std::vector<double> const& b) {
-     assert(x.size() == a.size() && x.size() == b.size());
-     boost::numeric::ublas::matrix<double> d(x.size(), x.size());
-     for (boost::numeric::ublas::matrix<double>::size_type i = 0;
-          i < d.size1(); i++) {
-          for (boost::numeric::ublas::matrix<double>::size_type j = 0;
-               j < d.size2(); j++)
-               d(i, j) = 0.0;
-          d(i, i) = b[i];
-     }
-     return d;
-}
-
-double quadratic_loss(std::vector<double> const& t,
-                      std::vector<double> const& y) {
-     assert(t.size() == y.size() && t.size() > 0);
-     double s = 0.0;
-     for (std::vector<double>::size_type i = 0; i < t.size(); i++)
-          s += sqr(t[i] - y[i]);
-     return s;
-}
-
-double hinge_loss(std::vector<double> const& t,
-                  std::vector<double> const& y) {
-     assert(t.size() == y.size() && t.size() == 1);
-     double const z = 1.0 - t[0] * y[0];
-     check(z);
-     return z > 0.0 ? z : 0.0;
-}
-
-std::vector<Loss_function*> const loss_functions{
-     quadratic_loss,
-     hinge_loss,
-};
-
-MNN::MNN(int n, int m, std::vector<int> const& p) {
-     init(n, m, p);
-}
-
-void MNN::init(int n, int m, std::vector<int> const& p) {
-     if (n < 1 || m < 1 || p.size() < 1 ||
-         std::any_of(p.cbegin(), p.cend(),
-                     [](int pi) { return pi < 1; }))
+void MNN::init(Vecuint const& n) {
+     if (n.size() < 2 || std::any_of(n.cbegin(), n.cend(),
+                                     [](Uint u) { return u < 1; }))
           throw std::invalid_argument(
                "invalid argument in MNN::init");
      n_ = n;
-     m_ = m;
-     k_ = p.size();
-     p_ = p;
-     w_.clear();
-     w_.resize(k_ + 1);
-     w_[0].resize(p_.at(0), n_);
-     for (std::vector<Matrix>::size_type i = 1;
-          i < static_cast<std::vector<Matrix>::size_type>(k_); i++)
-          w_[i].resize(p_.at(i), p_.at(i - 1));
-     w_[k_].resize(m_, p_.at(k_ - 1));
-     phi_.clear();
-     phi_.resize(k_ + 1);
+     eta_ = 0.1;
+     W_.resize(n_.size());
+     b_.resize(n_.size());
+     a_.resize(n_.size());
+     z_.resize(n_.size());
+     phi_.resize(n_.size());
+     phi_ptr_.resize(n_.size());
+     dphi_ptr_.resize(n_.size());
+     // W_(0), b_(0), ... are not used
+     MZT mzt;
+     for (Uint l = 1; l < W_.size(); l++) {
+          Matreal& w = W_(l);
+          w.resize(n_(l), n_(l - 1));
+          for (auto it1 = w.begin1(); it1 != w.end1(); ++it1)
+               for (auto it2 = it1.begin(); it2 != it1.end(); ++it2)
+                    *it2 = 2.0 * mzt() - 1.0;
+          Vecreal& b = b_(l);
+          b.resize(n_(l));
+          for (auto it = b.begin(); it != b.end(); ++it)
+               *it = 2.0 * mzt() - 1.0;
+          phi_(l) = Activation_function::sigmoid;
+          phi_ptr_(l) = sigmoid;
+          dphi_ptr_(l) = dsigmoid;
+     }
+     C_ = Cost_function::quadratic;
+     C_ptr_ = quadratic;
+     dC_ptr_ = dquadratic;
 }
 
-void MNN::set_activation_function(int i, Activation_function f,
-                                  double x0, double s) {
-     if (i < 1 || i > k_ + 1)
-          throw std::invalid_argument("invalid layer");
-     if (s < std::numeric_limits<double>::min())
-          throw std::invalid_argument("invalid scale");
-     Activation a;
+void MNN::eta(Real e) {
+     if (e <= 0.0)
+          throw std::invalid_argument("bad learning rate");
+     eta_ = e;
+}
+
+Activation_function MNN::phi(Uint l) const {
+     if (l < 1 || l >= phi_.size())
+          throw std::invalid_argument("bad layer in phi()");
+     return phi_(l);
+}
+
+void MNN::phi(Activation_function f, Uint l) {
+     if (l < 1 || l >= phi_.size())
+          throw std::invalid_argument("bad layer in phi()");
      switch (f) {
      case Activation_function::identity:
-          a.f = identity;
+          phi_ptr_(l) = identity;
+          dphi_ptr_(l) = didentity;
           break;
      case Activation_function::sign:
-          a.f = sign;
+          phi_ptr_(l) = sign;
+          dphi_ptr_(l) = dsign;
           break;
      case Activation_function::sigmoid:
-          a.f = sigmoid;
+          phi_ptr_(l) = sigmoid;
+          dphi_ptr_(l) = dsigmoid;
           break;
      case Activation_function::tgh:
-          a.f = tgh;
+          phi_ptr_(l) = tgh;
+          dphi_ptr_(l) = dtgh;
           break;
      case Activation_function::relu:
-          a.f = relu;
+          phi_ptr_(l) = relu;
+          dphi_ptr_(l) = drelu;
           break;
      case Activation_function::hardtanh:
-          a.f = hardtanh;
+          phi_ptr_(l) = hardtanh;
+          dphi_ptr_(l) = dhardtanh;
           break;
      case Activation_function::softmax:
-          a.f2 = softmax;
+          phi_ptr_(l) = softmax;
+          dphi_ptr_(l) = dsoftmax;
           break;
      default:
-          throw std::invalid_argument("invalid activation function");
+          throw std::invalid_argument("bad activation function");
      }
-     a.af = f;
-     a.x0 = x0;
-     a.s = s;
-     phi_.at(--i) = a;
+     phi_(l) = f;
 }
 
-void MNN::set_random_weights() {
-     MZT mzt;
-     for (auto& wi : w_) {
-          for (Matrix::size_type i = 0; i < wi.size1(); i++)
-               for (Matrix::size_type j = 0; j < wi.size2(); j++)
-                    wi(i, j) = 2.0 * mzt() - 1.0;
+void MNN::C(Cost_function f) {
+     switch (f) {
+     case Cost_function::quadratic:
+          C_ptr_ = quadratic;
+          dC_ptr_ = dquadratic;
+          break;
+     case Cost_function::cross_entropy:
+          C_ptr_ = cross_entropy;
+          dC_ptr_ = dcross_entropy;
+          break;
+     default:
+          throw std::invalid_argument("bad cost function");
      }
+     C_ = f;
 }
 
-void MNN::set_loss_function(int loss) {
-     if (loss < 0 ||
-         static_cast<std::vector<Loss_function*>::size_type>(loss) >=
-              loss_functions.size())
-          throw std::invalid_argument("invalid loss function");
-     loss_ = loss;
+Vecreal MNN::aL(Vecreal const& x) const {
+     using boost::numeric::ublas::prod;
+     if (x.size() != n_(0))
+          throw std::invalid_argument("bad dimension in aL");
+     Vecreal a{x};
+     for (Uint l = 1; l < W_.size(); l++) {
+          Vecreal const z = prod(W_(l), a) + b_(l);
+          a = phi_ptr_(l)(z);
+     }
+     return a;
 }
 
-std::vector<double> MNN::y(std::vector<double> const& x) const {
-     if (x.size() != static_cast<std::vector<double>::size_type>(n_))
-          throw std::invalid_argument("bad dimension");
-     std::vector<double> u;
-     std::vector<double> h(x);
-
-     for (std::vector<Matrix>::size_type k = 0;
-          k <= static_cast<std::vector<Matrix>::size_type>(k_); k++) {
-          auto const& w = w_[k];
-#ifdef NEURALNET_DEBUG
-          std::cout << w << std::endl;
-#endif
-          // u = w_[k] * h
-          u.resize(w.size1());
-          for (std::vector<double>::size_type i = 0; i < u.size();
-               i++) {
-               double s = 0.0;
-               for (Matrix::size_type j = 0; j < w.size2(); j++)
-                    s += w(i, j) * h.at(j);
-               u[i] = s;
+void MNN::train(Vecreal const& x, Vecreal const& y) {
+     using boost::numeric::ublas::prod;
+     if (x.size() != n_(0) || y.size() != n_(n_.size() - 1))
+          throw std::invalid_argument("bad dimension in train");
+     Uint l;
+     a_(0) = x;
+     for (l = 1; l < W_.size(); l++) {
+          z_(l) = prod(W_(l), a_(l - 1)) + b_(l);
+          a_(l) = phi_ptr_(l)(z_(l));
+     }
+     assert(l == W_.size());
+     l--;
+     Vecreal delta = dC_ptr_(a_(l), y);
+     Matreal dphi = dphi_ptr_(l)(z_(l), a_(l));
+     Vecreal w = prod(delta, dphi);
+     delta = w;
+     for (;;) {
+          Matreal Delta(n_(l), n_(l - 1));
+          for (Matreal::size_type j = 0; j < Delta.size2(); j++) {
+               Real const q = a_(l - 1)(j);
+               for (Matreal::size_type i = 0; i < Delta.size1(); i++)
+                    Delta(i, j) = delta(i) * q;
           }
-          // h = phi_[k](u)
-          phi(k, u, h);
+          W_(l) -= eta_ * Delta;
+          b_(l) -= eta_ * delta;
+          if (l == 1)
+               break;
+          l--;
+          w = prod(delta, W_(l + 1));
+          dphi = dphi_ptr_(l)(z_(l), a_(l));
+          delta = prod(w, dphi);
      }
-     return h;
+}
+
+Real MNN::cost(Vecreal const& x, Vecreal const& y) const {
+     return C_ptr_(aL(x), y);
+}
+
+bool MNN::is_hit(Vecreal const& x, Vecreal const& y, Real eps) const {
+     Vecreal const aL = this->aL(x);
+     Real max = -1.0;
+     Uint k = 0;
+     for (Uint i = 0; i < aL.size(); i++)
+          if (aL(i) > max) {
+               max = aL(i);
+               k = i;
+          }
+     return SHG::facmp(y(k), 1.0, eps) == 0;
 }
 
 void MNN::write(std::ostream& f) const {
      f << std::scientific
        << std::setprecision(std::numeric_limits<double>::digits10 +
                             1);
-     f << n_ << '\n' << m_ << '\n' << k_ << '\n';
-     for (auto p : p_)
-          f << p << '\n';
-     for (auto const& w : w_)
-          for (Matrix::size_type i = 0; i < w.size1(); i++)
-               for (Matrix::size_type j = 0; j < w.size2(); j++)
-                    f << w(i, j) << '\n';
-     for (auto const& a : phi_) {
-          f << static_cast<
-                    std::underlying_type<Activation_function>::type>(
-                    a.af)
-            << '\n'
-            << a.x0 << '\n'
-            << a.s << '\n';
+     f << n_.size() << '\n';
+     for (auto n : n_)
+          f << n << '\n';
+     f << eta_ << '\n';
+     for (Uint l = 1; l < W_.size(); l++) {
+          Matreal const& w = W_(l);
+          for (auto it1 = w.cbegin1(); it1 != w.cend1(); ++it1)
+               for (auto it2 = it1.cbegin(); it2 != it1.cend(); ++it2)
+                    f << *it2 << '\n';
+          Vecreal const& b = b_(l);
+          for (auto it = b.cbegin(); it != b.cend(); ++it)
+               f << *it << '\n';
+          f << static_cast<Activation_function_ut>(phi_(l)) << '\n';
      }
-     f << loss_ << '\n';
+     f << static_cast<Cost_function_ut>(C_) << '\n';
 }
 
 bool MNN::write(char const* fname) const {
@@ -330,59 +395,61 @@ bool MNN::write(char const* fname) const {
 }
 
 void MNN::read(std::istream& f) {
-     int n, m, k, loss;
-     std::vector<int> p;
      if (f.fail())
           return;
-     f >> n >> m >> k;
+     Vecuint::size_type size;
+     f >> size;
      if (f.fail())
           return;
-     if (k <= 0) {
-          f.setstate(std::ios::failbit);
-          return;
-     }
-     p.resize(k);
-     for (std::vector<int>::size_type i = 0; i < p.size(); i++)
-          f >> p[i];
+     Vecuint n(size);
+     for (Vecuint::size_type i = 0; i < size; i++)
+          f >> n(i);
      if (f.fail())
           return;
+     MNN mnn;
      try {
-          init(n, m, p);
+          mnn.init(n);
+          Real e;
+          f >> e;
+          mnn.eta(e);
      } catch (std::invalid_argument const&) {
           f.setstate(std::ios::failbit);
           return;
      }
-     for (auto& w : w_)
-          for (Matrix::size_type i = 0; i < w.size1(); i++)
-               for (Matrix::size_type j = 0; j < w.size2(); j++)
-                    f >> w(i, j);
-     if (f.fail())
-          return;
-     for (std::vector<Activation>::size_type i = 0; i < phi_.size();
-          i++) {
-          std::underlying_type<Activation_function>::type u;
-          double x0, s;
-          f >> u >> x0 >> s;
+     for (Uint l = 1; l < mnn.W_.size(); l++) {
+          Matreal& w = mnn.W_(l);
+          for (auto it1 = w.begin1(); it1 != w.end1(); ++it1)
+               for (auto it2 = it1.begin(); it2 != it1.end(); ++it2)
+                    f >> *it2;
+          if (f.fail())
+               return;
+          Vecreal& b = mnn.b_(l);
+          for (auto it = b.begin(); it != b.end(); ++it)
+               f >> *it;
+          if (f.fail())
+               return;
+          Activation_function_ut au;
+          f >> au;
           if (f.fail())
                return;
           try {
-               set_activation_function(
-                    i + 1, static_cast<Activation_function>(u), x0,
-                    s);
+               mnn.phi(static_cast<Activation_function>(au), l);
           } catch (std::invalid_argument const&) {
                f.setstate(std::ios::failbit);
                return;
           }
      }
-     f >> loss;
+     Cost_function_ut cu;
+     f >> cu;
      if (f.fail())
           return;
      try {
-          set_loss_function(loss);
+          mnn.C(static_cast<Cost_function>(cu));
      } catch (std::invalid_argument const&) {
           f.setstate(std::ios::failbit);
           return;
      }
+     *this = mnn;
 }
 
 bool MNN::read(char const* fname) {
@@ -392,65 +459,59 @@ bool MNN::read(char const* fname) {
      return f.good();
 }
 
-void MNN::phi(std::vector<Matrix>::size_type k,
-              std::vector<double> const& u,
-              std::vector<double>& h) const {
-     Activation const& a = phi_[k];
-     if (a.f2 != nullptr)
-          h = a.f2(u);
-     else {
-          h.resize(u.size());
-          for (std::vector<double>::size_type i = 0; i < u.size();
-               i++) {
-               h[i] = a.f((u.at(i) - a.x0) / a.s);
-          }
-     }
-}
-
-bool fcmp(MNN const& lhs, MNN const& rhs, double eps) {
-     using Matrix = MNN::Matrix;
-     using Activation = MNN::Activation;
-
-     if (lhs.n_ != rhs.n_)
+bool facmp(MNN const& lhs, MNN const& rhs, double eps) {
+     if (lhs.n().size() != rhs.n().size())
           return false;
-     if (lhs.m_ != rhs.m_)
+     for (Vecuint::size_type l = 0; l < lhs.n().size(); l++)
+          if (lhs.n()(l) != rhs.n()(l))
+               return false;
+     if (SHG::facmp(lhs.eta(), rhs.eta(), eps) != 0)
           return false;
-     if (lhs.k_ != rhs.k_)
-          return false;
-     assert(lhs.p_.size() == rhs.p_.size());
-     if (lhs.p_ != rhs.p_)
-          return false;
-     assert(lhs.w_.size() == rhs.w_.size());
-     for (std::vector<Matrix>::size_type k = 0; k < lhs.w_.size();
-          k++) {
-          Matrix const& lw = lhs.w_[k];
-          Matrix const& rw = rhs.w_[k];
-          assert(lw.size1() == rw.size1());
-          assert(lw.size2() == rw.size2());
-          for (Matrix::size_type i = 0; i < lw.size1(); i++)
-               for (Matrix::size_type j = 0; j < lw.size2(); j++)
-                    if (facmp(lw(i, j), rw(i, j), eps) != 0)
-                         return false;
-     }
-     assert(lhs.phi_.size() == rhs.phi_.size());
-     for (std::vector<Activation>::size_type i = 0;
-          i < lhs.phi_.size(); i++) {
-          Activation const& la = lhs.phi_[i];
-          Activation const& ra = rhs.phi_[i];
-          if (la.af != ra.af)
+     for (Uint l = 1; l < lhs.W().size(); l++) {
+          if (!facmp(lhs.W()(l), rhs.W()(l), eps))
                return false;
-          if (la.f != ra.f)
+          if (!facmp(lhs.b()(l), rhs.b()(l), eps))
                return false;
-          if (la.f2 != ra.f2)
-               return false;
-          if (facmp(la.x0, ra.x0, eps) != 0)
-               return false;
-          if (facmp(la.s, ra.s, eps) != 0)
+          if (lhs.phi(l) != rhs.phi(l))
                return false;
      }
-     if (lhs.loss_ != rhs.loss_)
+     if (lhs.C() != rhs.C())
           return false;
      return true;
+}
+
+bool facmp(Vecreal const& lhs, Vecreal const& rhs, Real eps) {
+     if (lhs.size() != rhs.size())
+          return false;
+     for (Vecreal::size_type i = 0; i < lhs.size(); i++)
+          if (SHG::facmp(lhs(i), rhs(i), eps) != 0)
+               return false;
+     return true;
+}
+
+bool facmp(Matreal const& lhs, Matreal const& rhs, Real eps) {
+     if (lhs.size1() != rhs.size1())
+          return false;
+     if (lhs.size2() != rhs.size2())
+          return false;
+     for (Matreal::size_type i = 0; i < lhs.size1(); i++)
+          for (Matreal::size_type j = 0; j < lhs.size2(); j++)
+               if (SHG::facmp(lhs(i, j), rhs(i, j), eps) != 0)
+                    return false;
+     return true;
+}
+
+bool is_standard_basis_vector(Vecreal const& v, Real eps) {
+     bool found{false};
+     for (Vecreal::size_type i = 0; i < v.size(); i++)
+          if (SHG::facmp(v(i), 0.0, eps) != 0) {
+               if (found)
+                    return false;
+               if (SHG::facmp(v(i), 1.0, eps) != 0)
+                    return false;
+               found = true;
+          }
+     return found;
 }
 
 }  // namespace SHG::Neural_networks

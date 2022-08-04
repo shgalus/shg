@@ -447,6 +447,22 @@ BOOST_AUTO_TEST_CASE(level_test) {
      BOOST_CHECK(t[1][1][0].level() == 3);
 }
 
+BOOST_AUTO_TEST_CASE(parent_test) {
+     Ttree t;
+     t = knuth1();
+     BOOST_CHECK(t.parent() == nullptr);
+     BOOST_CHECK(*t[0].parent() == t);
+     BOOST_CHECK(*t[1].parent() == t);
+     BOOST_CHECK(*t[0][0].parent() == t[0]);
+     BOOST_CHECK(*t[0][1].parent() == t[0]);
+     BOOST_CHECK(*t[0][1][0].parent() == t[0][1]);
+     BOOST_CHECK(*t[1][0].parent() == t[1]);
+     BOOST_CHECK(*t[1][1].parent() == t[1]);
+     BOOST_CHECK(*t[1][2].parent() == t[1]);
+     BOOST_CHECK(*t[1][0][0].parent() == t[1][0]);
+     BOOST_CHECK(*t[1][1][0].parent() == t[1][1]);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }  // namespace SHG::Testing

@@ -6,6 +6,7 @@
 #ifndef SHG_SHG_H
 #define SHG_SHG_H
 
+#include <shg/album.h>
 #include <shg/algebra.h>
 #include <shg/bdstest.h>
 #include <shg/binom.h>
@@ -37,7 +38,6 @@
 #include <shg/mzt.h>
 #include <shg/neuralnet.h>
 #include <shg/ninv.h>
-#include <shg/nkjp.h>
 #include <shg/normmix.h>
 #include <shg/numalg.h>
 #include <shg/numerals.h>

@@ -2,6 +2,8 @@
 
 include ../make.inc
 
+DEFS += -DSHG_DATADIR="\"../data/\""
+
 SOURCES := $(wildcard *.cc)
 OBJECTS := $(SOURCES:%.cc=%.o)
 # Other possibilities:

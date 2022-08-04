@@ -28,6 +28,10 @@ constexpr std::ios_base::openmode const bininp =
 constexpr std::ios_base::openmode const binout =
      std::ios_base::out | std::ios_base::binary;
 
+extern const char* const datadir;
+extern const char* const testdatadir;
+extern const char* const externdir;
+
 }  // namespace SHG::Testing
 
 #endif

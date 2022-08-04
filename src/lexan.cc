@@ -303,6 +303,19 @@ Setdesc Lexer::collect_descriptions(std::string const& s) const {
                                Part_of_speech::adverb &&
                           d.category.degree == Degree::positive) {
                     sd.insert(d);
+               } else if (d.category.part_of_speech ==
+                               Part_of_speech::noun ||
+                          d.category.part_of_speech ==
+                               Part_of_speech::verbal_noun) {
+                    sd.insert(d);
+               } else if (d.category.part_of_speech ==
+                          Part_of_speech::
+                               adjectival_active_participle) {
+                    sd.insert(d);
+               } else if (d.category.part_of_speech ==
+                          Part_of_speech::
+                               adjectival_passive_participle) {
+                    sd.insert(d);
                }
      } else if (SHG::PLP::Charset::is_proper_prefix(t, "anty")) {
           t = t.substr(4);
@@ -347,6 +360,31 @@ Setdesc Lexer::collect_descriptions(std::string const& s) const {
           for (auto const& d : sd1)
                if (d.category.part_of_speech == Part_of_speech::noun)
                     sd.insert(d);
+     }
+     if (SHG::PLP::Charset::is_proper_suffix(t, "\362e")) {
+          t = t.substr(0, t.size() - 2);
+          Setdesc sd1;
+          search_dicts(t, sd1);
+          for (auto const& d : sd1)
+               if (d.category.part_of_speech == Part_of_speech::verb)
+                    if (d.category.mood == Mood::imperative)
+                         if (d.category.person == Person::second)
+                              if (d.category.number ==
+                                  Number::singular)
+                                   sd.insert(d);
+     }
+     if (SHG::PLP::Charset::is_proper_suffix(t, "\362")) {
+          t = t.substr(0, t.size() - 1);
+          Setdesc sd1;
+          search_dicts(t, sd1);
+          for (auto const& d : sd1)
+               if (d.category.part_of_speech == Part_of_speech::verb)
+                    if (d.category.mood == Mood::imperative)
+                         if (d.category.number == Number::plural)
+                              if (d.category.person ==
+                                       Person::first ||
+                                  d.category.person == Person::second)
+                                   sd.insert(d);
      }
      search_numerals(t, sd);
      return sd;

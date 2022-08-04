@@ -481,7 +481,7 @@ BOOST_DATA_TEST_CASE(clean_string_test, bdata::make(vc), c) {
      BOOST_CHECK(clean_string(s) == c.output);
 }
 
-std::vector<std::string> split_string(
+std::vector<std::string> split_string1(
      std::string const& s, std::string const& sep = white_space) {
      return split(s, sep);
 }
@@ -489,34 +489,64 @@ std::vector<std::string> split_string(
 BOOST_AUTO_TEST_CASE(split_test) {
      std::vector<std::string> v;
 
-     v = split_string("");
+     v = split_string1("");
      BOOST_CHECK(v.size() == 0);
-     v = split_string(" \n\v \t");
+     v = split_string1(" \n\v \t");
      BOOST_CHECK(v.size() == 0);
-     v = split_string("abc");
+     v = split_string1("abc");
      BOOST_CHECK(v.size() == 1 && v[0] == "abc");
-     v = split_string(" abc");
+     v = split_string1(" abc");
      BOOST_CHECK(v.size() == 1 && v[0] == "abc");
-     v = split_string("abc ");
+     v = split_string1("abc ");
      BOOST_CHECK(v.size() == 1 && v[0] == "abc");
-     v = split_string(" abc ");
+     v = split_string1(" abc ");
      BOOST_CHECK(v.size() == 1 && v[0] == "abc");
-     v = split_string("a b c");
+     v = split_string1("a b c");
      BOOST_CHECK(v.size() == 3 && v[0] == "a" && v[1] == "b" &&
                  v[2] == "c");
-     v = split_string(" a b c");
+     v = split_string1(" a b c");
      BOOST_CHECK(v.size() == 3 && v[0] == "a" && v[1] == "b" &&
                  v[2] == "c");
-     v = split_string("a b c ");
+     v = split_string1("a b c ");
      BOOST_CHECK(v.size() == 3 && v[0] == "a" && v[1] == "b" &&
                  v[2] == "c");
-     v = split_string(" a b c ");
+     v = split_string1(" a b c ");
      BOOST_CHECK(v.size() == 3 && v[0] == "a" && v[1] == "b" &&
                  v[2] == "c");
-     v = split_string("", "");
+     v = split_string1("", "");
      BOOST_CHECK(v.size() == 0);
-     v = split_string(" ", "");
+     v = split_string1(" ", "");
      BOOST_CHECK(v.size() == 1 && v[0] == " ");
+}
+
+std::vector<std::string> split_string2(std::string const& s,
+                                       std::string const& sep) {
+     return split_string(s, sep);
+}
+
+BOOST_AUTO_TEST_CASE(split_string_test) {
+     std::vector<std::string> v;
+     v = split_string2("", "");
+     BOOST_CHECK(v.size() == 1 && v[0] == "");
+     v = split_string2("abc", "");
+     BOOST_CHECK(v.size() == 1 && v[0] == "abc");
+     v = split_string2("", "%%");
+     BOOST_CHECK(v.size() == 1 && v[0] == "");
+     v = split_string2("abc", "%%");
+     BOOST_CHECK(v.size() == 1 && v[0] == "abc");
+     v = split_string2("abc%%cde", "%%");
+     BOOST_CHECK(v.size() == 2 && v[0] == "abc" && v[1] == "cde");
+     v = split_string2("%%abc%%cde", "%%");
+     BOOST_CHECK(v.size() == 3 && v[0] == "" && v[1] == "abc" &&
+                 v[2] == "cde");
+     v = split_string2("%%%%abc%%%%cde", "%%");
+     BOOST_CHECK(v.size() == 5 && v[0] == "" && v[1] == "" &&
+                 v[2] == "abc" && v[3] == "" && v[4] == "cde");
+     v = split_string2("%%%%", "%%");
+     BOOST_CHECK(v.size() == 3 && v[0] == "" && v[1] == "" &&
+                 v[2] == "");
+     v = split_string2("%%%", "%%");
+     BOOST_CHECK(v.size() == 2 && v[0] == "" && v[1] == "%");
 }
 
 BOOST_AUTO_TEST_CASE(indirect_sort_test) {
@@ -762,6 +792,74 @@ BOOST_AUTO_TEST_CASE(to_octal_test) {
           s += static_cast<char>(i);
      auto t = to_octal(s);
      BOOST_CHECK(t == res);
+}
+
+constexpr char const* const html = R"(
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+<title>Title of the page</title>
+<link rel="stylesheet" type="text/css" href="default.css">
+</head>
+<body>
+<h1>Title of the page</h1>
+<address>
+<img src="image.jpg" width="128" height="256"
+alt="A photograph" title="Title of the image"><br>
+</address>
+<h2>Subtitle 1</h2>
+<ul>
+<li>The<!-- comment -->first position&nbsp;&quot;&amp;&quot;
+<li><a href="http://xxx.com" target="_blank">
+The second <![CDATA[<x>y</x>]]> position</a>
+</ul>
+<h2>Subtitle 2</h2>
+<p>The paragraph.</p>
+<hr>
+<p class="footer">This is the footer<br></p>
+</body>
+</html>
+)";
+
+constexpr char const* const html_result =
+     "\n"
+     "               \n"
+     "                \n"
+     "      \n"
+     "                      \n"
+     "                                                  \n"
+     "                   \n"
+     "       Title of the page        \n"
+     "                                                          \n"
+     "       \n"
+     "      \n"
+     "    Title of the page     \n"
+     "         \n"
+     "                                             \n"
+     "                                                  \n"
+     "          \n"
+     "    Subtitle 1     \n"
+     "    \n"
+     "    The                first position \"&\"\n"
+     "                                             \n"
+     "The second                      position    \n"
+     "     \n"
+     "    Subtitle 2     \n"
+     "   The paragraph.    \n"
+     "    \n"
+     "                  This is the footer        \n"
+     "       \n"
+     "       \n";
+
+BOOST_AUTO_TEST_CASE(dehtml_test) {
+     std::istringstream iss(bininp);
+     std::ostringstream oss(binout);
+     iss.str(html);
+     BOOST_CHECK(dehtml(iss, oss));
+     BOOST_CHECK(std::strcmp(oss.str().data(), html_result) == 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

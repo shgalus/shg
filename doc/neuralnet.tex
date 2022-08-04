@@ -2,51 +2,323 @@
 
 \section{Multilayer neural network}
 
-Let $k \in \naturaln$, $p_0, p_1, \ldots, p_{k + 1} \in \naturaln$, $n
-= p_0$, $m = p_{k + 1}$. For $i = 1, \ldots, k + 1$, let
+\subsection{Notation}
+
+For any function $f \colon \realn^n \rightarrow \realn^m$, $f = (f_1,
+\ldots, f_m)$, having derivative
+\begin{equation*}
+  f'=
+  \begin{bmatrix}
+    \frac{\partial f_1}{\partial x_1} & \dots &
+      \frac{\partial f_1}{\partial x_n} \\
+    \hdotsfor[1.5]{3} \\
+    \frac{\partial f_m}{\partial x_1} & \dots &
+      \frac{\partial f_m}{\partial x_n}
+  \end{bmatrix},
+\end{equation*}
+we denote
+\begin{equation*}
+  \frac{\partial(f_{i_1}, \ldots, f_{i_k})}{\partial(f_{j_1}, \ldots,
+    f_{j_l})} =
+  \begin{bmatrix}
+    \frac{\partial f_{i_1}}{\partial x_{j_1}} & \dots &
+      \frac{\partial f_{i_1}}{\partial x_{j_l}} \\
+    \hdotsfor[1.5]{3} \\
+    \frac{\partial f_{i_k}}{\partial x_{j_1}} & \dots &
+      \frac{\partial f_{i_k}}{\partial x_{j_l}}
+  \end{bmatrix}.
+\end{equation*}
+Then
+\begin{equation*}
+  f' = \frac{\partial(f_1, \ldots, f_m)}{\partial(x_1, \ldots, x_n)}.
+\end{equation*}
+
+Let $f \colon \realn^n \times \realn^{mn} \times \realn^m \rightarrow
+\realn^m$, $f(x, A, b) = Ax + b$, where $x = [x_1, \ldots, x_n]^T$,
+$A$ is an $m \times n$ matrix (we take it as a point in $\realn^{mn}$)
+and $b = [b_1, \ldots, b_m]^T$. Then
+\begin{equation} \label{eq:neuralnet_deriv_x}
+  \frac{\partial f}{\partial x} = \frac{\partial(f_1, \ldots,
+    f_m)}{\partial(x_1, \ldots, x_n)} = A
+\end{equation}
+is a $m \times n$ matrix,
+\begin{equation} \label{eq:neuralnet_deriv_A}
+  \frac{\partial f}{\partial A} = \frac{\partial(f_1, \ldots,
+    f_m)}{\partial(a_{11}, \ldots, a_{mn})} =
+  \begin{bmatrix}
+    x^T &        &     \\
+        & \ddots &     \\
+        &        & x^T
+  \end{bmatrix}
+\end{equation}
+is a $m \times mn$ matrix,
+\begin{equation} \label{eq:neuralnet_deriv_b}
+  \frac{\partial f}{\partial b} = \frac{\partial(f_1, \ldots,
+    f_m)}{\partial(b_1, \ldots, b_m)} =
+  \begin{bmatrix}
+    1 &        &   \\
+      & \ddots &   \\
+      &        & 1
+  \end{bmatrix} = I_m
+\end{equation}
+is a $m \times m$ identity matrix, so that
+\begin{equation*}
+  f' = \begin{bmatrix}
+    A & \frac{\partial f}{\partial A} & I_m
+  \end{bmatrix}.
+\end{equation*}
+
+\subsection{Definition of a multilayer neural network}
+
+Let $L \in \naturaln$ be the number of layers and $n_l \in \naturaln$,
+$1 \leq l \leq L$, be the number of neurons in the $l$-th layer. Let
+\begin{equation*}
+  W_l =
+  \begin{bmatrix}
+    w_{l11} & \dots & w_{l1n_{l - 1}} \\
+    \hdotsfor[1.5]{3} \\
+    w_{ln_l1} & \dots & w_{ln_ln_{l - 1}}
+  \end{bmatrix} \in \realn^{n_l \times n_{l - 1}},
+  \quad
+  b_l =
+  \begin{bmatrix}
+    b_{l1} \\
+    \vdots \\
+    b_{ln_l}
+  \end{bmatrix} \in \realn^{n_l},
+  \quad
+  2 \leq l \leq L
+\end{equation*}
+be the matrix of weights and the vector of biases at the $l$-th layer.
+Let $\varphi_l \colon \realn^{n_l} \rightarrow \realn^{n_l}$, $2 \leq
+l \leq L$, be a differentiable function. Let $a_1 = x \in
+\realn^{n_1}$ and
+\begin{equation*}
+  \left.\begin{aligned}
+    z_l &= W_la_{l - 1} + b_l \in \realn^{n_l} \\
+    a_l &= \varphi_l(z_l) \in \realn^{n_l}
+  \end{aligned}
+  \right\}
+  \qquad l = 2, \ldots, L.
+\end{equation*}
+The function $\realn^{n_1} \ni x \mapsto a_L \in \realn^{n_L}$ is
+called an $L$-layer neural network~\cite [section~1.2.2]
+{aggarwal-2018}, \cite [page 866] {higham-2019}. $\varphi_l$ are
+activation functions.
+
+A four-layer neural network may be presented as
+\begin{equation*}
+  \begin{split}
+    a_4 &= \varphi_4(z_4) \\
+    &= \varphi_4(W_4a_3 + b_4) \\
+    &= \varphi_4(W_4\varphi_3(z_3) + b_4) \\
+    &= \varphi_4(W_4\varphi_3(W_3a_2 + b_3) + b_4) \\
+    &= \varphi_4(W_4\varphi_3(W_3\varphi_2(z_2) + b_3) + b_4) \\
+    &= \varphi_4(W_4\varphi_3(W_3\varphi_2(W_2a_1 + b_2) + b_3) + b_4)
+    \\
+    &= \varphi_4(W_4\varphi_3(W_3\varphi_2(W_2x + b_2) + b_3) + b_4).
+  \end{split}
+\end{equation*}
+In general,
+\begin{equation} \label{eq:neuralnet_function_f}
+  a_L = \varphi_L(W_L\varphi_{L - 1}(W_{L - 1}\varphi_{L - 2}(W_{L -
+    2}\varphi_{L - 3}(\ldots) + b_{L - 2}) + b_{L - 1} + b_L).
+\end{equation}
+
+\subsection{Derivatives of neural network with respect to weights and
+  biases}
+
+We will need derivatives of~\eqref{eq:neuralnet_function_f} with
+respect to $W_L, \ldots, W_2$, $b_L, \ldots, b_2$. For each $2 \leq l
+\leq L$ denote
+\begin{equation*}
+  A_l =
+  \begin{bmatrix}
+    a_{l - 1}^T &        &             \\
+                & \ddots &             \\
+                &        & a_{l - 1}^T
+  \end{bmatrix}_{n_l \times n_ln_{l - 1}}.
+\end{equation*}
+Differentiating~\eqref{eq:neuralnet_function_f} using the chain
+rule(see \cite [section 4.3.6] {rudnicki-2012}, \cite [theorem 2.2]
+{spivak-2005}), \eqref{eq:neuralnet_deriv_x}
+and~\eqref{eq:neuralnet_deriv_A} we get
+\begin{align} \label{eq:neuralnet_daldwl}
+  \frac{\partial a_L}{\partial W_{L}} &=
+  \varphi_{L}'(z_{L})A_{L} \notag \\
+  \frac{\partial a_L}{\partial W_{L - 1}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})A_{L - 1} \notag
+  \\
+  &\;\;\vdots \notag \\
+  \frac{\partial a_L}{\partial W_{l}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})W_{L - 1} \ldots
+  \varphi_{l}'(z_{l})A_{l} \\
+  &\;\;\vdots \notag \\
+  \frac{\partial a_L}{\partial W_{2}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})W_{L - 1} \ldots
+  \varphi_{l}'(z_{2})A_{2}\notag
+\end{align}
+\begin{align} \label{eq:neuralnet_daldbl}
+  \frac{\partial a_L}{\partial b_{L}} &=
+  \varphi_{L}'(z_{L}) \notag \\
+  \frac{\partial a_L}{\partial b_{L - 1}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1}) \notag \\
+  &\;\;\vdots \notag \\
+  \frac{\partial a_L}{\partial b_{l}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})W_{L - 1} \ldots
+  \varphi_{l}'(z_{l}) \\
+  &\;\;\vdots \notag \\
+  \frac{\partial a_L}{\partial b_{2}} &=
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})W_{L - 1} \ldots
+  \varphi_{l}'(z_{2})\notag
+\end{align}
+
+\subsection{Gradient descent method}
+
+We will be using the gradient descent method
+\cite [section 10.8] {press-teukolsky-vetterling-flannery-2007}
+\cite [section 7.3.3] {krzysko-wolynski-gorecki-skorzybut-2008}
+\cite [section 1.2, page 7, section 3.2.8] {aggarwal-2018}
+\cite [section 4.3, eq. (4.5)] {goodfellow-etal-2018}.
+
+Let $f \colon \realn^n \rightarrow \realn$, $x_0 \in \realn^n$. $x_{n
+  + 1} = x_n - \eta f'(x_n)$, where $\eta$ is a learning rate,
+typically 0.1. There are three stop criterions \cite [pages 222-223]
+{krzysko-wolynski-gorecki-skorzybut-2008}:
+\begin{itemize}
+\item stationarity test: $\|f'(x_n)\| < \epsilon$
+\item convergence speed test: $\|x_n - x_{n - 1}\| < \epsilon$
+\item iteration number test: $n > n_0$.
+\end{itemize}
+
+\subsection{Cost function}
+
+Our goal is to estimate weights $W_l$ and biases $b_l$ for an input
+value $x \in \realn^{n_1}$, true output value $z \in \realn^{n_L}$ and
+output of the network $y \in \realn^{n_L}$.
+
+We will consider two cost functions \cite [section 1.2.1.5]
+{aggarwal-2018} \cite [section 7.3.1]
+{krzysko-wolynski-gorecki-skorzybut-2008}:
+\begin{itemize}
+\item least squares cost for linear regression
+  \begin{equation} \label{eq:least_squares_cost}
+    C(a_L, y) = \frac{1}{2} \sum_{i = 1}^{n_L} (a_{Li} - y_i)^2,
+  \end{equation}
+\item cross-entropy cost for classification
+  \begin{equation} \label{eq:cross_entropy_cost}
+    C(a_L, y) = - \ln \sum_{i = 1}^{n_L} a_{Li}y_i,
+  \end{equation}
+  where $a_{Li}$ is probability that the observation is from $i$-th
+  class and $y_{i}$ equals to 1 if the observation is from $i$-th
+  class, otherwise 0.
+\end{itemize}
+
+For~\eqref{eq:least_squares_cost}
+\begin{equation} \label{eq:least_squares_cost_derivative}
+  \frac{\partial C}{\partial a_{L}} =
+  \begin{bmatrix}
+    a_{L1} - y_1 & \dots & a_{Ln_L} - y_{n_L}
+  \end{bmatrix},
+\end{equation}
+and for~\eqref{eq:cross_entropy_cost}
+\begin{equation} \label{eq:cross_entropy_cost_derivative}
+  \frac{\partial C}{\partial a_{L}} =
+  \begin{bmatrix}
+    0 & \dots & 0 & -\frac{1}{a_{Lr}} & 0 & \dots & 0
+  \end{bmatrix},
+\end{equation}
+In~\eqref{eq:cross_entropy_cost_derivative} only one component is
+non-zero, namely this one corresponding to the only non-zero element
+$y_r$ of $y$.
+
+\subsection{Derivatives of cost function with respect to weight and
+  biases}
+
+We have
+\begin{equation*}
+  \frac{\partial C}{\partial W_l} = \frac{\partial C}{\partial a_L}
+  \frac{\partial a_L}{\partial W_l}, \quad
+  \frac{\partial C}{\partial b_l} = \frac{\partial C}{\partial a_L}
+  \frac{\partial a_L}{\partial b_l}.
+\end{equation*}
+$\partial C / \partial a_L$ is given by expressions
+like~\eqref{eq:least_squares_cost_derivative}
+or~\eqref{eq:cross_entropy_cost_derivative}. $\partial a_L / \partial
+W_l$ and $\partial a_L / \partial b_l$ are given
+by~\eqref{eq:neuralnet_daldwl} and~\eqref{eq:neuralnet_daldbl}.
+
+Introduce
+\begin{equation*}
+  \delta_l = \frac{\partial C}{\partial a_L}
+  \varphi_{L}'(z_{L})W_{L}\varphi_{L - 1}'(z_{L - 1})W_{L - 1} \ldots
+  \varphi_{l}'(z_{l}), \quad 2 \leq l \leq L.
+\end{equation*}
+$\delta_l$ can be calculated by
 \begin{align*}
-  \Sigma_i \colon &\realn^{p_{i - 1}} \rightarrow \realn^{p_i}, \\
-  \Phi_i \colon &\realn^{p_i} \rightarrow \realn^{p_i}.
+  \delta_L &= \frac{\partial C}{\partial a_L} \varphi_{L}'(z_{L})
+  \\ \delta_l &= \delta_{l + 1} W_{l + 1} \varphi_{l}'(z_{l}), \quad l
+  = L - 1, \ldots, 2.
 \end{align*}
-Let $x \in \realn^n$. Denote
-\begin{align*}
-h_1 &= \Phi_1(\Sigma_1(x)) \\
-h_{i + 1} &= \Phi_{i + 1}(\Sigma_{i + 1}(h_i)), \quad i = 1,
-\ldots, k - 1, \\
-y &= \Phi_{k + 1}(\Sigma_{k + 1}(h_k)).
-\end{align*}
-The function $f \colon \realn^n \rightarrow \realn^m$, $f(x) = y$ is
-called a $k$-layer neural network.
+Then
+\begin{equation*}
+  \frac{\partial C}{\partial W_l} = \delta_l A_l, \quad
+  \frac{\partial C}{\partial b_l} = \delta_l.
+\end{equation*}
+$\delta_l$ is an $n_l$-element vector, $\partial C / \partial W_l$ is
+an $n_ln_{l - 1}$-element vector which we represent as an $n_l \times
+n_{l - 1}$ matrix.
 
-The above definition follows \cite[section~1.2.2]{aggarwal-2018}. $x$
-is an input layer, $h_1, \ldots, h_k$ are hidden layers, $y$ is an
-output layer. $n$ is the dimensionality of the input layer, the vector
-$p = [p_1, \ldots, p_k]$ contains dimensionalities of the hidden
-layers, $m$ is the dimensionality of the output layer.
-Figure~\ref{fig:neural_network} shows an example of a multilayer
-neural network.
+\subsection{Activation functions}
 
-\begin{figure}[ht]
-\begin{center}
-\setlength{\unitlength}{1cm}
-\begin{picture}(10,3)
-  \put(0,1){\framebox(1,2){$x$}}
-  \put(0.3,0.4){$\realn^n$}
-  \put(1,2){\vector(1,0){1.5}}
-  \put(1.1,2.2){$\Phi_1\circ\Sigma_1$}
-  \put(2.5,1){\framebox(1,2){$h_1$}}
-  \put(2.8,0.4){$\realn^{p_1}$}
-  \put(3.5,2){\vector(1,0){1.5}}
-  \put(3.6,2.2){$\Phi_2\circ\Sigma_2$}
-  \put(5,1){\framebox(1,2){$h_2$}}
-  \put(5.3,0.4){$\realn^{p_2}$}
-  \put(6,2){\vector(1,0){1.5}}
-  \put(6.1,2.2){$\Phi_3\circ\Sigma_3$}
-  \put(7.5,1){\framebox(1,2){$y$}}
-  \put(7.8,0.4){$\realn^{m}$}
-\end{picture}
+\begin{itemize}
+\item identity function $\var{identity}$
+  \begin{equation} \label{eq:neuralnet_identity_af}
+    f(x) = x
+  \end{equation}
+\item sign function $\var{sign}$
+  \begin{equation} \label{eq:neuralnet_sign_af}
+    f(x) =
+    \begin{cases}
+      -1 & \text{if $x < 0$} \\
+      0 & \text{if $x = 0$} \\
+      1 & \text{if $x > 0$}
+    \end{cases}
+  \end{equation}
+\item sigmoid function $\var{sigmoid}$
+  \begin{equation} \label{eq:neuralnet_sigmoid_af}
+    f(x) = \frac{1}{1 + e^{-x}}
+  \end{equation}
+\item hyperbolic tangent function $\var{tgh}$
+  \begin{equation} \label{eq:neuralnet_tgh_af}
+    f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+  \end{equation}
+\item rectified linear unit (ReLU) function $\var{relu}$
+  \begin{equation} \label{eq:neuralnet_relu_af}
+    f(x) =
+    \begin{cases}
+      0 & \text{if $x \leq 0$} \\
+      x & \text{if $x > 0$}
+    \end{cases}
+  \end{equation}
+\item hard hyperbolic tangent function $\var{hardtanh}$
+  \begin{equation} \label{eq:neuralnet_hardtanh_af}
+    f(x) =
+    \begin{cases}
+      -1 & \text{if $x < -1$} \\
+      x & \text{if $-1 \leq x \leq 1$} \\
+      1 & \text{if $x > 1$}
+    \end{cases}
+  \end{equation}
+\item softmax function $\var{softmax}$
+  \begin{equation} \label{eq:neuralnet_softmax_af}
+    f_i(x_1, \ldots, x_n) =
+    \frac{e^{x_i}}{e^{x_1} + \ldots + e^{x_n}},
+    \quad 1 \leq i \leq n
+  \end{equation}
+\end{itemize}
+The $\var{softmax}$ function maps $\realn^n$ to $\realn^n$, the
+remaining functions map $\realn$ to $\realn$.
 
-\end{center}
-\caption{A two-layer neural network.}
-\label{fig:neural_network}
-\end{figure}
+Our design assumption is that activation function in each layer is of
+the vector form: takes $u_i$ as input and returns $h_i$ as output.

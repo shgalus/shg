@@ -6,11 +6,16 @@
 #ifndef SHG_NEURALNET_H
 #define SHG_NEURALNET_H
 
-#include <cmath>
+#include <cassert>
+#include <cstddef>
+#include <algorithm>
+#include <initializer_list>
 #include <stdexcept>
-#include <vector>
+#include <string>
+#include <type_traits>
 #include <istream>
 #include <ostream>
+#include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
 /**
@@ -18,103 +23,37 @@
  */
 namespace SHG::Neural_networks {
 
-/**
- * %Exception class for invalid floating-point numbers. Thrown if a
- * function argument or function result is not a finite floating point
- * number as checked by std::isfinite();
- */
-class Invalid_number : public std::runtime_error {
+class Error : public std::runtime_error {
 public:
-     Invalid_number();
+     Error();
+     Error(std::string const& what);
+     Error(char const* what);
 };
 
-/** Throws Invalid_number if !%std::isfinite(x). */
-void check(double x);
+using Uint = unsigned int;
+using Real = double;
+template <class T>
+using Vector = boost::numeric::ublas::vector<T>;
+template <class T>
+using Matrix = boost::numeric::ublas::matrix<T>;
+using Vecuint = Vector<Uint>;
+using Vecreal = Vector<Real>;
+using Matreal = Matrix<Real>;
+using Vecvecreal = Vector<Vecreal>;
+using Vecmatreal = Vector<Matreal>;
 
-/** Identity function. Returns \f$x\f$. */
-double identity(double x);
+/// \name Activation functions.
+/// \{
 
-/** Sign function. Returns
- * \f$\begin{cases}
- *  -1 & \text{if $x < 0$}, \\
- *   0 & \text{if $x = 0$}, \\
- *   1 & \text{if $x > 0$}.
- * \end{cases}\f$
- */
-double sign(double x);
+Vecreal identity(Vecreal const& x);
+Vecreal sign(Vecreal const& x);
+Vecreal sigmoid(Vecreal const& x);
+Vecreal tgh(Vecreal const& x);
+Vecreal relu(Vecreal const& x);
+Vecreal hardtanh(Vecreal const& x);
+Vecreal softmax(Vecreal const& x);
 
-/** Sigmoid function. Returns \f$1 / (1 + e^{-x})\f$. */
-double sigmoid(double x);
-
-/** Hyperbolic tangent. Returns \f$ \frac{e^x - e^{-x}}{e^x + e^{-x}}
-    \f$. */
-double tgh(double x);
-
-/** Rectified linear unit (ReLU). Returns
- * \f$\begin{cases}
- *  0 & \text{if $x \leq 0$}, \\
- *  x & \text{if $x > 0$}.
- * \end{cases}\f$
- */
-double relu(double x);
-
-/** Hard hyperbolic tangent. Returns
- * \f$\begin{cases}
- *  -1 & \text{if $x < -1$}, \\
- *   x & \text{if $-1 \leq x \leq 1$}, \\
- *   1 & \text{if $x > 1$}.
- * \end{cases}\f$
- */
-double hardtanh(double x);
-
-/** Softmax. Returns \f$ e^{x_i} / (e^{x_1} + \ldots + e^{x_n})\f$ for
- *  \f$i = 1, \ldots, n\f$, where \f$n\f$ is the number of
- *  variables.
- */
-std::vector<double> softmax(std::vector<double> const& x);
-
-std::vector<double> identity(std::vector<double> const& x,
-                             std::vector<double> const& a,
-                             std::vector<double> const& b);
-
-std::vector<double> sign(std::vector<double> const& x,
-                         std::vector<double> const& a,
-                         std::vector<double> const& b);
-
-std::vector<double> sigmoid(std::vector<double> const& x,
-                            std::vector<double> const& a,
-                            std::vector<double> const& b);
-
-std::vector<double> tgh(std::vector<double> const& x,
-                        std::vector<double> const& a,
-                        std::vector<double> const& b);
-
-std::vector<double> relu(std::vector<double> const& x,
-                         std::vector<double> const& a,
-                         std::vector<double> const& b);
-
-std::vector<double> hardtanh(std::vector<double> const& x,
-                             std::vector<double> const& a,
-                             std::vector<double> const& b);
-
-std::vector<double> softmax(std::vector<double> const& x,
-                            std::vector<double> const& a,
-                            std::vector<double> const& b);
-
-using Act_func = std::vector<double>(std::vector<double> const&,
-                                     std::vector<double> const&,
-                                     std::vector<double> const&);
-
-extern std::vector<Act_func*> const activation_functions;
-
-using Derivative_of_activation_function =
-     boost::numeric::ublas::matrix<double>(
-          std::vector<double> const&, std::vector<double> const&,
-          std::vector<double> const&);
-
-boost::numeric::ublas::matrix<double> didentity(
-     std::vector<double> const& x, std::vector<double> const& a,
-     std::vector<double> const& b);
+/// \}
 
 enum class Activation_function {
      identity,
@@ -123,115 +62,76 @@ enum class Activation_function {
      tgh,
      relu,
      hardtanh,
-     softmax
+     softmax,
 };
 
-/** Quadratic loss. Returns \f$\sum_{i = 1}^m (t_i - y_i)^2\f$. */
-double quadratic_loss(std::vector<double> const& t,
-                      std::vector<double> const& y);
+/// \name Derivatives of activation functions.
+/// \{
 
-/** Hinge loss. Returns \f$\max\{0, 1 - ty\}\f$, \f$t\f$ and \f$y\f$
-    must be vectors of size 1. */
-double hinge_loss(std::vector<double> const& t,
-                  std::vector<double> const& y);
+Matreal didentity(Vecreal const& x, Vecreal const& f);
+Matreal dsign(Vecreal const& x, Vecreal const& f);
+Matreal dsigmoid(Vecreal const& x, Vecreal const& f);
+Matreal dtgh(Vecreal const& x, Vecreal const& f);
+Matreal drelu(Vecreal const& x, Vecreal const& f);
+Matreal dhardtanh(Vecreal const& x, Vecreal const& f);
+Matreal dsoftmax(Vecreal const& x, Vecreal const& f);
 
-using Loss_function = double(std::vector<double> const&,
-                             std::vector<double> const&);
+/// \}
 
-/**
- * A table of loss functions. The first argument should be the true
- * value, the second argument should be the approximation.
- * Contents:
- *   - 0: quadratic loss
- *   - 1: hinge loss
- */
-extern std::vector<Loss_function*> const loss_functions;
+/// \name Cost functions.
+/// \{
 
-/**
- * Multilayer neural network.
- *
- * Let \f$k \in \naturaln\f$, \f$p_0, p_1, \ldots, p_{k + 1} \in
- * \naturaln\f$, \f$n = p_0\f$, \f$m = p_{k + 1}\f$.
- * Let, for \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i \colon
- * \realn^{p_{i - 1}} \rightarrow \realn^{p_i}\f$, \f$\Phi_i \colon
- * \realn^{p_i} \rightarrow \realn^{p_i}\f$.
- * Let \f$x \in \realn^n\f$.
- * Denote \f{align*}{
- * h_1 &= \Phi_1(\Sigma_1(x)) \\
- * h_{i + 1} &= \Phi_{i + 1}(\Sigma_{i + 1}(h_i)), \quad i = 1,
- * \ldots, k - 1, \\
- * y &= \Phi_{k + 1}(\Sigma_{k + 1}(h_k)). \f}
- * The function \f$f \colon \realn^n \rightarrow \realn^m\f$, \f$f(x)
- * = y\f$ is called a \f$k\f$-layer neural network.
- *
- * This definition follows \cite aggarwal-2018, section 1.2.2.
- *
- * \f$x\f$ is an input layer, \f$h_1, \ldots, h_k\f$ are hidden
- * layers, \f$y\f$ is an output layer. \f$n\f$ is the dimensionality
- * of the input layer, the vector \f$p = [p_1, \ldots, p_k]\f$
- * contains dimensionalities of the hidden layers, \f$m\f$ is the
- * dimensionality of the output layer.
- *
- * An example of a 2-layer (\f$k = 2\f$) network is shown below.
- *
-\verbatim
-+---+              +---+              +---+              +---+
-|   |\Phi_1\Sigma_1|   |\Phi_2\Sigma_2|   |\Phi_3\Sigma_3|   |
-| x |------------->|h_1|------------->|h_2|------------->| y |
-|   |              |   |              |   |              |   |
-+---+              +---+              +---+              +---+
- R^n              R^{p_1}            R^{p_2}              R^m
-\endverbatim
- *
- * For \f$i = 1, \ldots, k + 1\f$, \f$\Sigma_i(u) = W_i \times u\f$,
- * where \f$W_i\f$ is an \f$p_i \times p_{i - 1}\f$ matrix of weights
- * and \f$u = [u_1 \ldots u_{p_{i - 1}}]^T\f$.
- *
- * For \f$i = 1, \ldots, k + 1\f$, \f$\Phi_i(v) = \left( \Phi_{i1}(v),
- * \ldots, \Phi_{ip_i}(v) \right)\f$, where \f$\Phi_{ij} \colon
- * \realn^{p_i} \rightarrow \realn\f$, \f$j = 1, \ldots, p_i\f$, and
- * \f$v = (v_1, \ldots, v_{p_i})\f$.
- *
- */
+Real quadratic(Vecreal const& aL, Vecreal const& y);
+Real cross_entropy(Vecreal const& aL, Vecreal const& y);
+
+/// \}
+
+enum class Cost_function {
+     quadratic,
+     cross_entropy,
+};
+
+/// \name Derivatives of cost functions.
+/// \{
+
+Vecreal dquadratic(Vecreal const& aL, Vecreal const& y);
+Vecreal dcross_entropy(Vecreal const& aL, Vecreal const& y);
+
+/// \}
 
 class MNN {
 public:
-     MNN() = default;
-     MNN(int n, int m, std::vector<int> const& p);
-     /**
-      * Initializes a network. \f$n \geq 1\f$ is a dimension of the
-      * input layer. \f$m \geq 1\f$ is a dimension of the output
-      * layer. The number of hidden layers \f$k \geq 1\f$ will be
-      * equal to \f$\var{p.size()}\f$.
-      */
-     void init(int n, int m, std::vector<int> const& p);
-     /**
-      * Sets the activation function \f$f\f$ for the \f$i\f$-th layer.
-      * There must be \f$1 \leq i \leq k + 1\f$. If \f$i = k + 1\f$,
-      * activation function for the output layer is set. The parameter
-      * \f$x_0\f$ is a threshold and the parameter \f$s > 0\f$ is a
-      * scale. \f$x_0\f$ and \f$s\f$ are used only for activation
-      * functions of one variable: instead of \f$f(x)\f$, \f$f((x -
-      * x_0) / s)\f$ will be called.
-      */
-     void set_activation_function(int i, Activation_function f,
-                                  double x0 = 0.0, double s = 1.0);
-     void set_random_weights();
-     void set_loss_function(int loss);
+     MNN();
+     MNN(Vecuint const& n);
+     void init(Vecuint const& n);
 
-     int n() const;
-     int m() const;
-     int k() const;
-     std::vector<int> const& p() const;
+     Uint L() const;
+     Vecuint const& n() const;
+     Real eta() const;
+     void eta(Real e);
+     Vecmatreal const& W() const;
+     Vecmatreal& W();
+     Vecvecreal const& b() const;
+     Vecvecreal& b();
+     /** Returns Activation function of the l-th layer, 1 <= l < L. */
+     Activation_function phi(Uint l) const;
+     /** Sets activation function of the l-th layer, 1 <= l < L. */
+     void phi(Activation_function f, Uint l);
+     Cost_function C() const;
+     void C(Cost_function f);
 
-     /** Returns value \f$y = f(x)\f$. */
-     std::vector<double> y(std::vector<double> const& x) const;
+     Vecreal aL(Vecreal const& x) const;
+     void train(Vecreal const& x, Vecreal const& y);
+     /** Returns value of the cost function. */
+     Real cost(Vecreal const& x, Vecreal const& y) const;
+     /** For classification returns true if the class is correctly
+      * identified. */
+     bool is_hit(Vecreal const& x, Vecreal const& y, Real eps) const;
 
      /** Writes this MNN to the stream. f.good() indicates success. */
      void write(std::ostream& f) const;
      /** Writes this MNN to the file. Returns true on success. */
      bool write(char const* fname) const;
-
      /** Reads this MNN from the stream. f.good() indicates success.
       */
      void read(std::istream& f);
@@ -239,58 +139,129 @@ public:
      bool read(char const* fname);
 
 private:
-     using Matrix = boost::numeric::ublas::matrix<double>;
+     using Activation_function_ptr = Vecreal (*)(Vecreal const&);
+     using Activation_function_derivative_ptr =
+          Matreal (*)(Vecreal const&, Vecreal const&);
+     using Cost_function_ptr = Real (*)(Vecreal const&,
+                                        Vecreal const&);
+     using Cost_function_derivative_ptr = Vecreal (*)(Vecreal const&,
+                                                      Vecreal const&);
+     using Activation_function_ut =
+          std::underlying_type<Activation_function>::type;
+     using Cost_function_ut =
+          std::underlying_type<Cost_function>::type;
 
-     /** Calculates \f$h = \Phi_k(u)\f$. */
-     void phi(std::vector<Matrix>::size_type k,
-              std::vector<double> const& u,
-              std::vector<double>& h) const;
-
-     /// \todo When write(), check f and f2 if all activations are
-     /// valid.
-     struct Activation {
-          using F = double(double);
-          using F2 = std::vector<double>(std::vector<double> const&);
-          Activation_function af{};
-          F* f{nullptr};
-          F2* f2{nullptr};
-          double x0{0.0};  // threshold
-          double s{1.0};   // scale
-     };
-
-     friend bool fcmp(MNN const& lhs, MNN const& rhs, double eps);
-
-     int n_{};
-     int m_{};
-     int k_{};
-     std::vector<int> p_{};
-     std::vector<Matrix> w_{};
-     std::vector<Activation> phi_{};
-     int loss_{-1};
+     Vecuint n_{};
+     Real eta_{};
+     Vecmatreal W_{};
+     Vecvecreal b_{};
+     Vecvecreal a_{};
+     Vecvecreal z_{};
+     Vector<Activation_function> phi_{};
+     Vector<Activation_function_ptr> phi_ptr_{};
+     Vector<Activation_function_derivative_ptr> dphi_ptr_{};
+     Cost_function C_{};
+     Cost_function_ptr C_ptr_{};
+     Cost_function_derivative_ptr dC_ptr_{};
 };
-
-inline void check(double x) {
-     if (!std::isfinite(x))
-          throw Invalid_number();
-}
 
 /**
  * Compares two MNNs. \f$\epsilon > 0\f$ is used to absolutely compare
- * weights, thresholds and scales.
+ * weights, biases and learning rate.
  */
-bool fcmp(MNN const& lhs, MNN const& rhs, double eps);
+bool facmp(MNN const& lhs, MNN const& rhs, double eps);
 
-inline int MNN::n() const {
+struct Mnistdhd_example {
+     Vecreal image{784};
+     Vecreal label{10};
+};
+
+using Mnistdhd = Vector<Mnistdhd_example>;
+
+/**
+ * Loads training or test data from the MNIST database of handwritten
+ * digits. See \ref mnist_database.
+ *
+ * \param[in]  path  Directory of database files.
+ * \param[in]  kind  Which set to load: \c train or \c t10k.
+ * \throws std::invalid_argument if \c kind has illegal value
+ * \throws std::runtime_error if another error occurs
+ *
+ * \implementation Written according to specification in \ref
+ * mnist_database and \cite raschka-2016, pages 351-356.
+ */
+Mnistdhd mnistdhd(char const* path, char const* kind);
+
+template <typename T>
+Vector<T> make_vector(std::initializer_list<T> il);
+
+template <typename T>
+Matrix<T> make_matrix(std::size_t size1, std::size_t size2,
+                      std::initializer_list<T> il);
+
+bool facmp(Vecreal const& lhs, Vecreal const& rhs, Real eps);
+bool facmp(Matreal const& lhs, Matreal const& rhs, Real eps);
+
+/**
+ * Checks if \c v is a vector of standard basis. \c v is a vector of
+ * standard basis if all its components are equal to 0 except one
+ * which is 1.
+ *
+ * \param[in] v a vector to check
+ * \param[in] eps tolerance, should be greater than 0
+ * \returns true if \c is a vector of standard basis, otherwise false
+ */
+bool is_standard_basis_vector(Vecreal const& v, Real eps);
+
+inline Uint MNN::L() const {
+     return n_.size();
+}
+
+inline Vecuint const& MNN::n() const {
      return n_;
 }
-inline int MNN::m() const {
-     return m_;
+
+inline Real MNN::eta() const {
+     return eta_;
 }
-inline int MNN::k() const {
-     return k_;
+
+inline Vecmatreal const& MNN::W() const {
+     return W_;
 }
-inline std::vector<int> const& MNN::p() const {
-     return p_;
+
+inline Vecmatreal& MNN::W() {
+     return W_;
+}
+
+inline Vecvecreal const& MNN::b() const {
+     return b_;
+}
+
+inline Vecvecreal& MNN::b() {
+     return b_;
+}
+
+inline Cost_function MNN::C() const {
+     return C_;
+}
+
+template <typename T>
+Vector<T> make_vector(std::initializer_list<T> il) {
+     Vector<T> v(il.size());
+     std::copy(il.begin(), il.end(), v.begin());
+     return v;
+}
+
+template <typename T>
+Matrix<T> make_matrix(std::size_t size1, std::size_t size2,
+                      std::initializer_list<T> il) {
+     assert(size1 * size2 == il.size());
+     Matrix<T> a(size1, size2);
+     auto it = il.begin();
+     for (auto it1 = a.begin1(); it1 != a.end1(); ++it1)
+          for (auto it2 = it1.begin(); it2 != it1.end(); ++it2)
+               *it2 = *(it++);
+     return a;
 }
 
 }  // namespace SHG::Neural_networks

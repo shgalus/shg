@@ -465,6 +465,29 @@ std::vector<std::basic_string<T>> split(
 }
 
 /**
+ * Creates a vector of fields from s separated by sep.
+ * The returned vector always contains at least one element.
+ */
+template <typename T>
+std::vector<std::basic_string<T>> split_string(
+     std::basic_string<T> const& s, std::basic_string<T> const& sep) {
+     using S = std::basic_string<T>;
+     std::vector<S> v;
+     typename S::size_type const len = sep.size();
+     if (len == 0) {
+          v.push_back(s);
+          return v;
+     }
+     typename S::size_type p1 = 0, p2;
+     while ((p2 = s.find(sep, p1)) != S::npos) {
+          v.push_back(s.substr(p1, p2 - p1));
+          p1 = p2 + len;
+     }
+     v.push_back(s.substr(p1));
+     return v;
+}
+
+/**
  * Indirectly sorts a vector.
  *
  * Given a const vector<T>& w, the function returns such a vector v
@@ -706,6 +729,8 @@ constexpr std::size_t length(char const* s) {
           t++;
      return t - s;
 }
+
+bool dehtml(std::istream& f, std::ostream& g);
 
 /** \} */ /* end of group miscellaneous_utilities */
 

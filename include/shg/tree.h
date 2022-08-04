@@ -105,6 +105,10 @@ public:
       */
      std::string to_string() const;
 
+     /** Parent of this node. */
+     Tree const* parent() const;
+     Tree* parent();
+
      /** The i-th child of this node. */
      Tree const& operator[](Index i) const;
      Tree& operator[](Index i);
