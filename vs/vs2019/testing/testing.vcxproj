@@ -198,6 +198,7 @@
     <ClCompile Include="..\..\..\testing\grscfg_test.cc" />
     <ClCompile Include="..\..\..\testing\gsgts_test.cc" />
     <ClCompile Include="..\..\..\testing\hmm_test.cc" />
+    <ClCompile Include="..\..\..\testing\ifact_test.cc" />
     <ClCompile Include="..\..\..\testing\ipart_test.cc" />
     <ClCompile Include="..\..\..\testing\laplace_test.cc" />
     <ClCompile Include="..\..\..\testing\lexan_test.cc" />

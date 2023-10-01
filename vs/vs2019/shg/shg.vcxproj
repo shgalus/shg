@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\..\include\shg\gsgts.h" />
     <ClInclude Include="..\..\..\include\shg\hmm.h" />
     <ClInclude Include="..\..\..\include\shg\ieee.h" />
+    <ClInclude Include="..\..\..\include\shg\ifact.h" />
     <ClInclude Include="..\..\..\include\shg\ipart.h" />
     <ClInclude Include="..\..\..\include\shg\laplace.h" />
     <ClInclude Include="..\..\..\include\shg\lexan.h" />

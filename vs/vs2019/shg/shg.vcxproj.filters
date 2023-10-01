@@ -177,6 +177,9 @@
     <ClInclude Include="..\..\..\include\shg\album.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\shg\ifact.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\bdstest.cc">
