@@ -27,6 +27,7 @@
 #include <shg/gsgts.h>
 #include <shg/hmm.h>
 #include <shg/ieee.h>
+#include <shg/ifact.h>
 #include <shg/ipart.h>
 #include <shg/laplace.h>
 #include <shg/lexan.h>
