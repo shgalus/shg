@@ -30,38 +30,38 @@ public:
           double stat;
           double pval;
      };
-     BDS_test(const std::vector<double>& u, int maxm,
-              const std::vector<double>& eps);
-     explicit BDS_test(const std::vector<double>& u);
-     inline int maxm() const;
-     inline const std::vector<double>& eps() const;
-     inline const std::vector<std::vector<Result>>& res() const;
+     BDS_test(std::vector<double> const& u, int maxm,
+              std::vector<double> const& eps);
+     explicit BDS_test(std::vector<double> const& u);
+     int maxm() const;
+     std::vector<double> const& eps() const;
+     std::vector<std::vector<Result>> const& res() const;
 
 private:
      typedef std::vector<double>::size_type vdst;
      static std::vector<double> default_eps(
-          const std::vector<double>& u);
-     static const double isqrt2;
-     static const vdst maxn_;
-     const int maxm_;
-     const std::vector<double> eps_;
+          std::vector<double> const& u);
+     static double const isqrt2;
+     static vdst const maxn_;
+     int const maxm_;
+     std::vector<double> const eps_;
      std::vector<std::vector<Result>> res_;
 };
 
-std::ostream& operator<<(std::ostream& stream, const BDS_test& b);
+std::ostream& operator<<(std::ostream& stream, BDS_test const& b);
 
 /** \} */ /* end of group mathematical_statistics */
 
-int BDS_test::maxm() const {
+inline int BDS_test::maxm() const {
      return maxm_;
 }
 
-const std::vector<double>& BDS_test::eps() const {
+inline std::vector<double> const& BDS_test::eps() const {
      return eps_;
 }
 
-const std::vector<std::vector<BDS_test::Result>>& BDS_test::res()
-     const {
+inline std::vector<std::vector<BDS_test::Result>> const&
+BDS_test::res() const {
      return res_;
 }
 

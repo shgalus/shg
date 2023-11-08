@@ -67,37 +67,7 @@ void partgen(int c[], int N, int K, bool& G);
  * 1].
  */
 template <typename F>
-void accel_asc(int n, F& f) {
-     if (n < 1)
-          throw std::invalid_argument(
-               "n must greater than 0 in accel_asc");
-     std::vector<int> a(n);
-     int k, l, x, y;
-
-     k = 1;
-     a[0] = 0;
-     y = n - 1;
-     while (k != 0) {
-          k--;
-          x = a[k] + 1;
-          while (2 * x <= y) {
-               a[k] = x;
-               y -= x;
-               k++;
-          }
-          l = k + 1;
-          while (x <= y) {
-               a[k] = x;
-               a[l] = y;
-               f(l + 1, a);
-               x++;
-               y--;
-          }
-          y += x - 1;
-          a[k] = y + 1;
-          f(k + 1, a);
-     }
-}
+void accel_asc(int n, F& f);
 
 /**
  * Generates all partitions of positive integer. For each generated
@@ -123,29 +93,7 @@ void accel_asc(int n, F& f) {
  * 1].
  */
 template <typename F>
-void rule_asc(int n, F& f) {
-     if (n < 1)
-          throw std::invalid_argument(
-               "n must greater than 0 in rule_asc");
-     std::vector<int> a(n + 1);
-     int k, x, y;
-
-     k = 1;
-     a[0] = 0;
-     a[1] = n;
-     while (k != 0) {
-          y = a[k] - 1;
-          k--;
-          x = a[k] + 1;
-          while (x <= y) {
-               a[k] = x;
-               y -= x;
-               k++;
-          }
-          a[k] = x + y;
-          f(k + 1, a);
-     }
-}
+void rule_asc(int n, F& f);
 
 /**
  * Generates all ordered partitions of positive integer. For each
@@ -179,33 +127,10 @@ private:
      F& f_;
 };
 
-template <typename F>
-Ordered_partitions_generator<F>::Ordered_partitions_generator(int n,
-                                                              F& f)
-     : f_(f) {
-     if (n < 1)
-          throw std::invalid_argument(__func__);
-     a_.resize(n);
-}
-
-template <typename F>
-void Ordered_partitions_generator<F>::generate() {
-     generate(a_.size(), 0);
-}
-
-template <typename F>
-void Ordered_partitions_generator<F>::generate(int n, int k) {
-     if (n == 0)
-          f_(k, a_);
-     else
-          for (int i = 1; i <= n; i++) {
-               a_[k] = i;
-               generate(n - i, k + 1);
-          }
-}
-
 /** \} */ /* end of group partitions_of_integers */
 
 }  // namespace SHG
+
+#include <shg/ipart-inl.h>
 
 #endif

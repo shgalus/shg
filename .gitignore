@@ -19,8 +19,11 @@
 !/doc/mckenzie.pdf
 /doc/doxwarn.txt
 /lib/
-/exprmnts/tree_test
+/extras/valgrind/tree
+/tools/genbuchb
+/tools/gmconsts
+/tools/ksone
+/tools/octal
 mtrace
-testshg.log
 *.o
 *.d

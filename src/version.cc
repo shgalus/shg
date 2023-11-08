@@ -8,6 +8,6 @@
 
 namespace SHG {
 
-const char* const version = SHG_VERSION;
+char const* const version = SHG_VERSION;
 
 }  // namespace SHG

@@ -14,6 +14,14 @@
 namespace SHG {
 
 /**
+ * \defgroup floating_point_comparisons Floating point comparisons
+ *
+ * Floating point comparisons
+ *
+ * \{
+ */
+
+/**
  * Absolutely compares two floating-point numbers.
  *
  * \returns -1 if \f$u < v - \epsilon\f$
@@ -29,14 +37,7 @@ namespace SHG {
  * \see fprcmp()
  */
 template <typename T>
-int facmp(T u, T v, T eps) {
-     static_assert(std::is_floating_point<T>::value,
-                   "floating-point type required");
-     if (!(eps >= 0.0 && std::isfinite(u) && std::isfinite(v)))
-          throw std::invalid_argument("invalid argument in facmp");
-     const T d = v - u;
-     return d > eps ? -1 : (-d > eps ? 1 : 0);
-}
+int facmp(T u, T v, T eps);
 
 // clang-format off
 /**
@@ -72,121 +73,92 @@ floating_points_comparison_theory.html")
  */
 // clang-format on
 template <typename T>
-int frcmp(T u, T v, T eps) {
-     static_assert(std::is_floating_point<T>::value,
-                   "floating-point type required");
-     if (!(eps >= 0.0 && eps < 1.0) ||
-         !(std::isfinite(u) && std::isfinite(v)))
-          throw std::invalid_argument("invalid argument in frcmp");
-     const T d = v - u;
-     const T max = eps * std::max(std::abs(u), std::abs(v));
-     return d > max ? -1 : (-d > max ? 1 : 0);
-}
+int frcmp(T u, T v, T eps);
 
 /**
  * Approximately absolutely equal. \returns `facmp(u, v, eps) == 0`
  */
 template <typename T>
-inline bool faeq(T u, T v, T eps) {
-     return facmp(u, v, eps) == 0;
-}
+bool faeq(T u, T v, T eps);
 
 /**
  * Approximately absolutely not equal. \returns `facmp(u, v, eps) !=
  * 0`
  */
 template <typename T>
-inline bool fane(T u, T v, T eps) {
-     return facmp(u, v, eps) != 0;
-}
+bool fane(T u, T v, T eps);
 
 /**
  * Approximately absolutely less than. \returns `facmp(u, v, eps) < 0`
  */
 template <typename T>
-inline bool falt(T u, T v, T eps) {
-     return facmp(u, v, eps) < 0;
-}
+bool falt(T u, T v, T eps);
 
 /**
  * Approximately absolutely less than or equal. \returns `facmp(u, v,
  * eps) <= 0`
  */
 template <typename T>
-inline bool fale(T u, T v, T eps) {
-     return facmp(u, v, eps) <= 0;
-}
+bool fale(T u, T v, T eps);
 
 /**
  * Approximately absolutely greater than. \returns `facmp(u, v, eps) >
  * 0`
  */
 template <typename T>
-inline bool fagt(T u, T v, T eps) {
-     return facmp(u, v, eps) > 0;
-}
+bool fagt(T u, T v, T eps);
 
 /**
  * Approximately absolutely greater than or equal. \returns `facmp(u,
  * v, eps) >= 0`
  */
 template <typename T>
-inline bool fage(T u, T v, T eps) {
-     return facmp(u, v, eps) >= 0;
-}
+bool fage(T u, T v, T eps);
 
 /**
  * Approximately relatively equal. \returns `frcmp(u, v, eps) == 0`
  */
 template <typename T>
-inline bool freq(T u, T v, T eps) {
-     return frcmp(u, v, eps) == 0;
-}
+bool freq(T u, T v, T eps);
 
 /**
  * Approximately relatively not equal. \returns `frcmp(u, v, eps) !=
  * 0`
  */
 template <typename T>
-inline bool frne(T u, T v, T eps) {
-     return frcmp(u, v, eps) != 0;
-}
+bool frne(T u, T v, T eps);
 
 /**
  * Approximately relatively less than. \returns `frcmp(u, v, eps) < 0`
  */
 template <typename T>
-inline bool frlt(T u, T v, T eps) {
-     return frcmp(u, v, eps) < 0;
-}
+bool frlt(T u, T v, T eps);
 
 /**
  * Approximately relatively less than or equal. \returns `frcmp(u, v,
  * eps) <= 0`
  */
 template <typename T>
-inline bool frle(T u, T v, T eps) {
-     return frcmp(u, v, eps) <= 0;
-}
+bool frle(T u, T v, T eps);
 
 /**
  * Approximately relatively greater than. \returns `frcmp(u, v, eps) >
  * 0`
  */
 template <typename T>
-inline bool frgt(T u, T v, T eps) {
-     return frcmp(u, v, eps) > 0;
-}
+bool frgt(T u, T v, T eps);
 
 /**
  * Approximately relatively greater than or equal. \returns `frcmp(u,
  * v, eps) >= 0`
  */
 template <typename T>
-inline bool frge(T u, T v, T eps) {
-     return frcmp(u, v, eps) >= 0;
-}
+bool frge(T u, T v, T eps);
+
+/** \} */ /* end of group floating_point_comparisons */
 
 }  // namespace SHG
+
+#include <shg/fcmp-inl.h>
 
 #endif

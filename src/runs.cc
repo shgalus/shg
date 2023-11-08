@@ -42,15 +42,15 @@ void runs(size_t n1, size_t n2, size_t k, bool exact, double& p1,
                if (z < 4.0 * numeric_limits<double>::min())
                     throw range_error(__func__);
                p1 = 0.0;
-               const size_t imax = k / 2;
-               const bool odd = k % 2 == 1;
+               size_t const imax = k / 2;
+               bool const odd = k % 2 == 1;
                double c1 = 1.0, c2 = 1.0, p = 0.0;
                for (size_t i = 1; i <= imax; i++) {
                     p = 2.0 * c1 * c2;
                     p1 += p;
                     if (i < imax || odd) {
-                         const double d1 = c1;
-                         const double d2 = c2;
+                         double const d1 = c1;
+                         double const d2 = c2;
                          c1 *= static_cast<double>(n1 - i) /
                                static_cast<double>(i);
                          c2 *= static_cast<double>(n2 - i) /
@@ -67,13 +67,13 @@ void runs(size_t n1, size_t n2, size_t k, bool exact, double& p1,
                SHG_ASSERT(p1 >= 0.0 && p1 <= 1.0);
                SHG_ASSERT(p2 >= 0.0 && p2 <= 1.0);
           } else {
-               const double en = n1 + n2;
+               double const en = n1 + n2;
                // m is the expected value, s is the standard deviation
                // times sqrt(2.0)
-               const double m = 2.0 * n1 * n2 / en + 1.0;
-               const double s =
+               double const m = 2.0 * n1 * n2 / en + 1.0;
+               double const s =
                     sqrt(2.0 * (m - 1.0) * (m - 2.0) / (en - 1.0));
-               const double z = (k - m) / s;
+               double const z = (k - m) / s;
                p1 = 0.5 + 0.5 * erf(z);
                p2 = 0.5 * erfc(z);
           }

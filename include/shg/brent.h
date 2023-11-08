@@ -42,15 +42,15 @@ namespace SHG {
  * 454-456.
  */
 template <class T>
-double brent(T& func, const double x1, const double x2,
-             const double tol) {
+double brent(T& func, double const x1, double const x2,
+             double const tol) {
      using std::abs;
      using std::invalid_argument;
      using std::runtime_error;
-     auto sign = [](const double& a, const double& b) {
+     auto sign = [](double const& a, double const& b) {
           return b >= 0 ? (a >= 0 ? a : -a) : (a >= 0 ? -a : a);
      };
-     const int maxit = 100;
+     int const maxit = 100;
      constexpr double eps = std::numeric_limits<double>::epsilon();
      // Dummy initialization of e for compiler.
      double a = x1, b = x2, c = x2, d = 0.0, e = 0.0, fa = func(a),
@@ -91,8 +91,8 @@ double brent(T& func, const double x1, const double x2,
                if (p > 0.0)
                     q = -q;
                p = abs(p);
-               const double min1 = 3.0 * xm * q - abs(tol1 * q);
-               const double min2 = abs(e * q);
+               double const min1 = 3.0 * xm * q - abs(tol1 * q);
+               double const min2 = abs(e * q);
                if (2.0 * p < (min1 < min2 ? min1 : min2)) {
                     e = d;
                     d = p / q;

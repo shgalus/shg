@@ -56,7 +56,7 @@ private:
      double uu_[97];
      int ip_, jp_;
      double cc_;
-     static const double cc0_, cd_, cm_;
+     static double const cc0_, cd_, cm_;
 };
 
 }  // namespace SHG

@@ -13,7 +13,7 @@ namespace SHG::ALGEBRA {
 
 Monomial::Monomial(int dim) : exp_() {
      if (dim < 0)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      exp_.resize(dim, 0);
 }
 
@@ -21,7 +21,7 @@ Monomial::Monomial(std::initializer_list<int> il) : exp_(il) {
      check();
 }
 
-Monomial::Monomial(const std::vector<int>& d) : exp_(d) {
+Monomial::Monomial(std::vector<int> const& d) : exp_(d) {
      check();
 }
 
@@ -31,7 +31,7 @@ int Monomial::deg() const {
 
 Monomial& Monomial::operator*=(Monomial const& y) {
      if (y.exp_.size() != exp_.size())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      std::transform(y.exp_.begin(), y.exp_.end(), exp_.begin(),
                     exp_.begin(), std::plus<int>());
      return *this;
@@ -39,20 +39,20 @@ Monomial& Monomial::operator*=(Monomial const& y) {
 
 Monomial& Monomial::operator/=(Monomial const& y) {
      if (y.exp_.size() != exp_.size())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      Monomial z(*this);
      std::transform(z.exp_.begin(), z.exp_.end(), y.exp_.begin(),
                     z.exp_.begin(), std::minus<int>());
      if (std::any_of(z.exp_.cbegin(), z.exp_.cend(),
                      [](int i) { return i < 0; }))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      exp_ = z.exp_;
      return *this;
 }
 
 bool Monomial::divides(Monomial const& y) const {
      if (exp_.size() == 0 || y.exp_.size() != exp_.size())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (std::vector<int>::size_type i = 0; i < exp_.size(); i++)
           if (exp_[i] > y.exp_[i])
                return false;
@@ -62,7 +62,7 @@ bool Monomial::divides(Monomial const& y) const {
 void Monomial::check() {
      if (std::any_of(exp_.cbegin(), exp_.cend(),
                      [](int i) { return i < 0; }))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 Monomial operator*(Monomial const& x, Monomial const& y) {
@@ -76,9 +76,9 @@ Monomial operator/(Monomial const& x, Monomial const& y) {
 }
 
 Monomial gcd(Monomial const& x, Monomial const& y) {
-     const int dim = x.dim();
+     int const dim = x.dim();
      if (dim == 0 || y.dim() != dim)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      std::vector<int> z(dim);
      for (int i = 0; i < dim; i++)
           z[i] = std::min(x[i], y[i]);
@@ -86,9 +86,9 @@ Monomial gcd(Monomial const& x, Monomial const& y) {
 }
 
 Monomial lcm(Monomial const& x, Monomial const& y) {
-     const int dim = x.dim();
+     int const dim = x.dim();
      if (dim == 0 || y.dim() != dim)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      std::vector<int> z(dim);
      for (int i = 0; i < dim; i++)
           z[i] = std::max(x[i], y[i]);
@@ -123,8 +123,8 @@ std::istream& operator>>(std::istream& stream, Monomial& alpha) {
      return stream;
 }
 
-bool lex_cmp(const Monomial& x, const Monomial& y) {
-     const auto a = std::mismatch(x.exp().cbegin(), x.exp().cend(),
+bool lex_cmp(Monomial const& x, Monomial const& y) {
+     auto const a = std::mismatch(x.exp().cbegin(), x.exp().cend(),
                                   y.exp().cbegin(), y.exp().cend());
      if (a.second != y.exp().cend()) {
           if (a.first != x.exp().cend())
@@ -135,22 +135,22 @@ bool lex_cmp(const Monomial& x, const Monomial& y) {
      return false;
 }
 
-bool grlex_cmp(const Monomial& x, const Monomial& y) {
-     const int xtdeg = x.deg();
-     const int ytdeg = y.deg();
+bool grlex_cmp(Monomial const& x, Monomial const& y) {
+     int const xtdeg = x.deg();
+     int const ytdeg = y.deg();
      if (xtdeg != ytdeg)
           return xtdeg < ytdeg;
      return lex_cmp(x, y);
 }
 
-bool grevlex_cmp(const Monomial& x, const Monomial& y) {
-     const int xtdeg = x.deg();
-     const int ytdeg = y.deg();
+bool grevlex_cmp(Monomial const& x, Monomial const& y) {
+     int const xtdeg = x.deg();
+     int const ytdeg = y.deg();
      if (xtdeg != ytdeg)
           return xtdeg < ytdeg;
      if (x.exp().size() != y.exp().size())
           return x.exp().size() > y.exp().size();
-     const auto a = std::mismatch(x.exp().crbegin(), x.exp().crend(),
+     auto const a = std::mismatch(x.exp().crbegin(), x.exp().crend(),
                                   y.exp().crbegin());
      if (a.first != x.exp().crend())
           return *a.first > *a.second;
@@ -167,7 +167,7 @@ Iterative_monomial_generator::Iterative_monomial_generator(
 bool Iterative_monomial_generator::next() {
      int l = n_ - 2;
      for (; l >= 0 && s_[l] == k_; l--) {
-          const int al = a_[l];
+          int const al = a_[l];
           a_[l] = 0;
           for (int i = l; i < n1_; i++)
                s_[i] -= al;

@@ -206,7 +206,8 @@ template <typename Data>
 void Tree<Data>::insert(Index pos, Tree const& t) {
      auto const sz = children_.size();
      if (pos > sz)
-          throw std::out_of_range("invalid position in insert()");
+          throw std::out_of_range(
+               "invalid position in tree<>.insert()");
      children_.resize(sz + 1);
      for (auto i = sz; i > pos; i--) {
           children_[i - 1]->pos_++;

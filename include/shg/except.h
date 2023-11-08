@@ -38,21 +38,21 @@ public:
       * \details If \c what is longer than Exception::maxlen_
       * characters, it is cut to Exception::maxlen_ characters.
       */
-     explicit Exception(const std::string& what);
+     explicit Exception(std::string const& what);
      /**
-      * \copydoc Exception(const std::string&)
+      * \copydoc Exception(std::string const&)
       */
-     explicit Exception(const char* what);
-     Exception(const Exception& e);
+     explicit Exception(char const* what);
+     Exception(Exception const& e);
      ~Exception();
-     Exception& operator=(const Exception& e);
-     const char* what() const noexcept;
+     Exception& operator=(Exception const& e);
+     char const* what() const noexcept;
      /**
       * Prints error message to the stream. If \c progname is given
       * and not empty, it is printed followed by a colon and a space.
       * Then \c what() is printed followed by a newline.
       */
-     virtual void print(const char* progname = nullptr,
+     virtual void print(char const* progname = nullptr,
                         std::ostream& f = std::cerr) const;
 
 protected:
@@ -61,8 +61,8 @@ protected:
       * to "". Otherwise, maximum Exception::maxlen_ characters will
       * be copied and the string will be null-terminated.
       */
-     static char* sstrncpy(char* t, const char* s);
-     static const std::size_t maxlen_ =
+     static char* sstrncpy(char* t, char const* s);
+     static std::size_t const maxlen_ =
           63; /**< Maximum length of a message. */
 
 private:
@@ -81,7 +81,7 @@ public:
       * \param file source file name \param line line number in this
       * file
       */
-     Assertion(const char* file, int line);
+     Assertion(char const* file, int line);
      /**
       * \details Copy constructor and assignment operator are defined
       * to suppress the g++ warning 11: define a copy constructor and
@@ -89,15 +89,15 @@ public:
       * memory. No allocation takes place here, but it is better to
       * define them rather than to weaken diagnostics.
       */
-     Assertion(const Assertion& a);
+     Assertion(Assertion const& a);
      /**
-      * \copydoc Assertion(const Assertion&)
+      * \copydoc Assertion(Assertion const&)
       */
-     Assertion& operator=(const Assertion& a);
+     Assertion& operator=(Assertion const& a);
      /**
       * Returns the source file name.
       */
-     const char* file() const noexcept;
+     char const* file() const noexcept;
      /**
       * Returns line number.
       */
@@ -123,22 +123,22 @@ public:
       * assertion failed
       * \endverbatim
       */
-     void print(const char* progname = nullptr,
+     void print(char const* progname = nullptr,
                 std::ostream& f = std::cerr) const;
 
 private:
-     const char* file_; /**< Source file name. */
+     char const* file_; /**< Source file name. */
      int line_;         /**< Line number in this file. */
 };
 
 /**
  * Throws SHG::Assertion(file, line) if \c e is false.
  */
-void Assert(bool e, const char* file, int line);
+void Assert(bool e, char const* file, int line);
 
 /**
  * Throws SHG::Assertion(\__FILE__, \__LINE__) if \c e is false. \sa
- * SHG::Assert(bool, const char*, int).
+ * SHG::Assert(bool, char const*, int).
  */
 #define SHG_ASSERT(e) SHG::Assert((e), __FILE__, __LINE__)
 
@@ -152,70 +152,42 @@ public:
      /**
       * Constructs an Invalid_argument with function name.
       */
-     explicit Invalid_argument(const char* func);
+     explicit Invalid_argument(char const* func);
      /**
-      * \copydoc Assertion::Assertion(const Assertion&)
+      * \copydoc Assertion::Assertion(Assertion const&)
       */
-     Invalid_argument(const Invalid_argument& e);
+     Invalid_argument(Invalid_argument const& e);
      /**
-      * \copydoc Assertion::Assertion(const Assertion&)
+      * \copydoc Assertion::Assertion(Assertion const&)
       */
-     Invalid_argument& operator=(const Invalid_argument& e);
+     Invalid_argument& operator=(Invalid_argument const& e);
      /**
       * Returns function name where exception happened.
       */
-     const char* func() const noexcept;
+     char const* func() const noexcept;
      /**
       * \details If \c progname is given and not empty, it is printed
       * followed by a colon and a space. Then \c what() is printed. If
       * \c func() is not nullptr and not empty, " in function " func()
       * is printed. Then the newline character is printed.
       */
-     void print(const char* progname = nullptr,
+     void print(char const* progname = nullptr,
                 std::ostream& f = std::cerr) const;
 
 private:
-     const char* func_; /**< Function name. */
+     char const* func_; /**< Function name. */
 };
 
 /**
  * Throws SHG::Invalid_argument(func) if \c e is false.
  */
-void validate(bool e, const char* func);
+void validate(bool e, char const* func);
 
 /**
  * Throws SHG::Invalid_argument(\__func__) if \c e is false. \sa
- * SHG::validate(bool, const char*).
+ * SHG::validate(bool, char const*).
  */
 #define SHG_VALIDATE(e) SHG::validate((e), __func__)
-
-/**
- * A class for exceptions signalling an error in file input or output.
- */
-class File_error : public virtual Exception {
-public:
-     /**
-      * Constructs a File_error with no file name.
-      */
-     File_error();
-     /**
-      * Constructs a File_error with file name \c filename.
-      */
-     explicit File_error(const char* filename);
-     /**
-      * Sets file name to \e filename.
-      */
-     void filename(const char* filename);
-     /**
-      * Returns file name.
-      */
-     const char* filename() const;
-     void print(const char* progname = nullptr,
-                std::ostream& f = std::cerr) const;
-
-private:
-     char filename_[maxlen_ + 1]; /**< The file name. */
-};
 
 /**
  * Prints error message to the stream. The function prints \c progname
@@ -224,7 +196,7 @@ private:
  * the word \c error is printed. The function is intended to use with
  * STL exceptions, which have the \c what().
  */
-void error(const char* message, const char* progname = 0,
+void error(char const* message, char const* progname = 0,
            std::ostream& f = std::cerr);
 
 /**
@@ -235,8 +207,8 @@ void error(const char* message, const char* progname = 0,
  * message.
  */
 template <class T>
-[[noreturn]] void throw_exception(const char* file, int line,
-                                  const char* message = nullptr) {
+[[noreturn]] void throw_exception(char const* file, int line,
+                                  char const* message = nullptr) {
      std::string what{file};
      what += "(" + std::to_string(line) + "): ";
      what +=
@@ -246,12 +218,6 @@ template <class T>
 
 #define SHG_THROW(T, message) \
      SHG::throw_exception<T>(__FILE__, __LINE__, (message))
-
-#define SHG_THROW_IA(message) \
-     SHG_THROW(std::invalid_argument, (message))
-
-#define SHG_THROW_RE(message) \
-     SHG_THROW(std::runtime_error, (message))
 
 /** \} */  // end of group error_and_exception_handling
 

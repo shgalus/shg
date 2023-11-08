@@ -28,34 +28,34 @@ Date::Date(int d, int m, int y) : abs() {
           throw Bad_date();
 }
 
-Date::Date(const string& s) : abs() {
+Date::Date(string const& s) : abs() {
      *this = Date(s.c_str());
 }
 
-Date::Date(const char* s) : abs() {
+Date::Date(char const* s) : abs() {
      /* The longest name of the month in polish_month[] and
         roman_month[] is 13 characters long. */
-     static const int lnom = 13;
+     static int const lnom = 13;
 
-     if (const char* const sep = strchr(s, ' ')) {
+     if (char const* const sep = strchr(s, ' ')) {
           /* "22 stycznia 1901" or "22 I 1901" */
           int m, d;
           switch (sep - s) {
-               case 1:
-                    d = a1toi(s);
-                    break;
-               case 2:
-                    if (s[0] == '0')
-                         throw Bad_date();
-                    d = a2toi(s);
-                    break;
-               default:
+          case 1:
+               d = a1toi(s);
+               break;
+          case 2:
+               if (s[0] == '0')
                     throw Bad_date();
+               d = a2toi(s);
+               break;
+          default:
+               throw Bad_date();
           }
-          const char* sep1 = strchr(sep + 1, ' ');
+          char const* sep1 = strchr(sep + 1, ' ');
           if (sep1 == 0 || sep1 == sep + 1)
                throw Bad_date();
-          const int len = sep1 - (sep + 1);
+          int const len = sep1 - (sep + 1);
           if (len > lnom)
                throw Bad_date();
           char mnth[lnom + 1];
@@ -87,16 +87,16 @@ Date::Date(int n, int d, int m, int y) : abs() {
          !correct(1, m, y))
           throw Bad_date();
      if (n > 0) {
-          const Date d1(1, m, y);
-          const int dow = d1.dayofweek();
-          const int z = d < dow ? d + (7 - dow) : d - dow;
+          Date const d1(1, m, y);
+          int const dow = d1.dayofweek();
+          int const z = d < dow ? d + (7 - dow) : d - dow;
           *this = Date(d1 + z + (n - 1) * 7);
      } else {
-          const bool leap = Date::leap(y);
-          const int last = daytab[leap][m];
-          const Date d1(last, m, y);
-          const int dow = d1.dayofweek();
-          const int z = d > dow ? d - (7 + dow) : d - dow;
+          bool const leap = Date::leap(y);
+          int const last = daytab[leap][m];
+          Date const d1(last, m, y);
+          int const dow = d1.dayofweek();
+          int const z = d > dow ? d - (7 + dow) : d - dow;
           *this = Date(d1 + z + (n + 1) * 7);
      }
      if (month() != m)
@@ -192,12 +192,12 @@ char* Date::computer(char* s) const {
 }
 
 Date Date::min() {
-     static const Date min(1, jan, 1583);
+     static Date const min(1, jan, 1583);
      return min;
 }
 
 Date Date::max() {
-     static const Date max(31, dec, 9999);
+     static Date const max(31, dec, 9999);
      return max;
 }
 
@@ -206,10 +206,10 @@ Date Date::today() {
      using std::time;
      using std::time_t;
      using std::tm;
-     const time_t rawtime = time(nullptr);
+     time_t const rawtime = time(nullptr);
      if (rawtime == static_cast<time_t>(-1))
           throw Bad_date();
-     const tm* const lt = localtime(&rawtime);
+     tm const* const lt = localtime(&rawtime);
      return Date(lt->tm_mday, lt->tm_mon + 1, 1900 + lt->tm_year);
 }
 
@@ -218,10 +218,10 @@ bool Date::correct(int d, int m, int y) {
             d <= daytab[leap(y)][m];
 }
 
-bool Date::correct(const string& s) {
+bool Date::correct(string const& s) {
      try {
           Date d(s);
-     } catch (const Bad_date&) {
+     } catch (Bad_date const&) {
           return false;
      }
      return true;
@@ -284,19 +284,19 @@ Date::int32 Date::pack(int d, int m, int y) {
      return jan1(y) + daytab2[leap(y)][m - 1] + d - 1;
 }
 
-const int Date::daytab[2][13] = {
+int const Date::daytab[2][13] = {
      {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
      {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 
-const int Date::daytab2[2][13] = {
+int const Date::daytab2[2][13] = {
      {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365},
      {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366}};
 
-const char* Date::roman_month[13] = {0,   "I",  "II",  "III",  "IV",
-                                     "V", "VI", "VII", "VIII", "IX",
-                                     "X", "XI", "XII"};
+char const* const Date::roman_month[13] = {
+     0,     "I",    "II", "III", "IV", "V",  "VI",
+     "VII", "VIII", "IX", "X",   "XI", "XII"};
 
-const char* Date::polish_month[13] = {
+char const* const Date::polish_month[13] = {
      0, "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
      /* UTF-8 used below. */
      "lipca", "sierpnia", "wrze\305\233nia", "pa\305\272dziernika",

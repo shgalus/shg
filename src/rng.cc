@@ -65,10 +65,10 @@ void RNG::simplex_surface(Vecdouble& x) {
           x[i] /= s;
 }
 
-int RNG::finite(const Vecdouble& p) {
+int RNG::finite(Vecdouble const& p) {
      SHG_VALIDATE(p.size() > 0);
-     const size_t n = p.size() - 1;
-     const double u = operator()();
+     size_t const n = p.size() - 1;
+     double const u = operator()();
      double s = 0.0;
      size_t i;
      for (i = 0; i < n; i++)
@@ -97,14 +97,14 @@ void RNG::random_sample(int n, int N, Vecint& x) {
 
 unsigned long RNG::logarithmic(double p) {
      SHG_VALIDATE(p > 0 && p < 1.0);
-     const double r = log(1.0 - p);
-     const double v = unipos();
+     double const r = log(1.0 - p);
+     double const v = unipos();
      if (v >= p)
           return 1;
-     const double u = unipos();
-     const double q = 1.0 - exp(r * u);
+     double const u = unipos();
+     double const q = 1.0 - exp(r * u);
      if (v <= q * q) {
-          const double x = 1.0 + log(v) / log(q);
+          double const x = 1.0 + log(v) / log(q);
           // See \cite ansi-cpp-2012, 4.9.2.
           if (x >= static_cast<double>(
                         numeric_limits<unsigned long>::max()))
@@ -119,7 +119,7 @@ unsigned long RNG::logarithmic(double p) {
 unsigned int RNG::geometric(double p) {
      SHG_VALIDATE(p > 0.0 && p <= 1.0);
      if (p < 1.0) {
-          const double r = log(unipos()) / log1p(-p) + 1;
+          double const r = log(unipos()) / log1p(-p) + 1;
           if (r > numeric_limits<unsigned int>::max())
                throw overflow_error(__func__);
           return static_cast<unsigned long>(r);
@@ -128,13 +128,13 @@ unsigned int RNG::geometric(double p) {
      }
 }
 
-double RNG::gamma(const double a, const double b) {
+double RNG::gamma(double const a, double const b) {
      SHG_VALIDATE(a > 0.0 && b > 0.0);
      if (a >= numeric_limits<unsigned int>::max()) {
           return b *
                  (gamma_large(floor(a)) + gamma_frac(a - floor(a)));
      } else {
-          const unsigned int na = static_cast<int>(a);
+          unsigned int const na = static_cast<int>(a);
           if (a == na)
                return b * gamma_int(na);
           else if (na == 0)
@@ -146,8 +146,8 @@ double RNG::gamma(const double a, const double b) {
 
 double RNG::beta(double a, double b) {
      SHG_VALIDATE(a > 0.0 && b > 0.0);
-     const double x1 = gamma(a);
-     const double x2 = gamma(b);
+     double const x1 = gamma(a);
+     double const x2 = gamma(b);
      return x1 / (x1 + x2);
 }
 
@@ -190,7 +190,7 @@ unsigned int RNG::poisson(double mu) {
                return k + binomial(mu / x, m - 1);
           }
      }
-     const double emu = exp(-mu);
+     double const emu = exp(-mu);
      double prod = 1.0;
      do {
           prod *= operator()();
@@ -201,7 +201,7 @@ unsigned int RNG::poisson(double mu) {
 
 unsigned int RNG::negative_binomial(double t, double p) {
      SHG_VALIDATE(t > 0.0 && p > 0.0 && p < 1.0);
-     const double mu = gamma(t) * (1.0 - p) / p;
+     double const mu = gamma(t) * (1.0 - p) / p;
 
      /*
       * If the statement below were return (mu > 0.0) ? poisson(mu) :
@@ -222,7 +222,7 @@ unsigned int RNG::negative_binomial(double t, double p) {
 
 double RNG::laplace(double mu, double lambda) {
      SHG_VALIDATE(lambda > 0.0);
-     const double u = 2.0 * uniopen();
+     double const u = 2.0 * uniopen();
      if (u < 1.0)
           return mu + lambda * log(u);
      else
@@ -231,7 +231,7 @@ double RNG::laplace(double mu, double lambda) {
 
 RNG::~RNG() {}
 
-double RNG::gamma_int(const unsigned int a) {
+double RNG::gamma_int(unsigned int const a) {
      if (a >= 12)
           return gamma_large(a);
      double s = 0.0;
@@ -244,9 +244,9 @@ double RNG::gamma_int(const unsigned int a) {
      return s;
 }
 
-double RNG::gamma_large(const double a) {
+double RNG::gamma_large(double const a) {
      using Constants::pi;
-     const double sqa = sqrt(2.0 * a - 1.0);
+     double const sqa = sqrt(2.0 * a - 1.0);
      double x, y, v;
      do {
           do {
@@ -259,11 +259,11 @@ double RNG::gamma_large(const double a) {
      return x;
 }
 
-double RNG::gamma_frac(const double a) {
+double RNG::gamma_frac(double const a) {
      using Constants::e;
      if (a == 0.0)
           return 0.0;
-     const double p = e<double> / (a + e<double>);
+     double const p = e<double> / (a + e<double>);
      double q, x, u, v;
      do {
           u = operator()();

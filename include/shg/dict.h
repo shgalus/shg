@@ -20,10 +20,18 @@
  */
 namespace SHG::PLP {
 
+/**
+ * \defgroup polish_language_processing Polish language processing
+ *
+ * Polish language processing.
+ *
+ * \{
+ */
+
 class Dictionary_error : public std::runtime_error {
 public:
      Dictionary_error();
-     Dictionary_error(char const* message);
+     explicit Dictionary_error(char const* message);
      Dictionary_error(char const* message, unsigned long line);
 };
 
@@ -182,8 +190,8 @@ struct Description {
 };
 
 struct Description_cmp {
-     bool operator()(const Description& lhs,
-                     const Description& rhs) const {
+     bool operator()(Description const& lhs,
+                     Description const& rhs) const {
           int const r = Charset::alpha_strcmp(lhs.main_form.c_str(),
                                               rhs.main_form.c_str());
           if (r != 0)
@@ -236,6 +244,8 @@ private:
 inline bool operator==(Category const& c1, Category const& c2) {
      return catcmp(c1, c2) == 0;
 }
+
+/** \} */ /* end of group polish_language_processing */
 
 }  // namespace SHG::PLP
 

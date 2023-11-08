@@ -13,6 +13,9 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
 enum class Symbol { word, punctuation_mark, number };
 
 /**
@@ -107,6 +110,8 @@ inline bool Token::empty() const {
 inline bool operator!=(Token const& lhs, Token const& rhs) {
      return !(lhs == rhs);
 }
+
+/** \} */
 
 }  // namespace SHG::PLP
 

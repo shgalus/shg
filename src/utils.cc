@@ -20,57 +20,61 @@ namespace SHG {
 
 using std::string;
 
-bool is_prime(int n) {
-     if (n <= 3)
-          return n > 1;
-     if (n % 2 == 0 || n % 3 == 0)
-          return false;
-     for (int i = 5; i * i <= n; i += 6)
-          if (n % i == 0 || n % (i + 2) == 0)
-               return false;
-     return true;
-}
-
-Vecchar wfread(const char* filename) {
+Vecchar wfread(char const* filename) {
      using std::ifstream;
      using std::ios;
      ifstream f(filename, ios::in | ios::binary);
      if (f && f.seekg(0, ios::end)) {
-          const ifstream::pos_type n = f.tellg();
+          ifstream::pos_type const n = f.tellg();
           // Here either f.fail() != false or n >= 0. See
           // \cite ansi-cpp-2012, 27.7.2.3 (40), page 1035.
           if (f && f.seekg(0, ios::beg)) {
                // ifstream::pos_type may be long long (64 bit), size_t
                // may be unsigned (32 bit), streamsize may be int (32
                // bit)
-               const auto nn = static_cast<decltype(
-                    std::numeric_limits<Vecchar::size_type>::max())>(
-                    n);
+               auto const nn =
+                    static_cast<decltype(std::numeric_limits<
+                                         Vecchar::size_type>::max())>(
+                         n);
                if (nn > std::numeric_limits<
                              Vecchar::size_type>::max() ||
                    n > std::numeric_limits<std::streamsize>::max())
                     throw std::runtime_error(__func__);
                SHG::Vecchar buf(static_cast<Vecchar::size_type>(n));
-               const std::streamsize ns =
+               std::streamsize const ns =
                     static_cast<std::streamsize>(n);
                if (f.read(buf.c_vec(), ns) && f.gcount() == ns)
                     return buf;
           }
      }
-     throw File_error(filename);
+     throw Exception(std::string("error reading file: ") + filename);
 }
 
-const char* const white_space = " \f\n\r\t\v";
+template <>
+void read_binary(std::string& a, std::istream& f) {
+     std::string::size_type size;
+     read_binary(size, f);
+     char* t = new (std::nothrow) char[size];
+     if (t == nullptr) {
+          f.setstate(std::ios::failbit);
+     } else {
+          f.read(t, size);
+          a.assign(t, size);
+          delete[] t;
+     }
+}
 
-string& ltrim(string& s, const string& trimchars) {
+char const* const white_space = " \f\n\r\t\v";
+
+string& ltrim(string& s, string const& trimchars) {
      return s.erase(0, s.find_first_not_of(trimchars));
 }
 
-string& rtrim(string& s, const string& trimchars) {
+string& rtrim(string& s, string const& trimchars) {
      return s.erase(s.find_last_not_of(trimchars) + 1);
 }
 
-string& trim(string& s, const string& trimchars) {
+string& trim(string& s, string const& trimchars) {
      return ltrim(rtrim(s, trimchars), trimchars);
 }
 
@@ -93,12 +97,12 @@ char* strtrim(char* s) {
      return s;
 }
 
-string& clean_string(string& s, const string& trimchars,
+string& clean_string(string& s, string const& trimchars,
                      char replace_char) {
      string::size_type low = s.find_first_not_of(trimchars);
      if (low == string::npos)
           return s.erase();
-     const string::size_type high = s.find_last_not_of(trimchars);
+     string::size_type const high = s.find_last_not_of(trimchars);
      for (string::size_type i = 0;; i++) {
           s[i] = s[low];
           if (low == high)
@@ -112,7 +116,7 @@ string& clean_string(string& s, const string& trimchars,
      }
 }
 
-char* strrtok(char* s, const char* delim, char** next) {
+char* strrtok(char* s, char const* delim, char** next) {
      char* tok;
 
      if (s == 0 && (s = *next) == 0)
@@ -133,7 +137,7 @@ char* strrtok(char* s, const char* delim, char** next) {
      return tok;
 }
 
-char* strdup(const char* s) {
+char* strdup(char const* s) {
      std::size_t n = strlen(s) + 1;
      char* t = new (std::nothrow) char[n];
      return t == nullptr
@@ -144,7 +148,8 @@ char* strdup(const char* s) {
 Comblex::Comblex(int n, int k)
      : k(k), n1(n - 1), k1(k - 1), j(k < n ? k - 1 : -1), a(k) {
      if (k <= 0 || n < k)
-          throw std::invalid_argument("invalid argument in Comblex");
+          throw std::invalid_argument(
+               "invalid argument in Comblex()");
      for (int i = 0; i < k; i++)
           a[i] = i;
 }
@@ -162,16 +167,36 @@ bool Comblex::next() {
      return true;
 }
 
-bool isdegenerate(const std::gslice& g) {
+Varlex::Varlex(int n, int k) : n_(n), n1_(n - 1), k_(k), a_() {
+     if (n <= 0 || k <= 0)
+          throw std::invalid_argument("invalid argument in Varlex()");
+     a_.resize(k_);
+     reset();
+}
+
+void Varlex::reset() {
+     std::fill(a_.begin(), a_.end(), 0);
+}
+
+bool Varlex::next() {
+     for (int i = 0; i < k_; i++)
+          if (a_[i]++ < n1_)
+               return true;
+          else
+               a_[i] = 0;
+     return false;
+}
+
+bool isdegenerate(std::gslice const& g) {
      using std::begin;
      using std::end;
      using std::inner_product;
      using std::size_t;
      using std::valarray;
 
-     const valarray<size_t>& l = g.size();
-     const valarray<size_t>& d = g.stride();
-     const size_t n = l.size();
+     valarray<size_t> const& l = g.size();
+     valarray<size_t> const& d = g.stride();
+     size_t const n = l.size();
      if (n < 1 || n != d.size())
           return true;
      if (l.min() < 1 || d.min() < 1)
@@ -193,7 +218,7 @@ bool isdegenerate(const std::gslice& g) {
      }
 }
 
-bool isvalid(size_t n, const std::gslice& g) {
+bool isvalid(size_t n, std::gslice const& g) {
      using std::begin;
      using std::end;
      using std::inner_product;
@@ -202,9 +227,9 @@ bool isvalid(size_t n, const std::gslice& g) {
 
      if (isdegenerate(g))
           return false;
-     const valarray<size_t>& l = g.size();
-     const valarray<size_t>& d = g.stride();
-     const size_t maxaddr =
+     valarray<size_t> const& l = g.size();
+     valarray<size_t> const& d = g.stride();
+     size_t const maxaddr =
           inner_product(begin(l), end(l), begin(d), g.start()) -
           d.sum();
      return maxaddr < n;

@@ -1,3 +1,8 @@
+/**
+ * \file src/packellp.cc
+ * Packing ellipses.
+ */
+
 #include <shg/packellp.h>
 #include <shg/fcmp.h>
 #include <shg/ipart.h>
@@ -9,15 +14,15 @@ namespace SHG::PACKING {
 using std::cos;
 using std::sin;
 
-Rectangle min_alpha_rectangle(const std::vector<Ellipse>& v,
+Rectangle min_alpha_rectangle(std::vector<Ellipse> const& v,
                               double alpha, double tol) {
      if (alpha < 0.0 || alpha >= 0.5 * Constants::pi<double>)
           throw std::invalid_argument(
                "invalid angle in min_alpha_rectangle");
-     const double sa = sin(alpha);
-     const double ca = cos(alpha);
-     const Line line1(sa, -ca, 0.0);
-     const Line line2(ca, sa, 0.0);
+     double const sa = sin(alpha);
+     double const ca = cos(alpha);
+     Line const line1(sa, -ca, 0.0);
+     Line const line2(ca, sa, 0.0);
      auto it = v.cbegin();
      if (it == v.cend())
           throw std::invalid_argument(
@@ -47,22 +52,22 @@ Rectangle min_alpha_rectangle(const std::vector<Ellipse>& v,
      minC2 = -minC2;
      maxC2 = -maxC2;
 
-     const Point p1(minC1 * sa + maxC2 * ca, maxC2 * sa - minC1 * ca);
-     const Point p2(maxC1 * sa + maxC2 * ca, maxC2 * sa - maxC1 * ca);
-     const Point p3(maxC1 * sa + minC2 * ca, minC2 * sa - maxC1 * ca);
-     const Point p4(minC1 * sa + minC2 * ca, minC2 * sa - minC1 * ca);
+     Point const p1(minC1 * sa + maxC2 * ca, maxC2 * sa - minC1 * ca);
+     Point const p2(maxC1 * sa + maxC2 * ca, maxC2 * sa - maxC1 * ca);
+     Point const p3(maxC1 * sa + minC2 * ca, minC2 * sa - maxC1 * ca);
+     Point const p4(minC1 * sa + minC2 * ca, minC2 * sa - minC1 * ca);
 
      return Rectangle(p1, p2, p3, p4, tol);
 }
 
-bool is_feasible_packing(const std::vector<Ellipse>& v, double tol) {
+bool is_feasible_packing(std::vector<Ellipse> const& v, double tol) {
      using sztp = std::vector<Ellipse>::size_type;
 
      for (sztp i = 0; i < v.size(); i++) {
-          const Ellipse& e1 = v[i];
+          Ellipse const& e1 = v[i];
           for (sztp j = i + 1; j < v.size(); j++) {
-               const Ellipse& e2 = v[j];
-               const double d =
+               Ellipse const& e2 = v[j];
+               double const d =
                     distance({e1.h(), e1.k()}, {e2.h(), e2.k()});
                if (d < e1.b() + e2.b())
                     return false;
@@ -77,7 +82,7 @@ bool is_feasible_packing(const std::vector<Ellipse>& v, double tol) {
                     return false;  // Center of e2 belongs to Int(e1)
                                    // or Fr(e1).
                std::vector<Point> p;
-               const int r = common_points(e1, e2, p);
+               int const r = common_points(e1, e2, p);
                if (r != 0)
                     throw std::runtime_error(__func__);
                if (p.size() > 1)
@@ -91,8 +96,8 @@ bool is_feasible_packing(const std::vector<Ellipse>& v, double tol) {
 namespace {
 
 struct fn2_params {
-     const std::vector<Ellipse>& v;
-     const double tol;
+     std::vector<Ellipse> const& v;
+     double const tol;
 };
 
 double fn2(double alpha, void* p) {
@@ -103,7 +108,7 @@ double fn2(double alpha, void* p) {
 
 }  // anonymous namespace
 
-Rectangle min_rectangle(const std::vector<Ellipse>& v, double tol) {
+Rectangle min_rectangle(std::vector<Ellipse> const& v, double tol) {
      tol = 1e-7;
      auto f = [&v, tol](double alpha) {
           Rectangle r = min_alpha_rectangle(v, alpha, tol);
@@ -125,7 +130,7 @@ Rectangle min_rectangle(const std::vector<Ellipse>& v, double tol) {
      auto it = smin.result.cbegin();
      while (it != smin.result.cend()) {
           m.set(&F, it->x_minimum, it->x_lower, it->x_upper);
-          const int status = m.iterate(100, tol, tol);
+          int const status = m.iterate(100, tol, tol);
           if (status != 0)
                throw std::runtime_error("min_rectangle: status != 0");
           auto r = min_alpha_rectangle(v, it->x_minimum, tol);
@@ -146,13 +151,13 @@ Semiaxes::Semiaxes(double major, double minor)
 }
 
 struct Parameters {
-     const std::size_t n;
-     const std::vector<Semiaxes>& semiaxes;
-     const double big;
-     const double tol;
+     std::size_t const n;
+     std::vector<Semiaxes> const& semiaxes;
+     double const big;
+     double const tol;
 };
 
-double obj(const gsl_vector* x, void* params) {
+double obj(gsl_vector const* x, void* params) {
      Parameters* p = static_cast<Parameters*>(params);
      std::vector<Ellipse> v(p->n);
 
@@ -165,19 +170,19 @@ double obj(const gsl_vector* x, void* params) {
                phi = 0.0;
           while (phi < 0.0)
                phi += Constants::pi<double>;
-          const double h = gsl_vector_get(x, j++);
-          const double k = gsl_vector_get(x, j++);
+          double const h = gsl_vector_get(x, j++);
+          double const k = gsl_vector_get(x, j++);
           v[i] = {p->semiaxes[i].major(), p->semiaxes[i].minor(), phi,
                   h, k};
      }
-     const bool feas = is_feasible_packing(v, p->tol);
+     bool const feas = is_feasible_packing(v, p->tol);
      if (!feas)
           return p->big;
      auto r = min_rectangle(v, p->tol);
      return r.area();
 }
 
-Rectangle min_rectangle(const std::vector<Semiaxes>& semiaxes,
+Rectangle min_rectangle(std::vector<Semiaxes> const& semiaxes,
                         std::vector<Ellipse>& ellipses, double tol) {
      if (semiaxes.size() < 2 || tol <= 0.0)
           throw std::invalid_argument(__func__);
@@ -218,15 +223,15 @@ Rectangle min_rectangle(const std::vector<Semiaxes>& semiaxes,
      ellipses.resize(semiaxes.size());
      ellipses[0] = {semiaxes[0].major(), semiaxes[0].minor(), 0.0,
                     semiaxes[0].major(), 0.0};
-     const std::vector<double>& x_minimum = m.x_minimum();
+     std::vector<double> const& x_minimum = m.x_minimum();
      k = 0;
      for (std::vector<Ellipse>::size_type i = 1; i < ellipses.size();
           i++) {
           double phi = x_minimum[k++];
           if (phi < 0.0 && phi > -2e-5)
                phi = 0.0;
-          const double h = x_minimum[k++];
-          const double k1 = x_minimum[k++];
+          double const h = x_minimum[k++];
+          double const k1 = x_minimum[k++];
           ellipses[i] = {semiaxes[i].major(), semiaxes[i].minor(),
                          phi, h, k1};
      }
@@ -241,16 +246,16 @@ Congruent_regular::Congruent_regular(std::size_t n, double a,
           throw std::invalid_argument(__func__);
 }
 
-void Congruent_regular::operator()(int k, const std::vector<int>& a) {
+void Congruent_regular::operator()(int k, std::vector<int> const& a) {
      w_.assign(a.cbegin(), a.cbegin() + k);
-     const int m = *std::max_element(w_.cbegin(), w_.cend());
+     int const m = *std::max_element(w_.cbegin(), w_.cend());
      bool ext = false;
      for (std::vector<int>::size_type i = 0; i < w_.size(); i++)
           if (w_[i] == m && i % 2 == 1) {
                ext = true;
                break;
           }
-     const double height = 2.0 * b_ + (w_.size() - 1) * K_;
+     double const height = 2.0 * b_ + (w_.size() - 1) * K_;
      double area = 2.0 * a_ * m * height;
      if (ext)
           area += a_ * height;
@@ -281,7 +286,7 @@ double Congruent_regular::b() const {
      return b_;
 }
 
-const std::vector<int>& Congruent_regular::p() const {
+std::vector<int> const& Congruent_regular::p() const {
      return p_;
 }
 

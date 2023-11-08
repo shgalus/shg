@@ -299,7 +299,7 @@ public:
      using ET = int;
 
      Finite_group() = default;
-     explicit Finite_group(const Matrix<int>& t);
+     explicit Finite_group(Matrix<int> const& t);
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
@@ -458,7 +458,8 @@ public:
      using ET = std::vector<Element>;
 
      Direct_product_of_groups() = default;
-     Direct_product_of_groups(std::vector<Group const*> const& v);
+     explicit Direct_product_of_groups(
+          std::vector<Group const*> const& v);
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;

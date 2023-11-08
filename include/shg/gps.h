@@ -54,12 +54,12 @@ struct Cart_coord {
 /**
  * Converts geographical coordinates to Cartesian coordinates.
  */
-void convert(const Geogr_coord& g, Cart_coord& p);
+void convert(Geogr_coord const& g, Cart_coord& p);
 
 /**
  * Returns distance between two points by a straight line.
  */
-double distance(const Cart_coord& p, const Cart_coord& q);
+double distance(Cart_coord const& p, Cart_coord const& q);
 
 class GPX_data {
 public:

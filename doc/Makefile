@@ -27,19 +27,23 @@ shg.pdf: shg.tex shg.bib drbnwtsn.tex nhmm.tex bdstest.tex gps.tex	\
 shgutf8.bib : shg.bib bibtoutf8.py
 	./bibtoutf8.py
 
-html: shgutf8.bib $(PDFDOC) ../src/*.cc ../include/shg/*.h		\
-	../testing/*.cc ../testing/*.h ../tools/*.cc mainpage.doc	\
-	plpchrst.doc notes.doc
+html: shgutf8.bib $(PDFDOC) ../src/*.cc ../include/shg/*.h	\
+	../tests/*.cc ../tests/*.h ../tools/*.cc mainpage.dox	\
+	notes.dox
 	doxygen
+	touch html
 	@if [ -s doxwarn.txt ]; \
 	then \
-        echo "\n==================\nThere were errors."; \
+	echo ""; \
+	echo "======================"; \
+	echo "= There were errors. ="; \
+	echo "======================"; \
+	echo ""; \
 	fi
 
 # Prepares CVSROOT for old CVS repository in shg-cvs.tar.bz2.
 cvs:
 	tar jxvf shg-cvs.tar.bz2
-	echo $(CURRENT_DIR)
 	rm -rf cvs
 	mkdir cvs
 	cd cvs && cvs -d $(CURRENT_DIR)/shg-cvs $ co shg
@@ -50,4 +54,4 @@ clean:
 	shg.[1-9]* [1-9]*.pdf doxwarn.txt
 
 spotless: clean
-	rm -rf $(PDFDOC) html
+	rm -rf $(PDFDOC) html shg-cvs cvs

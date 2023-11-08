@@ -46,8 +46,8 @@ namespace SHG {
  * \implementation Translated from \cite syslo-deo-kowalik-1999, p.
  * 23-25.
  */
-int revsimplex(const Matdouble& A, const Vecdouble& b,
-               const Vecdouble& c, Vecdouble& x, double& f,
+int revsimplex(Matdouble const& A, Vecdouble const& b,
+               Vecdouble const& c, Vecdouble& x, double& f,
                double eps = 1e-12);
 
 /**
@@ -92,9 +92,9 @@ public:
       *
       * \exception SHG::Simplex::Error if invalid argument is given
       */
-     Simplex(std::size_t m, std::size_t n, const Matdouble& A,
-             const Vecdouble& b, const Vecdouble& c,
-             const Vecequality& e, Direction d, double eps = 1e-12);
+     Simplex(std::size_t m, std::size_t n, Matdouble const& A,
+             Vecdouble const& b, Vecdouble const& c,
+             Vecequality const& e, Direction d, double eps = 1e-12);
      int status;   ///< return value from revsimplex()
      double f;     ///< value of objective function
      Vecdouble x;  ///< point with optimum
@@ -240,8 +240,8 @@ public:
  * \cite grabowski-1980, p. 245-251,
  * \cite bronsztejn-siemiendiajew-musiol-muhlig-2004, p. 943-945
  */
-int wolfe(const Vecdouble& p, const Vecdouble& C, const Matdouble& A,
-          const Vecdouble& b, Vecdouble& x, double& f);
+int wolfe(Vecdouble const& p, Vecdouble const& C, Matdouble const& A,
+          Vecdouble const& b, Vecdouble& x, double& f);
 
 /** \} */ /* end of group mathematical_programming */
 

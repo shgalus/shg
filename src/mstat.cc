@@ -32,25 +32,25 @@ double ksdist(double x) {
      if (x < 0.18)
           return 0.0;
      if (x < 1.18) {
-          const double y = exp(-sqrpi8<double> / sqr(x));
+          double const y = exp(-sqrpi8<double> / sqr(x));
           return sqrt2pi<double> / x *
                  (y + pow(y, 9) + pow(y, 25) + pow(y, 49));
      } else {
-          const double y = exp(-2.0 * sqr(x));
+          double const y = exp(-2.0 * sqr(x));
           return 1.0 - 2.0 * (y - pow(y, 4) + pow(y, 9));
      }
 }
 
-double mean(const Vecdouble& x) {
+double mean(Vecdouble const& x) {
      double s = 0.0;
-     const int n = x.size();
+     int const n = x.size();
      for (int i = 0; i < n; i++)
           s += (x[i] - s) / (i + 1.0);
      return s;
 }
 
-void mean_var(const Vecdouble& x, double& mean, double& var) {
-     const int n = x.size();
+void mean_var(Vecdouble const& x, double& mean, double& var) {
+     int const n = x.size();
      if (n < 1)
           throw invalid_argument(__func__);
      mean = x[0];
@@ -66,7 +66,7 @@ void mean_var(const Vecdouble& x, double& mean, double& var) {
           throw runtime_error(__func__);
 }
 
-double stddev(const double* x, size_t n) {
+double stddev(double const* x, size_t n) {
      if (n == 0)
           throw invalid_argument(__func__);
      double m = x[0], s = 0.0, d;
@@ -82,8 +82,8 @@ double stddev(const double* x, size_t n) {
      return s;
 }
 
-void mean_var1(const Vecdouble& x, double& mean, double& var) {
-     const int n = x.size();
+void mean_var1(Vecdouble const& x, double& mean, double& var) {
+     int const n = x.size();
      if (n < 2)
           throw invalid_argument(__func__);
      mean = x[0];
@@ -99,13 +99,13 @@ void mean_var1(const Vecdouble& x, double& mean, double& var) {
           throw runtime_error(__func__);
 }
 
-void acf(const Vecdouble& x, int K, Vecdouble& r) {
+void acf(Vecdouble const& x, int K, Vecdouble& r) {
      acf(x, mean(x), K, r);
 }
 
-void acf(const Vecdouble& x, const double mean, const int K,
+void acf(Vecdouble const& x, double const mean, int const K,
          Vecdouble& r) {
-     const int n = x.size();
+     int const n = x.size();
      if (n < 1 || K < 0)
           throw invalid_argument(__func__);
      int k, i, nk;
@@ -125,12 +125,12 @@ void acf(const Vecdouble& x, const double mean, const int K,
      }
 }
 
-double chi2normtest(const Vecdouble& x, const int r) {
-     const int n = x.size();
+double chi2normtest(Vecdouble const& x, int const r) {
+     int const n = x.size();
      if (n < 2 || r < 4)
           throw invalid_argument(__func__);
-     const int r1 = r - 1;
-     const double np =
+     int const r1 = r - 1;
+     double const np =
           static_cast<double>(n) / static_cast<double>(r);
      double m, s, xi;
      int i, j;
@@ -165,12 +165,12 @@ double chi2normtest(const Vecdouble& x, const int r) {
      return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 3.0));
 }
 
-double chi2stdnormtest(const Vecdouble& x, int r) {
-     const int n = x.size();
+double chi2stdnormtest(Vecdouble const& x, int r) {
+     int const n = x.size();
      if (n < 2 || r < 4)
           throw invalid_argument(__func__);
-     const int r1 = r - 1;
-     const double np =
+     int const r1 = r - 1;
+     double const np =
           static_cast<double>(n) / static_cast<double>(r);
      double xi;
      int i, j;
@@ -199,7 +199,7 @@ double chi2stdnormtest(const Vecdouble& x, int r) {
      return 1.0 - gammad(0.5 * chi2 / np, 0.5 * (r - 1.0));
 }
 
-void ksnormtest(const Vecdouble& x, double& d, double& prob) {
+void ksnormtest(Vecdouble const& x, double& d, double& prob) {
      Vecdouble v(x);
      double m, s;
      mean_var(v, m, s);
@@ -212,19 +212,19 @@ void ksnormtest(const Vecdouble& x, double& d, double& prob) {
      ksone(cdf, v, d, prob);
 }
 
-Sample::Sample(const std::vector<double>& v)
+Sample::Sample(std::vector<double> const& v)
      : data(srt(v)), n(data.size()), en(n) {
      if (n == 0)
           throw invalid_argument(__func__);
 }
 
 double Sample::cdf(double x) const {
-     const vector<double>::const_iterator b = data.begin();
+     vector<double>::const_iterator const b = data.begin();
      return (upper_bound(b, data.end(), x) - b) / en;
 }
 
 double Sample::lcdf(double x) const {
-     const vector<double>::const_iterator b = data.begin();
+     vector<double>::const_iterator const b = data.begin();
      return (lower_bound(b, data.end(), x) - b) / en;
 }
 
@@ -287,21 +287,21 @@ Sample::Histdata Sample::histogram(int k) const {
      return hd;
 }
 
-const double Sample::eps = 1e-12;
+double const Sample::eps = 1e-12;
 
-vector<double> Sample::srt(const vector<double>& v) {
+vector<double> Sample::srt(vector<double> const& v) {
      vector<double> x = v;
      sort(x.begin(), x.end());
      return x;
 }
 
 std::vector<std::vector<int>> run_length_distribution(
-     const std::vector<int>& x, int m) {
+     std::vector<int> const& x, int m) {
      vector<vector<int>> v(m);
      vector<int>::size_type k = 0;
      int l;
      while (k < x.size()) {
-          const auto a = x[k];
+          auto const a = x[k];
           l = 1;
           while (++k < x.size() && x[k] == a)
                ++l;
@@ -314,15 +314,15 @@ std::vector<std::vector<int>> run_length_distribution(
      return v;
 }
 
-double mle_lsd(const double mean) {
+double mle_lsd(double const mean) {
      using std::log;
      using std::numeric_limits;
      SHG_VALIDATE(mean > 1.0);
      double a = numeric_limits<double>::epsilon();
      double b = 1.0 - a;
      double p = 0.0;  // shut up compiler warnings
-     auto fprim = [mean](const double p) -> double {
-          const double z = 1.0 - p;
+     auto fprim = [mean](double const p) -> double {
+          double const z = 1.0 - p;
           return mean / p + 1.0 / log(z) / z;
      };
      if (fprim(a) < 0.0 || fprim(b) > 0.0)
@@ -336,18 +336,18 @@ double mle_lsd(const double mean) {
      return p;
 }
 
-double cdf_lsd(const double x, const double p) {
+double cdf_lsd(double const x, double const p) {
      using std::log1p;
      SHG_VALIDATE(0.0 < p && p < 1.0);
      if (x < 1.0)
           return 0.0;
-     const double l1mp = log1p(-p);
+     double const l1mp = log1p(-p);
      if (!isfinite(l1mp))
           throw range_error("range error in cdf_lsd");
-     const double a = -1.0 / l1mp;
+     double const a = -1.0 / l1mp;
      if (!isfinite(a))
           throw range_error("range error in cdf_lsd");
-     const int n = ifloor(x);
+     int const n = ifloor(x);
      double s = 0.0, z = p;
      for (int k = 1; k <= n; k++) {
           s += a / k * z;
@@ -356,9 +356,9 @@ double cdf_lsd(const double x, const double p) {
      return s;
 }
 
-void mle_negative_binomial(const SHG::Vecint& x, double& t,
+void mle_negative_binomial(SHG::Vecint const& x, double& t,
                            double& p) {
-     const int n = x.size();
+     int const n = x.size();
      if (n < 1)
           throw invalid_argument("n < 1 in mle_negative_binomial");
      for (int i = 0; i < n; i++)
@@ -381,10 +381,10 @@ void mle_negative_binomial(const SHG::Vecint& x, double& t,
           throw runtime_error(
                "invalid estimator of p in mle_negative_binomial");
      t = mean * p / (1.0 - p);
-     auto f = [x, n, mean](const double t) -> double {
+     auto f = [x, n, mean](double const t) -> double {
           double s = 0.0;
           for (int i = 0; i < n; i++) {
-               const double xi = x(i);
+               double const xi = x(i);
                for (int j = 0; j < xi; j++)
                     s += 1.0 / (t + j);
           }
@@ -405,14 +405,14 @@ double cdf_negative_binomial(double x, double t, double p) {
                "invalid argument in cdf_negative_binomial");
      if (x < 0.0)
           return 0.0;
-     const int n = ifloor(x);
-     const double logbeta =
+     int const n = ifloor(x);
+     double const logbeta =
           lgamma(t) + lgamma(n + 1.0) - lgamma(t + n + 1.0);
      return betain(p, t, n + 1, logbeta);
 }
 
 Assessment_of_discrete_distribution::
-     Assessment_of_discrete_distribution(const SHG::Vecint& x)
+     Assessment_of_discrete_distribution(SHG::Vecint const& x)
      : n(x.size()),
        x(x),
        mean_(),
@@ -437,10 +437,10 @@ Assessment_of_discrete_distribution::
 void Assessment_of_discrete_distribution::run() {
      // geometric
      {
-          const double p = 1.0 / mean_;  // ML estimator of p
+          double const p = 1.0 / mean_;  // ML estimator of p
           if (0.0 < p && p < 1.0) {
-               const double q = 1.0 - p;
-               auto cdf = [q](const double x) -> double {
+               double const q = 1.0 - p;
+               auto cdf = [q](double const x) -> double {
                     if (x < 1.0)
                          return 0.0;
                     return 1.0 - std::pow(q, ifloor(x));
@@ -453,10 +453,10 @@ void Assessment_of_discrete_distribution::run() {
      }
      // poisson
      {
-          const double lambda =
+          double const lambda =
                1.0 / mean_;  // ML estimator of lambda
           SHG_ASSERT(lambda > 0.0);
-          auto cdf = [lambda](const double x) -> double {
+          auto cdf = [lambda](double const x) -> double {
                return x < 0.0 ? 0.0
                               : 1.0 - gammad(lambda,
                                              std::floor(x) + 1.0);
@@ -467,8 +467,8 @@ void Assessment_of_discrete_distribution::run() {
      // logarithmic
      {
           if (mean_ > 1.0) {
-               const double p = mle_lsd(mean_);
-               auto cdf = [p](const double x) -> double {
+               double const p = mle_lsd(mean_);
+               auto cdf = [p](double const x) -> double {
                     return cdf_lsd(x, p);
                };
                double d;
@@ -483,11 +483,11 @@ void Assessment_of_discrete_distribution::run() {
           double d;
           try {
                mle_negative_binomial(x, t, p);
-               auto cdf = [t, p](const double x) -> double {
+               auto cdf = [t, p](double const x) -> double {
                     return cdf_negative_binomial(x, t, p);
                };
                ksonedc(cdf, x, d, negbin_);
-          } catch (const runtime_error&) {
+          } catch (runtime_error const&) {
                // we assume that if p or t cannot be easy estimated,
                // the distribution is far from negative binomial
                negbin_ = 0;
@@ -498,7 +498,7 @@ void Assessment_of_discrete_distribution::run() {
 Unigaumixmod::Degenerate_distribution::Degenerate_distribution()
      : Exception("degenerate distribution in m-step") {}
 
-Unigaumixmod::Unigaumixmod(const Vecdouble& x, int K)
+Unigaumixmod::Unigaumixmod(Vecdouble const& x, int K)
      : n(x.size()),
        K(K),
        x(x),
@@ -512,7 +512,7 @@ Unigaumixmod::Unigaumixmod(const Vecdouble& x, int K)
 }
 
 double Unigaumixmod::estep() {
-     const double oldloglik = loglik;
+     double const oldloglik = loglik;
      double s;
      int i, k;
      loglik = 0.0;

@@ -23,7 +23,7 @@ using std::string;
 
 SMC::STD::~STD() {}
 
-SMC::Finite::Finite(const Vecint& x, const Vecdouble& p)
+SMC::Finite::Finite(Vecint const& x, Vecdouble const& p)
      : x(x), p(p) {
      SHG_ASSERT(x.size() == p.size());
      double sum = 0.0;
@@ -36,7 +36,7 @@ SMC::Finite::Finite(const Vecint& x, const Vecdouble& p)
 }
 
 int SMC::Finite::generate(RNG& g) const {
-     const int i = g.finite(p);
+     int const i = g.finite(p);
      SHG_ASSERT(static_cast<size_t>(i) < x.size());
      return x[i];
 }
@@ -46,7 +46,7 @@ SMC::Geometric::Geometric(double p) : p(p) {
 }
 
 int SMC::Geometric::generate(RNG& g) const {
-     const unsigned int x = g.geometric(p);
+     unsigned int const x = g.geometric(p);
      SHG_ASSERT(x > 0 && x <= static_cast<unsigned int>(
                                    numeric_limits<int>::max()));
      return x;
@@ -58,7 +58,7 @@ SMC::Negative_binomial::Negative_binomial(double t, double p)
 }
 
 int SMC::Negative_binomial::generate(RNG& g) const {
-     const unsigned int x = g.negative_binomial(t, p);
+     unsigned int const x = g.negative_binomial(t, p);
      SHG_ASSERT(
           x < static_cast<unsigned int>(numeric_limits<int>::max()));
      return x + 1;
@@ -69,7 +69,7 @@ SMC::Logarithmic::Logarithmic(double p) : p(p) {
 }
 
 int SMC::Logarithmic::generate(RNG& g) const {
-     const unsigned long x = g.logarithmic(p);
+     unsigned long const x = g.logarithmic(p);
      SHG_ASSERT(x > 0 && x <= static_cast<unsigned long>(
                                    numeric_limits<int>::max()));
      return x;
@@ -80,7 +80,7 @@ SMC::Poisson::Poisson(double mu) : mu(mu) {
 }
 
 int SMC::Poisson::generate(RNG& g) const {
-     const unsigned int x = g.poisson(mu);
+     unsigned int const x = g.poisson(mu);
      SHG_ASSERT(
           x < static_cast<unsigned int>(numeric_limits<int>::max()));
      return x + 1;
@@ -166,7 +166,7 @@ int SMC::generate(int T, bool cut) {
 // incorrect value of alpha_, 3 - incorrect value of P_, 4 - std_ not
 // assigned, 5 - g_ not assigned.
 int SMC::check_data() {
-     const double eps = 1e-12;
+     double const eps = 1e-12;
      if (alpha_.size() != s_ || P_.nrows() != s_ || P_.ncols() != s_)
           return 1;
      double sa = 0.0, sp;
@@ -177,7 +177,7 @@ int SMC::check_data() {
           sa += alpha_[i];
           sp = 0.0;
           for (j = 0; j < s_; j++) {
-               const double p = P_(i, j);
+               double const p = P_(i, j);
                if (p < 0.0 || p > 1.0)
                     return 3;
                sp += p;
@@ -279,10 +279,10 @@ void Unideggaumix::estimate() {
           // m-step
           for (int k = 0; k < K1; k++) {
                double s = 0.0, s1 = 0.0, s2 = 0.0;
-               const double muk = mu(k);
+               double const muk = mu(k);
                for (int i = 0; i < n; i++) {
-                    const double psiik = psi(i, k);
-                    const double xi = x(i);
+                    double const psiik = psi(i, k);
+                    double const xi = x(i);
                     s += psiik;
                     s1 += psiik * xi;
                     s2 += psiik * sqr(xi - muk);

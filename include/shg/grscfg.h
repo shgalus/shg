@@ -15,6 +15,9 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
 /**
  * Generates random sentences from a context free grammar.
  * Documentation is in \cite mckenzie-1997 (<a href =
@@ -65,6 +68,8 @@ inline bool McKenzie::is_terminal(int k) const {
 inline int McKenzie::t_(int i, int j) const {
      return static_cast<int>(P_[i][j].size()) - 1;
 }
+
+/** \} */
 
 }  // namespace SHG::PLP
 

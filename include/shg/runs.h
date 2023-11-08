@@ -72,15 +72,15 @@ void runs(std::size_t n1, std::size_t n2, std::size_t k, bool exact,
  * operation \f$<\f$ must be defined for the type \f$T\f$.
  */
 template <class T>
-void count_runs(const SHG::Vector<T>& x, T z, std::size_t& n1,
+void count_runs(SHG::Vector<T> const& x, T z, std::size_t& n1,
                 std::size_t& n2, std::size_t& k) {
-     const auto n = x.size();
+     auto const n = x.size();
      n1 = n2 = k = 0;
      if (n == 0)
           return;
      bool s = x[0] < z;
      k = 1;
-     for (const auto a : x)
+     for (auto const a : x)
           if (a < z) {
                n1++;
                if (!s) {

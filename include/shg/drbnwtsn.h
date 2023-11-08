@@ -82,7 +82,7 @@ void ppdw(int n, int k, double p, double* xl, double* xu, double eps);
  * Calls ppdw(int, int, double, double*, double*, double). For \f$n =
  * 6, ..., 200\f$, \f$k = 1, ..., 5\f$, the fifteen differences
  * between the generated tables and the original tables of Savin and
- * White are listed in the subroutine ppdtst in testing/drbnwtsn.cc.
+ * White are listed in the subroutine ppdtst in tests/drbnwtsn.cc.
  */
 void swtbl(std::ostream& f = std::cout);
 

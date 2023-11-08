@@ -29,21 +29,21 @@ constexpr double one_minus_eccentricity_squared =
 
 }  // anonymous namespace
 
-void convert(const Geogr_coord& g, Cart_coord& p) {
-     const double phi = degrees_to_radians(g.phi);
-     const double lambda = degrees_to_radians(g.lambda);
-     const double sin_phi = std::sin(phi);
-     const double cos_phi = std::cos(phi);
-     const double c =
+void convert(Geogr_coord const& g, Cart_coord& p) {
+     double const phi = degrees_to_radians(g.phi);
+     double const lambda = degrees_to_radians(g.lambda);
+     double const sin_phi = std::sin(phi);
+     double const cos_phi = std::cos(phi);
+     double const c =
           semi_major_axis /
           std::sqrt(1.0 - eccentricity_squared * sin_phi * sin_phi);
-     const double d = c + g.h;
+     double const d = c + g.h;
      p.x = d * cos_phi * std::cos(lambda);
      p.y = d * cos_phi * std::sin(lambda);
      p.z = (one_minus_eccentricity_squared * c + g.h) * sin_phi;
 }
 
-double distance(const Cart_coord& p, const Cart_coord& q) {
+double distance(Cart_coord const& p, Cart_coord const& q) {
      return std::hypot(p.x - q.x, p.y - q.y, p.z - q.z);
 }
 

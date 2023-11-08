@@ -49,15 +49,15 @@ namespace SHG {
  * \mathrm{x.size()}\f$.
  */
 template <class T>
-double permutation_entropy(const std::vector<T>& x, std::size_t L);
+double permutation_entropy(std::vector<T> const& x, std::size_t L);
 
 template <class T>
-double permutation_entropy(const std::vector<T>& x,
-                           const std::size_t L) {
+double permutation_entropy(std::vector<T> const& x,
+                           std::size_t const L) {
      if (L < 2 || L > x.size())
           throw std::invalid_argument(__func__);
      typedef std::vector<std::size_t> Permutation;
-     const std::size_t nl1 = x.size() - L + 1;
+     std::size_t const nl1 = x.size() - L + 1;
      std::map<Permutation, std::size_t> c;
      Permutation p(L), p0(L);
      std::iota(p0.begin(), p0.end(), 0);
@@ -69,10 +69,10 @@ double permutation_entropy(const std::vector<T>& x,
                            });
           c[p]++;
      }
-     const double NL1 = nl1;
+     double const NL1 = nl1;
      double s = 0.0;
-     for (const auto& x : c) {
-          const double p = x.second / NL1;
+     for (auto const& x : c) {
+          double const p = x.second / NL1;
           s -= p * std::log(p);
      }
      return 1.4426950408889634073599246810018921374266  // 1 / ln 2

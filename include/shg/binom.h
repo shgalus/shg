@@ -14,6 +14,12 @@
 namespace SHG {
 
 /**
+ * \addtogroup miscellaneous_utilities
+ *
+ * \{
+ */
+
+/**
  * Calculates binomial coefficient \f$\binom{n}{k}\f$.
  *
  * \implementation
@@ -58,6 +64,8 @@ template <>
 boost::multiprecision::cpp_int binom(
      boost::multiprecision::cpp_int n,
      boost::multiprecision::cpp_int k);
+
+/** \} */
 
 }  // namespace SHG
 

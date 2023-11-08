@@ -73,8 +73,8 @@ public:
      struct Error : public virtual Exception {
           Error();
      };
-     Normal_mixture(const Vecdouble& w, const Vecdouble& mu,
-                    const Vecdouble& sigma);
+     Normal_mixture(Vecdouble const& w, Vecdouble const& mu,
+                    Vecdouble const& sigma);
      double p(double x) const;       ///< Probability density.
      double cdf(double x) const;     ///< Distribution function.
      double invcdf(double p) const;  ///< Percentage point.
@@ -96,10 +96,10 @@ public:
      static Normal_mixture read(std::istream& f);
 
 private:
-     const std::size_t n;      ///< Number of components.
-     const Vecdouble w;        ///< Weights.
-     const Vecdouble mu;       ///< Means.
-     const Vecdouble sigma;    ///< Standard deviations.
+     std::size_t const n;      ///< Number of components.
+     Vecdouble const w;        ///< Weights.
+     Vecdouble const mu;       ///< Means.
+     Vecdouble const sigma;    ///< Standard deviations.
      bool moments_calculated;  ///< True if moments calculated.
      double mean_;             ///< Mean.
      double sdev_;             ///< Standard deviation.

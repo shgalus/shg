@@ -43,10 +43,10 @@ template <class T>
 std::size_t ninv(T* a, T* b, std::size_t n) {
      std::size_t ninv = 0;
      for (size_t k = 1; k < n; k *= 2) {
-          const size_t k2 = 2 * k;
+          size_t const k2 = 2 * k;
           for (size_t p = 0; p + k < n; p += k2) {
-               const size_t q = p + k - 1;
-               const size_t r = std::min(q + k, n - 1);
+               size_t const q = p + k - 1;
+               size_t const r = std::min(q + k, n - 1);
                size_t p1 = p, p2 = q + 1, i = p;
                while (p1 <= q && p2 <= r)
                     if (a[p1] > a[p2]) {
@@ -81,7 +81,7 @@ std::size_t ninv(T* a, T* b, std::size_t n) {
  * \sa ninv(T*, T*, std::size_t)
  */
 template <class T>
-std::size_t ninv(const T* a, std::size_t n) {
+std::size_t ninv(T const* a, std::size_t n) {
      std::unique_ptr<T[]> a1(new T[n]), b(new T[n]);
      std::copy_n(a, n, a1.get());
      return ninv(a1.get(), b.get(), n);

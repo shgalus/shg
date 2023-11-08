@@ -82,22 +82,22 @@ public:
       * \exception SHG::OLS::Internal_error in case of an internal
       * error
       */
-     OLS(const Matdouble& X, const Vecdouble& y,
+     OLS(Matdouble const& X, Vecdouble const& y,
          bool add_intercept = true);
-     OLS(const OLS&) = delete;
-     OLS& operator=(const OLS&) = delete;
+     OLS(OLS const&) = delete;
+     OLS& operator=(OLS const&) = delete;
 
      /**
       * Sets problem name.
       */
-     void set_problem_name(const std::string& s) {
+     void set_problem_name(std::string const& s) {
           problem_name_ = s;
      }
 
      /**
       * Returns the problem name.
       */
-     const std::string& get_problem_name() const {
+     std::string const& get_problem_name() const {
           return problem_name_;
      }
 
@@ -132,17 +132,17 @@ public:
       * (X^TX)^{-1}X^Ty\f$. \a beta()[i] is an estimate of \f$\beta_{i
       * + 1}\f$ for \f$0 \leq i < k\f$.
       */
-     const Vecdouble& beta() const { return beta_; }
+     Vecdouble const& beta() const { return beta_; }
 
      /**
       * Returns vector of fitted values \f$\hat{y} = X \hat{\beta}\f$.
       */
-     const Vecdouble& fitted() const { return fitted_; }
+     Vecdouble const& fitted() const { return fitted_; }
 
      /**
       * Returns the vector of residuals \f$\hat{u} = y - \hat{y}\f$.
       */
-     const Vecdouble& residuals() const { return residuals_; }
+     Vecdouble const& residuals() const { return residuals_; }
 
      /**
       * Returns residual sum of squares \f$\mathit{RSS} =
@@ -194,7 +194,7 @@ public:
       * Returns estimated covariance matrix of parameters \f$\hat{D}^2
       * \hat{\beta} = \hat{\sigma}^2 (X^TX)^{-1}\f$.
       */
-     const Matdouble& cov() const { return cov_; }
+     Matdouble const& cov() const { return cov_; }
 
      /**
       * Returns standard errors of coefficients
@@ -202,7 +202,7 @@ public:
       * estimate of \f$\hat{D}\hat{\beta}_{i + 1}\f$ for \f$0 \leq i <
       * k\f$.
       */
-     const Vecdouble& standard_err() const { return standard_err_; }
+     Vecdouble const& standard_err() const { return standard_err_; }
 
      /**
       * Returns mean of dependent variable \f$\bar{y}\f$.
@@ -258,7 +258,7 @@ public:
       * \f$t\f$-statistic for the parameter \f$\hat{\beta}_{i + 1}\f$
       * for \f$0 \leq i < k\f$. \sa pvalt()
       */
-     const Vecdouble& tstat() const { return tstat_; }
+     Vecdouble const& tstat() const { return tstat_; }
 
      /**
       * Returns \f$p\f$-values for the \f$t\f$-statistics. If the
@@ -269,7 +269,7 @@ public:
       * \f$t_i\f$. pvalt()[i] is the \f$p\f$-value for the statistic
       * tstat()[i]. \sa tstat()
       */
-     const Vecdouble& pvalt() const { return pvalt_; }
+     Vecdouble const& pvalt() const { return pvalt_; }
 
      /**
       * Calculates the Durbin-Watson \f$d\f$ statistic and its
@@ -355,21 +355,21 @@ private:
      /**
       * Performs initial part of estimation.
       */
-     void estimate(const Matdouble& X, const Vecdouble& y);
+     void estimate(Matdouble const& X, Vecdouble const& y);
 
      /**
       * Returns stars to mark significance.
       */
-     static const char* stars(double x);
+     static char const* stars(double x);
 
-     static const double tolerance_;
-     static const int w_ = 13;  ///< field width to output float
+     static double const tolerance_;
+     static int const w_ = 13;  ///< field width to output float
 
      std::string problem_name_;  ///< used by print
-     const int n_;               ///< number of observations
-     const int k_;               ///< number of estimated parameters
-     const int dof_;             ///< number of degrees of freedom
-     const bool intercept_;      ///< true if intercept was added
+     int const n_;               ///< number of observations
+     int const k_;               ///< number of estimated parameters
+     int const dof_;             ///< number of degrees of freedom
+     bool const intercept_;      ///< true if intercept was added
      Vecdouble beta_;            ///< estimated parameters
      double ser_;                ///< standard error of regeression
      double r2_;                 ///< coefficient of determination

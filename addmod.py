@@ -31,7 +31,7 @@ namespace SHG {{
 }}  // namespace SHG"""
 
 TEST_FILE = """#include <shg/{low}.h>
-#include "testing.h"
+#include "tests.h"
 
 namespace SHG::Testing {{
 
@@ -74,7 +74,7 @@ def add_module(module_name):
         f.write(s)
 
     s = TEST_FILE.format(low=low)
-    with open("testing/{low}_test.cc".format(low=low), 'w') as f:
+    with open("tests/{low}_test.cc".format(low=low), 'w') as f:
         f.write(s)
 
     with open("include/shg/shg.h", encoding="utf-8") as f:

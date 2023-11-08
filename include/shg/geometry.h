@@ -61,19 +61,19 @@ public:
      virtual ~Shape() = default;
 
      /** Move this shape to the point \f$p\f$. */
-     void move_to(const Point& p) { do_move_to(p); }
+     void move_to(Point const& p) { do_move_to(p); }
 
      /** Move this shape by the vector \f$(a, b)\f$. */
      void move_by(double a, double b) { do_move_by(a, b); }
 
      /** Rotate this shape counter-clockwise by the angle
          \f$\varphi\f$ about the point \f$p\f$. */
-     void rotate(double phi, const Point& p) { do_rotate(phi, p); }
+     void rotate(double phi, Point const& p) { do_rotate(phi, p); }
 
 private:
-     virtual void do_move_to(const Point& p) = 0;
+     virtual void do_move_to(Point const& p) = 0;
      virtual void do_move_by(double a, double b) = 0;
-     virtual void do_rotate(double phi, const Point& p) = 0;
+     virtual void do_rotate(double phi, Point const& p) = 0;
 };
 
 /**
@@ -92,7 +92,7 @@ public:
 
 private:
      /** Assigns to this point coordinates of the point \f$p\f$. */
-     void do_move_to(const Point& p) override;
+     void do_move_to(Point const& p) override;
      /** Moves this point to the point \f$(x + a, y+ b)\f$. */
      void do_move_by(double a, double b) override;
      // clang-format off
@@ -114,7 +114,7 @@ private:
       * \f}
       */
      // clang-format on
-     void do_rotate(double phi, const Point& p) override;
+     void do_rotate(double phi, Point const& p) override;
 
      double x_{0.0};
      double y_{0.0};
@@ -127,7 +127,7 @@ private:
  * \f$(x_2, y_2)\f$ is calculated as \f$\sqrt{(x_1 - x_2)^2 + (y_1 -
  * y_2)^2}\f$.
  */
-double distance(const Point& p1, const Point& p2);
+double distance(Point const& p1, Point const& p2);
 
 /**
  * Returns \e true if two points are approximately equal.
@@ -136,7 +136,7 @@ double distance(const Point& p1, const Point& p2);
  * equal if \f$|x_1 - x_2| \leq \epsilon\f$ and \f$|y_1 - y_2| \leq
  * \epsilon\f$.
  */
-bool equal(const Point& p1, const Point& p2, double eps = tolerance);
+bool equal(Point const& p1, Point const& p2, double eps = tolerance);
 
 /**
  * Returns \e true if the first point is lexicographically less than
@@ -146,12 +146,12 @@ bool equal(const Point& p1, const Point& p2, double eps = tolerance);
  * \f$(x_2, y_2)\f$ if and only if \f$x_1 < x_2 \lor (x_1 = x_2 \land
  * y_1 < y_2)\f$.
  */
-bool is_less(const Point& p1, const Point& p2);
+bool is_less(Point const& p1, Point const& p2);
 
 /**
  * Outputs a point to a stream.
  */
-std::ostream& operator<<(std::ostream& stream, const Point& p);
+std::ostream& operator<<(std::ostream& stream, Point const& p);
 
 /**
  * Representation of a straight line on the plane. A line \f$l\f$ is
@@ -178,7 +178,7 @@ public:
       *   C &= y_1x_2 - x_1y_2
       * \f}
       */
-     Line(const Point& p1, const Point& p2);
+     Line(Point const& p1, Point const& p2);
 
      double A() const { return A_; }
      double B() const { return B_; }
@@ -194,7 +194,7 @@ public:
       * \f}
       * The point \f$p\f$ does not have to lie on this line.
       */
-     Line perpendicular(const Point& p) const;
+     Line perpendicular(Point const& p) const;
 
 private:
      /**
@@ -207,7 +207,7 @@ private:
       * Moves the line parallelly so that it passes through the point
       * \e p. Uses the formula \f$C_1 = -Ap.x() - Bp.y()\f$.
       */
-     void do_move_to(const Point& p) override;
+     void do_move_to(Point const& p) override;
 
      /**
       * Moves the line parallelly. The line will have the equation
@@ -236,7 +236,7 @@ private:
       *   C_1 &= C + (A - A_1)x_0 + (B - B_1)y_0.
       * \f}
       */
-     void do_rotate(double phi, const Point& p) override;
+     void do_rotate(double phi, Point const& p) override;
 
      double A_{0.0};
      double B_{1.0};
@@ -247,7 +247,7 @@ private:
  * Returns \e true if an only if two lines approximately overlap.
  * \see mutual_position().
  */
-bool equal(const Line& line1, const Line& line2,
+bool equal(Line const& line1, Line const& line2,
            double tol = tolerance);
 
 /**
@@ -274,7 +274,7 @@ enum class Mutual_position {
  * parallel. The parameter \f$\var{tol}\f$ is used for comparison
  * accuracy.
  */
-Mutual_position mutual_position(const Line& line1, const Line& line2,
+Mutual_position mutual_position(Line const& line1, Line const& line2,
                                 double tol = tolerance);
 
 /**
@@ -292,7 +292,7 @@ Mutual_position mutual_position(const Line& line1, const Line& line2,
  * The parameter \f$\var{tol}\f$ is used for comparison accuracy in a
  * call to mutual_position().
  */
-double distance(const Line& line1, const Line& line2,
+double distance(Line const& line1, Line const& line2,
                 double tol = tolerance);
 
 /**
@@ -308,13 +308,13 @@ double distance(const Line& line1, const Line& line2,
  * \var{tol}\f$
  */
 
-Point intersection_point(const Line& line1, const Line& line2,
+Point intersection_point(Line const& line1, Line const& line2,
                          double tol = tolerance);
 
 /**
  * Outputs a line to a stream.
  */
-std::ostream& operator<<(std::ostream& stream, const Line& line);
+std::ostream& operator<<(std::ostream& stream, Line const& line);
 
 // clang-format off
 /**
@@ -374,8 +374,8 @@ public:
       * vertices of a rectangle
       * \throws std::runtime_error in case of numerical inaccuracy
       */
-     Rectangle(const Point& p1, const Point& p2, const Point& p3,
-               const Point& p4, double tol = tolerance);
+     Rectangle(Point const& p1, Point const& p2, Point const& p3,
+               Point const& p4, double tol = tolerance);
      double a() const { return a_; }
      double b() const { return b_; }
      double phi() const { return phi_; }
@@ -397,7 +397,7 @@ public:
       * \f]
       * Two lines parallel to this line and distant from it by \f$b /
       * 2\f$, which are longer sides of the rectangle, are (see
-      * distance(const Line&, const Line&, double))
+      * distance(Line const&, Line const&, double))
       * \f{align*}{
       * \sin \varphi \ x - \cos \varphi \ y + (-h \sin \varphi + k
       * \cos \varphi + \frac{b}{2}) &= 0, \\
@@ -447,7 +447,7 @@ private:
       * Moves this rectangle so that its center is at the point \p p.
       * \f$h \leftarrow p.x(), \quad k \leftarrow p.y()\f$.
       */
-     void do_move_to(const Point& p) override;
+     void do_move_to(Point const& p) override;
 
      /**
       * Moves this rectangle so that its center is at the point
@@ -460,7 +460,7 @@ private:
       * \f$\varphi\f$ about the point \f$p\f$.
       * \implementation See Ellipse::do_rotate().
       */
-     void do_rotate(double phi, const Point& p) override;
+     void do_rotate(double phi, Point const& p) override;
 
      double a_{1.0};
      double b_{1.0};
@@ -481,13 +481,13 @@ private:
  * Squares are not compared correctly by this function. When \f$a =
  * b\f$, \f$\varphi\f$ should be in \f$[0, \pi / 2)\f$.
  */
-bool equal(const Rectangle& r1, const Rectangle& r2,
+bool equal(Rectangle const& r1, Rectangle const& r2,
            double tol = tolerance);
 
 /**
  * Outputs a rectangle to a stream.
  */
-std::ostream& operator<<(std::ostream& stream, const Rectangle& r);
+std::ostream& operator<<(std::ostream& stream, Rectangle const& r);
 
 /**
  * Returns \e true if and only if the equation \f$ax^2 + 2bxy + cy^2 +
@@ -564,7 +564,7 @@ public:
       * result with 1 using tolerance \f$\var{tol}\f$.
       */
      Relative_position relative_position(
-          const Point& p, double tol = tolerance) const;
+          Point const& p, double tol = tolerance) const;
 
      /**
       * Returns point of this ellipse for trigonometric parameter. The
@@ -655,7 +655,7 @@ public:
       *   C &= -(A x_0 + B y_0)
       * \f}
       */
-     Line tangent(const Point& p) const;
+     Line tangent(Point const& p) const;
 
      /**
       * Tangent to this ellipse at the point determined by
@@ -775,7 +775,7 @@ public:
       * crosses the ellipse in two points. For \f$C < C_1\f$ and \f$C>
       * C_2\f$ the line has no common points with the ellipse.
       */
-     std::pair<Line, Line> tangent(const Line& line) const;
+     std::pair<Line, Line> tangent(Line const& line) const;
 
      /**
       * Returns ellipse tangent to a given line at a given point.
@@ -856,7 +856,7 @@ public:
       *   = \frac{1}{2} \gamma [(Abs - Bbc)^2 + (Aac + Bas)^2] \geq 0
       * \f}
       */
-     static Ellipse tangent(const Line& l, const Point& p, double a,
+     static Ellipse tangent(Line const& l, Point const& p, double a,
                             double b, double phi, bool negative,
                             double tol = tolerance);
 
@@ -872,7 +872,7 @@ private:
       * Moves this ellipse so that its center is at the point \p p.
       * \f$h \leftarrow p.x(), \quad k \leftarrow p.y()\f$.
       */
-     void do_move_to(const Point& p) override;
+     void do_move_to(Point const& p) override;
 
      /**
       * Moves this ellipse so that its center is at the point <tt>(h +
@@ -910,7 +910,7 @@ private:
       * Consequently, \f$\alpha - \theta = \varphi\f$, so \f$\alpha =
       * \varphi + \theta\f$.
       */
-     void do_rotate(double phi, const Point& p) override;
+     void do_rotate(double phi, Point const& p) override;
 
      double a_{1.0};
      double b_{1.0};
@@ -931,20 +931,20 @@ private:
  * Circles are not compared correctly by this function. When \f$a =
  * b\f$, \f$\varphi\f$ should be 0.
  */
-bool equal(const Ellipse& e1, const Ellipse& e2,
+bool equal(Ellipse const& e1, Ellipse const& e2,
            double tol = tolerance);
 
 /**
  * Outputs an ellipse to a stream.
  */
-std::ostream& operator<<(std::ostream& stream, const Ellipse& e);
+std::ostream& operator<<(std::ostream& stream, Ellipse const& e);
 
 /**
  * Coefficients of polynomial for finding common points of two
- * ellipses. The function returns a vector $a$ of five coefficients of
- * the polynomial whose real roots are used to find common points of
- * two ellipse. The equation to find common points is \f[ a_4t^4 +
- * a_3t^3 + a_2t^2 + a_1t + a_0 = 0. \f]
+ * ellipses. The function returns a vector \f$a\f$ of five
+ * coefficients of the polynomial whose real roots are used to find
+ * common points of two ellipse. The equation to find common points is
+ * \f[ a_4t^4 + a_3t^3 + a_2t^2 + a_1t + a_0 = 0. \f]
  *
  * \implementation Let be given two ellipses:
  * \f{align*}{
@@ -1033,8 +1033,8 @@ std::ostream& operator<<(std::ostream& stream, const Ellipse& e);
  *   a_0 &= b_1^4 (A + D + F)
  * \f}
  */
-Vecdouble common_points_polynomial(const Ellipse& e1,
-                                   const Ellipse& e2);
+Vecdouble common_points_polynomial(Ellipse const& e1,
+                                   Ellipse const& e2);
 
 /**
  * Finds common points of ellipses. The common points are returned in
@@ -1045,7 +1045,7 @@ Vecdouble common_points_polynomial(const Ellipse& e1,
  * of degree 0
  * \returns 3 the procedure of finding roots failed
  */
-int common_points(const Ellipse& e1, const Ellipse& e2, Vecpoint& p);
+int common_points(Ellipse const& e1, Ellipse const& e2, Vecpoint& p);
 
 /**
  * Coefficients of polynomial for finding distance between point and
@@ -1101,7 +1101,7 @@ int common_points(const Ellipse& e1, const Ellipse& e2, Vecpoint& p);
  *   a_0 &= b^4 D
  * \f}
  */
-Vecdouble closest_points_polynomial(const Point& p, const Ellipse& e);
+Vecdouble closest_points_polynomial(Point const& p, Ellipse const& e);
 
 /**
  * Calculates distance between a point and an ellipse.
@@ -1110,7 +1110,7 @@ Vecdouble closest_points_polynomial(const Point& p, const Ellipse& e);
  * \param [out] d distance
  * \param [out] q one or two closest points
  */
-void distance(const Point& p, const Ellipse& e, double& d,
+void distance(Point const& p, Ellipse const& e, double& d,
               Vecpoint& q);
 
 /**
@@ -1123,8 +1123,8 @@ void distance(const Point& p, const Ellipse& e, double& d,
  * \throws std::invalid_argument if \p p does not belong to boundaries
  * of both ellipses
  */
-bool is_tangent_point(const Ellipse& e1, const Ellipse& e2,
-                      const Point& p, double tol = tolerance);
+bool is_tangent_point(Ellipse const& e1, Ellipse const& e2,
+                      Point const& p, double tol = tolerance);
 
 /** \} */ /* end of group geometric_functions */
 

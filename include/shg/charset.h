@@ -13,12 +13,14 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
 using plchar = char;
 using plstring = std::string;
 
 /**
- * Character set used in Polish language processing. See \ref
- * plpcharset.
+ * Character set used in Polish language processing. See \ref plptab.
  */
 namespace Charset {
 
@@ -108,6 +110,8 @@ inline bool is_upper(plstring const& s) {
 }
 
 }  // namespace Charset
+
+/** \} */
 
 }  // namespace SHG::PLP
 

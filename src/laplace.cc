@@ -35,7 +35,7 @@ double Laplace_distribution::f(double x) {
 }
 
 double Laplace_distribution::cdf(double x) {
-     const double t = (x - mu) / lambda;
+     double const t = (x - mu) / lambda;
      return (t > 0.0) ? 1.0 - 0.5 * exp(-t) : 0.5 * exp(t);
 }
 
@@ -47,19 +47,19 @@ double Laplace_distribution::invcdf(double p) {
                                : mu + lambda * log(p);
 }
 
-double median(const SHG::Vecdouble& x) {
-     const int n = x.size();
+double median(SHG::Vecdouble const& x) {
+     int const n = x.size();
      if (n < 1)
           throw invalid_argument("invalid dimension in median");
-     const std::div_t r = std::div(n, 2);
+     std::div_t const r = std::div(n, 2);
      if (r.rem)
           return x[r.quot];
      return 0.5 * (x[r.quot - 1] + x[r.quot]);
 }
 
-double weighted_median(const SHG::Vecdouble& x,
-                       const SHG::Vecdouble& w) {
-     const size_t n = x.size();
+double weighted_median(SHG::Vecdouble const& x,
+                       SHG::Vecdouble const& w) {
+     size_t const n = x.size();
      if (n < 1 || w.size() != n)
           throw invalid_argument(__func__);
      double u = 0.0;
@@ -88,7 +88,7 @@ double weighted_median(const SHG::Vecdouble& x,
 Unilapmixmod::Degenerate_distribution::Degenerate_distribution()
      : Exception("degenerate distribution in m-step") {}
 
-Unilapmixmod::Unilapmixmod(const SHG::Vecdouble& x, int K)
+Unilapmixmod::Unilapmixmod(SHG::Vecdouble const& x, int K)
      : n(x.size()),
        K(K),
        x(x),
@@ -112,12 +112,12 @@ Unilapmixmod::Unilapmixmod(const SHG::Vecdouble& x, int K)
 }
 
 double Unilapmixmod::estep() {
-     const double oldloglik = loglik;
+     double const oldloglik = loglik;
      double s;
      int i, k;
      loglik = 0.0;
      for (i = 0; i < n; i++) {
-          const double xi = x(i);
+          double const xi = x(i);
           s = 0.0;
           for (k = 0; k < K; k++)
                s += (psi(i, k) = pi(k) * Laplace_distribution(
@@ -155,9 +155,9 @@ void Unilapmixmod::mstep() {
 Laplace_mixture::Error::Error()
      : Exception("Laplace mixture error") {}
 
-Laplace_mixture::Laplace_mixture(const SHG::Vecdouble& w,
-                                 const SHG::Vecdouble& mu,
-                                 const SHG::Vecdouble& lambda)
+Laplace_mixture::Laplace_mixture(SHG::Vecdouble const& w,
+                                 SHG::Vecdouble const& mu,
+                                 SHG::Vecdouble const& lambda)
      : n_(w.size()),
        w(w),
        mu(mu),
@@ -262,10 +262,10 @@ void Laplace_mixture::moments() {
 
      // Calculate the first four raw moments of the mixture.
      for (size_t i = 0; i < n_; i++) {
-          const double wi = w[i];
-          const double mu1 = mu[i];
-          const double mu2 = sqr(mu1);
-          const double lambda2 = sqr(lambda[i]);
+          double const wi = w[i];
+          double const mu1 = mu[i];
+          double const mu2 = sqr(mu1);
+          double const lambda2 = sqr(lambda[i]);
           m1 += wi * mu1;
           m2 += wi * (mu2 + 2.0 * lambda2);
           m3 += wi * mu1 * (mu2 + 6.0 * lambda2);
@@ -273,8 +273,8 @@ void Laplace_mixture::moments() {
                 (mu2 * (mu2 + 12.0 * lambda2) + 24.0 * sqr(lambda2));
      }
      mean_ = m1;
-     const double sm = sqr(m1);
-     const double var = m2 - sm;
+     double const sm = sqr(m1);
+     double const var = m2 - sm;
      if (var <= 0.0)
           throw Error();
      sdev_ = sqrt(var);

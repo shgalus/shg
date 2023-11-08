@@ -120,7 +120,7 @@ std::istream& operator>>(std::istream& stream, Polynomial& x);
  * \note This function is for polynomials over the field of rational
  * numbers.
  */
-Polynomial from_chars(const char* s);
+Polynomial from_chars(char const* s);
 
 /**
  * Division of polynomials.

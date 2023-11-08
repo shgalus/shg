@@ -1,0 +1,349 @@
+/**
+
+\page notespage Notes
+
+\tableofcontents
+
+\section various_notes Various notes.
+
+\section strdlr NIST Statistical Reference Datasets Linear Regression.
+
+Test cases in the file ols_test.cc use data for testing linear
+regression retrieved on 24 December 2010 from <a href =
+"http://www.itl.nist.gov/div898/strd/">NIST Statistical Reference
+Datasets</a>. The data contain 11 datasets, described at <a href =
+"http://www.itl.nist.gov/div898/strd/lls/lls.shtml">StRD Linear Least
+Squares Regression Datasets</a>:
+
+Dataset|Model|Number of Parameters|Number of Observations
+:------|:----|-------------------:|---------------------:
+Norris   |y = B0 + B1*x + e                                |  2 | 36
+Pontius  |y = B0 + B1*x + B2*(x**2)                        |  3 | 40
+NoInt1   |y = B1*x + e                                     |  1 | 11
+NoInt2   |y = B1*x + e                                     |  1 |  3
+Filip    |y = B0 + B1*x + B2*(x**2) + ... + B10*(x**10) + e| 11 | 82
+Longley  |y = B0 + B1*x1 + B2*x2 + B3*x3 + ... + B6*x6 + e |  7 | 16
+Wampler1 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler2 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler3 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler4 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+Wampler5 |y = B0 + B1*x + B2*(x**2) + ... + B5*(x**5)      |  6 | 21
+
+Local copies of retrieved data files:
+<a href = "Norris.dat">Norris.dat</a>,
+<a href = "Pontius.dat">Pontius.dat</a>,
+<a href = "NoInt1.dat">NoInt1.dat</a>,
+<a href = "NoInt2.dat">NoInt2.dat</a>,
+<a href = "Filip.dat">Filip.dat</a>,
+<a href = "Longley.dat">Longley.dat</a>,
+<a href = "Wampler1.dat">Wampler1.dat</a>,
+<a href = "Wampler2.dat">Wampler2.dat</a>,
+<a href = "Wampler3.dat">Wampler3.dat</a>,
+<a href = "Wampler4.dat">Wampler4.dat</a>,
+<a href = "Wampler5.dat">Wampler5.dat</a>.
+
+\section doxygen_boost_test Boost test in Doxygen.
+
+According to https://stackoverflow.com/questions/38643584, the
+following macros should be defined in Doxyfile to get clear Doxygen
+output:
+
+\verbatim
+PREDEFINED             = "BOOST_AUTO_TEST_CASE(name)=void name()" \
+                         "BOOST_AUTO_TEST_SUITE(name)=namespace BoostTest { class name {public:" \
+                         "BOOST_FIXTURE_TEST_SUITE(name,data)=namespace BoostTest { class name {public:" \
+                         "BOOST_AUTO_TEST_SUITE_END()=};}" \
+                         "BOOST_CONCEPT_REQUIRES(req,type)=type " \
+                         "BOOST_CONCEPT_ASSERT(req)= "
+\endverbatim
+
+I have modified `BOOST_AUTO_TEST_SUITE(name)` and
+`BOOST_AUTO_TEST_SUITE_END()` to allow nesting test suites. At the
+moment, `BOOST_FIXTURE_TEST_SUITE(name,data)`,
+`BOOST_CONCEPT_REQUIRES(req,type)` and `BOOST_CONCEPT_ASSERT(req)` are
+left untouched as I do not use them.
+
+I have experimented with adding
+
+\verbatim
+"BOOST_DATA_TEST_CASE(name, ...)=void name(__VA_ARGS__)"
+\endverbatim
+
+to Doxyfile, but Doxygen seems not to recognize `__VA_ARGS__`.
+The following
+
+\verbatim
+#define BOOST_DATA_TEST_CASE(name,...) void name(__VA_ARGS__)
+
+
+BOOST_DATA_TEST_CASE(operator_test, Date_dataset())
+
+BOOST_DATA_TEST_CASE(normal_integral_test, bdata::xrange(61), xr1)
+
+BOOST_DATA_TEST_CASE(gammad_test, bdata::xrange(101) * bdata::xrange(100), xr1, xr2)
+
+BOOST_DATA_TEST_CASE(betain_test, bdata::xrange(9) * bdata::xrange(10) * bdata::xrange(10), xr1, xr2, xr3)
+\endverbatim
+
+passed to the C preprocessor works excellent, producing
+
+\verbatim
+void operator_test(Date_dataset())
+
+void normal_integral_test(bdata::xrange(61), xr1)
+
+void gammad_test(bdata::xrange(101) * bdata::xrange(100), xr1, xr2)
+
+void betain_test(bdata::xrange(9) * bdata::xrange(10) * bdata::xrange(10), xr1, xr2, xr3)
+\endverbatim
+
+\section cocoalib_install Installing CoCoALib.
+
+Download CoCoALib-0.99818.tgz from
+https://cocoa.dima.unige.it/cocoa/cocoalib/.
+
+    ./configure --with-boost-hdr-dir=/usr/local/boost_1_83_0/include
+    make
+    make install
+    Installed CoCoA examples in "/usr/local/include/CoCoA/examples/"
+    Installed CoCoA documentation in "/usr/local/include/CoCoA/doc/"
+    Installed CoCoA headers in "/usr/local/include/CoCoA/"
+    Installed CoCoA library in "/usr/local/lib/"
+    cd src/CoCoA-5
+    make install
+    CoCoA-5 installed in /usr/local/bin
+
+Headers: file:////usr/local/include/CoCoA/, library:
+file:////usr/local/lib/. Links:
+[examples](file:////usr/local/include/CoCoA/examples/),
+[CoCoALib-0.99818 documentation
+documentation](file:///usr/local/include/CoCoA/doc/CoCoALib.pdf),
+[CoCoALib-0.99818
+documentation](file:///usr/local/include/CoCoA/doc/html/index.html)
+
+\section installing_old_cvs_repository Installing old CVS repository.
+
+To install old CVS repository, change to directory `doc` and say `make
+cvs`. Then change to `cvs/shg` or `cvs/metashg` and issue issue normal
+cvs commands like `cvs log`.
+
+\section mnist_database The MNIST database of handwritten digits.
+
+The directory testdata contains four files downloaded in March 2022
+from http://yann.lecun.com/exdb/mnist/ (<a href =
+"mnistdhd.html">local copy</a>):
+
+- t10k-images-idx3-ubyte.gz
+- t10k-labels-idx1-ubyte.gz
+- train-images-idx3-ubyte.gz
+- train-labels-idx1-ubyte.gz
+
+\section vs2022 Creating Visual Studio 2022 solution.
+
+Create directory `shg\extras\vs2022`. Create project `shg` as a
+static library in solution `shg` in this directory. In the solution
+`shg` add another project named `tests` as console application.
+
+For properies of both projects in all configurations and all
+platforms:
+- in section C/C++ Language choose ISO C++20 and disable language
+  extensions,
+- in section C/C++ Precompiled Headers choose Not Using Precompiled
+  Headers,
+- in section C/C++ Advanced disable warnings: 4244, 4267, 4305, 4723,
+  4756, 4996, 26451, 26812.
+
+Remove generated files `framework.h`, `pch.h`, `pch.cpp`, `shg.cpp`,
+`tests.cpp`.
+
+Create `.gitignore` and `.gitattributes` using `Git|Settings|Git
+Repository Settings`. Move them into `vs2022` directory.
+
+Add header files from `include/shg` and source files from `src` to
+the project `shg`. Add files from directory `tests` to project
+`tests`. In C/C++ General in Additional Include Directories for both
+projects add the path `..\..\..\..\include`. In solution explorer
+right-click tests and add reference to shg.
+
+Add the file `nuget.config`. In solution properties set `tests` as a
+startup project which depends on `shg`. With `Tools|NuGet Package
+Manager` add boost_unit_test_framework-vc143 for the project `tests`.
+Allow for language extensions for `tests` (it compiles winnt.h).
+
+To enable assertions in release mode, remove NDEBUG in
+Properties/C/C++/Preprocessor/Preprocessor definitions.
+
+\subsection MSVC MSVC environment.
+
+- [Microsoft C/C++ Documentation](https://docs.microsoft.com/en-us/cpp/)
+
+- [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+
+- [C++ in Visual Studio](https://docs.microsoft.com/en-us/cpp/overview/visual-cpp-in-visual-studio)
+
+- [Walkthrough: Create and use a static library](https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp)
+
+- [Walkthrough: Create and use your own Dynamic Link Library (C++)](https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp)
+
+- [Setup NuGet packages folder for project outside solution folder](https://stackoverflow.com/questions/40322066)
+
+- [Common NuGet configurations](https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior)
+
+- [nuget.config reference](https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file)
+
+\section plptab Non-ASCII Polish letters in various encodings.
+
+\verbatim
+Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
+------------------------------------------------------------
+  ą    \k{a} \304\205    \303   0x0105        \u0105
+  ć    \'{c} \304\207    \305   0x0107        \u0107
+  ę    \k{e} \304\231    \315   0x0119        \u0119
+  ł    {\l}  \305\202    \325   0x0142        \u0142
+  ń    \'{n} \305\204    \327   0x0144        \u0144
+  ó    \'{o} \303\263    \265   0x00f3        \u00f3
+  ś    \'{s} \305\233    \341   0x015b        \u015b
+  ź    \'{z} \305\272    \360   0x017a        \u017a
+  ż    \.{z} \305\274    \362   0x017c        \u017c
+  Ą    \k{A} \304\204    \302   0x0104        \u0104
+  Ć    \'{C} \304\206    \304   0x0106        \u0106
+  Ę    \k{E} \304\230    \314   0x0118        \u0118
+  Ł    {\L}  \305\201    \324   0x0141        \u0141
+  Ń    \'{N} \305\203    \326   0x0143        \u0143
+  Ó    \'{O} \303\223    \231   0x00d3        \u00d3
+  Ś    \'{S} \305\232    \340   0x015a        \u015a
+  Ź    \'{Z} \305\271    \357   0x0179        \u0179
+  Ż    \.{Z} \305\273    \361   0x017b        \u017b
+\endverbatim
+
+\section useful_links Useful links.
+
+- [cppreference.com](https://en.cppreference.com/)
+
+    - [Useful resources](https://en.cppreference.com/w/cpp/links)
+
+    - [A list of open source C++ libraries](https://en.cppreference.com/w/cpp/links/libs)
+
+    - [Floating-point environment](https://en.cppreference.com/w/cpp/numeric/fenv)
+
+- [GNU make](https://www.gnu.org/software/make/manual/make.html)
+  ([local copy](file:///usr/share/doc/make-doc/make.html/index.html))
+
+- [Managing Projects with GNU Make](https://www.oreilly.com/openbook/make3/book/)
+
+- [GCC documentation](https://gcc.gnu.org/onlinedocs/13.1.0/)
+  ([local copy](file:///usr/local/gcc-13.1.0/share/doc/html/gcc/index.html))
+
+- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-13.1.0/cpp/)
+  ([local copy](file:///usr/local/gcc-13.1.0/share/doc/html/cpp/index.html))
+
+- [Clang documentation](https://clang.llvm.org/docs/index.html)
+  ([local copy](file:///usr/share/doc/clang-17/html/index.html))
+
+- [Boost documentation](https://www.boost.org/doc/libs/1_83_0/)
+  ([local copy](file:///usr/local/share/doc/boost_1_83_0/index.html))
+
+    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_83_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_83_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
+
+    - [Safe numerics](https://www.boost.org/doc/libs/1_83_0/libs/safe_numerics/doc/html/introduction.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_83_0/libs/safe_numerics/doc/html/introduction.html))
+
+- [Eigen3 documentation](https://eigen.tuxfamily.org/dox/)
+  ([local copy](file:///usr/local/share/doc/eigen3/index.html))
+
+- [Valgrind documentation](https://valgrind.org/docs/manual/index.html)
+  ([local copy](file:///usr/local/share/doc/valgrind/html/index.html))
+
+- [JSF-AV-rules](https://www.stroustrup.com/JSF-AV-rules.pdf)
+  ([local copy](file:///home/sgalus/varia/doc/cpp/JSF-AV-rules.pdf))
+
+- [C++ Standards Support in GCC](https://gcc.gnu.org/projects/cxx-status.html)
+
+- [C++ Core Guidelines](http://isocpp.github.io/CppCoreGuidelines/)
+
+- [Standard C++](https://isocpp.org/)
+
+- [The Definitive C++ Book Guide and List](https://stackoverflow.com/questions/388242/)
+
+- [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+
+- [More C++ Idioms](https://en.wikibooks.org/wiki/More_C++_Idioms)
+
+- [The comprehensive catalog of C++ books](https://github.com/yuchdev/CppBooks)
+
+- [Ensure that operations on signed integers do not result in overflow](https://wiki.sei.cmu.edu/confluence/display/c/INT32-C.+Ensure+that+operations+on+signed+integers+do+not+result+in+overflow)
+
+- [C/C++ naming conventions](http://micro-os-plus.github.io/develop/naming-conventions/)
+
+- [C++ - constexpr const vs constexpr variables?](https://stackoverflow.com/questions/28845058/)
+
+- [C++ - constexpr vector](https://stackoverflow.com/questions/74154484/)
+
+- [C++ Template implementation file extension convention?](https://stackoverflow.com/questions/29264656/c-template-implementation-file-extension-convention)
+
+- [C++ Preferred method of dealing with implementation for large templates](https://softwareengineering.stackexchange.com/questions/373916/c-preferred-method-of-dealing-with-implementation-for-large-templates)
+
+- [Writing a custom iterator in modern C++](https://internalpointers.com/post/writing-custom-iterators-modern-cpp)
+
+- [Python documentation](https://docs.python.org/3/)
+  ([local copy](file:///usr/local/share/doc/python/python-3.11.4-docs-html/index.html))
+
+- [Doxygen documentation](https://www.doxygen.nl/manual/index.html)
+  ([local copy](file:///usr/local/share/doc/packages/doxygen/html/index.html))
+
+- [User’s Guide for the amsmath Package](http://www.ams.org/arc/tex/amsmath/amsldoc.pdf)
+
+- [Using the amsthm Package](http://www.ams.org/arc/tex/amscls/amsthdoc.pdf)
+
+- [The Art of Unix Programming](http://www.catb.org/~esr/writings/taoup/html/)
+
+- [The Clockwise/Spiral Rule](https://c-faq.com/decl/spiral.anderson.html)
+([local copy herein](spiral.anderson.html))
+
+- [ACCU](https://accu.org/)
+
+- [SQL Style Guide](https://www.sqlstyle.guide/)
+
+- [Numerical Recipes Other Stuff](http://numerical.recipes/otherstufftop.html)
+  ([local copy: Numerical Recipes Code 3.02](file:///usr/local/share/nr3/index.htm))
+
+    - [Official Bug Reports (NR3, the Third Edition)](http://numerical.recipes/forumarchive/index.php/f-25.html)
+
+- [pugixml](https://pugixml.org/)
+
+    - [pugixml quick start guide](https://pugixml.org/docs/quickstart.html)
+      ([local copy](file:///usr/share/doc/pugixml-doc/quickstart.html))
+
+    - [pugixml manual](https://pugixml.org/docs/manual.html)
+      ([local copy](file:///usr/share/doc/pugixml-doc/manual.html))
+
+- [GNU Scientific Library](https://www.gnu.org/software/gsl/doc/latex/gsl-ref.pdf)
+  ([local copy](file:///usr/local/share/doc/gsl-ref.pdf))
+
+- [GNU MP](https://gmplib.org/gmp-man-6.3.0.pdf)
+  ([local copy](file:///usr/share/doc/gmp-doc/gmp.pdf))
+
+- [Bit Twiddling Hacks](http://graphics.stanford.edu/~seander/bithacks.html)
+
+\section useful_commands Useful commands.
+
+- Replace xxx with yyy in all files in current directory and its
+subdirectories:
+\verbatim
+find . -type f -exec sed -i 's/xxx/yyy/g' {} \;
+\endverbatim
+
+- List files deleted from a repository:
+\verbatim
+git log --diff-filter=D --summary
+git log --diff-filter=D --summary | grep delete
+\endverbatim
+
+- Add a tag to a repository:
+\verbatim
+git tag v0.87
+git push origin v0.87
+\endverbatim
+
+*/

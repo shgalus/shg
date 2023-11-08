@@ -1,21 +1,22 @@
-# Makefile: description file for make in shg/tools directory
-
 include ../make.inc
 
-TARGET = ksone gmconsts octal genbuchb pchrtype
-
+INCLUDE = -I../include
+LOADLIBES = -L../lib -L/usr/local/boost_1_83_0/lib
 GMP = -lgmpxx -lgmp
+
+TARGET = ksone gmconsts octal genbuchb
 
 all: $(TARGET)
 
 specfunc: specfunc.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) -o $@
 ksone: ksone.cc
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) -o $@
 gmconsts: gmconsts.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) $(LDLIBS) $(GMP) -o $@
 genbuchb: genbuchb.cc
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LOADLIBES) -lcocoa $(LDLIBS) $(GMP) -o $@
-pchrtype: pchrtype.cc
+
 clean:
 	rm -f $(TARGET:%=%.d)
 spotless: clean

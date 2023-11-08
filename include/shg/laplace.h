@@ -50,7 +50,7 @@ public:
       * std::invalid_argument if \c lambda is not positive \warning
       * lambda is not the variance!
       */
-     Laplace_distribution(double mu = 0, double lambda = 1);
+     explicit Laplace_distribution(double mu = 0, double lambda = 1);
      /**
       * Returns density at \c x.
       */
@@ -69,8 +69,8 @@ public:
      double invcdf(double p);
 
 private:
-     const double mu;
-     const double lambda;
+     double const mu;
+     double const lambda;
 };
 
 /**
@@ -86,7 +86,7 @@ private:
  * \warning The function does not check if x is sorted
  * non-decreasingly.
  */
-double median(const SHG::Vecdouble& x);
+double median(SHG::Vecdouble const& x);
 
 /**
  * Weighted median.
@@ -127,8 +127,8 @@ double median(const SHG::Vecdouble& x);
  * to a point, ie. \f$k = l\f$, the minimum is uniquely reached at
  * \f$x_{k - 1}\f$.
  */
-double weighted_median(const SHG::Vecdouble& x,
-                       const SHG::Vecdouble& w);
+double weighted_median(SHG::Vecdouble const& x,
+                       SHG::Vecdouble const& w);
 
 /**
  * Univariate Laplace mixture models.
@@ -152,7 +152,7 @@ struct Unilapmixmod {
      struct Degenerate_distribution : public virtual Exception {
           Degenerate_distribution();
      };
-     Unilapmixmod(const SHG::Vecdouble& x, int K);
+     Unilapmixmod(SHG::Vecdouble const& x, int K);
      /**
       * Performs e-step.
       *
@@ -168,9 +168,9 @@ struct Unilapmixmod {
       */
      void mstep();
 
-     const int n;              ///< number of observations
-     const int K;              ///< number of components
-     const SHG::Vecdouble& x;  ///< observations
+     int const n;              ///< number of observations
+     int const K;              ///< number of components
+     SHG::Vecdouble const& x;  ///< observations
      SHG::Vecdouble pi;        ///< weights
      SHG::Vecdouble mu;        ///< mus of Laplace components
      SHG::Vecdouble lambda;    ///< lambdas of Laplace components
@@ -203,9 +203,9 @@ public:
      struct Error : public virtual Exception {
           Error();
      };
-     Laplace_mixture(const SHG::Vecdouble& w,
-                     const SHG::Vecdouble& mu,
-                     const SHG::Vecdouble& lambda);
+     Laplace_mixture(SHG::Vecdouble const& w,
+                     SHG::Vecdouble const& mu,
+                     SHG::Vecdouble const& lambda);
      double p(double x) const;       ///< Probability density.
      double cdf(double x) const;     ///< Distribution function.
      double invcdf(double p) const;  ///< Percentage point.
@@ -236,10 +236,10 @@ public:
      static Laplace_mixture read(std::istream& f);
 
 private:
-     const std::size_t n_;         ///< Number of components.
-     const SHG::Vecdouble w;       ///< Weights.
-     const SHG::Vecdouble mu;      ///< Parameters mu.
-     const SHG::Vecdouble lambda;  ///< Parameters lambda.
+     std::size_t const n_;         ///< Number of components.
+     SHG::Vecdouble const w;       ///< Weights.
+     SHG::Vecdouble const mu;      ///< Parameters mu.
+     SHG::Vecdouble const lambda;  ///< Parameters lambda.
      bool moments_calculated;      ///< True if moments calculated.
      double mean_;                 ///< Mean.
      double sdev_;                 ///< Standard deviation.

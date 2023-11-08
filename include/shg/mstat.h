@@ -68,7 +68,7 @@ double ksdist(double x);
  * \implementation The one-pass algorithm is used (see
  * \cite knuth-2002b, p. 248).
  */
-double mean(const Vecdouble& x);
+double mean(Vecdouble const& x);
 
 /**
  * Calculates the mean and variance of data. The variance is defined
@@ -83,7 +83,7 @@ double mean(const Vecdouble& x);
  * \implementation The one-pass algorithm is used (see
  * \cite knuth-2002b, p. 248).
  */
-void mean_var(const Vecdouble& x, double& mean, double& var);
+void mean_var(Vecdouble const& x, double& mean, double& var);
 
 /**
  * Calculates standard deviation of data. Standard deviation is
@@ -97,12 +97,12 @@ void mean_var(const Vecdouble& x, double& mean, double& var);
  * \implementation The one-pass algorithm is used (see
  * \cite knuth-2002b, p. 248).
  */
-double stddev(const double* x, std::size_t n);
+double stddev(double const* x, std::size_t n);
 
 /**
- * \copydoc stddev(const double*, std::size_t)
+ * \copydoc stddev(double const*, std::size_t)
  */
-inline double stddev(const std::vector<double>& x) {
+inline double stddev(std::vector<double> const& x) {
      return stddev(&x[0], x.size());
 }
 
@@ -120,7 +120,7 @@ inline double stddev(const std::vector<double>& x) {
  * \implementation The one-pass algorithm is used (see
  * \cite knuth-2002b, p. 248).
  */
-void mean_var1(const Vecdouble& x, double& mean, double& var);
+void mean_var1(Vecdouble const& x, double& mean, double& var);
 
 /**
  * Calculates the autocorrelation function. The following formulas are
@@ -135,14 +135,14 @@ void mean_var1(const Vecdouble& x, double& mean, double& var);
  * \exception std::runtime_error if the calculated variance is not
  * greater than 1e-13
  */
-void acf(const Vecdouble& x, int K, Vecdouble& r);
+void acf(Vecdouble const& x, int K, Vecdouble& r);
 
 /**
  * Calculates the autocorrelation function. The difference between
- * this function and acf(const Vecdouble&, int, Vecdouble&) is that
+ * this function and acf(Vecdouble const&, int, Vecdouble&) is that
  * the mean of the data is known.
  */
-void acf(const Vecdouble& x, double mean, int K, Vecdouble& r);
+void acf(Vecdouble const& x, double mean, int K, Vecdouble& r);
 
 /**
  * Chi-squared test for normality. Mean and standard deviation of
@@ -162,11 +162,11 @@ void acf(const Vecdouble& x, double mean, int K, Vecdouble& r);
  * \exception std::runtime_error if estimated standard deviation is
  * not greater than 1e-13
  */
-double chi2normtest(const Vecdouble& x, int r);
+double chi2normtest(Vecdouble const& x, int r);
 
 /**
  * Chi-squared test for standard normality. This function works as the
- * function chi2normtest(const Vecdouble&, int), but tests for
+ * function chi2normtest(Vecdouble const&, int), but tests for
  * standard normality. Neither mean nor standard deviation is
  * estimated. The p-value is returned, ie. \f$\Pr(\chi^2_{r - 1} >
  * \chi^2)\f$. The number of observations must be at least 2 and the
@@ -174,7 +174,7 @@ double chi2normtest(const Vecdouble& x, int r);
  *
  * \exception std::invalid_argument if n < 2 or r < 4
  */
-double chi2stdnormtest(const Vecdouble& x, int r);
+double chi2stdnormtest(Vecdouble const& x, int r);
 
 /**
  * Kolmogorov-Smirnov test. Given a cumulative continuous distribution
@@ -202,7 +202,7 @@ void ksone(T& cdf, Vecdouble& x, double& d, double& prob);
  * after return (\a x is copied to a local variable and then sorted).
  */
 template <class T>
-void ksonec(T& cdf, const Vecdouble& x, double& d, double& prob);
+void ksonec(T& cdf, Vecdouble const& x, double& d, double& prob);
 
 /**
  * Kolmogorov-Smirnov test. Given a cumulative distribution function
@@ -226,7 +226,7 @@ void ksoned(T& cdf, Vecint& x, double& d, double& prob);
  * then sorted).
  */
 template <class T>
-void ksonedc(T& cdf, const Vecint& x, double& d, double& prob);
+void ksonedc(T& cdf, Vecint const& x, double& d, double& prob);
 
 /**
  * Kolmogorov-Smirnov test for normality.
@@ -241,7 +241,7 @@ void ksonedc(T& cdf, const Vecint& x, double& d, double& prob);
  * \exception std::runtime_error if estimated standard deviation is
  * not greater than 1e-13
  */
-void ksnormtest(const Vecdouble& x, double& d, double& prob);
+void ksnormtest(Vecdouble const& x, double& d, double& prob);
 
 /**
  * The basic sample statistics.
@@ -279,7 +279,7 @@ public:
       * \exception std::invalid_argument if v.size() == 0
       * \note The vector of observations is copied to a local vector.
       */
-     explicit Sample(const std::vector<double>& v);
+     explicit Sample(std::vector<double> const& v);
      /**
       * Right-continuous sample cdf.
       */
@@ -326,14 +326,14 @@ public:
      Histdata histogram(int k) const;
 
 private:
-     const std::vector<double> data;
-     const std::size_t n;
-     const double en;
-     static const double eps;
+     std::vector<double> const data;
+     std::size_t const n;
+     double const en;
+     static double const eps;
      /**
       * Only to have const in front of Sample::data.
       */
-     static std::vector<double> srt(const std::vector<double>& v);
+     static std::vector<double> srt(std::vector<double> const& v);
 };
 
 /**
@@ -353,7 +353,7 @@ private:
  * such that \f$x_i < 0\f$ or \f$x_i \geq m\f$.
  */
 std::vector<std::vector<int>> run_length_distribution(
-     const std::vector<int>& x, int m);
+     std::vector<int> const& x, int m);
 
 /**
  * Maximum likelihood estimation of the parameter of the logarithmic
@@ -457,14 +457,14 @@ double cdf_lsd(double x, double p);
  * to calculate, what might be useful implementing an algorithm with
  * derivatives.
  */
-void mle_negative_binomial(const SHG::Vecint& x, double& t,
+void mle_negative_binomial(SHG::Vecint const& x, double& t,
                            double& p);
 
 /**
  * Cumulative distribution function of the negative binomial
  * distribution. Calculates cumulative distribution function of the
  * negative binomial distribution described in
- * mle_negative_binomial(const SHG::Vecint&, double&, double&), ie.
+ * mle_negative_binomial(SHG::Vecint const&, double&, double&), ie.
  * \f[ \Pr(X \leq x) = \sum_{k = 0}^{\lfloor x \rfloor} \binom{t - 1 +
  * k}{k} p^t (1 - p)^k \f] for \f$x \geq 0\f$ and 0 for \f$x < 0\f$.
  *
@@ -490,7 +490,7 @@ public:
       * distribution or negative values in the sample
       */
      explicit Assessment_of_discrete_distribution(
-          const SHG::Vecint& x);
+          SHG::Vecint const& x);
      /**
       * Performs calculations.
       */
@@ -517,8 +517,8 @@ public:
      double negbin() const { return negbin_; }
 
 private:
-     const int n;
-     const SHG::Vecint x;
+     int const n;
+     SHG::Vecint const x;
      double mean_;
      double var_;
      double geometric_;
@@ -549,7 +549,7 @@ struct Unigaumixmod {
      struct Degenerate_distribution : public virtual Exception {
           Degenerate_distribution();
      };
-     Unigaumixmod(const Vecdouble& x, int K);
+     Unigaumixmod(Vecdouble const& x, int K);
      /**
       * Performs e-step.
       *
@@ -565,9 +565,9 @@ struct Unigaumixmod {
       */
      void mstep();
 
-     const int n;         ///< number of observations
-     const int K;         ///< number of components
-     const Vecdouble& x;  ///< observations
+     int const n;         ///< number of observations
+     int const K;         ///< number of components
+     Vecdouble const& x;  ///< observations
      Vecdouble pi;        ///< weights
      Vecdouble mu;        ///< means of normal components
      Vecdouble sigma;     ///< std. dev. of normal components
@@ -577,7 +577,7 @@ struct Unigaumixmod {
 
 template <class T>
 void ksone(T& cdf, Vecdouble& x, double& d, double& prob) {
-     const int n = x.size();
+     int const n = x.size();
      double dt, en = n, ff, fn, fo = 0.0;
      std::sort(x.begin(), x.end());
      d = 0.0;
@@ -598,7 +598,7 @@ void ksone(T& cdf, Vecdouble& x, double& d, double& prob) {
 }
 
 template <class T>
-void ksonec(T& cdf, const Vecdouble& x, double& d, double& prob) {
+void ksonec(T& cdf, Vecdouble const& x, double& d, double& prob) {
      Vecdouble v(x);
      ksone(cdf, v, d, prob);
 }
@@ -607,8 +607,8 @@ template <class T>
 void ksoned(T& cdf, Vecint& x, double& d, double& prob) {
      // For discrete distributions with jumps in integer numbers this
      // eps is enough.
-     static const double eps = 1e-5;
-     const int n = x.size();
+     static double const eps = 1e-5;
+     int const n = x.size();
      double dt, en = n, ff, fn, fe, fo = 0.0;
      std::sort(x.begin(), x.end());
      d = 0.0;
@@ -632,7 +632,7 @@ void ksoned(T& cdf, Vecint& x, double& d, double& prob) {
 }
 
 template <class T>
-void ksonedc(T& cdf, const Vecint& x, double& d, double& prob) {
+void ksonedc(T& cdf, Vecint const& x, double& d, double& prob) {
      Vecint v(x);
      ksoned(cdf, v, d, prob);
 }

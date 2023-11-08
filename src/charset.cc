@@ -5,6 +5,7 @@
 
 #include <shg/charset.h>
 #include <cassert>
+#include <cstdint>
 #include <bitset>
 #include <iomanip>
 #include <map>
@@ -15,7 +16,7 @@ namespace SHG::PLP {
 namespace {
 
 struct Unicode_character {
-     char32_t const code;
+     std::uint_least32_t const code;
      char const* const name;
 };
 
@@ -1125,9 +1126,9 @@ using Character_map = std::map<char16_t, unsigned char>;
 
 Character_map init_character_map() {
      std::map<char16_t, unsigned char> m;
-     char32_t prev_code;
+     std::uint_least32_t prev_code;
      for (std::size_t i = 0; i < std::size(character_table); i++) {
-          char32_t const code = character_table[i].code;
+          std::uint_least32_t const code = character_table[i].code;
           assert(i == 0 || code > prev_code);
           m[code] = i;
           prev_code = code;

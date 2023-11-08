@@ -1,3 +1,8 @@
+/**
+ * \file src/csv.cc
+ * CSV format.
+ */
+
 #include <shg/csv.h>
 #include <stdexcept>
 
@@ -16,18 +21,18 @@ CSV_writer::CSV_writer(std::ostream& ostr, char field_separator,
           throw std::invalid_argument(__func__);
 }
 
-void CSV_writer::write_record(const std::vector<std::string>& rec) {
+void CSV_writer::write_record(std::vector<std::string> const& rec) {
      if (rec.size() == 0)
           return;
      rec_.clear();
      first_ = true;
-     for (const auto& f : rec)
+     for (auto const& f : rec)
           add_field(f);
      rec_ += "\r\n";
      ostr_.write(rec_.c_str(), rec_.size());
 }
 
-void CSV_writer::add_field(const std::string& s) {
+void CSV_writer::add_field(std::string const& s) {
      if (first_)
           first_ = false;
      else
@@ -111,7 +116,7 @@ void CSV_reader::handle_separator(std::vector<std::string>& rec) {
 bool CSV_reader::is_end_of_record() {
      if (inquote_)
           return false;
-     const bool eol = (c_ == '\r' || c_ == '\n');
+     bool const eol = (c_ == '\r' || c_ == '\n');
      if (c_ == '\r') {
           istr_.get(c_);
           if (!istr_.eof() && c_ != '\n')

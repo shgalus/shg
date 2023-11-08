@@ -1,4 +1,7 @@
-/* gmconsts.cc: generates mathematical constants */
+/**
+ * \file tools/gmconsts.cc
+ * Generates mathematical constants.
+ */
 
 #include <cassert>
 #include <cmath>
@@ -11,9 +14,9 @@
 #include <nr/fourier.h>
 #include <nr/mparith.h>
 
-void generate(const int prec, stringstream& ss) {
-     const string spi = MParith().mppi(1000);
-     const mpf_class pi(spi, prec);
+void generate(int const prec, stringstream& ss) {
+     string const spi = MParith().mppi(1000);
+     mpf_class const pi(spi, prec);
 
      ss.str("");
      ss.clear();
@@ -25,7 +28,7 @@ void generate(const int prec, stringstream& ss) {
      ss << "radian   = " << 180.0 / pi << "; // 180 / pi\n";
      ss << "degree   = " << pi / 180.0 << "; // pi / 180\n";
      {
-          const mpf_class j(1.0, prec);
+          mpf_class const j(1.0, prec);
           mpf_class s(0.0, prec);
           mpf_class p(2.0, prec);
           mpf_class n(1.0, prec);
@@ -39,10 +42,10 @@ void generate(const int prec, stringstream& ss) {
           ss << "iln2     = " << r << "; // 1 / ln 2\n";
      }
      {
-          const mpf_class one(1.0, prec);
-          const mpf_class two(2.0, prec);
-          const mpf_class sqrt2 = sqrt(two);
-          const mpf_class isqrt2 = one / sqrt(two);
+          mpf_class const one(1.0, prec);
+          mpf_class const two(2.0, prec);
+          mpf_class const sqrt2 = sqrt(two);
+          mpf_class const isqrt2 = one / sqrt(two);
           ss << "sqrt2    = " << sqrt2 << "; // sqrt(2)\n";
           ss << "isqrt2   = " << isqrt2 << "; // 1 / sqrt(2)\n";
      }

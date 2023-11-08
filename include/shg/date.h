@@ -198,11 +198,11 @@ public:
       *
       * \exception Bad_date if the date is incorrect
       */
-     explicit Date(const std::string& s);
+     explicit Date(std::string const& s);
      /**
-      * \copydoc Date(const std::string&)
+      * \copydoc Date(std::string const&)
       */
-     explicit Date(const char* s);
+     explicit Date(char const* s);
 
      /**
       * \copybrief Date(int, int, int)
@@ -280,7 +280,7 @@ public:
       * correct date. The date must be between Date::min and
       * Date::max.
       */
-     static bool correct(const std::string& s);
+     static bool correct(std::string const& s);
      /**
       * Returns true if the year \a y is leap.
       */
@@ -337,7 +337,7 @@ private:
       */
      static int32 pack(int d, int m, int y);
 
-     static int a4toi(const char* s) {
+     static int a4toi(char const* s) {
           if (!isdigit(s[0]) || !isdigit(s[1]) || !isdigit(s[2]) ||
               !isdigit(s[3]))
                throw Bad_date();
@@ -345,13 +345,13 @@ private:
                  (s[2] - '0') * 10 + (s[3] - '0');
      }
 
-     static int a2toi(const char* s) {
+     static int a2toi(char const* s) {
           if (!isdigit(s[0]) || !isdigit(s[1]))
                throw Bad_date();
           return (s[0] - '0') * 10 + (s[1] - '0');
      }
 
-     static int a1toi(const char* s) {
+     static int a1toi(char const* s) {
           if (!isdigit(s[0]))
                throw Bad_date();
           return s[0] - '0';
@@ -360,19 +360,19 @@ private:
      /**
       * Numbers of days in months.
       */
-     static const int daytab[2][13];
+     static int const daytab[2][13];
      /**
       * Numbers of days since 1 January to the last day in the month.
       */
-     static const int daytab2[2][13];
+     static int const daytab2[2][13];
      /**
       * Roman numbers.
       */
-     static const char* roman_month[13];
+     static char const* const roman_month[13];
      /**
       * Polish name of months in genitive case, UTF-8 encoded.
       */
-     static const char* polish_month[13];
+     static char const* const polish_month[13];
 };
 
 /**

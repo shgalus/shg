@@ -54,10 +54,10 @@ double MZT::operator()() {
 }
 
 void MZT::write(std::ostream& f) const {
-     f.write(reinterpret_cast<const char*>(uu_), sizeof uu_);
-     f.write(reinterpret_cast<const char*>(&ip_), sizeof ip_);
-     f.write(reinterpret_cast<const char*>(&jp_), sizeof jp_);
-     f.write(reinterpret_cast<const char*>(&cc_), sizeof cc_);
+     f.write(reinterpret_cast<char const*>(uu_), sizeof uu_);
+     f.write(reinterpret_cast<char const*>(&ip_), sizeof ip_);
+     f.write(reinterpret_cast<char const*>(&jp_), sizeof jp_);
+     f.write(reinterpret_cast<char const*>(&cc_), sizeof cc_);
 }
 
 void MZT::read(std::istream& f) {
@@ -83,8 +83,8 @@ void MZT::read(std::istream& f) {
      cc_ = cc;
 }
 
-const double MZT::cc0_ = 362436.0 / 16777216.0;
-const double MZT::cd_ = 7654321.0 / 16777216.0;
-const double MZT::cm_ = 16777213.0 / 16777216.0;
+double const MZT::cc0_ = 362436.0 / 16777216.0;
+double const MZT::cd_ = 7654321.0 / 16777216.0;
+double const MZT::cm_ = 16777213.0 / 16777216.0;
 
 }  // namespace SHG

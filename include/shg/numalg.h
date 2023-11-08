@@ -20,6 +20,12 @@
 namespace SHG {
 
 /**
+ * \addtogroup numerical_analysis
+ *
+ * \{
+ */
+
+/**
  * Degree of polynomial in one variable.
  *
  * \returns \f$\max \{i: a_i \neq 0, i = 0, \ldots, m - 1 \}\f$ if it
@@ -28,7 +34,7 @@ namespace SHG {
  * \throws std::invalid_argument if a.size() == 0 or a.size() > 32768.
  */
 template <template <class> class Indexed_container, class T>
-int degree_of_polynomial(const Indexed_container<T>& a, T eps);
+int degree_of_polynomial(Indexed_container<T> const& a, T eps);
 
 /**
  * Calculates real roots of polynomial a[n] x^n + ... + a[2] x^2 +
@@ -39,10 +45,10 @@ int degree_of_polynomial(const Indexed_container<T>& a, T eps);
  * 1
  * \throws std::runtime_error if the GSL routine fails
  */
-void real_roots(const Vecdouble& a, Vecdouble& x);
+void real_roots(Vecdouble const& a, Vecdouble& x);
 
 template <template <class> class Indexed_container, class T>
-int degree_of_polynomial(const Indexed_container<T>& a, T eps) {
+int degree_of_polynomial(Indexed_container<T> const& a, T eps) {
      static_assert(std::numeric_limits<int>::max() >= 32767,
                    "According to the standard, INT_MAX must be at "
                    "least 32767.");
@@ -60,7 +66,7 @@ int degree_of_polynomial(const Indexed_container<T>& a, T eps) {
  * Solves the equation \f$a_0 + a_1x + \ldots + a_{n - 1}x^{n - 1} =
  * 0\f$, \f$n \geq 1\f$.
  */
-void solve_polynomial(const Vecdouble& a, Veccomplex& x);
+void solve_polynomial(Vecdouble const& a, Veccomplex& x);
 
 /**
  * Solves system of linear equations.
@@ -70,9 +76,9 @@ void solve_linear(Matdouble& a, Vecdouble& x);
 /** Light wrapper for GSL minimizer. */
 class Minimizer_base {
 public:
-     Minimizer_base(const gsl_min_fminimizer_type* T);
-     Minimizer_base(const Minimizer_base&) = delete;
-     Minimizer_base& operator=(const Minimizer_base&) = delete;
+     explicit Minimizer_base(gsl_min_fminimizer_type const* T);
+     Minimizer_base(Minimizer_base const&) = delete;
+     Minimizer_base& operator=(Minimizer_base const&) = delete;
      virtual ~Minimizer_base();
      gsl_min_fminimizer* get() const;
 
@@ -83,9 +89,9 @@ private:
 /** Wrapper for GSL minimizer. */
 class Minimizer : Minimizer_base {
 public:
-     Minimizer(const gsl_min_fminimizer_type* T);
-     Minimizer(const Minimizer&) = delete;
-     Minimizer& operator=(const Minimizer&) = delete;
+     explicit Minimizer(gsl_min_fminimizer_type const* T);
+     Minimizer(Minimizer const&) = delete;
+     Minimizer& operator=(Minimizer const&) = delete;
 
      bool is_set() const { return is_set_; }
 
@@ -155,12 +161,12 @@ struct Uniform_search_for_minimum {
     variables. */
 class Multimin_fminimizer_base {
 public:
-     Multimin_fminimizer_base(const gsl_multimin_fminimizer_type* T,
+     Multimin_fminimizer_base(gsl_multimin_fminimizer_type const* T,
                               size_t n);
-     Multimin_fminimizer_base(const Multimin_fminimizer_base&) =
+     Multimin_fminimizer_base(Multimin_fminimizer_base const&) =
           delete;
      Multimin_fminimizer_base& operator=(
-          const Multimin_fminimizer_base&) = delete;
+          Multimin_fminimizer_base const&) = delete;
      virtual ~Multimin_fminimizer_base();
      gsl_multimin_fminimizer* get() const;
 
@@ -171,10 +177,10 @@ private:
 /** Wrapper for GSL minimizer for functions of several variables. */
 class Multimin_fminimizer : public Multimin_fminimizer_base {
 public:
-     Multimin_fminimizer(const gsl_multimin_fminimizer_type* T,
+     Multimin_fminimizer(gsl_multimin_fminimizer_type const* T,
                          size_t n);
-     Multimin_fminimizer(const Multimin_fminimizer&) = delete;
-     Multimin_fminimizer& operator=(const Multimin_fminimizer&) =
+     Multimin_fminimizer(Multimin_fminimizer const&) = delete;
+     Multimin_fminimizer& operator=(Multimin_fminimizer const&) =
           delete;
      virtual ~Multimin_fminimizer();
 
@@ -182,11 +188,11 @@ public:
 
      int iter() const { return iter_; }
 
-     void set(gsl_multimin_function* f, const std::vector<double>& x,
-              const std::vector<double>& step);
+     void set(gsl_multimin_function* f, std::vector<double> const& x,
+              std::vector<double> const& step);
      int iterate(int max_iter, double eps);
 
-     const std::vector<double>& x_minimum() const {
+     std::vector<double> const& x_minimum() const {
           return x_minimum_;
      }
      double f_minimum() const { return f_minimum_; }
@@ -201,6 +207,8 @@ private:
      std::vector<double> x_minimum_;
      double f_minimum_;
 };
+
+/** \} */
 
 }  // namespace SHG
 

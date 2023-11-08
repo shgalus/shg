@@ -10,6 +10,9 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
 /**
  * Checks if \c s starts with a numeral prefix. If a prefix is found,
  * the first position after the prefix is returned. Example:
@@ -28,6 +31,8 @@ plstring::size_type find_numeral_prefix(plstring const& s);
  * See \cite szober-1957, page 102-103.
  */
 void check_numeral_adverbs(std::string const& s, Setdesc& sd);
+
+/** \} */
 
 }  // namespace SHG::PLP
 

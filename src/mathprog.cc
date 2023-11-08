@@ -12,16 +12,16 @@ namespace SHG {
 
 using std::size_t;
 
-int revsimplex(const Matdouble& A, const Vecdouble& b,
-               const Vecdouble& c, Vecdouble& x, double& f,
-               const double eps) {
-     const size_t m = A.nrows();
-     const size_t n = A.ncols();
+int revsimplex(Matdouble const& A, Vecdouble const& b,
+               Vecdouble const& c, Vecdouble& x, double& f,
+               double const eps) {
+     size_t const m = A.nrows();
+     size_t const n = A.ncols();
      if (m < 1 || n < 1 || eps <= 0.0 || b.size() != m ||
          c.size() != n || x.size() != n)
           return 1;  // invalid input
 
-     const size_t m2 = m + 2, m1 = m + 1;
+     size_t const m2 = m + 2, m1 = m + 1;
      // Dummy initialization of k and l for compiler.
      size_t i, j, k = 0, l = 0, p = m2, p1 = m1;
      double d, s;
@@ -110,10 +110,10 @@ int revsimplex(const Matdouble& A, const Vecdouble& b,
 Simplex::Error::Error()
      : Exception("invalid argument in Simplex::Simpex()") {}
 
-Simplex::Simplex(const size_t m, const size_t n, const Matdouble& A,
-                 const Vecdouble& b, const Vecdouble& c,
-                 const Vecequality& e, const Direction d,
-                 const double eps)
+Simplex::Simplex(size_t const m, size_t const n, Matdouble const& A,
+                 Vecdouble const& b, Vecdouble const& c,
+                 Vecequality const& e, Direction const d,
+                 double const eps)
      : status(), f(), x() {
      if (m <= 0 || n <= 0 || A.nrows() < m || A.ncols() < n ||
          b.size() < m || c.size() < n || e.size() < m || eps <= 0.0)
@@ -126,7 +126,7 @@ Simplex::Simplex(const size_t m, const size_t n, const Matdouble& A,
           else if (e(i) != eq)
                throw Error();
      // There will be k slack variables.
-     const size_t n1 = n + k;
+     size_t const n1 = n + k;
      k = 0;
      Matdouble A1(m, n1);
      Vecdouble b1(m);
@@ -168,34 +168,34 @@ Simplex::Simplex(const size_t m, const size_t n, const Matdouble& A,
      }
 }
 
-int wolfe(const Vecdouble& p, const Vecdouble& C, const Matdouble& A,
-          const Vecdouble& b, Vecdouble& x, double& f) {
-     static const double eps = 1e-11;
-     static const int maxiter = 10000;
-     const int m = A.nrows();
-     const int n = A.ncols();
+int wolfe(Vecdouble const& p, Vecdouble const& C, Matdouble const& A,
+          Vecdouble const& b, Vecdouble& x, double& f) {
+     static double const eps = 1e-11;
+     static int const maxiter = 10000;
+     int const m = A.nrows();
+     int const n = A.ncols();
      if (m <= 0 || n <= 0)
           return 1;  // invalid parameter m or n
      {
-          const size_t ms = m;
-          const size_t ns = n;
+          size_t const ms = m;
+          size_t const ns = n;
           if (p.size() != ns || C.size() != ns * (ns + 1) / 2 ||
               A.nrows() != ms || A.ncols() != ns || b.size() != ms ||
               x.size() != ns)
                return 1;  // invalid dimensions
      }
-     const int g = m + n;      // added row in simplex table
-     const int h = 2 * n + m;  // added column in simplex table
-     const int                 // intervals of variable numbers
-                // x:  0 .. nv - 1
-          nv = n,             // v: nv .. nu - 1
-          nu = 2 * n,         // u: nu .. nz - 1
-          nz = 2 * n + m,     // z: nz .. nw - 1
-          nw = 3 * n + m;     // w: nw .. 3 * n + 2 * m - 1
-     Matdouble t;             // simplex table
-     Vecint B, N;             // basis and non-basis variables
-     int q = m;               // last row to leave the basis
-     bool initiation = true;  // true = initiation, false = recursion
+     int const g = m + n;      // added row in simplex table
+     int const h = 2 * n + m;  // added column in simplex table
+     int const                 // intervals of variable numbers
+                               // x:  0 .. nv - 1
+          nv = n,              // v: nv .. nu - 1
+          nu = 2 * n,          // u: nu .. nz - 1
+          nz = 2 * n + m,      // z: nz .. nw - 1
+          nw = 3 * n + m;      // w: nw .. 3 * n + 2 * m - 1
+     Matdouble t;              // simplex table
+     Vecint B, N;              // basis and non-basis variables
+     int q = m;                // last row to leave the basis
+     bool initiation = true;   // true = initiation, false = recursion
      int iter = 0;
      int i, j, k, l = 0;  // Dummy initialization for compiler.
      double d, s;
@@ -204,7 +204,7 @@ int wolfe(const Vecdouble& p, const Vecdouble& C, const Matdouble& A,
           t.resize(g + 1, h + 1);
           B.resize(g);
           N.resize(h);
-     } catch (const std::bad_alloc&) {
+     } catch (std::bad_alloc const&) {
           return 2;  // not enough memory
      }
 

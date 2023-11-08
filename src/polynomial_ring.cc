@@ -17,7 +17,7 @@ Polynomial_ring::Polynomial_ring(int dim)
 Polynomial_ring::Polynomial_ring(Field const* k, int dim)
      : k_(k), dim_(dim) {
      if (k == nullptr || !k->is_abelian() || dim < 1)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 Polynomial_ring::ET const& Polynomial_ring::value(
@@ -28,7 +28,7 @@ Polynomial_ring::ET const& Polynomial_ring::value(
 
 Element Polynomial_ring::element(ET const& x) const {
      if (x.field() != k_ || x.dim() != dim_)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 

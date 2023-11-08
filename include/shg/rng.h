@@ -91,7 +91,7 @@ public:
       * \implementation See \cite knuth-2002b, p. 127,
       * \cite wieczorkowski-zielinski-1997, p. 66.
       */
-     int finite(const Vecdouble& p);
+     int finite(Vecdouble const& p);
 
      /**
       * Random number normally distributed with mean 0 and variance 1.

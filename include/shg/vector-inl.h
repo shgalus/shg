@@ -16,12 +16,12 @@ Vector<T>::Vector(std::size_t n)
      : v_(n > 0 ? new T[n] : nullptr), n_(n) {}
 
 template <class T>
-Vector<T>::Vector(std::size_t n, const T& a) : Vector(n) {
+Vector<T>::Vector(std::size_t n, T const& a) : Vector(n) {
      std::fill(begin(), end(), a);
 }
 
 template <class T>
-Vector<T>::Vector(std::size_t n, const T* a) : Vector(n) {
+Vector<T>::Vector(std::size_t n, T const* a) : Vector(n) {
      std::copy_n(a, n, begin());
 }
 
@@ -31,7 +31,7 @@ Vector<T>::Vector(std::initializer_list<T> il) : Vector(il.size()) {
 }
 
 template <class T>
-Vector<T>::Vector(const Vector& v) : Vector(v.size()) {
+Vector<T>::Vector(Vector const& v) : Vector(v.size()) {
      std::copy(v.begin(), v.end(), begin());
 }
 
@@ -42,12 +42,12 @@ Vector<T>::Vector(Vector&& v) noexcept : v_(v.v_), n_(v.n_) {
 }
 
 template <class T>
-Vector<T>::Vector(const std::vector<T>& v) : Vector(v.size()) {
+Vector<T>::Vector(std::vector<T> const& v) : Vector(v.size()) {
      std::copy(v.begin(), v.end(), begin());
 }
 
 template <class T>
-Vector<T>::Vector(const std::valarray<T>& v) : Vector(v.size()) {
+Vector<T>::Vector(std::valarray<T> const& v) : Vector(v.size()) {
      std::copy(std::begin(v), std::end(v), begin());
 }
 
@@ -57,7 +57,7 @@ Vector<T>::~Vector() {
 }
 
 template <class T>
-Vector<T>& Vector<T>::operator=(const Vector& v) {
+Vector<T>& Vector<T>::operator=(Vector const& v) {
      if (this != &v) {
           resize(v.size());
           std::copy(v.begin(), v.end(), begin());
@@ -67,14 +67,14 @@ Vector<T>& Vector<T>::operator=(const Vector& v) {
 
 template <class T>
 Vector<T>& Vector<T>::operator=(Vector&& v) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value&&
-                   std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value &&
+              std::is_nothrow_move_assignable<T>::value)) {
      swap(v);
      return *this;
 }
 
 template <class T>
-Vector<T>& Vector<T>::operator=(const T& a) {
+Vector<T>& Vector<T>::operator=(T const& a) {
      std::fill(begin(), end(), a);
      return *this;
 }
@@ -87,14 +87,14 @@ Vector<T>& Vector<T>::operator=(std::initializer_list<T> il) {
 }
 
 template <class T>
-Vector<T>& Vector<T>::operator=(const std::vector<T>& v) {
+Vector<T>& Vector<T>::operator=(std::vector<T> const& v) {
      resize(v.size());
      std::copy(v.begin(), v.end(), begin());
      return *this;
 }
 
 template <class T>
-Vector<T>& Vector<T>::operator=(const std::valarray<T>& v) {
+Vector<T>& Vector<T>::operator=(std::valarray<T> const& v) {
      resize(v.size());
      std::copy(std::begin(v), std::end(v), begin());
      return *this;
@@ -106,7 +106,7 @@ T& Vector<T>::operator[](std::size_t i) {
 }
 
 template <class T>
-const T& Vector<T>::operator[](std::size_t i) const {
+T const& Vector<T>::operator[](std::size_t i) const {
      return v_[i];
 }
 
@@ -116,7 +116,7 @@ T& Vector<T>::operator()(std::size_t i) {
 }
 
 template <class T>
-const T& Vector<T>::operator()(std::size_t i) const {
+T const& Vector<T>::operator()(std::size_t i) const {
      return v_[i];
 }
 
@@ -128,7 +128,7 @@ T& Vector<T>::at(std::size_t i) {
 }
 
 template <class T>
-const T& Vector<T>::at(std::size_t i) const {
+T const& Vector<T>::at(std::size_t i) const {
      if (i < size())
           return v_[i];
      throw std::out_of_range(__func__);
@@ -148,7 +148,7 @@ void Vector<T>::resize(std::size_t n) {
 }
 
 template <class T>
-void Vector<T>::assign(std::size_t n, const T& a) {
+void Vector<T>::assign(std::size_t n, T const& a) {
      resize(n);
      std::fill(begin(), end(), a);
 }
@@ -159,14 +159,14 @@ T* Vector<T>::c_vec() {
 }
 
 template <class T>
-const T* Vector<T>::c_vec() const {
+T const* Vector<T>::c_vec() const {
      return v_;
 }
 
 template <class T>
 void Vector<T>::swap(Vector& v) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value&&
-                   std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value &&
+              std::is_nothrow_move_assignable<T>::value)) {
      std::swap(v_, v.v_);
      std::swap(n_, v.n_);
 }
@@ -183,10 +183,10 @@ Vector<T>::operator std::valarray<T>() const {
 
 template <class T>
 void Vector<T>::write(std::ostream& f) const {
-     const std::size_t n = size();
-     f.write(reinterpret_cast<const char*>(&n), sizeof n);
+     std::size_t const n = size();
+     f.write(reinterpret_cast<char const*>(&n), sizeof n);
      if (n > 0)
-          f.write(reinterpret_cast<const char*>(c_vec()),
+          f.write(reinterpret_cast<char const*>(c_vec()),
                   static_cast<std::streamsize>(n) * sizeof(T));
 }
 
@@ -198,7 +198,7 @@ void Vector<T>::read(std::istream& f) {
           return;
      Vector<T> w(n);
      if (n > 0) {
-          const std::streamsize s =
+          std::streamsize const s =
                static_cast<std::streamsize>(n) * sizeof(T);
           f.read(reinterpret_cast<char*>(w.c_vec()), s);
           if (f.fail())
@@ -282,55 +282,55 @@ void Vector<T>::deallocate() {
 }
 
 template <class T>
-bool equal(const Vector<T>& a, const Vector<T>& b) {
+bool equal(Vector<T> const& a, Vector<T> const& b) {
      return std::equal(a.begin(), a.end(), b.begin(), b.end());
 }
 
 template <class T>
-bool operator==(const Vector<T>& a, const Vector<T>& b) {
+bool operator==(Vector<T> const& a, Vector<T> const& b) {
      return equal(a, b);
 }
 
 template <class T>
-T sum(const Vector<T>& v) {
+T sum(Vector<T> const& v) {
      return std::accumulate(v.begin(), v.end(), 0);
 }
 
 template <class T>
-T min(const Vector<T>& v) {
+T min(Vector<T> const& v) {
      return *std::min_element(v.begin(), v.end());
 }
 
 template <class T>
-T max(const Vector<T>& v) {
+T max(Vector<T> const& v) {
      return *std::max_element(v.begin(), v.end());
 }
 
 template <class T>
-std::pair<T, T> minmax(const Vector<T>& v) {
-     const std::pair<typename Vector<T>::const_iterator,
-                     typename Vector<T>::const_iterator>
-          i = std::minmax_element(v.begin(), v.end());
+std::pair<T, T> minmax(Vector<T> const& v) {
+     std::pair<typename Vector<T>::const_iterator,
+               typename Vector<T>::const_iterator> const i =
+          std::minmax_element(v.begin(), v.end());
      return std::make_pair(*i.first, *i.second);
 }
 
 template <class T>
-std::size_t minloc(const Vector<T>& v) {
+std::size_t minloc(Vector<T> const& v) {
      return std::distance(v.begin(),
                           std::min_element(v.begin(), v.end()));
 }
 
 template <class T>
-std::size_t maxloc(const Vector<T>& v) {
+std::size_t maxloc(Vector<T> const& v) {
      return std::distance(v.begin(),
                           std::max_element(v.begin(), v.end()));
 }
 
 template <class T>
-std::pair<std::size_t, std::size_t> minmaxloc(const Vector<T>& v) {
-     const std::pair<typename Vector<T>::const_iterator,
-                     typename Vector<T>::const_iterator>
-          i = std::minmax_element(v.begin(), v.end());
+std::pair<std::size_t, std::size_t> minmaxloc(Vector<T> const& v) {
+     std::pair<typename Vector<T>::const_iterator,
+               typename Vector<T>::const_iterator> const i =
+          std::minmax_element(v.begin(), v.end());
      return std::make_pair(std::distance(v.begin(), i.first),
                            std::distance(v.begin(), i.second));
 }
@@ -342,8 +342,8 @@ void clear(Vector<T>& v) {
 
 template <class T>
 void swap(Vector<T>& a, Vector<T>& b) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value&&
-                   std::is_nothrow_move_assignable<T>::value)) {
+     noexcept(std::is_nothrow_move_constructible<T>::value &&
+              std::is_nothrow_move_assignable<T>::value)) {
      a.swap(b);
 }
 
@@ -360,20 +360,20 @@ void sort(Vector<T>& v, std::size_t first, std::size_t last) {
 template <class T>
 void reverse_sort(Vector<T>& v) {
      std::sort(v.begin(), v.end(),
-               [](const T& a, const T& b) { return a > b; });
+               [](T const& a, T const& b) { return a > b; });
 }
 
 template <class T>
 void reverse_sort(Vector<T>& v, std::size_t first, std::size_t last) {
      std::sort(v.begin() + first, v.begin() + last,
-               [](const T& a, const T& b) { return a > b; });
+               [](T const& a, T const& b) { return a > b; });
 }
 
 template <class T>
-std::ostream& operator<<(std::ostream& stream, const Vector<T>& v) {
-     const std::streamsize w = stream.width(0);
+std::ostream& operator<<(std::ostream& stream, Vector<T> const& v) {
+     std::streamsize const w = stream.width(0);
      stream << v.size() << '\n';
-     for (const auto& e : v) {
+     for (auto const& e : v) {
           stream.width(w);
           stream << e << '\n';
      }
@@ -394,7 +394,7 @@ std::istream& operator>>(std::istream& stream, Vector<T>& v) {
 }
 
 template <class T>
-void print(const Vector<T>& v, std::ostream& stream) {
+void print(Vector<T> const& v, std::ostream& stream) {
      stream.width(0);
      stream << "{";
      if (v.size() > 0) {
@@ -406,7 +406,7 @@ void print(const Vector<T>& v, std::ostream& stream) {
 }
 
 template <class T>
-void write(const Vector<T>& v, std::ostream& f) {
+void write(Vector<T> const& v, std::ostream& f) {
      v.write(f);
 }
 
@@ -416,7 +416,7 @@ void read(Vector<T>& v, std::istream& f) {
 }
 
 template <class T>
-T maximum_norm_distance(const Vector<T>& a, const Vector<T>& b) {
+T maximum_norm_distance(Vector<T> const& a, Vector<T> const& b) {
      if (a.size() == b.size()) {
           T d, max = 0;
           for (std::size_t i = 0; i < a.size(); i++)
@@ -428,8 +428,8 @@ T maximum_norm_distance(const Vector<T>& a, const Vector<T>& b) {
 }
 
 template <class T>
-Vector<T> arithmetic_progression(std::size_t n, const T& a,
-                                 const T& d) {
+Vector<T> arithmetic_progression(std::size_t n, T const& a,
+                                 T const& d) {
      Vector<T> v(n);
      std::size_t i = 0;
      std::generate_n(v.begin(), n,

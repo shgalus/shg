@@ -12,7 +12,7 @@ namespace SHG {
 double nninv(std::size_t i, std::size_t n) {
      if (n < 2)
           throw std::invalid_argument(__func__);
-     const double ni = static_cast<double>(i) /
+     double const ni = static_cast<double>(i) /
                        static_cast<double>(n) /
                        static_cast<double>(n - 1) * 2.0;
      if (ni > 1.0)

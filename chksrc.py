@@ -23,8 +23,8 @@ CPPLINT = "cpplint.py --quiet --linelength={} --filter="
 ALL_SOURCE = glob.glob("include" + os.path.sep + "shg" +
                        os.path.sep + ".h")
 ALL_SOURCE += glob.glob("src" + os.path.sep + "*.cc")
-ALL_SOURCE += glob.glob("testing" + os.path.sep + "*.h")
-ALL_SOURCE += glob.glob("testing" + os.path.sep + "*.cc")
+ALL_SOURCE += glob.glob("tests" + os.path.sep + "*.h")
+ALL_SOURCE += glob.glob("tests" + os.path.sep + "*.cc")
 ALL_SOURCE += glob.glob("tools" + os.path.sep + "*.cc")
 ALL_SOURCE += glob.glob("examples" + os.path.sep + "*.cc")
 

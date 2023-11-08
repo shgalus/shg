@@ -3,7 +3,7 @@
  * Generating random strings from a context free grammar.
  */
 
-//#define GRSCFG_DEBUG
+// #define GRSCFG_DEBUG
 
 #include <shg/grscfg.h>
 #include <numeric>

@@ -21,9 +21,9 @@ using std::string;
 Normal_mixture::Error::Error()
      : Exception(string("normal mixture error")) {}
 
-Normal_mixture::Normal_mixture(const Vecdouble& w,
-                               const Vecdouble& mu,
-                               const Vecdouble& sigma)
+Normal_mixture::Normal_mixture(Vecdouble const& w,
+                               Vecdouble const& mu,
+                               Vecdouble const& sigma)
      : n(w.size()),
        w(w),
        mu(mu),
@@ -115,18 +115,18 @@ void Normal_mixture::moments() {
 
      // Calculate the first four raw moments of the mixture.
      for (size_t i = 0; i < n; i++) {
-          const double wi = w[i];
-          const double mu1 = mu[i];
-          const double mu2 = sqr(mu1);
-          const double s2 = sqr(sigma[i]);
+          double const wi = w[i];
+          double const mu1 = mu[i];
+          double const mu2 = sqr(mu1);
+          double const s2 = sqr(sigma[i]);
           m1 += wi * mu1;
           m2 += wi * (mu2 + s2);
           m3 += wi * (mu2 + 3.0 * s2) * mu1;
           m4 += wi * (sqr(mu2) + 6.0 * mu2 * s2 + 3.0 * sqr(s2));
      }
      mean_ = m1;
-     const double sm = sqr(m1);
-     const double var = m2 - sm;
+     double const sm = sqr(m1);
+     double const var = m2 - sm;
      if (var <= 0.0)
           throw Error();
      sdev_ = sqrt(var);

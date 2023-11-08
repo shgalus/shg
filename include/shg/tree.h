@@ -6,12 +6,20 @@
 #ifndef SHG_TREE_H
 #define SHG_TREE_H
 
+#include <cstddef>
+#include <iterator>
 #include <string>
 #include <vector>
-#include <iterator>
-#include <cstddef>
 
 namespace SHG {
+
+/**
+ * \defgroup general_tree General tree
+ *
+ * General tree.
+ *
+ * \{
+ */
 
 /**
  * General tree.
@@ -55,7 +63,7 @@ public:
           using reference = value_type&;
 
           Iterator() = default;
-          Iterator(pointer p) : p_(p) {}
+          explicit Iterator(pointer p) : p_(p) {}
           reference operator*() { return *p_; }
           pointer operator->() { return p_; }
 
@@ -78,7 +86,7 @@ public:
      using const_iterator = Iterator<Tree const>;
 
      Tree() = default;
-     Tree(Data const& data);
+     explicit Tree(Data const& data);
      Tree(Tree const& other);
      Tree(Tree&& other) noexcept;
      virtual ~Tree();
@@ -160,6 +168,8 @@ bool operator==(Tree<Data> const& t1, Tree<Data> const& t2);
 
 template <typename Data>
 bool operator!=(Tree<Data> const& t1, Tree<Data> const& t2);
+
+/** \} */ /* end of group general_tree */
 
 }  // namespace SHG
 

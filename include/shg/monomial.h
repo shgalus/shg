@@ -109,15 +109,15 @@ public:
      Iterative_monomial_generator(Positive<int> n,
                                   Nonnegative<int> k);
      bool next();
-     const std::vector<int>& get() const { return a_; }
+     std::vector<int> const& get() const { return a_; }
 
 private:
      std::vector<int> a_{};
      std::vector<int> s_{};
-     const int n_;
-     const int n1_;
-     const int n2_;
-     const int k_;
+     int const n_;
+     int const n1_;
+     int const n2_;
+     int const k_;
 };
 
 template <typename F>
@@ -139,7 +139,7 @@ template <typename F>
 void Recursive_monomial_generator<F>::generate(int n, int k, int p) {
      if (n == 1) {
           a_[p] = k;
-          f_(const_cast<const std::vector<int>&>(a_));
+          f_(const_cast<std::vector<int> const&>(a_));
      } else {
           for (int i = 0; i <= k; i++) {
                a_[p] = i;

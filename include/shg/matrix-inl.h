@@ -24,19 +24,19 @@ Matrix<T>::Matrix(std::size_t m, std::size_t n)
 }
 
 template <class T>
-Matrix<T>::Matrix(std::size_t m, std::size_t n, const T& a)
+Matrix<T>::Matrix(std::size_t m, std::size_t n, T const& a)
      : Matrix(m, n) {
      v_ = a;
 }
 
 template <class T>
-Matrix<T>::Matrix(std::size_t m, std::size_t n, const T* a)
+Matrix<T>::Matrix(std::size_t m, std::size_t n, T const* a)
      : Matrix(m, n) {
      std::copy_n(a, m_ * n_, v_.begin());
 }
 
 template <class T>
-Matrix<T>::Matrix(std::size_t m, std::size_t n, const T* const* a)
+Matrix<T>::Matrix(std::size_t m, std::size_t n, T const* const* a)
      : Matrix(m, n) {
      for (std::size_t i = 0; i < m; i++)
           for (std::size_t j = 0; j < n; j++)
@@ -44,7 +44,7 @@ Matrix<T>::Matrix(std::size_t m, std::size_t n, const T* const* a)
 }
 
 template <class T>
-Matrix<T>::Matrix(std::size_t m, std::size_t n, const Vector<T>& v)
+Matrix<T>::Matrix(std::size_t m, std::size_t n, Vector<T> const& v)
      : Matrix(m, n) {
      if (v.size() != m * n)
           throw std::invalid_argument(__func__);
@@ -85,7 +85,7 @@ Matrix<T>::Matrix(std::size_t m, std::size_t n,
 }
 
 template <class T>
-Matrix<T>::Matrix(const Matrix& a)
+Matrix<T>::Matrix(Matrix const& a)
      : v_(a.v_), p_(a.p_.size()), m_(a.m_), n_(a.n_) {
      if (m_ > 0 && n_ > 0) {
           T* p = p_[0] = &(v_[0]);
@@ -103,7 +103,7 @@ template <class T>
 Matrix<T>::~Matrix() {}
 
 template <class T>
-Matrix<T>& Matrix<T>::operator=(const Matrix& a) {
+Matrix<T>& Matrix<T>::operator=(Matrix const& a) {
      if (this != &a) {
           resize(a.m_, a.n_);
           v_ = a.v_;
@@ -120,13 +120,13 @@ Matrix<T>& Matrix<T>::operator=(Matrix&& a) noexcept(
 }
 
 template <class T>
-Matrix<T>& Matrix<T>::operator=(const T& a) {
+Matrix<T>& Matrix<T>::operator=(T const& a) {
      v_ = a;
      return *this;
 }
 
 template <class T>
-Matrix<T>& Matrix<T>::operator=(const std::initializer_list<T> il) {
+Matrix<T>& Matrix<T>::operator=(std::initializer_list<T> const il) {
      typename std::initializer_list<T>::const_iterator it =
           il.begin();
      if (it != il.end()) {
@@ -145,7 +145,7 @@ T* Matrix<T>::operator[](std::size_t i) {
 }
 
 template <class T>
-const T* Matrix<T>::operator[](std::size_t i) const {
+T const* Matrix<T>::operator[](std::size_t i) const {
      return p_[i];
 }
 
@@ -155,7 +155,7 @@ T& Matrix<T>::operator()(std::size_t i, std::size_t j) {
 }
 
 template <class T>
-const T& Matrix<T>::operator()(std::size_t i, std::size_t j) const {
+T const& Matrix<T>::operator()(std::size_t i, std::size_t j) const {
      return *(p_[i] + j);
 }
 
@@ -167,7 +167,7 @@ T& Matrix<T>::at(std::size_t i, std::size_t j) {
 }
 
 template <class T>
-const T& Matrix<T>::at(std::size_t i, std::size_t j) const {
+T const& Matrix<T>::at(std::size_t i, std::size_t j) const {
      if (i < nrows() && j < ncols())
           return *(p_[i] + j);
      throw std::out_of_range(__func__);
@@ -196,7 +196,7 @@ void Matrix<T>::resize(std::size_t m, std::size_t n) {
 }
 
 template <class T>
-void Matrix<T>::assign(std::size_t m, std::size_t n, const T& a) {
+void Matrix<T>::assign(std::size_t m, std::size_t n, T const& a) {
      resize(m, n);
      v_ = a;
 }
@@ -207,7 +207,7 @@ T* Matrix<T>::c_vec() {
 }
 
 template <class T>
-const T* Matrix<T>::c_vec() const {
+T const* Matrix<T>::c_vec() const {
      return v_.c_vec();
 }
 
@@ -227,7 +227,7 @@ Vector<T>& Matrix<T>::vector() {
 }
 
 template <class T>
-const Vector<T>& Matrix<T>::vector() const {
+Vector<T> const& Matrix<T>::vector() const {
      return v_;
 }
 
@@ -242,46 +242,46 @@ void Matrix<T>::swap(Matrix& a) noexcept(
 }
 
 template <class T>
-bool equal(const Matrix<T>& a, const Matrix<T>& b) {
+bool equal(Matrix<T> const& a, Matrix<T> const& b) {
      return (a.nrows() == b.nrows()) && (a.ncols() == b.ncols()) &&
             equal(a.vector(), b.vector());
 }
 
 template <class T>
-bool operator==(const Matrix<T>& a, const Matrix<T>& b) {
+bool operator==(Matrix<T> const& a, Matrix<T> const& b) {
      return equal(a, b);
 }
 
 template <class T>
-T sum(const Matrix<T>& a) {
+T sum(Matrix<T> const& a) {
      return sum(a.vector());
 }
 
 template <class T>
-T min(const Matrix<T>& a) {
+T min(Matrix<T> const& a) {
      return min(a.vector());
 }
 
 template <class T>
-T max(const Matrix<T>& a) {
+T max(Matrix<T> const& a) {
      return max(a.vector());
 }
 
 template <class T>
-std::pair<T, T> minmax(const Matrix<T>& a) {
+std::pair<T, T> minmax(Matrix<T> const& a) {
      return minmax(a.vector());
 }
 
 template <class T>
-std::pair<std::size_t, std::size_t> minloc(const Matrix<T>& a) {
-     const auto d = std::div(
+std::pair<std::size_t, std::size_t> minloc(Matrix<T> const& a) {
+     auto const d = std::div(
           static_cast<std::ptrdiff_t>(minloc(a.vector())), a.ncols());
      return std::make_pair(d.quot, d.rem);
 }
 
 template <class T>
-std::pair<std::size_t, std::size_t> maxloc(const Matrix<T>& a) {
-     const auto d = std::div(
+std::pair<std::size_t, std::size_t> maxloc(Matrix<T> const& a) {
+     auto const d = std::div(
           static_cast<std::ptrdiff_t>(maxloc(a.vector())), a.ncols());
      return std::make_pair(d.quot, d.rem);
 }
@@ -289,13 +289,13 @@ std::pair<std::size_t, std::size_t> maxloc(const Matrix<T>& a) {
 template <class T>
 std::pair<std::pair<std::size_t, std::size_t>,
           std::pair<std::size_t, std::size_t>>
-minmaxloc(const Matrix<T>& a) {
-     const std::pair<std::size_t, std::size_t> p =
+minmaxloc(Matrix<T> const& a) {
+     std::pair<std::size_t, std::size_t> const p =
           minmaxloc(a.vector());
 
-     const auto d1 =
+     auto const d1 =
           std::div(static_cast<std::ptrdiff_t>(p.first), a.ncols());
-     const auto d2 =
+     auto const d2 =
           std::div(static_cast<std::ptrdiff_t>(p.second), a.ncols());
      return std::make_pair(std::make_pair(d1.quot, d1.rem),
                            std::make_pair(d2.quot, d2.rem));
@@ -314,8 +314,8 @@ void swap(Matrix<T>& a, Matrix<T>& b) noexcept(
 }
 
 template <class T>
-std::ostream& operator<<(std::ostream& stream, const Matrix<T>& a) {
-     const std::streamsize w = stream.width(0);
+std::ostream& operator<<(std::ostream& stream, Matrix<T> const& a) {
+     std::streamsize const w = stream.width(0);
      stream << a.nrows() << ' ' << a.ncols() << '\n';
      for (std::size_t i = 0; i < a.nrows(); i++) {
           if (a.ncols() > 0) {
@@ -350,16 +350,16 @@ std::istream& operator>>(std::istream& stream, Matrix<T>& a) {
 }
 
 template <class T>
-void print(const Matrix<T>& a, std::ostream& stream) {
+void print(Matrix<T> const& a, std::ostream& stream) {
      print(a.vector(), stream);
 }
 
 template <class T>
-void write(const Matrix<T>& a, std::ostream& f) {
-     const std::size_t m = a.nrows();
-     const std::size_t n = a.ncols();
-     f.write(reinterpret_cast<const char*>(&m), sizeof m);
-     f.write(reinterpret_cast<const char*>(&n), sizeof n);
+void write(Matrix<T> const& a, std::ostream& f) {
+     std::size_t const m = a.nrows();
+     std::size_t const n = a.ncols();
+     f.write(reinterpret_cast<char const*>(&m), sizeof m);
+     f.write(reinterpret_cast<char const*>(&n), sizeof n);
      write(a.vector(), f);
 }
 
@@ -379,14 +379,14 @@ void read(Matrix<T>& a, std::istream& f) {
 }
 
 template <class T>
-T maximum_norm_distance(const Matrix<T>& a, const Matrix<T>& b) {
+T maximum_norm_distance(Matrix<T> const& a, Matrix<T> const& b) {
      if (a.nrows() == b.nrows() && a.ncols() == b.ncols())
           return maximum_norm_distance(a.vector(), b.vector());
      throw std::invalid_argument(__func__);
 }
 
 template <class T>
-Matrix<T> diagonal_matrix(std::size_t n, const T& c) {
+Matrix<T> diagonal_matrix(std::size_t n, T const& c) {
      Matrix<T> a(n, n, static_cast<T>(0));
      for (std::size_t i = 0; i < n; i++)
           a[i][i] = c;
@@ -394,7 +394,7 @@ Matrix<T> diagonal_matrix(std::size_t n, const T& c) {
 }
 
 template <class T>
-Matrix<T> transpose(const Matrix<T>& a) {
+Matrix<T> transpose(Matrix<T> const& a) {
      Matrix<T> b(a.ncols(), a.nrows());
      for (std::size_t i = 0; i < a.nrows(); i++)
           for (std::size_t j = 0; j < a.ncols(); j++)
@@ -413,12 +413,12 @@ Matrix<T>& transpose_in_situ(Matrix<T>& a) {
 }
 
 template <class T>
-Matrix<T> multiply(const Matrix<T>& a, const Matrix<T>& b) {
+Matrix<T> multiply(Matrix<T> const& a, Matrix<T> const& b) {
      if (a.ncols() != b.nrows())
           throw std::invalid_argument(__func__);
      Matrix<T> c(a.nrows(), b.ncols());
      for (std::size_t i = 0; i < a.nrows(); i++) {
-          const T* const p = a[i];
+          T const* const p = a[i];
           T* const q = c[i];
           for (std::size_t j = 0; j < b.ncols(); j++) {
                T s = 0;
@@ -431,7 +431,7 @@ Matrix<T> multiply(const Matrix<T>& a, const Matrix<T>& b) {
 }
 
 template <class T>
-void right_multiply_and_assign(Matrix<T>& a, const Matrix<T>& b) {
+void right_multiply_and_assign(Matrix<T>& a, Matrix<T> const& b) {
      if (&a == &b || a.ncols() != b.nrows() || b.nrows() != b.ncols())
           throw std::invalid_argument(__func__);
      Vector<T> z(a.ncols());
@@ -451,7 +451,7 @@ void right_multiply_and_assign(Matrix<T>& a, const Matrix<T>& b) {
 }
 
 template <class T>
-Matrix<T> left_multiply_by_transposition(const Matrix<T>& a) {
+Matrix<T> left_multiply_by_transposition(Matrix<T> const& a) {
      Matrix<T> b(a.ncols(), a.ncols());
      std::size_t i, j, k;
      T s;
@@ -476,7 +476,7 @@ void cholesky(Matrix<T>& a, T eps) {
                    "cholesky requires floating-point matrix");
      if (a.nrows() != a.ncols() || eps < 0)
           throw std::invalid_argument(__func__);
-     const std::size_t n = a.nrows();
+     std::size_t const n = a.nrows();
      std::size_t i, j, k;
      T x, z;
 
@@ -528,10 +528,10 @@ Matrix<T> hilbert_matrix(std::size_t n) {
      static_assert(std::is_floating_point<T>::value,
                    "hilbert_matrix requires floating-point type");
      Matrix<T> h(n, n);
-     const std::size_t n2 = 2 * n;
+     std::size_t const n2 = 2 * n;
      for (std::size_t k = 1, k1 = 0; k < n2; k++, k1++) {
-          const T z = static_cast<T>(1) / k;
-          const std::size_t min = k < n ? k : n;
+          T const z = static_cast<T>(1) / k;
+          std::size_t const min = k < n ? k : n;
           for (std::size_t i = k - min; i < min; i++)
                h(i, k1 - i) = z;
      }
@@ -539,12 +539,12 @@ Matrix<T> hilbert_matrix(std::size_t n) {
 }
 
 template <class T>
-Vector<T> multiply(const Matrix<T>& a, const Vector<T>& v) {
+Vector<T> multiply(Matrix<T> const& a, Vector<T> const& v) {
      if (a.ncols() != v.size())
           throw std::invalid_argument(__func__);
      Vector<T> w(a.nrows());
      for (std::size_t i = 0; i < w.size(); i++) {
-          const T* const p = a[i];
+          T const* const p = a[i];
           T s = 0;
           for (std::size_t j = 0; j < v.size(); j++)
                s += p[j] * v[j];
@@ -554,8 +554,8 @@ Vector<T> multiply(const Matrix<T>& a, const Vector<T>& v) {
 }
 
 template <class T>
-Vector<T> multiply_transposed(const Matrix<T>& a,
-                              const Vector<T>& v) {
+Vector<T> multiply_transposed(Matrix<T> const& a,
+                              Vector<T> const& v) {
      if (a.nrows() != v.size())
           throw std::invalid_argument(__func__);
      Vector<T> w(a.ncols());

@@ -4,19 +4,17 @@ SHG Installation
 Prerequisites
 -------------
 
-Development environment is Linux debian 4.19.0-13-amd64 (Debian
-Buster). Additionaly, GCC 10.2.0 or Clang 11.0.1, Boost C++ Libraries
-1.75.0 and doxygen 1.9.0 are required for compilation and generating
-documentation. To compile some inessential auxiliary programs, GNU
-Multiple Precision Arithmetic Library and Numerical Recipes Third
-Edition (version 3.02) are required.
+Development environment is Linux debian 4.19.0-25-amd64 (Debian
+Buster). For the list of compilers and required libraries, see
+make.inc. For Windows, Visual Studio 2019 and 2022 solutions are
+provided.
 
 Compilation and testing
 -----------------------
 
 Change directory to the main directory of the project. To build the
-library, say make lib. To compile the testing program, say make
-testing. To run the tests, say make check.
+library, say make lib. To compile the testing program, say make tests.
+To run the tests, say make run.
 
 Documentation
 -------------

@@ -45,12 +45,12 @@ Polynomial::Polynomial(int dim) : Polynomial(&q_, dim) {}
 
 Polynomial::Polynomial(Field const* k, int dim) : k_(k), dim_(dim) {
      if (k == nullptr || !k->is_abelian() || dim < 1)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 void Polynomial::dim(int d) {
      if (d < 1)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      dim_ = d;
      t_.clear();
 }
@@ -58,7 +58,7 @@ void Polynomial::dim(int d) {
 int Polynomial::deg() const {
      int d = -1;
      for (auto const& [m, a] : t_) {
-          const int td = m.deg();
+          int const td = m.deg();
           if (td > d)
                d = td;
      }
@@ -68,30 +68,30 @@ int Polynomial::deg() const {
 Monomial const& Polynomial::leading_monomial() const {
      auto const it = max_term();
      if (it == t_.cend())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return it->first;
 }
 
 Element const& Polynomial::leading_coefficient() const {
      auto const it = max_term();
      if (it == t_.cend())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return it->second;
 }
 
 Term Polynomial::leading_term() const {
      auto const it = max_term();
      if (it == t_.cend())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Term(it->second, it->first);
 }
 
 Element Polynomial::operator()(Point const& x) const {
      if (static_cast<Point::size_type>(dim_) != x.size())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (auto const& xi : x)
           if (xi.as() != k_)
-               SHG_THROW_IA(__func__);
+               SHG_THROW(std::invalid_argument, __func__);
      Element y = k_->zero();
      for (auto const& [m, a] : t_) {
           Element t = a;
@@ -104,13 +104,13 @@ Element Polynomial::operator()(Point const& x) const {
 
 void Polynomial::order(Monomial_cmp cmp) {
      if (cmp == nullptr)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      order_ = cmp;
 }
 
 Polynomial& Polynomial::operator+=(Polynomial const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (auto const& [m, a] : x.t_)
           add(a, m);
      return *this;
@@ -118,7 +118,7 @@ Polynomial& Polynomial::operator+=(Polynomial const& x) {
 
 Polynomial& Polynomial::operator-=(Polynomial const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (auto const& [m, a] : x.t_)
           sub(a, m);
      return *this;
@@ -126,7 +126,7 @@ Polynomial& Polynomial::operator-=(Polynomial const& x) {
 
 Polynomial& Polynomial::operator*=(Polynomial const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      Polynomial y(k_, dim_);
      for (auto const& [m, a] : t_)
           for (auto const& [mx, ax] : x.t_)
@@ -137,21 +137,21 @@ Polynomial& Polynomial::operator*=(Polynomial const& x) {
 
 Polynomial& Polynomial::operator+=(Term const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      add(x.a(), x.m());
      return *this;
 }
 
 Polynomial& Polynomial::operator-=(Term const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      sub(x.a(), x.m());
      return *this;
 }
 
 Polynomial& Polynomial::operator*=(Term const& x) {
      if (!is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      mul(x.a(), x.m());
      return *this;
 }
@@ -179,8 +179,8 @@ bool Polynomial::is_valid(Polynomial const& x, Term const& y) {
 Polynomial::Terms::const_iterator Polynomial::max_term() const {
      return std::max_element(
           t_.cbegin(), t_.cend(),
-          [this](const std::pair<Monomial, Element>& x,
-                 const std::pair<Monomial, Element>& y) {
+          [this](std::pair<Monomial, Element> const& x,
+                 std::pair<Monomial, Element> const& y) {
                return order_(x.first, y.first);
           });
 }
@@ -191,7 +191,7 @@ void Polynomial::add(Element const& a, Monomial const& x) {
           if (it == t_.end()) {
                t_[x] = a;
           } else {
-               const Element a1 = k_->add(it->second, a);
+               Element const a1 = k_->add(it->second, a);
                if (a1 == k_->zero())
                     t_.erase(it);
                else
@@ -345,7 +345,7 @@ std::istream& operator>>(std::istream& stream, Polynomial& x) {
      return stream;
 }
 
-Polynomial from_chars(const char* s) {
+Polynomial from_chars(char const* s) {
      Polynomial x;
      std::istringstream iss(s);
      iss >> x;
@@ -385,11 +385,11 @@ void Polynomial_div::divide(Polynomial const& f,
      Polynomial p{f};
 
      while (!p.is_zero()) {
-          const auto ltp = p.leading_term();
+          auto const ltp = p.leading_term();
           bool division_occured = false;
           for (Sztp i = 0; i < s && !division_occured; i++) {
-               const auto& gi = g[i];
-               const auto ltgi = gi.leading_term();
+               auto const& gi = g[i];
+               auto const ltgi = gi.leading_term();
                if (ltgi.m().divides(ltp.m())) {
                     Term const w{ltp.a() / ltgi.a(),
                                  ltp.m() / ltgi.m()};
@@ -414,9 +414,9 @@ Polynomial normal_form(Polynomial const& f,
 
 Polynomial s_polynomial(Polynomial const& f, Polynomial const& g) {
      if (!(Polynomial::is_valid(f, g) && f.order() == g.order()))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      if (f.is_zero() || g.is_zero())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return s_polynomial_unsafe(f, g);
 }
 
@@ -474,7 +474,7 @@ void Buchberger_improved::run(S const& f) {
           while (++it != b_.cend()) {
                auto const& lm1{it->f1_.leading_monomial()};
                auto const& lm2{it->f2_.leading_monomial()};
-               const Monomial lcm_pmin = lcm(lm1, lm2);
+               Monomial const lcm_pmin = lcm(lm1, lm2);
                if (cmp(lcm_pmin, lcm_min)) {
                     f1 = it->f1_;
                     f2 = it->f2_;

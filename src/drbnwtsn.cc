@@ -23,7 +23,7 @@ namespace SHG {
 namespace {
 
 // Integrand in \ref{eq:dwcdfintegral}.
-double f(const double u, const vector<double>& w, const int m) {
+double f(double const u, vector<double> const& w, int const m) {
      if (u) {
           double theta = 0.0, rho = 1.0, z;
           for (int i = 0; i < m; i++) {
@@ -44,10 +44,10 @@ double f(const double u, const vector<double>& w, const int m) {
 
 }  // anonymous namespace
 
-double dwcdf(const int n, const int k, const double x,
-             const bool lower, const double eps, const int iter) {
+double dwcdf(int const n, int const k, double const x,
+             bool const lower, double const eps, int const iter) {
      using SHG::Constants::pi;
-     static const double tol = 1e-12;
+     static double const tol = 1e-12;
 
      if (n <= 0 || k <= 0 || n - k - 1 <= 1 || eps <= 0.0 || iter < 1)
           throw std::invalid_argument(__func__);
@@ -84,7 +84,7 @@ double dwcdf(const int n, const int k, const double x,
      SHG_ASSERT(m < n - k);
 
      // Calculate prob as defined by \ref{eq:dwcdfprob}.
-     const double eps2 = pi<double> * eps / 2.0;
+     double const eps2 = pi<double> * eps / 2.0;
      // Determine the upper limit of integration b by
      // \ref{eq:dwcdfupperlimit}.
      z = 2.0 / m;
@@ -98,7 +98,7 @@ double dwcdf(const int n, const int k, const double x,
 
      // Calculate the integral \ref{eq:dwcdfintegral} by the Simpson
      // method.
-     const double a = 0.0;
+     double const a = 0.0;
      h = b - a;
      int i = 0;
      int l = 1;
@@ -106,7 +106,7 @@ double dwcdf(const int n, const int k, const double x,
      double s2 = f((a + b) / 2.0, w, m);
      double i2 = (h / 6.0) * (s1 + 4.0 * s2);
      for (;;) {
-          const double i1 = i2;
+          double const i1 = i2;
           s1 += 2.0 * s2;
           h /= 2.0;
           y = a + h / 2.0;
@@ -129,10 +129,10 @@ double dwcdf(const int n, const int k, const double x,
      }
 }
 
-void ppdw(const int n, const int k, const double p, double* xl,
-          double* xu, const double eps) {
-     static const double epscdf = 1e-6;
-     static const int iter = 15;
+void ppdw(int const n, int const k, double const p, double* xl,
+          double* xu, double const eps) {
+     static double const epscdf = 1e-6;
+     static int const iter = 15;
 
      if (k <= 0 || n <= 0 || n - k - 1 <= 1 || p <= 0.0 || p >= 1.0)
           throw std::invalid_argument(__func__);
@@ -161,7 +161,7 @@ void ppdw(const int n, const int k, const double p, double* xl,
 }
 
 void swtbl(std::ostream& f) {
-     static const double eps = 4.9e-5;
+     static double const eps = 4.9e-5;
 
      using SHG::ppdw;
      using std::fixed;
@@ -173,9 +173,9 @@ void swtbl(std::ostream& f) {
      for (int level = 1; level <= 2; level++) {
           f << "DURBIN-WATSON STATISTIC: " << (level == 1 ? 1 : 5)
             << " PER CENT SIGNIFICANCE POINTS OF DL AND DU\n";
-          const double alpha = level == 1 ? 1e-2 : 5e-2;
+          double const alpha = level == 1 ? 1e-2 : 5e-2;
           for (int page = 1; page <= 4; page++) {
-               const int i = 1 + 5 * (page - 1);
+               int const i = 1 + 5 * (page - 1);
                f << "   ";
                for (int k = i; k <= i + 4; k++)
                     f << "     K =" << setw(2) << k << "   ";

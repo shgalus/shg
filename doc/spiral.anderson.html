@@ -1,0 +1,240 @@
+<html>
+<head>
+<title>Clockwise/Spiral Rule</title>
+</head>
+<body>
+[This was posted to comp.lang.c by its author,
+David Anderson, on 1994-05-06.]
+<!-- Message-ID: &lt;17188@anderson&gt; -->
+<H1>The ``Clockwise/Spiral Rule''</H1>
+<H2>By David Anderson</H2>
+<p>
+There is a technique known as the ``Clockwise/Spiral Rule'' which enables
+any C programmer to parse in their head any C declaration!
+<p>
+There are three simple steps to follow:
+<ol>
+<li>
+Starting with the unknown element, move in a spiral/clockwise direction;
+when ecountering the following elements replace them with the corresponding
+english statements:
+<p>
+<dl>
+<dt>
+[X] or []
+</dt><dd>
+=&gt; Array X size of... or Array undefined size of...
+</dd>
+<dt>
+(type1, type2)
+</dt><dd>
+=&gt; function passing type1 and type2 returning...
+</dd>
+<dt>
+*
+</dt><dd>
+=&gt; pointer(s) to...
+</dl>
+<p>
+<li>
+Keep doing this in a spiral/clockwise direction until all tokens have been
+covered.
+<p>
+<li>
+Always resolve anything in parenthesis first!
+</ol>
+<h3>Example #1: Simple declaration</h3>
+<pre>
+                     +-------+
+                     | +-+   |
+                     | ^ |   |
+                char *str[10];
+                 ^   ^   |   |
+                 |   +---+   |
+                 +-----------+
+</pre>
+Question we ask ourselves: What is str?
+<blockquote>
+``str is an...
+</blockquote>
+<ul>
+<li>
+We move in a spiral clockwise direction starting with `str' and the first
+character we see is a `[' so, that means we have an array, so...
+<blockquote>
+``str is an array 10 of...
+</blockquote>
+<li>
+Continue in a spiral clockwise direction, and the next thing we encounter is
+the `*' so, that means we have pointers, so...
+<blockquote>
+``str is an array 10 of pointers to...
+</blockquote>
+<li>
+Continue in a spiral direction and we see the end of the line (the `;'), so
+keep going and we get to the type `char', so...
+<blockquote>
+``str is an array 10 of pointers to char''
+</blockquote>
+<li>
+We have now ``visited'' every token; therefore we are done!
+</ul>
+<h3>Example #2: Pointer to Function declaration</h3>
+<pre>
+                     +--------------------+
+                     | +---+              |
+                     | |+-+|              |
+                     | |^ ||              |
+                char *(*fp)( int, float *);
+                 ^   ^ ^  ||              |
+                 |   | +--+|              |
+                 |   +-----+              |
+                 +------------------------+
+</pre>
+Question we ask ourselves: What is fp?
+<blockquote>
+``fp is a...
+</blockquote>
+<ul>
+<li>
+Moving in a spiral clockwise direction, the first thing we see is a `)';
+therefore, fp is inside parenthesis, so we continue the spiral inside the
+parenthesis and the next character seen is the `*', so...
+<blockquote>
+``fp is a pointer to...
+</blockquote>
+<li>
+We are now out of the parenthesis and continuing in a spiral clockwise
+direction, we see the `('; therefore, we have a function, so...
+<blockquote>
+``fp is a pointer to a function passing an int and a pointer to float
+returning...
+</blockquote>
+<li>
+Continuing in a spiral fashion, we then see the `*' character, so...
+<blockquote>
+``fp is a pointer to a function passing an int and a pointer to float
+returning a pointer to...
+</blockquote>
+<li>
+Continuing in a spiral fashion we see the `;', but we haven't visited all
+tokens, so we continue and finally get to the type `char', so...
+<blockquote>
+``fp is a pointer to a function passing an int and a pointer to float
+returning a pointer to a char''
+</blockquote>
+</ul>
+<h3>Example #3: The ``Ultimate''</h3>
+<pre>
+                      +-----------------------------+
+                      |                  +---+      |
+                      |  +---+           |+-+|      |
+                      |  ^   |           |^ ||      |
+                void (*signal(int, void (*fp)(int)))(int);
+                 ^    ^      |      ^    ^  ||      |
+                 |    +------+      |    +--+|      |
+                 |                  +--------+      |
+                 +----------------------------------+
+</pre>
+<p>
+Question we ask ourselves: What is `signal'?
+<p>
+Notice that signal is <em>inside</em> parenthesis, so we must resolve this first!
+<ul>
+<li>
+Moving in a <em>clockwise</em> direction we see `(' so we have...
+<blockquote>
+``signal is a function passing an int and a...
+</blockquote>
+<li>
+Hmmm, we can use this same rule on `fp', so... What is fp? fp is also inside
+parenthesis so continuing we see an `*', so...
+<blockquote>
+fp is a pointer to...
+</blockquote>
+<li>
+Continue in a spiral clockwise direction and we get to `(', so...
+<blockquote>
+``fp is a pointer to a function passing int returning...''
+</blockquote>
+<li>
+Now we continue out of the function parenthesis and we see void, so...
+<blockquote>
+``fp is a pointer to a function passing int returning nothing (void)''
+</blockquote>
+<li>
+We have finished with fp so let's catch up with `signal', we now have...
+<blockquote>
+``signal is a function passing an int and a pointer to a function passing an
+int returning nothing (void) returning...
+</blockquote>
+<li>
+We are still inside parenthesis so the next character seen is a `*', so...
+<blockquote>
+``signal is a function passing an int and a pointer to a function passing an
+int returning nothing (void) returning a pointer to...
+</blockquote>
+<li>
+We have now resolved the items within parenthesis, so continuing clockwise,
+we then see another `(', so...
+<blockquote>
+``signal is a function passing an int and a pointer to a function passing an
+int returning nothing (void) returning a pointer to a function passing an
+int returning...
+</blockquote>
+<li>
+<em>Finally</em> we continue and the only thing left is the word `void', so the
+final complete definition for signal is:
+<blockquote>
+``signal is a function passing an int and a pointer to a function passing an
+int returning nothing (void) returning a pointer to a function passing an
+int returning nothing (void)''
+</blockquote>
+</ul>
+<p>
+The same rule is applied for const and volatile. For Example:
+<pre>
+	const char *chptr;
+</pre>
+<ul>
+<li>
+Now, what is chptr??
+<blockquote>
+``chptr is a pointer to a char constant''
+</blockquote>
+</ul>
+<p>
+How about this one:
+<pre>
+	char * const chptr;
+</pre>
+<ul>
+<li>
+Now, what is chptr??
+<blockquote>
+``chptr is a constant pointer to char''
+</blockquote>
+</ul>
+<p>
+Finally:
+<pre>
+	volatile char * const chptr;
+</pre>
+<ul>
+<li>
+Now, what is chptr??
+<blockquote>
+``chptr is a constant pointer to a char volatile.''
+</blockquote>
+</ul>
+<p>
+Practice this rule with the examples found in K&amp;R II on page 122.
+<p>
+<hr>
+Copyright &copy; 1993,1994 David Anderson
+<p>
+This article may be freely distributed as long as the author's name and
+this notice are retained.
+<hr>
+</body>
+</html>

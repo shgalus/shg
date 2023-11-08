@@ -12,34 +12,34 @@
 
 namespace SHG {
 
-double ppnd7(const double p) {
+double ppnd7(double const p) {
      using std::abs;
      using std::log;
      using std::sqrt;
 
-     static const double a0 = 3.3871327179e+0;
-     static const double a1 = 5.0434271938e+1;
-     static const double a2 = 1.5929113202e+2;
-     static const double a3 = 5.9109374720e+1;
-     static const double b1 = 1.7895169469e+1;
-     static const double b2 = 7.8757757664e+1;
-     static const double b3 = 6.7187563600e+1;
+     static double const a0 = 3.3871327179e+0;
+     static double const a1 = 5.0434271938e+1;
+     static double const a2 = 1.5929113202e+2;
+     static double const a3 = 5.9109374720e+1;
+     static double const b1 = 1.7895169469e+1;
+     static double const b2 = 7.8757757664e+1;
+     static double const b3 = 6.7187563600e+1;
 
-     static const double c0 = 1.4234372777e+0;
-     static const double c1 = 2.7568153900e+0;
-     static const double c2 = 1.3067284816e+0;
-     static const double c3 = 1.7023821103e-1;
-     static const double d1 = 7.3700164250e-1;
-     static const double d2 = 1.2021132975e-1;
+     static double const c0 = 1.4234372777e+0;
+     static double const c1 = 2.7568153900e+0;
+     static double const c2 = 1.3067284816e+0;
+     static double const c3 = 1.7023821103e-1;
+     static double const d1 = 7.3700164250e-1;
+     static double const d2 = 1.2021132975e-1;
 
-     static const double e0 = 6.6579051150e+0;
-     static const double e1 = 3.0812263860e+0;
-     static const double e2 = 4.2868294337e-1;
-     static const double e3 = 1.7337203997e-2;
-     static const double f1 = 2.4197894225e-1;
-     static const double f2 = 1.2258202635e-2;
+     static double const e0 = 6.6579051150e+0;
+     static double const e1 = 3.0812263860e+0;
+     static double const e2 = 4.2868294337e-1;
+     static double const e3 = 1.7337203997e-2;
+     static double const f1 = 2.4197894225e-1;
+     static double const f2 = 1.2258202635e-2;
 
-     const double q = p - 0.5;
+     double const q = p - 0.5;
      double r, z;
 
      if (abs(q) <= 0.425) {
@@ -70,9 +70,9 @@ double gammad(double x, double p) {
      using std::numeric_limits;
      using std::sqrt;
 
-     static const double elimit = log(numeric_limits<double>::min());
-     static const double oflo = sqrt(numeric_limits<double>::max());
-     static const double plimit = 1000.0, xbig = 1e6, tol = 1e-8;
+     static double const elimit = log(numeric_limits<double>::min());
+     static double const oflo = sqrt(numeric_limits<double>::max());
+     static double const plimit = 1000.0, xbig = 1e6, tol = 1e-8;
 
      if (x < 0.0 || p <= 0.0)
           throw std::invalid_argument(__func__);
@@ -139,7 +139,7 @@ double gammad(double x, double p) {
      }
 }
 
-double probst(const double t, const int df) {
+double probst(double const t, int const df) {
      using SHG::Constants::ipi;
      using std::atan;
      using std::sqrt;
@@ -148,8 +148,8 @@ double probst(const double t, const int df) {
           throw std::invalid_argument(__func__);
 
      double f = df, c = 1.0;
-     const double a = t / sqrt(f), b = f / (f + t * t);
-     const int m2 = df - 2, oe = df % 2;
+     double const a = t / sqrt(f), b = f / (f + t * t);
+     int const m2 = df - 2, oe = df % 2;
      f = 1.0;
      for (int k = 2 + oe; k <= m2; k += 2)
           f += (c *= b * (k - 1) / k);
@@ -161,13 +161,13 @@ double probst(const double t, const int df) {
      return 0.5 + 0.5 * a * sqrt(b) * f;
 }
 
-double betain(const double x, const double p, const double q,
-              const double beta) {
+double betain(double const x, double const p, double const q,
+              double const beta) {
      using std::abs;
      using std::exp;
      using std::log;
 
-     static const double accuracy = 1e-8;
+     static double const accuracy = 1e-8;
 
      bool index;
      int ns;
@@ -214,13 +214,13 @@ double betain(const double x, const double p, const double q,
      }
 }
 
-double betain(const double x, const double p, const double q) {
+double betain(double const x, double const p, double const q) {
      using std::lgamma;
-     const double beta = lgamma(p) + lgamma(q) - lgamma(p + q);
+     double const beta = lgamma(p) + lgamma(q) - lgamma(p + q);
      return betain(x, p, q, beta);
 }
 
-double cdffdist(const int m, const int n, double x) {
+double cdffdist(int const m, int const n, double x) {
      if (m < 1 || n < 1)
           throw std::invalid_argument(__func__);
      if (x <= 0.0)

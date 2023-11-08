@@ -318,7 +318,8 @@ void CYK::add_production(int j, int i, int k) {
 void CYK::add_node(Info const& q, Parse_tree& t) {
      t.push_back({(*cfg_)[q.p].lhs, q.p});
      if (q.il < 0) {
-          t[t.degree() - 1].push_back((*cfg_)[q.p].rhs[0]);
+          t[t.degree() - 1].push_back(
+               Parse_node((*cfg_)[q.p].rhs[0]));
      } else {
           add_node(V_[q.il][q.jl][q.kl], t[t.degree() - 1]);
           add_node(V_[q.ir][q.jr][q.kr], t[t.degree() - 1]);
@@ -538,7 +539,6 @@ void Conversion_to_CNF::order() {
                ;
           if (i < cfg_.size())
                std::swap(cfg_[i], cfg_[k++]);
-
      } while (i < cfg_.size());
      // Right-hand sides with two nonterminals.
      do {
@@ -546,7 +546,6 @@ void Conversion_to_CNF::order() {
                ;
           if (i < cfg_.size())
                std::swap(cfg_[i], cfg_[k++]);
-
      } while (i < cfg_.size());
      // Right-hand sides with one terminal.
      do {
@@ -554,7 +553,6 @@ void Conversion_to_CNF::order() {
                ;
           if (i < cfg_.size())
                std::swap(cfg_[i], cfg_[k++]);
-
      } while (i < cfg_.size());
 }
 

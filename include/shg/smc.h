@@ -64,12 +64,12 @@ struct SMC {
       * x[i] with probability p[i]
       */
      struct Finite : public STD {
-          Finite(const Vecint& x, const Vecdouble& p);
+          Finite(Vecint const& x, Vecdouble const& p);
           virtual int generate(RNG& g) const;
 
      private:
-          const Vecint x;
-          const Vecdouble p;
+          Vecint const x;
+          Vecdouble const p;
      };
      /**
       * geometric, 0 < p <= 1
@@ -79,7 +79,7 @@ struct SMC {
           virtual int generate(RNG& g) const;
 
      private:
-          const double p;
+          double const p;
      };
      /**
       * negative binomial, t > 0, 0 < p < 1, plus 1
@@ -89,8 +89,8 @@ struct SMC {
           virtual int generate(RNG& g) const;
 
      private:
-          const double t;
-          const double p;
+          double const t;
+          double const p;
      };
      /**
       * logarithmic, 0 < p < 1
@@ -100,7 +100,7 @@ struct SMC {
           virtual int generate(RNG& g) const;
 
      private:
-          const double p;
+          double const p;
      };
      /**
       * Poisson, mu > 0, plus 1
@@ -110,12 +110,12 @@ struct SMC {
           virtual int generate(RNG& g) const;
 
      private:
-          const double mu;
+          double const mu;
      };
 
      explicit SMC(std::size_t s);
-     SMC(const SMC&) = delete;
-     SMC& operator=(const SMC&) = delete;
+     SMC(SMC const&) = delete;
+     SMC& operator=(SMC const&) = delete;
      ~SMC();
 
      /**
@@ -141,7 +141,7 @@ struct SMC {
       */
      int generate(int T, bool cut = false);
 
-     const std::size_t s_;  ///< number of states: 0, ..., s_ - 1
+     std::size_t const s_;  ///< number of states: 0, ..., s_ - 1
      Vecdouble alpha_;      ///< initial state distribution
      Matdouble P_;          ///< transition matrix (P(i, i) = 0)
      STD* std_;             ///< sojourn time distribution
@@ -168,9 +168,9 @@ struct Unideggaumix {
      Unideggaumix(int n, int K);
      void estimate();
      int get_status() { return status; }
-     const int n;      ///< number of observations
-     const int K;      ///< number of components
-     const int K1;     ///< number of Gaussian components
+     int const n;      ///< number of observations
+     int const K;      ///< number of components
+     int const K1;     ///< number of Gaussian components
      Vecdouble x;      ///< observations
      Vecdouble pi;     ///< weights
      Vecdouble mu;     ///< means of normal components

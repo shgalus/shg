@@ -19,7 +19,7 @@ using std::size_t;
 using std::sqrt;
 using std::vector;
 
-GSGTS::GSGTS(const std::vector<double>& acf, Cosine_transform f)
+GSGTS::GSGTS(std::vector<double> const& acf, Cosine_transform f)
      : n(acf.size() - 1), g(acf.size()) {
      if (acf.size() <= 1)
           throw invalid_argument(__func__);
@@ -27,7 +27,7 @@ GSGTS::GSGTS(const std::vector<double>& acf, Cosine_transform f)
           f = cosft;
      f(acf, g);
      for (size_t k = 0; k < g.size(); k++) {
-          const double gk = g[k];
+          double const gk = g[k];
           if (gk < 0.0)
                throw invalid_argument(__func__);
           g[k] = sqrt(2.0 * gk);
@@ -52,13 +52,13 @@ void GSGTS::generate(std::vector<double>& X,
      f(z, X);
 }
 
-void GSGTS::realft(const std::vector<std::complex<double>>& z,
+void GSGTS::realft(std::vector<std::complex<double>> const& z,
                    std::vector<double>& X) {
-     const size_t n = z.size() - 1;
-     const double w = SHG::Constants::pi<double> / n;
-     const double c = 1.0 / sqrt(n);
-     const double z0half = 0.5 * z[0].real();
-     const double znhalf = 0.5 * z[n].real();
+     size_t const n = z.size() - 1;
+     double const w = SHG::Constants::pi<double> / n;
+     double const c = 1.0 / sqrt(n);
+     double const z0half = 0.5 * z[0].real();
+     double const znhalf = 0.5 * z[n].real();
      size_t j, k;
      double m, p, s;
      int sign = 1;
@@ -74,12 +74,12 @@ void GSGTS::realft(const std::vector<std::complex<double>>& z,
      }
 }
 
-void GSGTS::cosft(const std::vector<double>& h,
+void GSGTS::cosft(std::vector<double> const& h,
                   std::vector<double>& H) {
-     const size_t n = h.size() - 1;
-     const double w = SHG::Constants::pi<double> / n;
-     const double h0half = 0.5 * h[0];
-     const double hnhalf = 0.5 * h[n];
+     size_t const n = h.size() - 1;
+     double const w = SHG::Constants::pi<double> / n;
+     double const h0half = 0.5 * h[0];
+     double const hnhalf = 0.5 * h[n];
      size_t j, k;
      double m, s;
      int sign = 1;

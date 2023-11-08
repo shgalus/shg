@@ -9,13 +9,14 @@
 #include <algorithm>
 #include <numeric>
 #include <shg/utils.h>
+#include <shg/ifact.h>
 #include <shg/except.h>
 
 namespace SHG::ALGEBRA {
 
 Element::Element(Algebraic_structure const* as) : as_(as) {
      if (as == nullptr)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      v_ = as->zero().value();
 }
 
@@ -23,42 +24,42 @@ Element::Element(Algebraic_structure const* as, std::any const& v)
      : as_(as), v_(v) {
      if (as == nullptr || !v.has_value() ||
          v.type() != as->element_type())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 void Element::set_to_zero() {
      if (as_ == nullptr)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      *this = as_->zero();
 }
 
 void Element::set_to_one() {
      if (as_ == nullptr)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      *this = as_->one();
 }
 
 Element& Element::operator+=(Element const& x) {
      if (!Element::is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return *this = as_->add(*this, x);
 }
 
 Element& Element::operator-=(Element const& x) {
      if (!Element::is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return *this = as_->add(*this, as_->neg(x));
 }
 
 Element& Element::operator*=(Element const& x) {
      if (!Element::is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return *this = as_->mul(*this, x);
 }
 
 Element& Element::operator/=(Element const& x) {
      if (!Element::is_valid(*this, x))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return *this = as_->mul(*this, as_->inv(x));
 }
 
@@ -81,7 +82,7 @@ bool Element::is_valid(Element const& x, Element const& y) {
 
 bool operator==(Element const& x, Element const& y) {
      if (!Element::is_valid(x, y))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return x.as()->equal(x, y);
 }
 
@@ -92,24 +93,24 @@ bool operator!=(Element const& x, Element const& y) {
 bool is_zero(Element const& x) {
      if (x.is_valid())
           return x.as()->is_zero(x);
-     SHG_THROW_IA(__func__);
+     SHG_THROW(std::invalid_argument, __func__);
 }
 
 bool is_one(Element const& x) {
      if (x.is_valid())
           return x.as()->is_one(x);
-     SHG_THROW_IA(__func__);
+     SHG_THROW(std::invalid_argument, __func__);
 }
 
 Element operator+(Element const& x) {
      if (!x.is_valid())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return x;
 }
 
 Element operator-(Element const& x) {
      if (!x.is_valid())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return x.as()->neg(x);
 }
 
@@ -135,13 +136,13 @@ Element operator/(Element const& x, Element const& y) {
 
 Element inv(Element const& x) {
      if (!x.is_valid())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return x.as()->inv(x);
 }
 
 Element times(Element const& x, int n) {
      if (!x.is_valid())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      Algebraic_structure const* as = x.as();
      Element y = as->zero();
      Element z = x;
@@ -163,7 +164,7 @@ Element times(Element const& x, int n) {
 
 Element pow(Element const& x, int n) {
      if (!x.is_valid())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      Algebraic_structure const* as = x.as();
      Element y = as->one();
      Element z = x;
@@ -308,11 +309,11 @@ Element Ring::do_inv([[maybe_unused]] Element const& x) const {
 
 Field::~Field() {}
 
-Finite_strings::Finite_strings(const std::set<char>& alphabet)
+Finite_strings::Finite_strings(std::set<char> const& alphabet)
      : a_(alphabet) {
      for (auto const c : a_)
           if (!std::islower(c))
-               SHG_THROW_IA(__func__);
+               SHG_THROW(std::invalid_argument, __func__);
 }
 
 Finite_strings::ET const& Finite_strings::value(
@@ -322,9 +323,9 @@ Finite_strings::ET const& Finite_strings::value(
 }
 
 Element Finite_strings::element(ET const& x) const {
-     for (const auto c : x)
+     for (auto const c : x)
           if (a_.find(c) == a_.end())
-               SHG_THROW_IA(__func__);
+               SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -332,7 +333,7 @@ Element Finite_strings::do_mul(Element const& x,
                                Element const& y) const {
      auto const xp = element_cast<ET>(x);
      auto const yp = element_cast<ET>(y);
-     const ET z = *xp + *yp;
+     ET const z = *xp + *yp;
      return Element(this, z);
 }
 
@@ -388,7 +389,7 @@ std::type_info const& Finite_strings::do_element_type() const {
 
 Group_Sn::Group_Sn(int n) : n_(n) {
      if (n < 1)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      one_.resize(n);
      std::iota(one_.begin(), one_.end(), 0);
 }
@@ -400,7 +401,7 @@ Group_Sn::ET const& Group_Sn::value(Element const& x) const {
 
 Element Group_Sn::element(ET const& x) const {
      if (!std::is_permutation(x.cbegin(), x.cend(), one_.cbegin()))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -469,11 +470,11 @@ std::type_info const& Group_Sn::do_element_type() const {
      return typeid(ET);
 }
 
-Finite_group::Finite_group(const Matrix<int>& t)
+Finite_group::Finite_group(Matrix<int> const& t)
      : n_(static_cast<int>(t.nrows())), t_(t) {
      if (t.nrows() > std::numeric_limits<int>::max() ||
          t.nrows() != t.ncols() || t.nrows() < 1 || !is_valid_table())
-          SHG_THROW_IA("invalid table");
+          SHG_THROW(std::invalid_argument, "invalid table");
 
      for (int i = 0; is_abelian_ && i < n_; i++)
           for (int j = i + 1; j < n_; j++)
@@ -490,7 +491,7 @@ Finite_group::ET const& Finite_group::value(Element const& x) const {
 
 Element Finite_group::element(ET const& x) const {
      if (x < 0 || x >= n_)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -514,7 +515,7 @@ Element Finite_group::do_inv(Element const& x) const {
      for (int i = 0; i < n_; i++)
           if (t_(*xp, i) == 0)
                return Element(this, i);
-     SHG_THROW_RE(__func__);
+     SHG_THROW(std::runtime_error, __func__);
 }
 
 bool Finite_group::do_is_one(Element const& x) const {
@@ -558,8 +559,8 @@ bool Finite_group::is_valid_table() const {
                return false;
      // Is each row and each column a permutation of 0, ..., n - 1?
      Vector<int> v(n_);
-     const auto first1 = t_.vector().cbegin();
-     const auto last1 = first1 + n_;
+     auto const first1 = t_.vector().cbegin();
+     auto const last1 = first1 + n_;
      for (int i = 1; i < n_; i++) {
           for (int j = 0; j < n_; j++)
                v(j) = t_(i, j);
@@ -658,7 +659,7 @@ std::type_info const& Ring_Z::do_element_type() const {
 
 Ring_Zn::Ring_Zn(int n) : n_(n) {
      if (n < 1)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 Ring_Zn::ET const& Ring_Zn::value(Element const& x) const {
@@ -668,7 +669,7 @@ Ring_Zn::ET const& Ring_Zn::value(Element const& x) const {
 
 Element Ring_Zn::element(ET const& x) const {
      if (x < 0 || x >= n_)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -754,7 +755,7 @@ Element Field_Q::element(int x) const {
 
 Element Field_Q::element(int num, int den) const {
      if (den == 0)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      ET x = ET(num) / ET(den);
      return Element(this, x);
 }
@@ -787,7 +788,7 @@ Element Field_Q::do_one() const {
 Element Field_Q::do_inv(Element const& x) const {
      auto const xp = element_cast<ET>(x);
      if (*xp == 0)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, ET(1 / *xp));
 }
 
@@ -833,7 +834,7 @@ std::type_info const& Field_Q::do_element_type() const {
 
 Field_Fp::Field_Fp(int p) : p_(p) {
      if (!is_prime(p))
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
 }
 
 Field_Fp::ET const& Field_Fp::value(Element const& x) const {
@@ -843,7 +844,7 @@ Field_Fp::ET const& Field_Fp::value(Element const& x) const {
 
 Element Field_Fp::element(ET const& x) const {
      if (x < 0 || x >= p_)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -862,7 +863,7 @@ Element Field_Fp::do_zero() const {
 
 Element Field_Fp::do_neg(Element const& x) const {
      auto const xp = element_cast<ET>(x);
-     const ET z = *xp == 0 ? 0 : p_ - *xp;
+     ET const z = *xp == 0 ? 0 : p_ - *xp;
      return Element(this, z);
 }
 
@@ -879,7 +880,7 @@ Element Field_Fp::do_one() const {
 Element Field_Fp::do_inv(Element const& x) const {
      auto const xp = element_cast<ET>(x);
      if (*xp == 0)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      Extended_gcd gcd(*xp, p_);
      while (gcd.u1 < 0)  // if instead of while is enough here!
           gcd.u1 += p_;
@@ -928,10 +929,10 @@ Direct_product_of_groups::Direct_product_of_groups(
      std::vector<Group const*> const& v)
      : v_(v) {
      if (v_.size() == 0)
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (Sztp i = 0; i < v_.size(); i++)
           if (v_[i] == nullptr)
-               SHG_THROW_IA(__func__);
+               SHG_THROW(std::invalid_argument, __func__);
 }
 
 Direct_product_of_groups::ET const& Direct_product_of_groups::value(
@@ -942,10 +943,10 @@ Direct_product_of_groups::ET const& Direct_product_of_groups::value(
 
 Element Direct_product_of_groups::element(ET const& x) const {
      if (x.size() != v_.size())
-          SHG_THROW_IA(__func__);
+          SHG_THROW(std::invalid_argument, __func__);
      for (Sztp i = 0; i < v_.size(); i++)
           if (!x[i].is_valid() || x[i].as() != v_[i])
-               SHG_THROW_IA(__func__);
+               SHG_THROW(std::invalid_argument, __func__);
      return Element(this, x);
 }
 
@@ -1022,7 +1023,7 @@ void Direct_product_of_groups::do_input(std::istream& stream,
 }
 
 bool Direct_product_of_groups::do_is_abelian() const {
-     return std::all_of(v_.cbegin(), v_.cend(), [](const Group* g) {
+     return std::all_of(v_.cbegin(), v_.cend(), [](Group const* g) {
           return g->is_abelian();
      });
 }

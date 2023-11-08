@@ -27,7 +27,7 @@ namespace SHG {
 /**
  * \defgroup vector_and_matrix Vector and Matrix
  *
- * Classes Vector and Matrix and related functions.
+ * Classes %Vector and %Matrix and related functions.
  *
  * \{
  */
@@ -41,7 +41,7 @@ public:
      typedef T value_type;
      typedef std::size_t size_type;
      typedef T* iterator;
-     typedef const T* const_iterator;
+     typedef T const* const_iterator;
      typedef std::reverse_iterator<iterator> reverse_iterator;
      typedef std::reverse_iterator<const_iterator>
           const_reverse_iterator;
@@ -56,13 +56,13 @@ public:
      inline explicit Vector(std::size_t n);
 
      /** Constructs a vector with \a n elements equal to \a a. */
-     inline Vector(std::size_t n, const T& a);
+     inline Vector(std::size_t n, T const& a);
 
      /**
       * Constructs a vector initialized to the first \a n elements of
       * \a *a.
       */
-     inline Vector(std::size_t n, const T* a);
+     inline Vector(std::size_t n, T const* a);
 
      /**
       * Constructs a vector with the contents of the initializer list
@@ -71,16 +71,16 @@ public:
      inline Vector(std::initializer_list<T> il);
 
      /** Copy constructor. */
-     inline Vector(const Vector& v);
+     inline Vector(Vector const& v);
 
      /** Move constructor. */
      inline Vector(Vector&& v) noexcept;
 
      /** Constructs a vector from std::vector \a v. */
-     explicit Vector(const std::vector<T>& v);
+     explicit Vector(std::vector<T> const& v);
 
      /** Constructs a vector from std::valarray \a v. */
-     explicit Vector(const std::valarray<T>& v);
+     explicit Vector(std::valarray<T> const& v);
 
      /** Destructor. */
      inline virtual ~Vector();
@@ -90,24 +90,24 @@ public:
      /** \{ */
 
      /** Copy assignment. */
-     Vector& operator=(const Vector& v);
+     Vector& operator=(Vector const& v);
 
      /** Move assignment. */
      inline Vector& operator=(Vector&& v) noexcept(
-          noexcept(std::is_nothrow_move_constructible<T>::value&&
-                        std::is_nothrow_move_assignable<T>::value));
+          noexcept(std::is_nothrow_move_constructible<T>::value &&
+                   std::is_nothrow_move_assignable<T>::value));
 
      /** Assigns to all elements of this vector value \a a. */
-     inline Vector& operator=(const T& a);
+     inline Vector& operator=(T const& a);
 
      /** Assigns elements of initializer list \a il to this vector. */
      inline Vector& operator=(std::initializer_list<T> il);
 
      /** Assigns to this vector elements of std::vector \a v. */
-     Vector& operator=(const std::vector<T>& v);
+     Vector& operator=(std::vector<T> const& v);
 
      /** Assigns to this vector elements of std::valarray \a v. */
-     Vector& operator=(const std::valarray<T>& v);
+     Vector& operator=(std::valarray<T> const& v);
 
      /** \} */
      /** \name Element access. */
@@ -117,13 +117,13 @@ public:
      inline T& operator[](std::size_t i);
 
      /** Returns a constant reference to the \a i-th element. */
-     inline const T& operator[](std::size_t i) const;
+     inline T const& operator[](std::size_t i) const;
 
      /** \copydoc operator[](std::size_t) */
      inline T& operator()(std::size_t i);
 
      /** \copydoc operator[](std::size_t) const */
-     inline const T& operator()(std::size_t i) const;
+     inline T const& operator()(std::size_t i) const;
 
      /**
       * Returns a reference to the \a i-th element.
@@ -135,7 +135,7 @@ public:
       * Returns a constant reference to the \a i-th element.
       * \exception std::out_of_range if !(i < size())
       */
-     const T& at(std::size_t i) const;
+     T const& at(std::size_t i) const;
 
      /** \} */
      /** \name Member functions. */
@@ -154,7 +154,7 @@ public:
       * Resizes the vector to \a n elements and assigns \a a to each
       * element.
       */
-     void assign(std::size_t n, const T& a);
+     void assign(std::size_t n, T const& a);
 
      /**
       * Returns a pointer to the memory block where the data of this
@@ -166,15 +166,15 @@ public:
       * Returns a constant pointer to the memory block where the data
       * of this vector are stored.
       */
-     inline const T* c_vec() const;
+     inline T const* c_vec() const;
 
      /**
       * \a *this obtains the value of \a v, \a v obtains the value of
       * \a *this.
       */
      inline void swap(Vector& v) noexcept(
-          noexcept(std::is_nothrow_move_constructible<T>::value&&
-                        std::is_nothrow_move_assignable<T>::value));
+          noexcept(std::is_nothrow_move_constructible<T>::value &&
+                   std::is_nothrow_move_assignable<T>::value));
 
      /** Conversion operator to std::vector. */
      inline explicit operator std::vector<T>() const;
@@ -250,13 +250,13 @@ typedef Vector<std::complex<long double>> Veccomplexlongdouble;
  * b[i] for all i in [0, a.size()), false otherwise.
  */
 template <class T>
-inline bool equal(const Vector<T>& a, const Vector<T>& b);
+inline bool equal(Vector<T> const& a, Vector<T> const& b);
 
 /**
- * \copydoc equal(const Vector<T>& a, const Vector<T>& b)
+ * \copydoc equal(Vector<T> const& a, Vector<T> const& b)
  */
 template <class T>
-inline bool operator==(const Vector<T>& a, const Vector<T>& b);
+inline bool operator==(Vector<T> const& a, Vector<T> const& b);
 
 /**
  * Returns the sum of all the elements of the vector. Operator \a +=
@@ -264,21 +264,21 @@ inline bool operator==(const Vector<T>& a, const Vector<T>& b);
  * behaviour is undefined.
  */
 template <class T>
-inline T sum(const Vector<T>& v);
+inline T sum(Vector<T> const& v);
 
 /**
  * Returns the minimum value contained in \a *this. The value for a
  * vector of length 0 is undefined.
  */
 template <class T>
-inline T min(const Vector<T>& v);
+inline T min(Vector<T> const& v);
 
 /**
  * Returns the maximum value contained in \a *this. The value for a
  * vector of length 0 is undefined.
  */
 template <class T>
-inline T max(const Vector<T>& v);
+inline T max(Vector<T> const& v);
 
 /**
  * Returns the minimum and maximum values contained in \a *this. Uses
@@ -286,7 +286,7 @@ inline T max(const Vector<T>& v);
  * result is undefined.
  */
 template <class T>
-inline std::pair<T, T> minmax(const Vector<T>& v);
+inline std::pair<T, T> minmax(Vector<T> const& v);
 
 /**
  * Returns index of the smallest element. Uses operator< to compare
@@ -294,7 +294,7 @@ inline std::pair<T, T> minmax(const Vector<T>& v);
  * elements are the smallest, the smallest index is returned.
  */
 template <class T>
-inline std::size_t minloc(const Vector<T>& v);
+inline std::size_t minloc(Vector<T> const& v);
 
 /**
  * Returns index of the greatest element. Uses operator< to compare
@@ -302,7 +302,7 @@ inline std::size_t minloc(const Vector<T>& v);
  * elements are the greatest, the smallest index is returned.
  */
 template <class T>
-inline std::size_t maxloc(const Vector<T>& v);
+inline std::size_t maxloc(Vector<T> const& v);
 
 /**
  * Returns indexes of the smallest element and the greatest element.
@@ -312,7 +312,7 @@ inline std::size_t maxloc(const Vector<T>& v);
  */
 template <class T>
 inline std::pair<std::size_t, std::size_t> minmaxloc(
-     const Vector<T>& v);
+     Vector<T> const& v);
 
 /**
  * Changes the length of the vector to 0.
@@ -325,8 +325,8 @@ inline void clear(Vector<T>& v);
  */
 template <class T>
 inline void swap(Vector<T>& a, Vector<T>& b) noexcept(
-     noexcept(std::is_nothrow_move_constructible<T>::value&&
-                   std::is_nothrow_move_assignable<T>::value));
+     noexcept(std::is_nothrow_move_constructible<T>::value &&
+              std::is_nothrow_move_assignable<T>::value));
 
 /**
  * Sorts the elements into ascending order using operator<.
@@ -377,11 +377,11 @@ inline void reverse_sort(Vector<T>& v, std::size_t first,
  * </pre>
  */
 template <class T>
-std::ostream& operator<<(std::ostream& stream, const Vector<T>& v);
+std::ostream& operator<<(std::ostream& stream, Vector<T> const& v);
 
 /**
  * Inputs vector from a text stream. The input should be as output
- * from std::ostream& operator<<(std::ostream&, const Vector<T>&).
+ * from std::ostream& operator<<(std::ostream&, Vector<T> const&).
  * stream.fail() should be checked after return. If the operation
  * failed, previous content of \a v is untouched.
  */
@@ -393,13 +393,13 @@ std::istream& operator>>(std::istream& stream, Vector<T>& v);
  * fail() should be checked after return.
  */
 template <class T>
-void print(const Vector<T>& v, std::ostream& stream);
+void print(Vector<T> const& v, std::ostream& stream);
 
 /**
  * \copydoc Vector::write()
  */
 template <class T>
-inline void write(const Vector<T>& v, std::ostream& f);
+inline void write(Vector<T> const& v, std::ostream& f);
 
 /**
  * \copydoc Vector::read()
@@ -416,7 +416,7 @@ inline void read(Vector<T>& v, std::istream& f);
  * \exception std::invalid_argument if !(a.size() == b.size())
  */
 template <class T>
-T maximum_norm_distance(const Vector<T>& a, const Vector<T>& b);
+T maximum_norm_distance(Vector<T> const& a, Vector<T> const& b);
 
 /**
  * Constructs a vector containing \a n terms of arithmetic sequence
@@ -424,8 +424,8 @@ T maximum_norm_distance(const Vector<T>& a, const Vector<T>& b);
  * must be defined for the type \a T.
  */
 template <class T>
-Vector<T> arithmetic_progression(std::size_t n, const T& a,
-                                 const T& d);
+Vector<T> arithmetic_progression(std::size_t n, T const& a,
+                                 T const& d);
 
 /** \} */ /* end of vector non-member functions */
 

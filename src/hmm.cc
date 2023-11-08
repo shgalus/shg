@@ -28,9 +28,9 @@ using std::size_t;
 using std::sqrt;
 using std::vector;
 
-Normal_hmm::Normal_hmm(const Matdouble& P, const Vecdouble& p,
-                       const Vecdouble& mu, const Vecdouble& sigma,
-                       const Vecdouble& y)
+Normal_hmm::Normal_hmm(Matdouble const& P, Vecdouble const& p,
+                       Vecdouble const& mu, Vecdouble const& sigma,
+                       Vecdouble const& y)
      : T_(y.size()),
        s_(p.size()),
        P(P),
@@ -50,7 +50,7 @@ Normal_hmm::Normal_hmm(const Matdouble& P, const Vecdouble& p,
      if (P.nrows() != s_ || P.ncols() != s_ || mu.size() != s_ ||
          sigma.size() != s_ || T_ < 2 || s_ < 1)
           throw invalid_argument("invalid dimensions in Normal_hmm");
-     const double eps = 0.01;
+     double const eps = 0.01;
      double u;
      size_t i, j;
      for (i = 0, u = 0.0; i < s_; i++)
@@ -149,7 +149,7 @@ int Normal_hmm::forwardbackward() {
 }
 
 int Normal_hmm::baumwelch() {
-     const size_t T1 = T_ - 1;
+     size_t const T1 = T_ - 1;
      Vecdouble sg(s_), sg1(s_);
      double u, pij, sg1i, mui;
      size_t i, j, t;
@@ -200,8 +200,8 @@ int Normal_hmm::baumwelch() {
 }
 
 void Normal_hmm::viterbi() {
-     static const double mind = -numeric_limits<double>::max();
-     const size_t T1 = T_ - 1;
+     static double const mind = -numeric_limits<double>::max();
+     size_t const T1 = T_ - 1;
      Matdouble delta(T_, s_);
      Matint psi(T_, s_);
      Matdouble logp(s_, s_);
@@ -284,15 +284,15 @@ void Normal_hmm::sort() {
 // phi(y[t], mu[j], sigma[j])
 double Normal_hmm::phi(size_t t, size_t j) {
      SHG_ASSERT(sigma(j) > 0.0);
-     const double s = 1.0 / sigma[j];
-     const double x = (y[t] - mu[j]) * s;
+     double const s = 1.0 / sigma[j];
+     double const x = (y[t] - mu[j]) * s;
      return Constants::isqrt2pi<double> * s * exp(-0.5 * x * x);
 }
 
-void gen_nhmm(const Matdouble& P, const Vecdouble& p,
-              const Vecdouble& mu, const Vecdouble& sigma,
-              const std::size_t T, Vecdouble& y, Vecint& X, MZT& g) {
-     const size_t s = P.nrows();
+void gen_nhmm(Matdouble const& P, Vecdouble const& p,
+              Vecdouble const& mu, Vecdouble const& sigma,
+              std::size_t const T, Vecdouble& y, Vecint& X, MZT& g) {
+     size_t const s = P.nrows();
      SHG_ASSERT(s == P.ncols() && s == p.size() && s == mu.size() &&
                 s == sigma.size());
      SHG_ASSERT(T > 0);
@@ -312,13 +312,13 @@ void gen_nhmm(const Matdouble& P, const Vecdouble& p,
      }
 }
 
-void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
-              const Vecdouble& G, const double E, const double v,
-              const int K, Vecdouble& r) {
+void corr_hmm(Vecdouble const& delta, Matdouble const& gamma,
+              Vecdouble const& G, double const E, double const v,
+              int const K, Vecdouble& r) {
      SHG_ASSERT(K > 0);
      SHG_ASSERT(v > 0.0);
-     const int m = delta.size();
-     const double E2 = E * E;
+     int const m = delta.size();
+     double const E2 = E * E;
      r.resize(K + 1);
      r(0) = 1.0;
      Matdouble gammak =
@@ -341,9 +341,9 @@ void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
 
 namespace {
 
-void corr_nhmm_id(const Vecdouble& delta, const Matdouble& gamma,
-                  const Vecdouble& mu, const Vecdouble& sigma,
-                  const int K, Vecdouble& r) {
+void corr_nhmm_id(Vecdouble const& delta, Matdouble const& gamma,
+                  Vecdouble const& mu, Vecdouble const& sigma,
+                  int const K, Vecdouble& r) {
      double E = 0.0;  // E(X_t)
      double v = 0.0;  // var(X_t)
 
@@ -356,12 +356,12 @@ void corr_nhmm_id(const Vecdouble& delta, const Matdouble& gamma,
      corr_hmm(delta, gamma, mu, E, v, K, r);
 }
 
-void corr_nhmm_abs(const Vecdouble& delta, const Matdouble& gamma,
-                   const Vecdouble& mu, const Vecdouble& sigma,
-                   const int K, Vecdouble& r) {
-     static const double  // sqrt(2/pi)
+void corr_nhmm_abs(Vecdouble const& delta, Matdouble const& gamma,
+                   Vecdouble const& mu, Vecdouble const& sigma,
+                   int const K, Vecdouble& r) {
+     static double const  // sqrt(2/pi)
           C = 2.0 * SHG::Constants::isqrt2pi<double>;
-     const int m = delta.size();
+     int const m = delta.size();
      double E = 0.0;  // E(X_t)
      double v = 0.0;  // var(X_t)
      Vecdouble G(m);  // E(g(X_t) | C_t = i)
@@ -381,10 +381,10 @@ void corr_nhmm_abs(const Vecdouble& delta, const Matdouble& gamma,
      corr_hmm(delta, gamma, G, E, v, K, r);
 }
 
-void corr_nhmm_sqr(const Vecdouble& delta, const Matdouble& gamma,
-                   const Vecdouble& mu, const Vecdouble& sigma,
-                   const int K, Vecdouble& r) {
-     const int m = delta.size();
+void corr_nhmm_sqr(Vecdouble const& delta, Matdouble const& gamma,
+                   Vecdouble const& mu, Vecdouble const& sigma,
+                   int const K, Vecdouble& r) {
+     int const m = delta.size();
      double E = 0.0;  // E(X_t)
      double v = 0.0;  // var(X_t)
      Vecdouble G(m);  // E(g(X_t) | C_t = i)
@@ -404,22 +404,22 @@ void corr_nhmm_sqr(const Vecdouble& delta, const Matdouble& gamma,
 
 }  // anonymous namespace
 
-void corr_nhmm(const Vecdouble& delta, const Matdouble& gamma,
-               const Vecdouble& mu, const Vecdouble& sigma,
-               const int function_g, const int K, Vecdouble& r) {
+void corr_nhmm(Vecdouble const& delta, Matdouble const& gamma,
+               Vecdouble const& mu, Vecdouble const& sigma,
+               int const function_g, int const K, Vecdouble& r) {
      switch (function_g) {
-          case 0:
-               corr_nhmm_id(delta, gamma, mu, sigma, K, r);
-               break;
-          case 1:
-               corr_nhmm_abs(delta, gamma, mu, sigma, K, r);
-               break;
-          case 2:
-               corr_nhmm_sqr(delta, gamma, mu, sigma, K, r);
-               break;
-          default:
-               SHG_ASSERT(0);
-               break;
+     case 0:
+          corr_nhmm_id(delta, gamma, mu, sigma, K, r);
+          break;
+     case 1:
+          corr_nhmm_abs(delta, gamma, mu, sigma, K, r);
+          break;
+     case 2:
+          corr_nhmm_sqr(delta, gamma, mu, sigma, K, r);
+          break;
+     default:
+          SHG_ASSERT(0);
+          break;
      }
 }
 

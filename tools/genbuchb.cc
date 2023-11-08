@@ -13,11 +13,11 @@ namespace CoCoA {
 
 struct Test_data {
      int dim;  // number of variables x, y, ...
-     const char* description;
-     vector<const char*> p;  // input polynomials
+     char const* const description;
+     vector<char const*> const p;  // input polynomials
 };
 
-const Test_data test_data[] = {
+Test_data const test_data[] = {
      {2,
       "\\\\cite cox-little-oshea-2007, example 1, pages 89-92.",
       {"x^3-2*x*y", "x^2*y-2*y^2+x"}},
@@ -49,7 +49,7 @@ const Test_data test_data[] = {
 
 // Changes integer rational literal to rational literal: 25 --> 25/1.
 // This is required for boost/rational.hpp.
-string adjust_coeff(const RingElem& e) {
+string adjust_coeff(RingElem const& e) {
      ostringstream oss;
      oss << e;
      string s = oss.str();
@@ -59,7 +59,7 @@ string adjust_coeff(const RingElem& e) {
 }
 
 // Returns polynomial in format required by SHG::ALGEBRA::Polynomial.
-string poly(int dim, const RingElem& e) {
+string poly(int dim, RingElem const& e) {
      ostringstream oss;
      oss << '\"' << dim << ' ' << NumTerms(e);
      for (SparsePolyIter jt = BeginIter(e); !IsEnded(jt); ++jt) {
@@ -73,7 +73,7 @@ string poly(int dim, const RingElem& e) {
 }
 
 // Returns monomial order string literal.
-string order(const PPOrdering& ord) {
+string order(PPOrdering const& ord) {
      ostringstream oss;
      oss << ord;
      string s = oss.str();
@@ -87,18 +87,18 @@ string order(const PPOrdering& ord) {
 }
 
 // Generates one entry in buchberger_test_data.
-void generate(const Test_data& data, const PPOrdering ord,
+void generate(Test_data const& data, PPOrdering const ord,
               ostream& os) {
-     const char* syms[] = {"x", "x,y", "x,y,z", "w,x,y,z"};
+     char const* const syms[] = {"x", "x,y", "x,y,z", "w,x,y,z"};
      assert(data.dim >= 1 && data.dim <= 4);
      PolyRing P =
           NewPolyRing(RingQQ(), symbols(syms[data.dim - 1]), ord);
      vector<RingElem> v;
-     for (vector<const char*>::size_type i = 0; i < data.p.size();
+     for (vector<char const*>::size_type i = 0; i < data.p.size();
           i++)
           v.push_back(RingElem(P, data.p[i]));
      ideal I = ideal(v);
-     const vector<RingElem> b = GBasis(I);
+     vector<RingElem> const b = GBasis(I);
      os << "{\n";
      os << "\"" << data.description << "\",\n";
      os << "\"" << order(ord) << "\",\n";
@@ -117,7 +117,7 @@ void generate(const Test_data& data, const PPOrdering ord,
 // monomial order.
 void generate(ostream& os) {
      for (size_t i = 0; i < std::size(test_data); i++) {
-          const int dim = test_data[i].dim;
+          int const dim = test_data[i].dim;
           generate(test_data[i], lex(dim), os);
           generate(test_data[i], StdDegLex(dim), os);
           generate(test_data[i], StdDegRevLex(dim), os);
@@ -125,17 +125,16 @@ void generate(ostream& os) {
 }
 
 void generate() {
-     std::ofstream os("../testing/buchbdat.cc");
+     std::ofstream os("../tests/buchbdat.cc");
      os << R"(#include "buchbdat.h"
-#include "testing.h"
 
-namespace SHG::Testing {
+namespace TESTS {
 
-const std::vector<Buchberger_test_case> buchberger_test_data {
+std::vector<Buchberger_test_case> const buchberger_test_data {
 )";
 
      for (size_t i = 0; i < std::size(test_data); i++) {
-          const int dim = test_data[i].dim;
+          int const dim = test_data[i].dim;
           generate(test_data[i], lex(dim), os);
           generate(test_data[i], StdDegLex(dim), os);
           generate(test_data[i], StdDegRevLex(dim), os);
@@ -154,10 +153,10 @@ int main() {
      try {
           CoCoA::program();
           return 0;
-     } catch (const CoCoA::ErrorInfo& err) {
+     } catch (CoCoA::ErrorInfo const& err) {
           cerr << "***ERROR***  UNCAUGHT CoCoA error";
           ANNOUNCE(cerr, err);
-     } catch (const std::exception& exc) {
+     } catch (std::exception const& exc) {
           cerr << "***ERROR***  UNCAUGHT std::exception: "
                << exc.what() << endl;
      } catch (...) {

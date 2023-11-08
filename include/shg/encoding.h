@@ -57,7 +57,7 @@ public:
  * Converts UTF-8 string \e s to UTF-32 string. \exception
  * Conversion_error if the string contains invalid character sequence
  */
-std::u32string utf8_to_utf32(const std::string& s);
+std::u32string utf8_to_utf32(std::string const& s);
 
 /**
  * Converts UTF-32 character \e c to UTF-8 string. \exception
@@ -69,13 +69,13 @@ std::string utf32_to_utf8(char32_t c);
  * Converts UTF-32 string \e s to UTF-8 string. \exception
  * Conversion_error if \e s contains invalid code point
  */
-std::string utf32_to_utf8(const std::u32string& s);
+std::string utf32_to_utf8(std::u32string const& s);
 
 /**
  * Converts UTF-16 string \e s to UTF-32 string. \exception
  * Conversion_error if the string contains invalid character sequence
  */
-std::u32string utf16_to_utf32(const std::u16string& s);
+std::u32string utf16_to_utf32(std::u16string const& s);
 
 /**
  * Converts UTF-32 character \e c to UTF-16 string. \exception
@@ -87,7 +87,7 @@ std::u16string utf32_to_utf16(char32_t c);
  * Converts UTF-32 string \e s to UTF-16 string. \exception
  * Conversion_error if \e s contains invalid code point
  */
-std::u16string utf32_to_utf16(const std::u32string& s);
+std::u16string utf32_to_utf16(std::u32string const& s);
 
 /**
  * Converts ISO 8859-2 character to UTF-32 character.
@@ -97,7 +97,7 @@ char32_t iso88592_to_utf32(char c);
 /**
  * Converts ISO 8859-2 string to UTF-32 ctring.
  */
-std::u32string iso88592_to_utf32(const std::string& s);
+std::u32string iso88592_to_utf32(std::string const& s);
 
 /**
  * Converts UTF-32 character to ISO 8859-2 character. \exception
@@ -110,7 +110,7 @@ char utf32_to_iso88592(char32_t c);
  * Conversion_error if there exists a character in \e s which has no
  * representation in ISO 8859-2
  */
-std::string utf32_to_iso88592(const std::u32string& s);
+std::string utf32_to_iso88592(std::u32string const& s);
 
 /**
  * Converts Windows-1250 character to UTF-32 character.
@@ -120,7 +120,7 @@ char32_t windows1250_to_utf32(char c);
 /**
  * Converts Windows-1250 string to UTF-32 string.
  */
-std::u32string windows1250_to_utf32(const std::string& s);
+std::u32string windows1250_to_utf32(std::string const& s);
 
 /**
  * Converts UTF-32 character to Windows-1250 character. \exception
@@ -133,19 +133,19 @@ char utf32_to_windows1250(char32_t c);
  * Conversion_error if there exists a character in \e s which has no
  * representation in Windows-1250
  */
-std::string utf32_to_windows1250(const std::u32string& s);
+std::string utf32_to_windows1250(std::u32string const& s);
 
 /**
  * Returns the number of characters in the UTF-8 string. \exception
  * Conversion_error if the string contains invalid character sequence
  */
-std::string::size_type utf8_length(const std::string& s);
+std::string::size_type utf8_length(std::string const& s);
 
 /**
  * Returns the number of characters in the UTF-16 string. \exception
  * Conversion_error if the string contains invalid character sequence
  */
-std::u16string::size_type utf16_length(const std::u16string& s);
+std::u16string::size_type utf16_length(std::u16string const& s);
 
 /**
  * Returns \c true iff \e c is a high surrogate code point.

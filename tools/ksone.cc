@@ -1,4 +1,7 @@
-/* ksone.cc: results for test_ks in testing/mstat.cc */
+/**
+ * \file tools/ksone.cc
+ * Results for ksnormtest_test in tests/mstat_test.cc.
+ */
 
 /*
  * Output:
@@ -17,14 +20,14 @@
 #include <nr/moment.h>
 #include <shg/mzt.h>
 
-const int n = 2000;
+int const n = 2000;
 double mu, sigma;
 
 double F(double x) {
      return Normaldist(mu, sigma).cdf(x);
 }
 
-void set(const VecDoub& x) {
+void set(VecDoub const& x) {
      double ave, adev, sdev, var, skew, curt;
      moment(x, ave, adev, sdev, var, skew, curt);
      var = (n - 1) * var / n;

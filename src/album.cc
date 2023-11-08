@@ -39,7 +39,7 @@ private:
      class Data {
      public:
           Data() = default;
-          Data(Index i) : i_(i) {}
+          explicit Data(Index i) : i_(i) {}
           Index idx() const { return i_; }
           std::string to_string() const { return std::to_string(i_); }
 
@@ -61,7 +61,14 @@ private:
 
      std::filesystem::path const& path_;
      std::string const& lang_;
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+#endif
      std::string const& title_;
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
      std::vector<Album_data> const& data_;
      Tree tree_{};
      std::string next_button_{};

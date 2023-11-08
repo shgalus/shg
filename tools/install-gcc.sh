@@ -9,7 +9,7 @@
 # Stanislaw Galus
 # Sun Apr 21 19:57:41 CEST 2019
 
-VERSION=-8.3.0
+VERSION=-13.1.0
 
 wget ftp://ftp.gnu.org/gnu/gcc/gcc${VERSION}/gcc${VERSION}.tar.xz
 tar xvf gcc${VERSION}.tar.xz
@@ -32,12 +32,11 @@ mkdir -p /usr/local/gcc${VERSION}/share/doc/html
 mv gcc/HTML/gcc${VERSION}/* /usr/local/gcc${VERSION}/share/doc/html
 
 # Create the file /etc/ld.so.conf.d/gcc${VERSION}.conf with lines:
-# /usr/local/gcc-4.8.3/lib
-# /usr/local/gcc-4.8.3/lib32
-# /usr/local/gcc-4.8.3/lib64
+# /usr/local/gcc${VERSION}/lib
+# /usr/local/gcc${VERSION}/lib32
+# /usr/local/gcc${VERSION}/lib64
 # and run ldconfig.
 
 # Create the file /etc/profile.d/gcc${VERSION}.sh with a line:
 # export PATH="/usr/local/gcc${VERSION}/bin:$PATH"
 # This also automatically adjusts paths for man.
-

@@ -99,9 +99,8 @@ void Dehtml::whiten(char b) {
 void Dehtml::markup_declaration() {
      getc();
      putw();
-     if (c_ == '[')  // marked section
-     {
-          int n = 3;  // "]]>" is marked section end
+     if (c_ == '[') {  // marked section
+          int n = 3;   // "]]>" is marked section end
           while (n > 0) {
                getc();
                putw();

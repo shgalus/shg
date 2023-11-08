@@ -11,9 +11,17 @@
 
 namespace SHG {
 
+/**
+ * \addtogroup miscellaneous_utilities
+ *
+ * \{
+ */
+
 void set_ieee_exception_handler();
 void enable_ieee_exceptions();
 void disable_ieee_exceptions();
+
+/** \} */
 
 }  // namespace SHG
 

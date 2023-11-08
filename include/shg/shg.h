@@ -20,6 +20,7 @@
 #include <shg/drbnwtsn.h>
 #include <shg/encoding.h>
 #include <shg/except.h>
+#include <shg/experiments.h>
 #include <shg/fcmp.h>
 #include <shg/geometry.h>
 #include <shg/gps.h>
@@ -31,6 +32,7 @@
 #include <shg/ipart.h>
 #include <shg/laplace.h>
 #include <shg/lexan.h>
+#include <shg/linalg.h>
 #include <shg/mathprog.h>
 #include <shg/matrix.h>
 #include <shg/mconsts.h>

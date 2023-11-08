@@ -24,7 +24,7 @@ OLS::Singular_covariance_matrix::Singular_covariance_matrix()
 OLS::Internal_error::Internal_error()
      : Exception("internal error in OLS") {}
 
-OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
+OLS::OLS(Matdouble const& X, Vecdouble const& y, bool add_intercept)
      : problem_name_(),
        n_(X.nrows()),
        k_(add_intercept ? X.ncols() + 1 : X.ncols()),
@@ -70,8 +70,8 @@ OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
 
      mean_y_ = y(0);
      for (int i = 1; i < n_; i++) {
-          const double yi = y(i);
-          const double d = yi - mean_y_;
+          double const yi = y(i);
+          double const d = yi - mean_y_;
           mean_y_ += d / (i + 1);
           stddev_y_ += (yi - mean_y_) * d;
           if (yi <= 0.0)
@@ -114,7 +114,7 @@ OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
                for (int i = 1; i < k_; i++)
                     s += beta_(i) * X(t, i - 1);
                fitted_(t) = s;
-               const double e = y(t) - fitted_(t);
+               double const e = y(t) - fitted_(t);
                residuals_(t) = e;
                rss_ += e * e;
           }
@@ -124,7 +124,7 @@ OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
                for (int i = 0; i < k_; i++)
                     s += beta_(i) * X(t, i);
                fitted_(t) = s;
-               const double e = y(t) - fitted_(t);
+               double const e = y(t) - fitted_(t);
                residuals_(t) = e;
                rss_ += e * e;
           }
@@ -142,9 +142,9 @@ OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
      // Calculate covariance matrix of parameters, standard errors of
      // parameters and t statistics.
      for (int i = 0; i < k_; i++) {
-          const double s = standard_err_(i) =
+          double const s = standard_err_(i) =
                std::sqrt(cov_(i, i) *= var_);
-          const double b = beta_(i);
+          double const b = beta_(i);
           if (std::abs(b / std::numeric_limits<double>::max()) < s) {
                tstat_(i) = std::abs(b) / s;
                pvalt_(i) = 2.0 * (1.0 - probst(tstat_(i), dof_));
@@ -154,19 +154,19 @@ OLS::OLS(const Matdouble& X, const Vecdouble& y, bool add_intercept)
      }
 
      // Calculate F-statistic.
-     const double eps = n_ / std::numeric_limits<double>::max();
+     double const eps = n_ / std::numeric_limits<double>::max();
      double q;
      if (tss_ > 0.0 && (q = rss_ / tss_) > eps) {
           rbar2_ = 1.0 - (n_ - 1.0) / dof_ * q;
           r2_ = 1.0 - q;
-          const double nk = static_cast<double>(n_) - k_;
+          double const nk = static_cast<double>(n_) - k_;
           if (add_intercept && k_ > 1)
                // fstat_ = (ess_ / (k_ - 1)) / (rss_ / (n_ - k_));
                fstat_ = (1.0 / q - 1.0) * nk / (k_ - 1.0);
           else
                // fstat_ = (ess_ / k_) / (rss_ / (n_ - k_));
                fstat_ = (1.0 / q - 1.0) * nk / k_;
-          const int dfnum = add_intercept && k_ > 1 ? k_ - 1 : k_;
+          int const dfnum = add_intercept && k_ > 1 ? k_ - 1 : k_;
           pvalf_ = 1.0 - cdffdist(dfnum, n_ - k_, fstat_);
      } else {
           // If tss_ == 0, then rss_ == ess_ == 0. All y(i) are
@@ -193,19 +193,19 @@ void OLS::dw() {
      dw_d_ = x;
      try {
           dw_pvalpos_ = dwcdf(n_, k_ - 1, x, true, 0.00001, 15);
-     } catch (const std::range_error&) {
+     } catch (std::range_error const&) {
      }
      try {
           dw_pvalneg_ =
                1.0 - dwcdf(n_, k_ - 1, x, false, 0.00001, 15);
-     } catch (const std::range_error&) {
+     } catch (std::range_error const&) {
      }
 }
 
 void OLS::print(std::ostream& f) const {
      using std::setw;
-     const std::string na(w_, '*');  // not applicable
-     const std::ios_base::fmtflags opts = f.flags();
+     std::string const na(w_, '*');  // not applicable
+     std::ios_base::fmtflags const opts = f.flags();
 
      f << std::scientific << std::setprecision(4)
        << "Ordinary least squares estimation results"
@@ -289,7 +289,7 @@ void OLS::print(std::ostream& f) const {
      f.flags(opts);
 }
 
-void OLS::estimate(const Matdouble& X, const Vecdouble& y) {
+void OLS::estimate(Matdouble const& X, Vecdouble const& y) {
      Vecdouble xty(k_);
      if (intercept_) {
           int i, i1, j, j1, l;
@@ -339,7 +339,7 @@ void OLS::estimate(const Matdouble& X, const Vecdouble& y) {
      }
      try {
           cholesky(cov_, tolerance_);
-     } catch (const std::range_error&) {
+     } catch (std::range_error const&) {
           throw Singular_covariance_matrix();
      }
 
@@ -355,7 +355,7 @@ void OLS::estimate(const Matdouble& X, const Vecdouble& y) {
      }
 }
 
-const char* OLS::stars(double x) {
+char const* OLS::stars(double x) {
      if (!(x >= 0.0))
           throw Internal_error();
      if (x < 0.01)
@@ -368,7 +368,7 @@ const char* OLS::stars(double x) {
           return "";
 }
 
-const double OLS::tolerance_ =
+double const OLS::tolerance_ =
      100.0 * std::numeric_limits<double>::epsilon();
 
 }  // namespace SHG

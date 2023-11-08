@@ -18,6 +18,12 @@
 namespace SHG {
 
 /**
+ * \addtogroup mathematical_statistics
+ *
+ * \{
+ */
+
+/**
  * Ordinal patterns distribution in time series.
  *
  * Let \f$(x_i)_{i = 0}^{n - 1}\f$ be a sequence of elements. A
@@ -42,7 +48,7 @@ public:
      typedef std::vector<sztp> pattern;
      typedef std::map<pattern, sztp, Less> Map;
 
-     OPDTS(const T x[], sztp i0, sztp i1, sztp d);
+     OPDTS(T const x[], sztp i0, sztp i1, sztp d);
 
      Map frequency;
      void print(std::ostream& f = std::cout);
@@ -58,14 +64,14 @@ private:
       * \pi_k}\f$ and \f$x_{i + \pi_{k + 1}}\f$ is not \f$<\f$ but
       * \f$\leq\f$.
       */
-     void calc(const T x[], sztp imax, sztp d);
-     void calc2(const T x[], sztp imax);
-     void calc3(const T x[], sztp imax);
+     void calc(T const x[], sztp imax, sztp d);
+     void calc2(T const x[], sztp imax);
+     void calc3(T const x[], sztp imax);
 };
 
 template <class T>
 struct OPDTS<T>::Less {
-     bool operator()(const pattern& x, const pattern& y) const {
+     bool operator()(pattern const& x, pattern const& y) const {
           for (pattern::size_type i = 0; i < x.size(); i++)
                if (x[i] < y[i])
                     return true;
@@ -76,11 +82,11 @@ struct OPDTS<T>::Less {
 };
 
 template <class T>
-OPDTS<T>::OPDTS(const T x[], sztp i0, sztp i1, sztp d) : frequency() {
-     const sztp n = i1 - i0;
+OPDTS<T>::OPDTS(T const x[], sztp i0, sztp i1, sztp d) : frequency() {
+     sztp const n = i1 - i0;
      if (d <= 1 || i1 < i0 || n < d)
           throw std::invalid_argument(__func__);
-     const sztp imax = n - d + 1;
+     sztp const imax = n - d + 1;
      x += i0;
      if (d == 2)
           calc2(x, imax);
@@ -101,12 +107,12 @@ void OPDTS<T>::print(std::ostream& f) {
 }
 
 template <class T>
-void OPDTS<T>::calc(const T x[], sztp imax, sztp d) {
+void OPDTS<T>::calc(T const x[], sztp imax, sztp d) {
      pattern p(d);
      for (sztp i = 0; i < imax; i++) {
           std::iota(p.begin(), p.end(), 0);
           std::stable_sort(p.begin(), p.end(),
-                           [i, &x](const sztp k, const sztp l) {
+                           [i, &x](sztp const k, sztp const l) {
                                 return x[i + k] < x[i + l];
                            });
           frequency[p]++;
@@ -114,7 +120,7 @@ void OPDTS<T>::calc(const T x[], sztp imax, sztp d) {
 }
 
 template <class T>
-void OPDTS<T>::calc2(const T x[], sztp imax) {
+void OPDTS<T>::calc2(T const x[], sztp imax) {
      for (sztp i = 0; i < imax; i++)
           if (x[i + 1] < x[i])
                frequency[{1, 0}]++;
@@ -123,7 +129,7 @@ void OPDTS<T>::calc2(const T x[], sztp imax) {
 }
 
 template <class T>
-void OPDTS<T>::calc3(const T x[], sztp imax) {
+void OPDTS<T>::calc3(T const x[], sztp imax) {
      for (sztp i = 0; i < imax; i++)
           if (x[i + 1] < x[i])
                if (x[i + 2] < x[i + 1])
@@ -139,6 +145,8 @@ void OPDTS<T>::calc3(const T x[], sztp imax) {
           else
                frequency[{0, 1, 2}]++;
 }
+
+/** \} */ /* end of group mathematical_statistics */
 
 }  // namespace SHG
 

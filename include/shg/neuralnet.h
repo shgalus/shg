@@ -23,11 +23,19 @@
  */
 namespace SHG::Neural_networks {
 
+/**
+ * \defgroup neural_networks Neural networks
+ *
+ * Neural networks.
+ *
+ * \{
+ */
+
 class Error : public std::runtime_error {
 public:
      Error();
-     Error(std::string const& what);
-     Error(char const* what);
+     explicit Error(std::string const& what);
+     explicit Error(char const* what);
 };
 
 using Uint = unsigned int;
@@ -102,7 +110,7 @@ Vecreal dcross_entropy(Vecreal const& aL, Vecreal const& y);
 class MNN {
 public:
      MNN();
-     MNN(Vecuint const& n);
+     explicit MNN(Vecuint const& n);
      void init(Vecuint const& n);
 
      Uint L() const;
@@ -263,6 +271,8 @@ Matrix<T> make_matrix(std::size_t size1, std::size_t size2,
                *it2 = *(it++);
      return a;
 }
+
+/** \} */
 
 }  // namespace SHG::Neural_networks
 

@@ -12,6 +12,9 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
 using Type_index = unsigned char;
 using Ending_index = unsigned short;
 
@@ -131,6 +134,8 @@ private:
      Inflexion inflexion_{};
      std::vector<std::string> forms_{};
 };
+
+/** \} */
 
 }  // namespace SHG::PLP
 

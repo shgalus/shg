@@ -32,16 +32,16 @@ namespace SHG {
  */
 class Normal_hmm {
 public:
-     Normal_hmm(const Matdouble& P, const Vecdouble& p,
-                const Vecdouble& mu, const Vecdouble& sigma,
-                const Vecdouble& y);
-     const std::size_t T_;
-     const std::size_t s_;
+     Normal_hmm(Matdouble const& P, Vecdouble const& p,
+                Vecdouble const& mu, Vecdouble const& sigma,
+                Vecdouble const& y);
+     std::size_t const T_;
+     std::size_t const s_;
      Matdouble P;
      Vecdouble p;
      Vecdouble mu;
      Vecdouble sigma;
-     const Vecdouble y;
+     Vecdouble const y;
      double logL;
      Matdouble gamma;  ///< pstate
      double logprob;   ///< maximized log(prob) in Viterbi
@@ -67,8 +67,8 @@ private:
  * state sigma. Uses the generator g. The vectors y and X are resized
  * in this function.
  */
-void gen_nhmm(const Matdouble& P, const Vecdouble& p,
-              const Vecdouble& mu, const Vecdouble& sigma,
+void gen_nhmm(Matdouble const& P, Vecdouble const& p,
+              Vecdouble const& mu, Vecdouble const& sigma,
               std::size_t T, Vecdouble& y, Vecint& X, MZT& g);
 
 /**
@@ -113,8 +113,8 @@ void gen_nhmm(const Matdouble& P, const Vecdouble& p,
  * \param[in] K maximum lag
  * \param[out] r autocorrelations, r[0] == 1
  */
-void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
-              const Vecdouble& G, double E, double v, int K,
+void corr_hmm(Vecdouble const& delta, Matdouble const& gamma,
+              Vecdouble const& G, double E, double v, int K,
               Vecdouble& r);
 
 /**
@@ -153,8 +153,8 @@ void corr_hmm(const Vecdouble& delta, const Matdouble& gamma,
  * \param[in] K maximum lag
  * \param[out] r autocorrelations, r[0] == 1
  */
-void corr_nhmm(const Vecdouble& delta, const Matdouble& gamma,
-               const Vecdouble& mu, const Vecdouble& sigma,
+void corr_nhmm(Vecdouble const& delta, Matdouble const& gamma,
+               Vecdouble const& mu, Vecdouble const& sigma,
                int function_g, int K, Vecdouble& r);
 
 /** \} */ /* end of group HMM */

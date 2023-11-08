@@ -43,22 +43,22 @@ public:
       * Constructs an <em>m &times; n</em> matrix with all elements
       * equal to \a a.
       */
-     inline Matrix(std::size_t m, std::size_t n, const T& a);
+     inline Matrix(std::size_t m, std::size_t n, T const& a);
 
      /**
       * Constructs from C memory block.
       */
-     inline Matrix(std::size_t m, std::size_t n, const T* a);
+     inline Matrix(std::size_t m, std::size_t n, T const* a);
 
      /**
       * Constructs from C two-dimensional array.
       */
-     Matrix(std::size_t m, std::size_t n, const T* const* a);
+     Matrix(std::size_t m, std::size_t n, T const* const* a);
 
      /**
       * Constructs from Vector.
       */
-     Matrix(std::size_t m, std::size_t n, const Vector<T>& v);
+     Matrix(std::size_t m, std::size_t n, Vector<T> const& v);
 
      /**
       * Move constructor from Vector.
@@ -77,7 +77,7 @@ public:
      /**
       * Copy constructor.
       */
-     Matrix(const Matrix& a);
+     Matrix(Matrix const& a);
 
      /**
       * Move constructor.
@@ -96,7 +96,7 @@ public:
      /**
       * Copy assignment.
       */
-     Matrix& operator=(const Matrix& a);
+     Matrix& operator=(Matrix const& a);
 
      /**
       * Move assignment.
@@ -108,7 +108,7 @@ public:
      /**
       * Assigns \a a to all elements
       */
-     inline Matrix& operator=(const T& a);
+     inline Matrix& operator=(T const& a);
 
      /**
       * Assigns an initializer list. Matrix elements are assigned by
@@ -130,7 +130,7 @@ public:
      /**
       * Returns a constant pointer to the \a i-th row.
       */
-     inline const T* operator[](std::size_t i) const;
+     inline T const* operator[](std::size_t i) const;
 
      /**
       * Returns element in row \a i and column \a j.
@@ -140,7 +140,7 @@ public:
      /**
       * Returns constant element in row \a i and column \a j.
       */
-     inline const T& operator()(std::size_t i, std::size_t j) const;
+     inline T const& operator()(std::size_t i, std::size_t j) const;
 
      /**
       * Returns a reference to the element <em>(i, j)</em> with range
@@ -156,7 +156,7 @@ public:
       *
       * \exception std::out_of_range if !(i < nrows() && j < ncols())
       */
-     const T& at(std::size_t i, std::size_t j) const;
+     T const& at(std::size_t i, std::size_t j) const;
 
      /** \} */
      /** \name Member functions. */
@@ -182,7 +182,7 @@ public:
       * Changes the dimensions of the matrix to \a m by \a n and then
       * assigns to each element the value \a a.
       */
-     void assign(std::size_t m, std::size_t n, const T& a);
+     void assign(std::size_t m, std::size_t n, T const& a);
 
      /**
       * Returns a pointer to the memory block where the data of matrix
@@ -194,7 +194,7 @@ public:
       * Returns a constant pointer to the memory block where the data
       * of matrix are stored.
       */
-     inline const T* c_vec() const;
+     inline T const* c_vec() const;
 
      /**
       * Returns this matrix as a C-style matrix.
@@ -214,7 +214,7 @@ public:
      /**
       * Returns this matrix as a constant Vector.
       */
-     inline const Vector<T>& vector() const;
+     inline Vector<T> const& vector() const;
 
      /**
       * Exchanges values of \a *this and \a a.
@@ -257,13 +257,13 @@ typedef Matrix<long double> Matlongdouble;
  * j) == b(i, j) for all i, j, false otherwise.
  */
 template <class T>
-bool equal(const Matrix<T>& a, const Matrix<T>& b);
+bool equal(Matrix<T> const& a, Matrix<T> const& b);
 
 /**
- * \copydoc equal(const Matrix<T>& a, const Matrix<T>& b)
+ * \copydoc equal(Matrix<T> const& a, Matrix<T> const& b)
  */
 template <class T>
-inline bool operator==(const Matrix<T>& a, const Matrix<T>& b);
+inline bool operator==(Matrix<T> const& a, Matrix<T> const& b);
 
 /**
  * Returns the sum of all the elements of the matrix. Operator \a +=
@@ -271,42 +271,42 @@ inline bool operator==(const Matrix<T>& a, const Matrix<T>& b);
  * behaviour is undefined.
  */
 template <class T>
-inline T sum(const Matrix<T>& a);
+inline T sum(Matrix<T> const& a);
 
 /**
  * Returns the minimum value contained in \a *this. The value for an
  * empty matrix is undefined.
  */
 template <class T>
-inline T min(const Matrix<T>& a);
+inline T min(Matrix<T> const& a);
 
 /**
  * Returns the maximum value contained in \a *this. The value for an
  * empty matrix is undefined.
  */
 template <class T>
-inline T max(const Matrix<T>& a);
+inline T max(Matrix<T> const& a);
 
 /**
  * Returns the minimum and maximum values contained in \a *this. The
  * value for an empty matrix is undefined.
  */
 template <class T>
-inline std::pair<T, T> minmax(const Matrix<T>& a);
+inline std::pair<T, T> minmax(Matrix<T> const& a);
 
 /**
  * Returns index of the smallest element. Uses operator< to compare
  * values. If the matrix is empty, 0 is returned.
  */
 template <class T>
-inline std::pair<std::size_t, std::size_t> minloc(const Matrix<T>& a);
+inline std::pair<std::size_t, std::size_t> minloc(Matrix<T> const& a);
 
 /**
  * Returns index of the greatest element. Uses operator< to compare
  * values. If the matrix is empty, 0 is returned.
  */
 template <class T>
-inline std::pair<std::size_t, std::size_t> maxloc(const Matrix<T>& a);
+inline std::pair<std::size_t, std::size_t> maxloc(Matrix<T> const& a);
 
 /**
  * Returns indexes of the smallest and the greatest element. Uses
@@ -315,7 +315,7 @@ inline std::pair<std::size_t, std::size_t> maxloc(const Matrix<T>& a);
 template <class T>
 inline std::pair<std::pair<std::size_t, std::size_t>,
                  std::pair<std::size_t, std::size_t>>
-minmaxloc(const Matrix<T>& a);
+minmaxloc(Matrix<T> const& a);
 
 /**
  * Changes the dimensions of the matrix to 0 by 0.
@@ -339,11 +339,11 @@ inline void swap(Matrix<T>& a, Matrix<T>& b) noexcept(
  * checked after return.
  */
 template <class T>
-std::ostream& operator<<(std::ostream& stream, const Matrix<T>& a);
+std::ostream& operator<<(std::ostream& stream, Matrix<T> const& a);
 
 /**
  * Inputs matrix from a text stream. The input should be as output
- * from std::ostream& operator<<(std::ostream&, const Matrix<T>&).
+ * from std::ostream& operator<<(std::ostream&, Matrix<T> const&).
  * stream.fail() should be checked after return. If the operation
  * failed, previous content of \a a is untouched.
  */
@@ -355,14 +355,14 @@ std::istream& operator>>(std::istream& stream, Matrix<T>& a);
  * stream.fail() should be checked after return.
  */
 template <class T>
-void print(const Matrix<T>& a, std::ostream& stream);
+void print(Matrix<T> const& a, std::ostream& stream);
 
 /**
  * Writes this matrix to a binary stream. Check f.fail() to check if
  * the operation was successful.
  */
 template <class T>
-void write(const Matrix<T>& a, std::ostream& f);
+void write(Matrix<T> const& a, std::ostream& f);
 
 /**
  * Reads this matrix from a binary stream. Check f.fail() to check if
@@ -382,19 +382,19 @@ void read(Matrix<T>& a, std::istream& f);
  * a.ncols() == b.ncols())
  */
 template <class T>
-T maximum_norm_distance(const Matrix<T>& a, const Matrix<T>& b);
+T maximum_norm_distance(Matrix<T> const& a, Matrix<T> const& b);
 
 /**
  * Returns diagonal matrix with \a c on the main diagonal.
  */
 template <class T>
-Matrix<T> diagonal_matrix(std::size_t n, const T& c = 1);
+Matrix<T> diagonal_matrix(std::size_t n, T const& c = 1);
 
 /**
  * Returns matrix transposed to \a a.
  */
 template <class T>
-Matrix<T> transpose(const Matrix<T>& a);
+Matrix<T> transpose(Matrix<T> const& a);
 
 /**
  * Transposes the square matrix \a a in situ.
@@ -409,7 +409,7 @@ Matrix<T>& transpose_in_situ(Matrix<T>& a);
  * \exception std::invalid_argument if a.ncols() != b.nrows()
  */
 template <class T>
-Matrix<T> multiply(const Matrix<T>& a, const Matrix<T>& b);
+Matrix<T> multiply(Matrix<T> const& a, Matrix<T> const& b);
 
 /**
  * Performs operation \f$ a \leftarrow a \times b \f$. \f$b\f$ must be
@@ -420,13 +420,13 @@ Matrix<T> multiply(const Matrix<T>& a, const Matrix<T>& b);
  * b.nrows() || b.nrows() != b.ncols()
  */
 template <class T>
-void right_multiply_and_assign(Matrix<T>& a, const Matrix<T>& b);
+void right_multiply_and_assign(Matrix<T>& a, Matrix<T> const& b);
 
 /**
  * Returns the matrix \f$a^Ta\f$.
  */
 template <class T>
-Matrix<T> left_multiply_by_transposition(const Matrix<T>& a);
+Matrix<T> left_multiply_by_transposition(Matrix<T> const& a);
 
 /**
  * Inverts matrix by Cholesky decomposition. Calculates in situ the
@@ -464,14 +464,14 @@ Matrix<T> hilbert_matrix(std::size_t n);
  * \exception std::invalid_argument if a.ncols() != v.size()
  */
 template <class T>
-Vector<T> multiply(const Matrix<T>& a, const Vector<T>& v);
+Vector<T> multiply(Matrix<T> const& a, Vector<T> const& v);
 
 /**
  * Returns the vector \f$a^Tv\f$.
  * \exception std::invalid_argument if a.nrows() != v.size()
  */
 template <class T>
-Vector<T> multiply_transposed(const Matrix<T>& a, const Vector<T>& v);
+Vector<T> multiply_transposed(Matrix<T> const& a, Vector<T> const& v);
 
 /** \} */ /* end of matrix non-member functions */
 

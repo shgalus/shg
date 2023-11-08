@@ -15,6 +15,16 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
+/** \defgroup probabilistic_cfg Probabilistic context-free grammars
+ *
+ * Functions related to probabilistic context-free grammars.
+ *
+ * \{
+ */
+
 struct S_production {
      Production prod{};
      double prob{};
@@ -285,6 +295,9 @@ std::ostream& operator<<(std::ostream& stream, PCFG const& g);
  */
 void add_probabilities(Vecprod const& vp, std::vector<double>& prob,
                        RNG& rng);
+
+/** \} */
+/** \} */
 
 }  // namespace SHG::PLP
 

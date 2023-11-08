@@ -59,7 +59,7 @@ namespace SHG::PACKING {
  *   A_3x + B_3y + C_3 &= 0
  * \f}
  * be tangent lines to \f$E_1\f$, \f$E_3\f$, respectively.
- * From equations in Ellipse::tangent(const Point&) const it follows
+ * From equations in Ellipse::tangent(Point const&) const it follows
  * that
  * \f{align*}{
  *   A_1 &= \frac{2(x_0 - a)}{a^2} & B_1
@@ -93,7 +93,7 @@ namespace SHG::PACKING {
  * \f$v\f$ and whose longer side is inclined to the \f$x\f$-axis at
  * the angle \f$\alpha\f$.
  * \implementation For each ellipse the function
- * Ellipse::tangent(const Line&) const is called and minimum and
+ * Ellipse::tangent(Line const&) const is called and minimum and
  * maximum values of the free terms are collected. For the line
  * \f$\sin \alpha \ x - \cos \alpha \ y = 0\f$ (see \ref line1_tmp
  * "inclined")
@@ -127,7 +127,7 @@ namespace SHG::PACKING {
  *   \cos \alpha \ x + \sin \alpha \ y + C^2_{\mathit{max}} &= 0
  * \f}
  */
-Rectangle min_alpha_rectangle(const std::vector<Ellipse>& v,
+Rectangle min_alpha_rectangle(std::vector<Ellipse> const& v,
                               double alpha, double tol = tolerance);
 
 /**
@@ -135,14 +135,14 @@ Rectangle min_alpha_rectangle(const std::vector<Ellipse>& v,
  * feasible. The positions are feasisible if interiors of ellipses are
  * disjoint.
  */
-bool is_feasible_packing(const std::vector<Ellipse>& v,
+bool is_feasible_packing(std::vector<Ellipse> const& v,
                          double tol = tolerance);
 
 /**
  * Returns the minimum rectangle for the set of ellipses. Uses Brent
  * minimization.
  */
-Rectangle min_rectangle(const std::vector<Ellipse>& v,
+Rectangle min_rectangle(std::vector<Ellipse> const& v,
                         double tol = tolerance);
 
 /**
@@ -163,7 +163,7 @@ private:
  * Returns the minimum rectangle for movable ellipses. Uses Nelder and
  * Mead algorithm.
  */
-Rectangle min_rectangle(const std::vector<Semiaxes>& semiaxes,
+Rectangle min_rectangle(std::vector<Semiaxes> const& semiaxes,
                         std::vector<Ellipse>& ellipses,
                         double tol = tolerance);
 
@@ -187,19 +187,19 @@ Rectangle min_rectangle(const std::vector<Semiaxes>& semiaxes,
 class Congruent_regular {
 public:
      Congruent_regular(std::size_t n, double a, double b);
-     void operator()(int k, const std::vector<int>& a);
+     void operator()(int k, std::vector<int> const& a);
      void run();
      std::size_t n() const;
      double a() const;
      double b() const;
-     const std::vector<int>& p() const;
+     std::vector<int> const& p() const;
      double area() const;
 
 private:
-     const std::size_t n_;
-     const double a_;
-     const double b_;
-     const double K_;
+     std::size_t const n_;
+     double const a_;
+     double const b_;
+     double const K_;
      std::vector<int> p_{};  // best partition
      double area_{};         // minimum area
      bool first_{true};

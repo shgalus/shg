@@ -1,0 +1,28 @@
+/**
+
+\mainpage SHG Documentation
+
+\tableofcontents
+
+\section additional_documentation Additional documentation.
+
+Additional documentation is in <a href = "shg.pdf">shg.pdf</a>.
+
+\section directory_structure Directory structure.
+\verbatim
+.
+|-- data
+|-- doc           documentation files
+|-- extras
+|   |-- valgrind  Valgrind test of the class SHG::Tree
+|   |-- vs2019    Visual Studio 2019 solution
+|   `-- vs2022    Visual Studio 2022 solution
+|-- include
+|   `-- shg       library include files
+|-- plp           plp header and source files
+|-- src           library source files
+|-- tests         header and source files for testing
+`-- tools         development utilities
+\endverbatim
+
+*/

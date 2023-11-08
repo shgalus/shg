@@ -13,10 +13,18 @@
 
 namespace SHG::ALBUM {
 
+/**
+ * \defgroup building_html_albums Utilities for building HTML albums
+ *
+ * Utilities for building HTML albums.
+ *
+ * \{
+ */
+
 class Error : public std::runtime_error {
 public:
      Error();
-     Error(char const* message);
+     explicit Error(char const* message);
 };
 
 struct Album_data {
@@ -34,6 +42,8 @@ std::vector<Album_data> convert(std::string const& s);
 void build(std::filesystem::path const& path, std::string const& lang,
            std::string const& title,
            std::vector<Album_data> const& data);
+
+/** \} */
 
 }  // namespace SHG::ALBUM
 

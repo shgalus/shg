@@ -10,8 +10,8 @@
 
 namespace SHG {
 
-BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
-                   const std::vector<double>& eps)
+BDS_test::BDS_test(std::vector<double> const& u, int const maxm,
+                   std::vector<double> const& eps)
      : maxm_(maxm), eps_(eps), res_() {
      using std::abs;
      using std::erf;
@@ -23,20 +23,20 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
      using std::sqrt;
      using std::vector;
 
-     const vdst n = u.size();
+     vdst const n = u.size();
 
      // The constant maxn_ is set in order to have n * (n - 1) / 2 < n
      // * n / 2 <= std::numeric_limits<vdst>::max().
      if (n < 1 || n > maxn_ || maxm < 2 ||
          static_cast<vdst>(maxm) >= n || eps.size() < 1)
           throw invalid_argument(__func__);
-     const double nd = n;
+     double const nd = n;
      vector<bool> p(n * (n - 1) / 2);
 
-     const auto sqr = [](double x) { return x * x; };
+     auto const sqr = [](double x) { return x * x; };
 
      // Returns true if |u[i] - u[j]| < eps.
-     const auto chi = [&p](vdst i, vdst j) -> bool {
+     auto const chi = [&p](vdst i, vdst j) -> bool {
           if (i < j)
                return p[(j - 1) * j / 2 + i];
           else if (i > j)
@@ -53,7 +53,7 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
           // Calculate the matrix of distances and C_{1, n}(\epsilon)
           // by \ref\label{eq:Cmn}.
           {
-               const double epsi = eps[ieps];
+               double const epsi = eps[ieps];
                vector<bool>::size_type k = 0;
                count = 0;
                for (vdst i = 1; i < n; i++)
@@ -61,7 +61,7 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
                          if ((p[k++] = abs(u[i] - u[j]) < epsi))
                               count++;
           }
-          const double c1 = 2.0 * count / n / (n - 1);
+          double const c1 = 2.0 * count / n / (n - 1);
 
           // Calculate K by the formula \ref{eq:bds2.13s}.
           for (vdst i = 0; i < n; i++) {
@@ -71,17 +71,17 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
                          count++;
                tcount += sqr(count);
           }
-          const double k = tcount / (nd * nd * nd);
+          double const k = tcount / (nd * nd * nd);
 
           // Calculate C defined by \ref{eq:bds2.12}. A simple
           // relationship with C_{1, n}(\epsilon) is used.
-          const double c = (n - 1) * c1 / nd;
+          double const c = (n - 1) * c1 / nd;
 
           res_[ieps].resize(maxm + 1);
 
           for (int m = 2; m <= maxm; m++) {
                // Calculate C_{m, n} by \ref\label{eq:Cmn}.
-               const vdst nm1 = n - m + 1;
+               vdst const nm1 = n - m + 1;
                count = 0;
                {
                     vdst i;
@@ -95,7 +95,7 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
                                    count++;
                          }
                }
-               const double cm = 2.0 * count / nm1 / (nm1 - 1);
+               double const cm = 2.0 * count / nm1 / (nm1 - 1);
 
                // Calculate V_{m, n} / \sqrt{n} by \ref{eq:simpleV}.
                double v = 0.0;
@@ -117,27 +117,27 @@ BDS_test::BDS_test(const std::vector<double>& u, const int maxm,
      }
 }
 
-BDS_test::BDS_test(const std::vector<double>& u)
+BDS_test::BDS_test(std::vector<double> const& u)
      : BDS_test(u, 8, default_eps(u)) {}
 
 std::vector<double> BDS_test::default_eps(
-     const std::vector<double>& u) {
+     std::vector<double> const& u) {
      std::vector<double> eps(7);
-     const double s = 0.25 * stddev(u);
+     double const s = 0.25 * stddev(u);
      for (std::vector<double>::size_type i = 0; i < 7; i++)
           eps[i] = (i + 2.0) * s;
      return eps;
 }
 
-const double BDS_test::isqrt2 = 1.0 / std::sqrt(2.0);
+double const BDS_test::isqrt2 = 1.0 / std::sqrt(2.0);
 
-const BDS_test::vdst BDS_test::maxn_ = static_cast<vdst>(
+BDS_test::vdst const BDS_test::maxn_ = static_cast<vdst>(
      std::sqrt(2.0) * std::sqrt(std::numeric_limits<vdst>::max()));
 
-std::ostream& operator<<(std::ostream& stream, const BDS_test& b) {
+std::ostream& operator<<(std::ostream& stream, BDS_test const& b) {
      using std::vector;
      for (size_t i = 0; i < b.res().size(); i++) {
-          const vector<BDS_test::Result>& r = b.res()[i];
+          vector<BDS_test::Result> const& r = b.res()[i];
           for (vector<BDS_test::Result>::size_type j = 2;
                j < r.size(); j++)
                stream << b.eps()[i] << ' ' << j << ' ' << r[j].stat

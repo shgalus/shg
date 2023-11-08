@@ -80,7 +80,7 @@ error:
 
 }  // anonymous namespace
 
-std::u32string utf8_to_utf32(const std::string& s) {
+std::u32string utf8_to_utf32(std::string const& s) {
      u32string t;
      for (auto it = s.cbegin(); it != s.cend(); ++it)
           t += getc(it, s.cend());
@@ -153,7 +153,7 @@ error:
      throw Conversion_error();
 }
 
-std::string utf32_to_utf8(const std::u32string& s) {
+std::string utf32_to_utf8(std::u32string const& s) {
      string t;
      for (auto c : s)
           t += utf32_to_utf8(c);
@@ -189,7 +189,7 @@ error:
 
 }  // anonymous namespace
 
-std::u32string utf16_to_utf32(const std::u16string& s) {
+std::u32string utf16_to_utf32(std::u16string const& s) {
      u32string t;
      for (auto it = s.cbegin(); it != s.cend(); ++it)
           t += getc(it, s.cend());
@@ -225,7 +225,7 @@ std::u16string utf32_to_utf16(char32_t c) {
      throw Conversion_error();
 }
 
-std::u16string utf32_to_utf16(const std::u32string& s) {
+std::u16string utf32_to_utf16(std::u32string const& s) {
      u16string t;
      for (auto c : s)
           t += utf32_to_utf16(c);
@@ -257,7 +257,7 @@ constexpr char16_t iso88592[96] = {
  * ISO 8859-2 equivalents of Unicode code points starting from 0x0080.
  * \sa iso88592
  */
-const std::map<char16_t, unsigned char> map_utf32_to_iso88592{
+std::map<char16_t, unsigned char> const map_utf32_to_iso88592{
      {0x0080, 0x80}, {0x0081, 0x81}, {0x0082, 0x82}, {0x0083, 0x83},
      {0x0084, 0x84}, {0x0085, 0x85}, {0x0086, 0x86}, {0x0087, 0x87},
      {0x0088, 0x88}, {0x0089, 0x89}, {0x008a, 0x8a}, {0x008b, 0x8b},
@@ -307,7 +307,7 @@ namespace {
  * convert a character.
  */
 template <class T1, class T2>
-T2 convert(const T1& s,
+T2 convert(T1 const& s,
            typename T2::value_type (*f)(typename T1::value_type)) {
      T2 t(s.size(), typename T2::value_type());
      std::transform(s.cbegin(), s.cend(), t.begin(), f);
@@ -316,20 +316,20 @@ T2 convert(const T1& s,
 
 }  // anonymous namespace
 
-std::u32string iso88592_to_utf32(const std::string& s) {
+std::u32string iso88592_to_utf32(std::string const& s) {
      return convert<string, u32string>(s, iso88592_to_utf32);
 }
 
 char utf32_to_iso88592(char32_t c) {
      if (c < 0xa0u)
           return c;
-     if (const auto f = map_utf32_to_iso88592.find(c);
+     if (auto const f = map_utf32_to_iso88592.find(c);
          f != map_utf32_to_iso88592.end())
           return f->second;
      throw Conversion_error();
 }
 
-std::string utf32_to_iso88592(const std::u32string& s) {
+std::string utf32_to_iso88592(std::u32string const& s) {
      return convert<u32string, string>(s, utf32_to_iso88592);
 }
 
@@ -364,7 +364,7 @@ constexpr char16_t windows1250[128] = {
  * Windows-1250 equivalents of Unicode code points starting from
  * 0x00a0. \sa windows1250
  */
-const std::map<char16_t, unsigned char> map_utf32_to_windows1250{
+std::map<char16_t, unsigned char> const map_utf32_to_windows1250{
      {0x00a0, 0xa0}, {0x00a4, 0xa4}, {0x00a6, 0xa6}, {0x00a7, 0xa7},
      {0x00a8, 0xa8}, {0x00a9, 0xa9}, {0x00ab, 0xab}, {0x00ac, 0xac},
      {0x00ad, 0xad}, {0x00ae, 0xae}, {0x00b0, 0xb0}, {0x00b1, 0xb1},
@@ -400,40 +400,40 @@ const std::map<char16_t, unsigned char> map_utf32_to_windows1250{
 }  // anonymous namespace
 
 char32_t windows1250_to_utf32(char c) {
-     const unsigned char uc = c;
+     unsigned char const uc = c;
      if (uc < 0x80u)
           return uc;
-     const char32_t d = windows1250[uc - 0x80u];
+     char32_t const d = windows1250[uc - 0x80u];
      if (d == 0x0000u)
           throw Conversion_error();
      return d;
 }
 
-std::u32string windows1250_to_utf32(const std::string& s) {
+std::u32string windows1250_to_utf32(std::string const& s) {
      return convert<string, u32string>(s, windows1250_to_utf32);
 }
 
 char utf32_to_windows1250(char32_t c) {
      if (c < 0xa0u)
           return c;
-     if (const auto f = map_utf32_to_windows1250.find(c);
+     if (auto const f = map_utf32_to_windows1250.find(c);
          f != map_utf32_to_windows1250.end())
           return f->second;
      throw Conversion_error();
 }
 
-std::string utf32_to_windows1250(const std::u32string& s) {
+std::string utf32_to_windows1250(std::u32string const& s) {
      return convert<u32string, string>(s, utf32_to_windows1250);
 }
 
-std::string::size_type utf8_length(const std::string& s) {
+std::string::size_type utf8_length(std::string const& s) {
      string::size_type n = 0;
      for (auto it = s.cbegin(); it != s.cend(); ++it, n++)
           getc(it, s.cend());
      return n;
 }
 
-std::u16string::size_type utf16_length(const std::u16string& s) {
+std::u16string::size_type utf16_length(std::u16string const& s) {
      u16string::size_type n = 0;
      for (auto it = s.cbegin(); it != s.cend(); ++it, n++)
           getc(it, s.cend());

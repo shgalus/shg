@@ -14,10 +14,20 @@
 
 namespace SHG::PLP {
 
+/** \addtogroup polish_language_processing */
+/** \{ */
+
+/** \defgroup context_free_grammars Context-free grammars
+ *
+ * Functions related to context-free grammars.
+ *
+ * \{
+ */
+
 class CFG_error : public std::runtime_error {
 public:
      CFG_error();
-     CFG_error(char const* message);
+     explicit CFG_error(char const* message);
      CFG_error(char const* file, int line);
 };
 
@@ -91,7 +101,7 @@ public:
      class Parse_node {
      public:
           Parse_node() = default;
-          Parse_node(std::string node);
+          explicit Parse_node(std::string node);
           Parse_node(std::string node, Vecprod::size_type production);
           std::string node() const;
           Vecprod::size_type production() const;
@@ -112,7 +122,7 @@ private:
      struct Info {
           Info(Vecprod::size_type p, int il, int jl, int kl, int ir,
                int jr, int kr);
-          Info(Vecprod::size_type p);
+          explicit Info(Vecprod::size_type p);
           Vecprod::size_type p;  // number of production
           int il, jl, kl;        // left nonterminal position in V_
           int ir, jr, kr;        // right nonterminal position in V_
@@ -216,6 +226,9 @@ inline Vecprod const& Conversion_to_CNF::vp() const {
 inline Vecprod const& Conversion_to_CNF::cfg() const {
      return cfg_;
 }
+
+/** \} */
+/** \} */
 
 }  // namespace SHG::PLP
 

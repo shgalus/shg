@@ -48,7 +48,7 @@ namespace SHG {
  * follows:
  *
  * \code
- * void cosft_fftw(const std::vector<double>& h,
+ * void cosft_fftw(std::vector<double> const& h,
  *                 std::vector<double>& H) {
  *      fftw_plan p = fftw_plan_r2r_1d(
  *           h.size(),
@@ -63,10 +63,10 @@ namespace SHG {
  *           H[k] *= 0.5;
  * }
  *
- * void realft_fftw(const std::vector<std::complex<double>>& z,
+ * void realft_fftw(std::vector<std::complex<double>> const& z,
  *                  std::vector<double>& X) {
- *      const double c = 1.0 / (2.0 * std::sqrt(z.size() - 1));
- *      const std::size_t n = 2 * (z.size() - 1);
+ *      double const c = 1.0 / (2.0 * std::sqrt(z.size() - 1));
+ *      std::size_t const n = 2 * (z.size() - 1);
  *      std::vector<double> out(n);
  *      fftw_plan p = fftw_plan_dft_c2r_1d(
  *           n,
@@ -90,16 +90,16 @@ namespace SHG {
  * #include "nr3.h"
  * #include "fourier.h"
  *
- * void cosft_numrec(const std::vector<double>& h,
+ * void cosft_numrec(std::vector<double> const& h,
  *                   std::vector<double>& H) {
  *      H = h;
  *      cosft1(H);
  * }
  *
- * void realft_numrec(const std::vector<std::complex<double>>& z,
+ * void realft_numrec(std::vector<std::complex<double>> const& z,
  *                    std::vector<double>& X) {
- *      const std::size_t n = z.size() - 1;
- *      const double c = 1.0 / (2.0 * std::sqrt(n));
+ *      std::size_t const n = z.size() - 1;
+ *      double const c = 1.0 / (2.0 * std::sqrt(n));
  *      std::vector<std::complex<double>> data(2 * z.size() - 2);
  *      for (std::size_t i = 0; i < z.size(); i++)
  *           data[i] = z[i];
@@ -121,7 +121,7 @@ public:
      /**
       * Prototype for discrete cosine transform passed to constructor.
       */
-     typedef void (*Cosine_transform)(const std::vector<double>& h,
+     typedef void (*Cosine_transform)(std::vector<double> const& h,
                                       std::vector<double>& H);
 
      /**
@@ -129,7 +129,7 @@ public:
       * constructor.
       */
      typedef void (*Real_transform)(
-          const std::vector<std::complex<double>>& z,
+          std::vector<std::complex<double>> const& z,
           std::vector<double>& X);
 
      /**
@@ -148,7 +148,7 @@ public:
       * function, ie. if it is non-negative definite (see
       * \cite brockwell-davis-2006, section 1.5, page 27).
       */
-     GSGTS(const std::vector<double>& acf, Cosine_transform f);
+     GSGTS(std::vector<double> const& acf, Cosine_transform f);
 
      /**
       * Generates <tt>n + 1</tt> values of stationary Gaussian time
@@ -168,7 +168,7 @@ public:
                    std::function<double()> normal, Real_transform f);
 
 private:
-     const std::size_t n;
+     std::size_t const n;
      std::vector<double> g;
 
      /**
@@ -181,7 +181,7 @@ private:
       * \right], \quad j = 0, \ldots, n. \f] Complexity of this
       * function is \f$O(n^2)\f$.
       */
-     static void realft(const std::vector<std::complex<double>>& z,
+     static void realft(std::vector<std::complex<double>> const& z,
                         std::vector<double>& X);
 
      /**
@@ -194,7 +194,7 @@ private:
       * See. \cite press-teukolsky-vetterling-flannery-2007, section
       * 12.4.2, formula 12.4.11.
       */
-     static void cosft(const std::vector<double>& h,
+     static void cosft(std::vector<double> const& h,
                        std::vector<double>& H);
 };
 

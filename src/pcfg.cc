@@ -3,7 +3,7 @@
  * Probabilistic context free grammar.
  */
 
-//#define PCFG_DEBUG
+// #define PCFG_DEBUG
 
 #include <shg/pcfg.h>
 #include <algorithm>
@@ -591,7 +591,7 @@ void PCFG::init_tables(Vecsent const& vs) {
      Index const omega = vs.size();
      Index const maxm =  // length of the longest sentence
           std::max_element(vs.begin(), vs.end(),
-                           [](const auto& s1, const auto& s2) {
+                           [](auto const& s1, auto const& s2) {
                                 return s1.size() < s2.size();
                            })
                ->size();

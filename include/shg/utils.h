@@ -40,46 +40,22 @@ constexpr double tolerance{100.0 *
  * implementation, see \cite misfeldt-bumgardner-gray-2004, page 124.
  */
 template <typename... Types>
-void ignore_unused_variable(Types...) {}
+void ignore_unused_variable(Types...);
 
 /**
  * Explicit conversion function for conversion between two scalar
  * numeric types. See \cite stroustrup-2013, section 11.5, page 299.
  */
 template <typename Target, typename Source>
-Target narrow_cast(Source x) {
-     auto y = static_cast<Target>(x);
-     if (static_cast<Source>(y) != x)
-          throw std::runtime_error("narrow_cast<>() failed");
-     return y;
-}
+Target narrow_cast(Source x);
 
-/**
- * Returns true if and only if \c n is a prime number.
- *
- * \implementation Each integer number can be expressed as \f$6k +
- * i\f$ for certain integer \f$k\f$ and \f$i \in \{-1, 0, 1, 2, 3, 4\}
- * \f$. \f$6k + 0, 6k + 2, 6k + 3, 6k + 4\f$ are not prime and \f$6k -
- * 1, 6k + 1\f$ may be prime. The algorith checks if \f$n\f$ is
- * divisible by the numbers of the form \f$6k - 1, 6k + 1\f$.
- */
-bool is_prime(int n);
-
-/**
- * Returns square of the argument.
- */
+/** Returns square of the argument. */
 template <class T>
-constexpr inline T sqr(T x) noexcept {
-     return x * x;
-}
+constexpr T sqr(T x) noexcept;
 
-/**
- * Returns cube of the argument.
- */
+/** Returns cube of the argument. */
 template <class T>
-T cube(T x) noexcept {
-     return x * x * x;
-}
+constexpr T cube(T x) noexcept;
 
 /**
  * Returns signum of the argument. \f[ \mathrm{sgn}(x) = \left\{
@@ -87,45 +63,15 @@ T cube(T x) noexcept {
  * \\ -1 & \mbox{if $x < 0$.} \end{array} \right. \f]
  */
 template <class T>
-inline int sgn(T x) {
-     return x > T(0) ? 1 : (x < T(0) ? -1 : 0);
-}
+constexpr int sgn(T x);
 
-/**
- * Integer version of floor.
- */
+/** Integer version of floor. */
 template <class I = int, class F>
-I ifloor(F x) {
-     static_assert(std::is_integral<I>::value,
-                   "I must be a signed integer type.");
-     static_assert(std::is_signed<I>::value,
-                   "I must be a signed integer type.");
-     static_assert(std::is_floating_point<F>::value,
-                   "F must be a floating point type.");
-     const F y = std::floor(x);
-     if (y >= static_cast<F>(std::numeric_limits<I>::max()) ||
-         y <= static_cast<F>(std::numeric_limits<I>::min()))
-          throw std::overflow_error("overflow in ifloor");
-     return static_cast<I>(y);
-}
+I ifloor(F x);
 
-/**
- * Integer version of ceil.
- */
+/** Integer version of ceil. */
 template <class I = int, class F>
-I iceil(F x) {
-     static_assert(std::is_integral<I>::value,
-                   "I must be a signed integer type.");
-     static_assert(std::is_signed<I>::value,
-                   "I must be a signed integer type.");
-     static_assert(std::is_floating_point<F>::value,
-                   "F must be a floating point type.");
-     const F y = std::ceil(x);
-     if (y >= static_cast<F>(std::numeric_limits<I>::max()) ||
-         y <= static_cast<F>(std::numeric_limits<I>::min()))
-          throw std::overflow_error("overflow in iceil");
-     return static_cast<I>(y);
-}
+I iceil(F x);
 
 /**
  * Calculates quotient and remainder of two integers.
@@ -198,43 +144,6 @@ struct Integer_division {
      static T remainder(T a, T b);
 };
 
-template <class T>
-Integer_division<T>::Integer_division(T a, T b) : q(), r() {
-     if (b == 0)
-          throw std::invalid_argument(
-               "Integer_division::Integer_division");
-     auto d = std::div(a, b);
-     assert((a < 0 && d.rem != 0) == (d.rem < 0));
-     if (d.rem < 0) {
-          if (b < 0) {
-               q = d.quot + 1;
-               r = d.rem - b;
-          } else {
-               q = d.quot - 1;
-               r = d.rem + b;
-          }
-     } else {
-          q = d.quot;
-          r = d.rem;
-     }
-}
-
-template <class T>
-T Integer_division<T>::quotient(T a, T b) {
-     if (b == 0)
-          throw std::invalid_argument("Integer_division::quotient");
-     auto d = std::div(a, b);
-     return d.rem < 0 ? b < 0 ? d.quot + 1 : d.quot - 1 : d.quot;
-}
-
-template <class T>
-T Integer_division<T>::remainder(T a, T b) {
-     if (b == 0)
-          throw std::invalid_argument("Integer_division::remainder");
-     const T r = a % b;
-     return r < 0 ? r + std::abs(b) : r;
-}
-
 /**
  * Extended Euclidean algorithm. For two given nonnegative integer
  * numbers \f$u\f$ and \f$v\f$, the algorithm determines three numbers
@@ -251,8 +160,8 @@ class Extended_gcd {
 
 public:
      Extended_gcd() = default;
-     Extended_gcd(const T& u, const T& v);
-     void calculate(const T& u, const T& v);
+     Extended_gcd(T const& u, T const& v);
+     void calculate(T const& u, T const& v);
      T u1{}, u2{}, u3{};
 
 private:
@@ -261,29 +170,6 @@ private:
      T q{};
 };
 
-template <class T>
-Extended_gcd<T>::Extended_gcd(const T& u, const T& v) {
-     calculate(u, v);
-}
-
-// clang-format off
-
-template <class T>
-void Extended_gcd<T>::calculate(const T& u, const T& v) {
-     if (u < 0 || v < 0)
-          throw std::invalid_argument(__func__);
-     u1 = 1; u2 = 0; u3 = u;
-     v1 = 0; v2 = 1; v3 = v;
-     while (v3 != 0) {
-          q = u3 / v3;
-          t = u1 - v1 * q; u1 = v1; v1 = t;
-          t = u2 - v2 * q; u2 = v2; v2 = t;
-          t = u3 - v3 * q; u3 = v3; v3 = t;
-     }
-}
-
-// clang-format on
-
 /**
  * Calculates \f$x^n\f$ (right-to-left binary method for
  * exponentiation).
@@ -291,25 +177,7 @@ void Extended_gcd<T>::calculate(const T& u, const T& v) {
  * \implementation See \cite knuth-2002b, section 4.6.3, page 497.
  */
 template <typename T>
-T pow(const T& x, int n);
-
-template <typename T>
-T pow(const T& x, int n) {
-     if (n < 0)
-          throw std::invalid_argument(__func__);
-     T y = T(1);
-     T z = x;
-     std::div_t dv;
-     for (;;) {
-          dv = std::div(n, 2);
-          if (dv.rem != 0)
-               y *= z;
-          n = dv.quot;
-          if (n == 0)
-               return y;
-          z *= z;
-     }
-}
+T ipower(T const& x, int n);
 
 /**
  * Returns floating-point modulo of \f$x\f$ and \f$y\f$:
@@ -322,11 +190,7 @@ T pow(const T& x, int n) {
  * \f$T\f$ must be a floating-point type.
  */
 template <class T>
-T mod1(T x, T y) {
-     static_assert(std::is_floating_point<T>::value,
-                   "floating-point type required");
-     return y == T(0) ? x : x - y * std::floor(x / y);
-}
+T mod1(T x, T y);
 
 /**
  * Returns a float rounded to n decimal digits.
@@ -341,54 +205,23 @@ T mod1(T x, T y) {
  * \li round(-112.495, -2) = -100.0
  */
 template <class T>
-T round(T x, int n) {
-     static_assert(std::is_floating_point<T>::value,
-                   "T must be a floating-point type.");
-     const T d = std::pow(static_cast<T>(10.0), n);
-     return std::round(x * d) / d;
-}
+T round(T x, int n);
 
-/**
- * Writes a variable to a binary stream.
- */
+/** Writes a variable to a binary stream. */
 template <class T>
-inline void write_binary(const T& a, std::ostream& f) {
-     f.write(reinterpret_cast<const char*>(&a), sizeof a);
-}
+void write_binary(T const& a, std::ostream& f);
 
-/**
- * Writes a string to a binary stream.
- */
+/** Writes a string to a binary stream. */
 template <>
-inline void write_binary(const std::string& a, std::ostream& f) {
-     write_binary(a.size(), f);
-     f.write(a.c_str(), a.size());
-}
+void write_binary(std::string const& a, std::ostream& f);
 
-/**
- * Reads a variable from a binary stream.
- */
+/** Reads a variable from a binary stream. */
 template <class T>
-inline void read_binary(T& a, std::istream& f) {
-     f.read(reinterpret_cast<char*>(&a), sizeof a);
-}
+void read_binary(T& a, std::istream& f);
 
-/**
- * Reads a string from a binary stream.
- */
+/** Reads a string from a binary stream. */
 template <>
-inline void read_binary(std::string& a, std::istream& f) {
-     std::string::size_type size;
-     read_binary(size, f);
-     char* t = new (std::nothrow) char[size];
-     if (t == nullptr) {
-          f.setstate(std::ios::failbit);
-     } else {
-          f.read(t, size);
-          a.assign(t, size);
-          delete[] t;
-     }
-}
+void read_binary(std::string& a, std::istream& f);
 
 /**
  * Reads whole file into a character array. The file \a filename is
@@ -396,33 +229,25 @@ inline void read_binary(std::string& a, std::istream& f) {
  *
  * \exception std::bad_alloc if there is no memory
  *
- * \exception SHG::File_error if there was an error when reading the
+ * \exception SHG::Exception if there was an error when reading the
  * file
  */
-Vecchar wfread(const char* filename);
+Vecchar wfread(char const* filename);
 
-/**
- * Constant string containing six whitespace characters.
- */
-extern const char* const white_space;
+/** Constant string containing six whitespace characters. */
+extern char const* const white_space;
 
-/**
- * Removes characters from the left of a string.
- */
+/** Removes characters from the left of a string. */
 std::string& ltrim(std::string& s,
-                   const std::string& trimchars = white_space);
+                   std::string const& trimchars = white_space);
 
-/**
- * Removes characters from the right of a string.
- */
+/** Removes characters from the right of a string. */
 std::string& rtrim(std::string& s,
-                   const std::string& trimchars = white_space);
+                   std::string const& trimchars = white_space);
 
-/**
- * Removes characters from both sides of a string.
- */
+/** Removes characters from both sides of a string. */
 std::string& trim(std::string& s,
-                  const std::string& trimchars = white_space);
+                  std::string const& trimchars = white_space);
 
 /**
  * Removes unneeded white space from a string.
@@ -437,7 +262,7 @@ char* strtrim(char* s);
  * replaces every sequence of characters by a single character.
  */
 std::string& clean_string(std::string& s,
-                          const std::string& trimchars = white_space,
+                          std::string const& trimchars = white_space,
                           char replace_char = ' ');
 
 /**
@@ -451,18 +276,7 @@ std::string& clean_string(std::string& s,
  */
 template <typename T>
 std::vector<std::basic_string<T>> split(
-     std::basic_string<T> const& s, std::basic_string<T> const& sep) {
-     using S = std::basic_string<T>;
-     std::vector<S> v;
-     typename S::size_type p1, p2 = 0;
-     while ((p1 = s.find_first_not_of(sep, p2)) != S::npos) {
-          p2 = s.find_first_of(sep, p1);
-          if (p2 == S::npos)
-               p2 = s.size();
-          v.push_back(s.substr(p1, p2 - p1));
-     }
-     return v;
-}
+     std::basic_string<T> const& s, std::basic_string<T> const& sep);
 
 /**
  * Creates a vector of fields from s separated by sep.
@@ -470,22 +284,7 @@ std::vector<std::basic_string<T>> split(
  */
 template <typename T>
 std::vector<std::basic_string<T>> split_string(
-     std::basic_string<T> const& s, std::basic_string<T> const& sep) {
-     using S = std::basic_string<T>;
-     std::vector<S> v;
-     typename S::size_type const len = sep.size();
-     if (len == 0) {
-          v.push_back(s);
-          return v;
-     }
-     typename S::size_type p1 = 0, p2;
-     while ((p2 = s.find(sep, p1)) != S::npos) {
-          v.push_back(s.substr(p1, p2 - p1));
-          p1 = p2 + len;
-     }
-     v.push_back(s.substr(p1));
-     return v;
-}
+     std::basic_string<T> const& s, std::basic_string<T> const& sep);
 
 /**
  * Indirectly sorts a vector.
@@ -496,18 +295,7 @@ std::vector<std::basic_string<T>> split_string(
  */
 template <class T>
 std::vector<typename std::vector<T>::size_type> indirect_sort(
-     const std::vector<T>& w) {
-     typedef typename std::vector<T>::size_type size_type;
-     typedef typename std::vector<size_type>::size_type size_type1;
-     const size_type1 n = w.size();
-     std::vector<size_type> v(n);
-     for (size_type1 i = 0; i < n; i++)
-          v[i] = i;
-     std::sort(v.begin(), v.end(), [&w](size_type i, size_type j) {
-          return w[i] < w[j];
-     });
-     return v;
-}
+     std::vector<T> const& w);
 
 /**
  * Reentrant version of strtok.
@@ -518,14 +306,14 @@ std::vector<typename std::vector<T>::size_type> indirect_sort(
  * should not be changed between calls. The implementation follows
  * that of Linux strtok_r(3).
  */
-char* strrtok(char* s, const char* delim, char** next);
+char* strrtok(char* s, char const* delim, char** next);
 
 /**
  * Duplicates a string. It allocates space with new(nothrow). If the
  * returned value is different from 0, it should be released with
  * delete[].
  */
-char* strdup(const char* s);
+char* strdup(char const* s);
 
 /**
  * Allocates C-style matrix. An \a m by \a n matrix is allocated as
@@ -535,34 +323,16 @@ char* strdup(const char* s);
  * \exception std::bad_alloc if there is no memory
  */
 template <class T>
-T** alloc_c_matrix(std::size_t m, std::size_t n) {
-     T** p = new T*[m];
-     try {
-          p[0] = new T[m * n];
-     } catch (const std::bad_alloc&) {
-          delete[] p;
-          throw;
-     }
-     for (std::size_t i = 1; i < m; i++)
-          p[i] = p[i - 1] + n;
-     return p;
-}
+T** alloc_c_matrix(std::size_t m, std::size_t n);
 
 /**
  * Deallocates C-style matrix. The matrix should be allocated by
  * alloc_c_matrix(std::size_t, std::size_t).
  */
 template <class T>
-void free_c_matrix(T** p) {
-     if (p) {
-          delete[] p[0];
-          delete p;
-     }
-}
+void free_c_matrix(T** p);
 
-/**
- * Measures time intervals in seconds.
- */
+/** Measures time intervals in seconds. */
 class Timer {
 public:
      /**
@@ -620,14 +390,36 @@ public:
      /**
       * Returns current combination.
       */
-     const std::vector<int>& get() const { return a; }
+     std::vector<int> const& get() const { return a; }
 
 private:
-     const int k;
-     const int n1;
-     const int k1;
+     int const k;
+     int const n1;
+     int const k1;
      int j;
      std::vector<int> a;
+};
+
+/**
+ * Generates variations in lexicographic order. A variation is a
+ * function \f$f\colon \{0, 1, \ldots, k - 1\} \to \{0, 1, \ldots, n -
+ * 1\}\f$. The number of variations is \f$n^k\f$. There must be \f$n
+ * \geq 1\f$, \f$k \geq 1\f$.
+ */
+class Varlex {
+public:
+     Varlex(int n, int k);
+     int n() const { return n_; }
+     int k() const { return k_; }
+     void reset();
+     bool next();
+     std::vector<int> const& get() const { return a_; }
+
+private:
+     int const n_;
+     int const n1_;
+     int const k_;
+     std::vector<int> a_;
 };
 
 /**
@@ -646,26 +438,19 @@ private:
  * 0, \ldots, n - 1 \right\}, \f] where \f$s = g.start()\f$, \f$l =
  * g.size()\f$, \f$d = g.stride()\f$, \f$n = l.size() = d.size()\f$.
  */
-bool isdegenerate(const std::gslice& g);
+bool isdegenerate(std::gslice const& g);
 
 /**
  * Returns true if a generalized slice is valid for a valarray. This
  * means that the slice is not degenerate and all addresses it
  * generates are within the range of the valarray of size \a n.
  */
-bool isvalid(std::size_t n, const std::gslice& g);
+bool isvalid(std::size_t n, std::gslice const& g);
 
-/**
- * Output operator for vectors.
- */
+/** Output operator for vectors. */
 template <typename T>
 std::ostream& operator<<(std::ostream& stream,
-                         const std::vector<T>& v) {
-     stream.width(0);
-     for (typename std::vector<T>::size_type i = 0; i < v.size(); i++)
-          stream << i << ' ' << v[i] << '\n';
-     return stream;
-}
+                         std::vector<T> const& v);
 
 /**
  * Returns true if and only if the two vectors have the same content.
@@ -674,21 +459,15 @@ std::ostream& operator<<(std::ostream& stream,
  * method requires that T is ordered with less than relation.
  */
 template <typename T>
-bool have_equal_content(const std::vector<T>& v,
-                        const std::vector<T>& w) {
-     if (v.size() != w.size())
-          return false;
-     return std::is_permutation(v.cbegin(), v.cend(), w.cbegin());
-}
+bool have_equal_content(std::vector<T> const& v,
+                        std::vector<T> const& w);
 
 /**
  * Returns true if and only if the vector \c v contains the element \c
  * e.
  */
 template <typename T>
-inline bool contains(const std::vector<T>& v, const T& e) {
-     return std::find(v.cbegin(), v.cend(), e) != v.cend();
-}
+bool contains(std::vector<T> const& v, T const& e);
 
 /**
  * Inserts \c value into \c v at position \c pos.
@@ -696,26 +475,13 @@ inline bool contains(const std::vector<T>& v, const T& e) {
  */
 template <typename T>
 void insert(std::vector<T>& v, typename std::vector<T>::size_type pos,
-            T const& value) {
-     auto const sz = v.size();
-     if (pos > sz)
-          throw std::out_of_range("invalid position in insert()");
-     v.resize(sz + 1);
-     for (auto i = sz; i > pos; i--)
-          v[i] = v[i - 1];
-     v[pos] = value;
-}
+            T const& value);
 
 /**
  * Removes duplicates from \c v. Requires only operator==().
  */
 template <typename T>
-void remove_duplicates(std::vector<T>& v) {
-     auto end = v.end();
-     for (auto it = v.begin(); it != end; ++it)
-          end = std::remove(it + 1, end, *it);
-     v.erase(end, v.end());
-}
+void remove_duplicates(std::vector<T>& v);
 
 /**
  * Returns \c s with each byte greater than 127 replaced by its octal
@@ -723,17 +489,14 @@ void remove_duplicates(std::vector<T>& v) {
  */
 std::string to_octal(std::string const& s);
 
-constexpr std::size_t length(char const* s) {
-     char const* t = s;
-     while (*t != '\0')
-          t++;
-     return t - s;
-}
+constexpr std::size_t length(char const* s);
 
 bool dehtml(std::istream& f, std::ostream& g);
 
 /** \} */ /* end of group miscellaneous_utilities */
 
 }  // namespace SHG
+
+#include <shg/utils-inl.h>
 
 #endif

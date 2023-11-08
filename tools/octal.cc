@@ -1,4 +1,7 @@
-/* octal.cc: replace each byte greater than 127 by its octal code */
+/**
+ * \file tools/octal.cc
+ * Replace each byte greater than 127 by its octal code
+ */
 
 #include <cassert>
 #include <iostream>

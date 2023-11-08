@@ -30,13 +30,11 @@ void run(int argc, char const* const argv[]) {
      namespace po = boost::program_options;
      po::options_description opts("Options");
      opts.add_options()("help,h", "Print short documentation.")(
-          "version,v",
-          "Print information about the program.")("output,o",
-                                                  po::value<
-                                                       std::string>(),
-                                                  "Use output file "
-                                                  "instead of "
-                                                  "standard output.");
+          "version,v", "Print information about the program.")(
+          "output,o", po::value<std::string>(),
+          "Use output file "
+          "instead of "
+          "standard output.");
 
      po::options_description args;
      args.add_options()("command", po::value<std::string>())(
