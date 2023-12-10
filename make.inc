@@ -4,10 +4,10 @@ SHELL = /bin/sh
 .SUFFIXES: .cc .o
 
 ifndef clang
-CXX = g++-13.1.0 -O2
+CXX = g++-13.2.0 -O2
 WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 else
-CXX = clang++-17 -O2 --gcc-toolchain=/usr/local/gcc-13.1.0
+CXX = clang++-17 -O2 --gcc-toolchain=/usr/local/gcc-13.2.0
 WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 endif
 
@@ -29,9 +29,9 @@ LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams -lboost_log -lboost_thread -lboost_filesystem	\
 -lpugixml -lpthread -lz
 
-AR = gcc-ar-13.1.0
+AR = gcc-ar-13.2.0
 ARFLAGS = rc
-RANLIB = gcc-ranlib-13.1.0
+RANLIB = gcc-ranlib-13.2.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

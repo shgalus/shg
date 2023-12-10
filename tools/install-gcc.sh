@@ -9,7 +9,7 @@
 # Stanislaw Galus
 # Sun Apr 21 19:57:41 CEST 2019
 
-VERSION=-13.1.0
+VERSION=-13.2.0
 
 wget ftp://ftp.gnu.org/gnu/gcc/gcc${VERSION}/gcc${VERSION}.tar.xz
 tar xvf gcc${VERSION}.tar.xz

@@ -1317,6 +1317,7 @@ HTML_EXTRA_STYLESHEET  =
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 HTML_EXTRA_FILES       = shg.pdf \
+                         ascii.pdf \
                          cnf.pdf \
                          mckenzie.pdf \
                          gebauerm.pdf \

@@ -116,9 +116,9 @@ https://cocoa.dima.unige.it/cocoa/cocoalib/.
 Headers: file:////usr/local/include/CoCoA/, library:
 file:////usr/local/lib/. Links:
 [examples](file:////usr/local/include/CoCoA/examples/),
-[CoCoALib-0.99818 documentation
+[CoCoALib-0.99818 PDF
 documentation](file:///usr/local/include/CoCoA/doc/CoCoALib.pdf),
-[CoCoALib-0.99818
+[CoCoALib-0.99818 HTML
 documentation](file:///usr/local/include/CoCoA/doc/html/index.html)
 
 \section installing_old_cvs_repository Installing old CVS repository.
@@ -231,11 +231,11 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Managing Projects with GNU Make](https://www.oreilly.com/openbook/make3/book/)
 
-- [GCC documentation](https://gcc.gnu.org/onlinedocs/13.1.0/)
-  ([local copy](file:///usr/local/gcc-13.1.0/share/doc/html/gcc/index.html))
+- [GCC documentation](https://gcc.gnu.org/onlinedocs/13.2.0/)
+  ([local copy](file:///usr/local/gcc-13.2.0/share/doc/html/gcc/index.html))
 
-- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-13.1.0/cpp/)
-  ([local copy](file:///usr/local/gcc-13.1.0/share/doc/html/cpp/index.html))
+- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/cpp/)
+  ([local copy](file:///usr/local/gcc-13.2.0/share/doc/html/cpp/index.html))
 
 - [Clang documentation](https://clang.llvm.org/docs/index.html)
   ([local copy](file:///usr/share/doc/clang-17/html/index.html))
@@ -286,8 +286,8 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Writing a custom iterator in modern C++](https://internalpointers.com/post/writing-custom-iterators-modern-cpp)
 
-- [Python documentation](https://docs.python.org/3/)
-  ([local copy](file:///usr/local/share/doc/python/python-3.11.4-docs-html/index.html))
+- [Python documentation](https://docs.python.org/3.11/)
+  ([local copy](file:///usr/share/doc/python3/html/index.html))
 
 - [Doxygen documentation](https://www.doxygen.nl/manual/index.html)
   ([local copy](file:///usr/local/share/doc/packages/doxygen/html/index.html))
@@ -301,6 +301,8 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 - [The Clockwise/Spiral Rule](https://c-faq.com/decl/spiral.anderson.html)
 ([local copy herein](spiral.anderson.html))
 
+- [ASCII control code chart (local copy herein)](ascii.pdf)
+
 - [ACCU](https://accu.org/)
 
 - [SQL Style Guide](https://www.sqlstyle.guide/)
@@ -309,6 +311,10 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
   ([local copy: Numerical Recipes Code 3.02](file:///usr/local/share/nr3/index.htm))
 
     - [Official Bug Reports (NR3, the Third Edition)](http://numerical.recipes/forumarchive/index.php/f-25.html)
+
+    - [Numerical Recipes Dependencies Tool](http://numerical.recipes/dependencies/)
+
+    - [Numerical Recipes Webnotes](http://numerical.recipes/webnotes/)
 
 - [pugixml](https://pugixml.org/)
 
@@ -319,10 +325,10 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
       ([local copy](file:///usr/share/doc/pugixml-doc/manual.html))
 
 - [GNU Scientific Library](https://www.gnu.org/software/gsl/doc/latex/gsl-ref.pdf)
-  ([local copy](file:///usr/local/share/doc/gsl-ref.pdf))
+  ([local copy](file:///usr/share/doc/gsl-ref-html/index.html))
 
-- [GNU MP](https://gmplib.org/gmp-man-6.3.0.pdf)
-  ([local copy](file:///usr/share/doc/gmp-doc/gmp.pdf))
+- [GNU MP](https://gmplib.org/manual/)
+  ([local copy](file:///usr/share/doc/gmp-doc/html/index.html))
 
 - [Bit Twiddling Hacks](http://graphics.stanford.edu/~seander/bithacks.html)
 

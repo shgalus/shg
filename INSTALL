@@ -4,8 +4,8 @@ SHG Installation
 Prerequisites
 -------------
 
-Development environment is Linux debian 4.19.0-25-amd64 (Debian
-Buster). For the list of compilers and required libraries, see
+Development environment is Linux debian 6.1.0-13-amd64 (Debian
+Bookworm 12.2). For the list of compilers and required libraries, see
 make.inc. For Windows, Visual Studio 2019 and 2022 solutions are
 provided.
 

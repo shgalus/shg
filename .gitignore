@@ -13,10 +13,11 @@
 /doc/*.out
 /doc/*.mpx
 /doc/shg.[0-9]*
-!/doc/StatGaus.pdf
-!/doc/gebauerm.pdf
+!/doc/ascii.pdf
 !/doc/cnf.pdf
+!/doc/gebauerm.pdf
 !/doc/mckenzie.pdf
+!/doc/StatGaus.pdf
 /doc/doxwarn.txt
 /lib/
 /extras/valgrind/tree
