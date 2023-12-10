@@ -637,6 +637,43 @@ void ksonedc(T& cdf, Vecint const& x, double& d, double& prob) {
      ksoned(cdf, v, d, prob);
 }
 
+/**
+ * Returns correlation coefficient between \f$x\f$ and \f$y\f$.
+ *
+ * Uses formula \f[ r = \frac{\sum_{i = 0}^{n - 1} (x_i - \bar{x})(y_i
+ * - \bar{y})}{\sqrt{\sum_{i = 0}^{n - 1} (x_i - \bar{x})^2 \sum_{i =
+ * 0}^{n - 1} (y_i - \bar{y})^2}}. \f]
+ *
+ * \implementation
+ * See \cite bronsztejn-siemiendiajew-musiol-muhlig-2004, formula
+ * 16.152b, page 849 or
+ * \cite press-teukolsky-vetterling-flannery-2007, formula 14.5.1,
+ * page 745.
+ */
+template <typename T>
+T correlation_coefficient(std::vector<T> const& x,
+                          std::vector<T> const& y) {
+     static_assert(std::is_floating_point<T>::value);
+     using Index = std::vector<T>::size_type;
+     Index const n = x.size();
+     SHG_VALIDATE(n >= 2);
+     SHG_VALIDATE(y.size() == n);
+     T const mx = std::accumulate(x.cbegin(), x.cend(), T(0)) / n;
+     T const my = std::accumulate(y.cbegin(), y.cend(), T(0)) / n;
+     T sxx = T(0), syy = T(0), sxy = T(0);
+     for (Index i = 0; i < n; i++) {
+          T const xt = x[i] - mx;
+          T const yt = y[i] - my;
+          sxy += xt * yt;
+          sxx += SHG::sqr(xt);
+          syy += SHG::sqr(yt);
+     }
+     T const r = sxy / std::sqrt(sxx * syy);
+     if (!std::isfinite(r))
+          SHG_THROW(std::runtime_error, "zero variation");
+     return r;
+}
+
 /** \} */ /* end of group mathematical_statistics */
 
 }  // namespace SHG
