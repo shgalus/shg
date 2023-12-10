@@ -66,24 +66,24 @@ def add_module(module_name):
     upp = module_name.upper()
 
     s = HEADER_FILE.format(low=low, upp=upp)
-    with open("../include/shg/{low}.h".format(low=low), 'w') as f:
+    with open(f'../include/shg/{low}.h', 'w', encoding="utf-8") as f:
         f.write(s)
 
     s = SOURCE_FILE.format(low=low)
-    with open("../src/{low}.cc".format(low=low), 'w') as f:
+    with open(f'../src/{low}.cc', 'w', encoding="utf-8") as f:
         f.write(s)
 
     s = TEST_FILE.format(low=low)
-    with open("../tests/{low}_test.cc".format(low=low), 'w') as f:
+    with open(f'../tests/{low}_test.cc', 'w', encoding="utf-8") as f:
         f.write(s)
 
     with open("../include/shg/shg.h", encoding="utf-8") as f:
         all_lines = f.read().splitlines()
     include_lines = [s for s in all_lines if s.startswith("#include")]
     include_lines.sort()
-    new_line = '#include <shg/{low}.h>'.format(low=low)
+    new_line = f'#include <shg/{low}.h>'
     bisect.insort(include_lines, new_line)
-    with open("../include/shg/shg.h", 'w') as f:
+    with open("../include/shg/shg.h", 'w', encoding="utf-8") as f:
         f.write(LIBRARY_HEADER_FILE_BEGIN)
         f.write("\n".join(include_lines))
         f.write(LIBRARY_HEADER_FILE_END)

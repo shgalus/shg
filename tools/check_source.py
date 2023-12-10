@@ -26,11 +26,11 @@ def print_error(fname, line, message):
     global N_ERRORS
     N_ERRORS += 1
     if not fname:
-        s = '{}'.format(message)
+        s = f'{message}'
     elif line == 0:
-        s = '{}: {}'.format(fname, message)
+        s = f'{fname}: {message}'
     else:
-        s = '{}:{}: {}'.format(fname, line, message)
+        s = f'{fname}:{line}: {message}'
     print(s)
 
 def check_file_as_binary(fname):
