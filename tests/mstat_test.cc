@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(sample_test) {
  * 1.08037435341377e-02   9.73707791984890e-01
  * 6.52407729020162e-02   8.07194225353378e-08
  *
- * The results get with Numerical Recipes with (14.3.18) are:
+ * The results got with Numerical Recipes with (14.3.18) are:
  *
  * 1.08037435377046e-02   9.73012808686660e-01
  * 6.52407728998911e-02   7.35239129875459e-08
