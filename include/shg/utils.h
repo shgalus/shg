@@ -363,6 +363,16 @@ private:
 };
 
 /**
+ * Compares calendar date and time. Only tm_year, tm_mon, tm_mday,
+ * tm_hour, tm_min, tm_sec are compared.
+ *
+ * \returns -1 if lhs < rhs,
+ * \returns 0 if lhs == rhs,
+ * \returns 1 if lhs > rhs.
+ */
+int tmcmp(std::tm const& lhs, std::tm const& rhs);
+
+/**
  * Generates all k-combinations of an n-set in lexicographic oreder.
  * There must be 0 < k <= n. The number of combinations is \f[{n
  * \choose k} = \frac{n!}{k!(n - k)!}.\f]

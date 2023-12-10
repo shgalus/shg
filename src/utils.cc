@@ -145,6 +145,34 @@ char* strdup(char const* s) {
                  : reinterpret_cast<char*>(std::memcpy(t, s, n));
 }
 
+int tmcmp(std::tm const& lhs, std::tm const& rhs) {
+     if (lhs.tm_year < rhs.tm_year)
+          return -1;
+     if (lhs.tm_year > rhs.tm_year)
+          return 1;
+     if (lhs.tm_mon < rhs.tm_mon)
+          return -1;
+     if (lhs.tm_mon > rhs.tm_mon)
+          return 1;
+     if (lhs.tm_mday < rhs.tm_mday)
+          return -1;
+     if (lhs.tm_mday > rhs.tm_mday)
+          return 1;
+     if (lhs.tm_hour < rhs.tm_hour)
+          return -1;
+     if (lhs.tm_hour > rhs.tm_hour)
+          return 1;
+     if (lhs.tm_min < rhs.tm_min)
+          return -1;
+     if (lhs.tm_min > rhs.tm_min)
+          return 1;
+     if (lhs.tm_sec < rhs.tm_sec)
+          return -1;
+     if (lhs.tm_sec > rhs.tm_sec)
+          return 1;
+     return 0;
+}
+
 Comblex::Comblex(int n, int k)
      : k(k), n1(n - 1), k1(k - 1), j(k < n ? k - 1 : -1), a(k) {
      if (k <= 0 || n < k)
