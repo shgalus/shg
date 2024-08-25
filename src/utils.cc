@@ -82,7 +82,8 @@ string& ltrim(string& s, string const& trimchars) {
 }
 
 string& rtrim(string& s, string const& trimchars) {
-     return s.erase(s.find_last_not_of(trimchars) + 1);
+     auto const pos = s.find_last_not_of(trimchars);
+     return pos == std::string::npos ? s.erase() : s.erase(pos + 1);
 }
 
 string& trim(string& s, string const& trimchars) {
