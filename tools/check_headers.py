@@ -8,7 +8,7 @@ def gcc(fname):
     '''Returns gcc command to compile file fname.'''
     cxx = 'g++-13.2.0 -O2 -MMD -g'
     cxx += ' -I../include'
-    cxx += ' -isystem/usr/local/boost_1_83_0/include'
+    cxx += ' -isystem/usr/local/boost_1_84_0/include'
     cxx += ' -isystem/usr/local/include/eigen3'
     cxx += ' -std=c++20'
     cxx += ' -Wpedantic -Wall -Wextra'

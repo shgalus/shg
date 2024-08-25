@@ -7,19 +7,21 @@
 #ifndef SHG_UTILS_H
 #define SHG_UTILS_H
 
-#include <algorithm>
 #include <cassert>
-#include <chrono>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <limits>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <valarray>
 #include <vector>
+#include <boost/multiprecision/cpp_int.hpp>
 #include <shg/vector.h>
 
 namespace SHG {
@@ -82,6 +84,12 @@ I iceil(F x);
  * \mbox{and} \; 0 \leq r < |b|. \f] (See \cite mostowski-stark-1975,
  * page 173).
  *
+ * \exception std::invalid_argument if \f$b = 0\f$
+ *
+ * \warning If \f$a / b\f$ is not representable in the type \c T, the
+ * result is incorrect. For 8-bit signed char it may happen for \f$a =
+ * -128\f$, \f$b = -1\f$, where 128 is not representable.
+ *
  * \implementation
  *
  * The standard \cite ansi-cpp-2012 states in paragraph 5.6.4:
@@ -117,32 +125,34 @@ I iceil(F x);
  * note that the second and the third case which requires correction
  * may be detected by testing whether \f$ a \% b \f$ is less than 0 or
  * not.
+ *
+ * See also \cite hanson-2006, sections 2.1 and 2.2.
+ */
+template <typename T>
+void divide(T const& a, T const& b, T& q, T& r);
+
+/**
+ * Returns true if and only if a divides b.
+ *
+ * \exception std::invalid_argument if \f$a = 0\f$
+ * \see divide(T const&, T const&, T&, T&)
+ */
+template <typename T>
+bool divides(T const& a, T const& b);
+
+/**
+ * Greatest common divisor. See \cite knuth-2002b, section 4.5.2,
+ * algorithm A.
  */
 template <class T>
-struct Integer_division {
-     /**
-      * The constructor accepts \f$a\f$ and \f$b\f$ and the created
-      * object contains \f$q\f$ and \f$r\f$ described in
-      * Integer_division.
-      *
-      * \exception std::invalid_argument if \f$b = 0\f$
-      */
-     Integer_division(T a, T b);
-     T q; /**< quotient */
-     T r; /**< remainder */
-     /**
-      * Returns quotient described in Integer_division.
-      *
-      * \exception std::invalid_argument if \f$b = 0\f$
-      */
-     static T quotient(T a, T b);
-     /**
-      * Returns remainder described in Integer_division.
-      *
-      * \exception std::invalid_argument if \f$b = 0\f$
-      */
-     static T remainder(T a, T b);
-};
+T gcd(T u, T v);
+
+/**
+ * Greatest common divisor for unsigned int type. Specialization
+ * without checking if u < 0 or v < 0. \sa SHG::gcd.
+ */
+template <>
+unsigned gcd<unsigned>(unsigned u, unsigned v);
 
 /**
  * Extended Euclidean algorithm. For two given nonnegative integer
@@ -500,6 +510,20 @@ void remove_duplicates(std::vector<T>& v);
 std::string to_octal(std::string const& s);
 
 constexpr std::size_t length(char const* s);
+
+/**
+ * Returns the result of std::ostringstream << x.
+ * \throws std::runtime_error if the operator<< fails
+ */
+template <typename T>
+std::string to_string(T const& x);
+
+/**
+ * Returns the result of std::istringstream(s) >> x.
+ * \throws std::runtime_error if the operator>> fails
+ */
+template <typename T>
+T from_string(std::string const& s);
 
 bool dehtml(std::istream& f, std::ostream& g);
 

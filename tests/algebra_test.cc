@@ -1,6 +1,7 @@
 #include <shg/algebra.h>
 #include <sstream>
 #include <shg/ifact.h>
+#include <shg/utils.h>
 #include "tests.h"
 
 namespace TESTS {
@@ -8,7 +9,20 @@ namespace TESTS {
 BOOST_AUTO_TEST_SUITE(algebra_test)
 
 using SHG::ALGEBRA::Element;
+using SHG::ALGEBRA::Finite_group;
+using SHG::ALGEBRA::Group_Sn;
+using SHG::ALGEBRA::Invalid_operation;
+using SHG::ALGEBRA::Ring_Z;
+using SHG::ALGEBRA::Ring_Zn;
 using std::invalid_argument;
+
+BOOST_AUTO_TEST_CASE(invalid_operation_test) {
+     auto const is_correct = [](Invalid_operation const& e) {
+          return std::strcmp(e.what(), "Invalid operation") == 0;
+     };
+     BOOST_CHECK_EXCEPTION(throw Invalid_operation(),
+                           Invalid_operation, is_correct);
+}
 
 Element test_pow(Element const& x, int n) {
      BOOST_REQUIRE(x.is_valid());
@@ -25,7 +39,6 @@ Element test_pow(Element const& x, int n) {
 }
 
 BOOST_AUTO_TEST_CASE(element_constructor_test) {
-     using SHG::ALGEBRA::Ring_Z;
      {
           Element x;
           BOOST_CHECK(!x.is_valid());
@@ -67,62 +80,12 @@ BOOST_AUTO_TEST_CASE(element_constructor_test) {
      }
 }
 
-BOOST_AUTO_TEST_CASE(finite_strings_semigroup_test) {
-     using SHG::ALGEBRA::Finite_strings;
-     {
-          Finite_strings S;
-          BOOST_CHECK(S.is_abelian());
-          Element const one = S.one();
-          BOOST_CHECK(is_one(S.element("")));
-          BOOST_CHECK(S.value(one) == "");
-          BOOST_CHECK(one * one == one);
-          BOOST_CHECK(one + one == one);
-     }
-
-     Finite_strings S{{'a', 'b', 'c'}};
-
-     BOOST_CHECK(!S.is_abelian());
-     Element const one = S.one();
-     Element const zero = S.zero();
-     BOOST_CHECK(is_one(one));
-     BOOST_CHECK(is_zero(one));
-     BOOST_CHECK(is_one(zero));
-     BOOST_CHECK(is_zero(zero));
-
-     BOOST_CHECK(S.element("") == one);
-     BOOST_CHECK(S.value(one) == "");
-
-     Element const x = S.element("aabbaa");
-     BOOST_CHECK(S.value(x) == "aabbaa");
-     Element const y = S.element("ccbbcc");
-     BOOST_CHECK(S.value(y) == "ccbbcc");
-     BOOST_CHECK(x == x);
-     BOOST_CHECK(x != y);
-     Element z = x * y;
-     BOOST_CHECK(S.value(z) == "aabbaaccbbcc");
-     BOOST_CHECK(x + y == z);
-     z = y * x;
-     BOOST_CHECK(S.value(z) == "ccbbccaabbaa");
-     BOOST_CHECK(y + x == z);
-     z = one * x;
-     BOOST_CHECK(z == x);
-     BOOST_CHECK(one + x == z);
-     z = x * one;
-     BOOST_CHECK(z == x);
-     BOOST_CHECK(x + one == z);
-     z = one * one;
-     BOOST_CHECK(z == one);
-     BOOST_CHECK(one + one == z);
-     BOOST_CHECK_THROW(S.element("aabbad"), invalid_argument);
-     BOOST_CHECK_THROW(-x, invalid_argument);
-     BOOST_CHECK_THROW(inv(x), invalid_argument);
-}
-
 BOOST_DATA_TEST_CASE(group_s_n_test, bdata::xrange(5), xr) {
-     using SHG::ALGEBRA::Group_Sn;
+     using SHG::ALGEBRA::is_group;
      int const n = xr + 1;
      Group_Sn const G(n);
 
+     BOOST_CHECK(is_group(&G));
      BOOST_CHECK(G.is_abelian() == (n < 3));
      Element const one = G.one();
 
@@ -151,7 +114,8 @@ BOOST_DATA_TEST_CASE(group_s_n_test, bdata::xrange(5), xr) {
 
 BOOST_AUTO_TEST_CASE(finite_group_test) {
      using SHG::Matrix;
-     using SHG::ALGEBRA::Finite_group;
+     using SHG::ALGEBRA::is_group;
+
      // clang-format off
      Matrix<int> const g0(2, 2, {
                0, 1,
@@ -185,6 +149,7 @@ BOOST_AUTO_TEST_CASE(finite_group_test) {
 
      {
           Finite_group const G;
+          BOOST_CHECK(is_group(&G));
           BOOST_CHECK(G.is_abelian());
           BOOST_CHECK(G.order() == 1);
           BOOST_CHECK(G.value(G.one()) == 0);
@@ -193,6 +158,7 @@ BOOST_AUTO_TEST_CASE(finite_group_test) {
      }
      {
           Finite_group const G({2, 2, {0, 1, 1, 0}});
+          BOOST_CHECK(is_group(&G));
           BOOST_CHECK(G.is_abelian());
           BOOST_CHECK(G.order() == 2);
           BOOST_CHECK(G.value(G.one()) == 0);
@@ -201,6 +167,7 @@ BOOST_AUTO_TEST_CASE(finite_group_test) {
      }
 
      Finite_group G(g1);
+     BOOST_CHECK(is_group(&G));
      BOOST_CHECK(!G.is_abelian());
      BOOST_CHECK(G.order() == 6);
      for (int i = 0; i < G.order(); i++)
@@ -216,10 +183,11 @@ BOOST_AUTO_TEST_CASE(finite_group_test) {
 }
 
 BOOST_AUTO_TEST_CASE(ring_z_test) {
-     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::is_commutative_ring;
      Ring_Z const Z;
 
-     BOOST_CHECK(Z.is_abelian());
+     BOOST_CHECK(is_commutative_ring(&Z));
+     BOOST_CHECK(!Z.is_field());
      Element const zero = Z.zero();
      BOOST_CHECK(Z.value(zero) == 0);
      Element const one = Z.one();
@@ -235,6 +203,19 @@ BOOST_AUTO_TEST_CASE(ring_z_test) {
           BOOST_CHECK(y + x == zero);
           BOOST_CHECK(x + zero == x);
           BOOST_CHECK(zero + x == x);
+          if (i == -1 || i == 1) {
+               BOOST_CHECK(inv(x) == x);
+               BOOST_CHECK(Z.is_unit(x));
+          } else {
+               BOOST_CHECK_THROW(inv(x), Invalid_operation);
+          }
+          if (i == 0) {
+               BOOST_CHECK(Z.is_zerodivisor(x));
+               BOOST_CHECK(Z.is_nilpotent(x));
+          } else {
+               BOOST_CHECK(!Z.is_zerodivisor(x));
+               BOOST_CHECK(!Z.is_nilpotent(x));
+          }
           for (int j = -n; j <= n; j++) {
                Element const y = Z.element(j);
                BOOST_CHECK(Z.value(x + y) == i + j);
@@ -245,12 +226,59 @@ BOOST_AUTO_TEST_CASE(ring_z_test) {
      }
 }
 
-BOOST_DATA_TEST_CASE(ring_zn_test, bdata::xrange(10), xr) {
-     using SHG::ALGEBRA::Ring_Zn;
+BOOST_AUTO_TEST_CASE(ring_zn_element_type_test) {
+     Ring_Zn const Z8_1(8);
+     Ring_Zn const Z8_2(8);
+     Element const e1 = Z8_1.element(2);
+     Element const e2 = Z8_2.element(2);
+     Element e;
+     bool b;
+
+     BOOST_CHECK_THROW(e = e1 + e2, std::invalid_argument);
+     try {
+          b = e1 == e2;
+          b = false;
+     } catch (std::invalid_argument const&) {
+          b = true;
+     }
+     BOOST_CHECK(b);
+}
+
+/**
+ * Returns true if x is nilpotent in \f$Z_n\f$.
+ */
+bool is_zn_nilpotent(int x, int n) {
+     BOOST_REQUIRE(n > 0);
+     BOOST_REQUIRE(x >= 0 && x < n);
+     int const x0{x};
+     for (int i = 0; i < n; i++) {
+          if (x == 0)
+               return true;
+          x = (x * x0) % n;
+     }
+     return false;
+}
+
+/**
+ * Returns true if x is a zerodivisor in \f$Z_n\f$.
+ */
+bool is_zn_zerodivisor(int x, int n) {
+     BOOST_REQUIRE(n > 0);
+     BOOST_REQUIRE(x >= 0 && x < n);
+     for (int i = 1; i < n; i++)
+          if ((x * i) % n == 0)
+               return true;
+     return false;
+}
+
+BOOST_DATA_TEST_CASE(ring_zn_test, bdata::xrange(21), xr) {
+     using SHG::ALGEBRA::is_commutative_ring;
+     using SHG::gcd;
+     using SHG::is_prime;
      int const n = xr + 1;
      Ring_Zn const A(n);
 
-     BOOST_CHECK(A.is_abelian());
+     BOOST_CHECK(is_commutative_ring(&A));
      Element const zero = A.zero();
      BOOST_CHECK(A.value(zero) == 0);
      Element const one = A.one();
@@ -258,16 +286,39 @@ BOOST_DATA_TEST_CASE(ring_zn_test, bdata::xrange(10), xr) {
           BOOST_CHECK(A.value(one) == 0);
      else
           BOOST_CHECK(A.value(one) == 1);
+     BOOST_CHECK(is_prime(n) == A.is_field());
 
      for (int i = 0; i < n; i++) {
           Element const x = A.element(i);
           BOOST_CHECK(A.value(x) == i);
+          if (gcd(i, n) == 1)
+               BOOST_CHECK(x * inv(x) == one);
+          else
+               BOOST_CHECK_THROW(inv(x), Invalid_operation);
+          if (A.is_unit(x)) {
+               Element const y = inv(x);
+               BOOST_CHECK(x * y == one);
+          } else {
+               BOOST_CHECK_THROW(inv(x), Invalid_operation);
+          }
+          BOOST_CHECK(A.is_zerodivisor(x) == is_zn_zerodivisor(i, n));
+          BOOST_CHECK(A.is_nilpotent(x) == is_zn_nilpotent(i, n));
           Element const y = -x;
           BOOST_CHECK(-x == y);
           BOOST_CHECK(x + y == zero);
           BOOST_CHECK(y + x == zero);
           BOOST_CHECK(x + zero == x);
           BOOST_CHECK(zero + x == x);
+          if (A.is_field()) {
+               if (i != 0) {
+                    Element const y = inv(x);
+                    BOOST_CHECK(inv(x) == y);
+                    BOOST_CHECK(x * y == one);
+                    BOOST_CHECK(y * x == one);
+               } else {
+                    BOOST_CHECK_THROW(inv(x), Invalid_operation);
+               }
+          }
           for (int j = 0; j < n; j++) {
                Element const y = A.element(j);
                BOOST_CHECK(A.value(x + y) == (i + j) % n);
@@ -282,9 +333,11 @@ BOOST_DATA_TEST_CASE(ring_zn_test, bdata::xrange(10), xr) {
 
 BOOST_AUTO_TEST_CASE(field_q_test) {
      using SHG::ALGEBRA::Field_Q;
+     using SHG::ALGEBRA::is_commutative_ring;
      Field_Q const F;
 
-     BOOST_CHECK(F.is_abelian());
+     BOOST_CHECK(is_commutative_ring(&F));
+     BOOST_CHECK(F.is_field());
      Element const zero = F.zero();
      BOOST_CHECK(F.value(zero) == 0);
      Element const one = F.one();
@@ -299,6 +352,15 @@ BOOST_AUTO_TEST_CASE(field_q_test) {
      for (int i = -n; i <= n; i++) {
           Element const x = F.element(i);
           BOOST_CHECK(F.value(x) == i);
+          if (i == 0) {
+               BOOST_CHECK(F.is_nilpotent(x));
+               BOOST_CHECK(!F.is_unit(x));
+               BOOST_CHECK(F.is_zerodivisor(x));
+          } else {
+               BOOST_CHECK(!F.is_nilpotent(x));
+               BOOST_CHECK(F.is_unit(x));
+               BOOST_CHECK(!F.is_zerodivisor(x));
+          }
           for (int j = -n; j <= n; j++)
                if (j != 0) {
                     Element const x = F.element(i, j);
@@ -331,89 +393,29 @@ BOOST_AUTO_TEST_CASE(field_q_test) {
      }
 }
 
-BOOST_DATA_TEST_CASE(field_f_p_test, bdata::xrange(10), xr) {
-     using SHG::is_prime;
-     using SHG::ALGEBRA::Field_Fp;
-     int const p = xr + 2;
-
-     if (!is_prime(p)) {
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-value"
-#endif
-
-          BOOST_CHECK_THROW((Field_Fp(p)), invalid_argument);
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-
-          return;
+BOOST_AUTO_TEST_CASE(direct_product_test) {
+     using SHG::ALGEBRA::AS;
+     using SHG::ALGEBRA::Direct_product;
+     {
+          std::vector<AS const*> v;
+          Direct_product P;
+          BOOST_CHECK_THROW(Direct_product{v}, std::invalid_argument);
+          BOOST_CHECK_THROW(P.reset(v), std::invalid_argument);
+          v.resize(2);
+          v[0] = v[1] = nullptr;
+          BOOST_CHECK_THROW(Direct_product{v}, std::invalid_argument);
+          BOOST_CHECK_THROW(P.reset(v), std::invalid_argument);
      }
-
-     Field_Fp const F(p);
-
-     BOOST_CHECK(F.is_abelian());
-     Element const zero = F.zero();
-     BOOST_CHECK(F.value(zero) == 0);
-     Element const one = F.one();
-     BOOST_CHECK(F.value(one) == 1);
-
-     BOOST_CHECK(is_zero(zero));
-     BOOST_CHECK(!is_one(zero));
-     BOOST_CHECK(is_one(one));
-     BOOST_CHECK(!is_zero(one));
-
-     for (int i = 0; i < p; i++) {
-          Element const x = F.element(i);
-          BOOST_CHECK(F.value(x) == i);
-          Element const y = -x;
-          BOOST_CHECK(-x == y);
-          BOOST_CHECK(x + y == zero);
-          BOOST_CHECK(y + x == zero);
-          BOOST_CHECK(x + zero == x);
-          BOOST_CHECK(zero + x == x);
-          BOOST_CHECK(x * one == x);
-          BOOST_CHECK(one * x == x);
-          if (i != 0) {
-               Element const y = inv(x);
-               BOOST_CHECK(inv(x) == y);
-               BOOST_CHECK(x * y == one);
-               BOOST_CHECK(y * x == one);
-
-          } else {
-               BOOST_CHECK_THROW(inv(x), invalid_argument);
-          }
-          for (int j = 0; j < p; j++) {
-               Element const y = F.element(j);
-               BOOST_CHECK(F.value(x + y) == (i + j) % p);
-               BOOST_CHECK(F.value(y + x) == (i + j) % p);
-               BOOST_CHECK(F.value(x * y) == (i * j) % p);
-               BOOST_CHECK(F.value(y * x) == (i * j) % p);
-          }
-     }
-     BOOST_CHECK_THROW(F.element(-1), invalid_argument);
-     BOOST_CHECK_THROW(F.element(p), invalid_argument);
-}
-
-BOOST_AUTO_TEST_CASE(direct_product_of_groups_test) {
-     using SHG::ALGEBRA::Group_Sn;
-     using SHG::ALGEBRA::Direct_product_of_groups;
-     Group_Sn Sn(2);
-     Direct_product_of_groups G({&Sn, &Sn});
-     BOOST_CHECK(G.is_abelian());
-     BOOST_CHECK(G.separator() == ";");
-     G.separator("\n\n");
-     BOOST_CHECK(G.separator() == "\n\n");
-     G.separator(";");
+     Group_Sn const Sn(2);
+     Direct_product const G({&Sn, &Sn});
 
      Element const e0 = Sn.element({0, 1});
      Element const e1 = Sn.element({1, 0});
 
-     Direct_product_of_groups::ET const ve{e0, e0};
-     Direct_product_of_groups::ET const va{e0, e1};
-     Direct_product_of_groups::ET const vb{e1, e0};
-     Direct_product_of_groups::ET const vc{e1, e1};
+     Direct_product::ET const ve{e0, e0};
+     Direct_product::ET const va{e0, e1};
+     Direct_product::ET const vb{e1, e0};
+     Direct_product::ET const vc{e1, e1};
 
      Element const e = G.element(ve);
      Element const a = G.element(va);
@@ -427,6 +429,23 @@ BOOST_AUTO_TEST_CASE(direct_product_of_groups_test) {
      BOOST_CHECK(G.value(a) == va);
      BOOST_CHECK(G.value(b) == vb);
      BOOST_CHECK(G.value(c) == vc);
+
+     BOOST_CHECK(e == e);
+     BOOST_CHECK(a != e);
+     BOOST_CHECK(b != e);
+     BOOST_CHECK(c != e);
+     BOOST_CHECK(e != a);
+     BOOST_CHECK(a == a);
+     BOOST_CHECK(b != a);
+     BOOST_CHECK(c != a);
+     BOOST_CHECK(e != b);
+     BOOST_CHECK(a != b);
+     BOOST_CHECK(b == b);
+     BOOST_CHECK(c != b);
+     BOOST_CHECK(e != c);
+     BOOST_CHECK(a != c);
+     BOOST_CHECK(b != c);
+     BOOST_CHECK(c == c);
 
      BOOST_CHECK(e * e == e);
      BOOST_CHECK(e * a == a);
@@ -513,39 +532,8 @@ BOOST_AUTO_TEST_CASE(direct_product_of_groups_test) {
      BOOST_CHECK(is_one(x));
 }
 
-BOOST_AUTO_TEST_CASE(finite_strings_input_output_test) {
-     using SHG::ALGEBRA::Finite_strings;
-     Finite_strings S{{'a', 'b', 'c'}};
-     Element x(&S), y(&S);
-     std::stringstream ss;
-
-     x = S.element("");
-     ss.clear();
-     ss << x;
-     BOOST_CHECK(!ss.fail());
-     ss >> y;
-     BOOST_CHECK(!ss.fail());
-     BOOST_CHECK(x == y);
-
-     x = S.element("aabbaa");
-     ss.clear();
-     ss << x;
-     BOOST_CHECK(!ss.fail());
-     ss >> y;
-     BOOST_CHECK(!ss.fail());
-     BOOST_CHECK(x == y);
-
-     ss.clear();
-     ss.str("abd");
-     BOOST_CHECK(!ss.fail());
-     ss >> x;
-     BOOST_CHECK(ss.fail());
-     BOOST_CHECK(x == y);
-}
-
 BOOST_DATA_TEST_CASE(group_s_n_input_output_test, bdata::xrange(5),
                      xr) {
-     using SHG::ALGEBRA::Group_Sn;
      int const n = xr + 1;
      Group_Sn const G(n);
      Element y(&G);
@@ -565,7 +553,6 @@ BOOST_DATA_TEST_CASE(group_s_n_input_output_test, bdata::xrange(5),
 }
 
 BOOST_AUTO_TEST_CASE(group_s_n_input_fails_test) {
-     using SHG::ALGEBRA::Group_Sn;
      std::stringstream ss;
      Group_Sn const G(3);
      Element x(&G);
@@ -593,7 +580,6 @@ BOOST_AUTO_TEST_CASE(group_s_n_input_fails_test) {
 }
 
 BOOST_AUTO_TEST_CASE(finite_group_input_output_test) {
-     using SHG::ALGEBRA::Finite_group;
      Finite_group const G({3, 3, {0, 1, 2, 1, 2, 0, 2, 0, 1}});
      Element x(&G), y(&G);
      std::stringstream ss;
@@ -616,7 +602,6 @@ BOOST_AUTO_TEST_CASE(finite_group_input_output_test) {
 
 BOOST_DATA_TEST_CASE(ring_z_input_output_test, bdata::xrange(41),
                      xr) {
-     using SHG::ALGEBRA::Ring_Z;
      int const i = xr - 20;
      Ring_Z const Z;
      Element const x = Z.element(i);
@@ -639,7 +624,6 @@ BOOST_DATA_TEST_CASE(ring_z_input_output_test, bdata::xrange(41),
 }
 
 BOOST_AUTO_TEST_CASE(ring_z_input_fails_test) {
-     using SHG::ALGEBRA::Ring_Z;
      std::stringstream ss;
      Ring_Z Z;
      Element x(&Z);
@@ -658,7 +642,6 @@ BOOST_AUTO_TEST_CASE(ring_z_input_fails_test) {
 
 BOOST_DATA_TEST_CASE(ring_zn_input_output_test, bdata::xrange(10),
                      xr) {
-     using SHG::ALGEBRA::Ring_Zn;
      int const n = xr + 1;
      Ring_Zn const A(n);
      Element x;
@@ -677,7 +660,6 @@ BOOST_DATA_TEST_CASE(ring_zn_input_output_test, bdata::xrange(10),
 }
 
 BOOST_AUTO_TEST_CASE(ring_zn_input_fails_test) {
-     using SHG::ALGEBRA::Ring_Zn;
      std::stringstream ss;
      Ring_Zn const A(3);
      Element x(&A);
@@ -781,65 +763,11 @@ BOOST_AUTO_TEST_CASE(field_q_input_fails_test) {
       */
 }
 
-BOOST_DATA_TEST_CASE(field_fp_input_output_test, bdata::xrange(10),
-                     xr) {
-     using SHG::is_prime;
-     using SHG::ALGEBRA::Field_Fp;
-     int const p = xr + 2;
-     if (!is_prime(p)) {
-          BOOST_CHECK(true);
-          return;
-     }
-     Field_Fp const F(p);
-     Element x;
-     Element y(&F);
-     std::stringstream ss;
-
-     for (int i = 0; i < p; i++) {
-          x = F.element(i);
-          ss.clear();
-          ss << x;
-          BOOST_CHECK(!ss.fail());
-          ss >> y;
-          BOOST_CHECK(!ss.fail());
-          BOOST_CHECK(x == y);
-     }
-}
-
-BOOST_AUTO_TEST_CASE(field_fp_input_fails_test) {
-     using SHG::ALGEBRA::Field_Fp;
-     std::stringstream ss;
-     Field_Fp const F(3);
-     Element x(&F);
-
-     ss.clear();
-     ss.str("-1");
-     BOOST_CHECK(!ss.fail());
-     ss >> x;
-     BOOST_CHECK(ss.fail());
-     ss.clear();
-     ss.str("3");
-     BOOST_CHECK(!ss.fail());
-     ss >> x;
-     BOOST_CHECK(ss.fail());
-     ss.clear();
-     ss.str("xxx");
-     BOOST_CHECK(!ss.fail());
-     ss >> x;
-     BOOST_CHECK(ss.fail());
-     ss.clear();
-     ss.str("");
-     BOOST_CHECK(!ss.fail());
-     ss >> x;
-     BOOST_CHECK(ss.fail());
-}
-
-BOOST_AUTO_TEST_CASE(direct_product_of_groups_input_output_test) {
-     using SHG::ALGEBRA::Group_Sn;
-     using SHG::ALGEBRA::Direct_product_of_groups;
+BOOST_AUTO_TEST_CASE(direct_product_input_output_test) {
+     using SHG::ALGEBRA::Direct_product;
      Group_Sn S2(2);
      Group_Sn S3(3);
-     Direct_product_of_groups G({&S2, &S3});
+     Direct_product G({&S2, &S3});
      Element x(&G), y(&G);
      std::stringstream ss;
      Group_Sn::ET v2(2), v3(3);
@@ -870,6 +798,55 @@ BOOST_AUTO_TEST_CASE(direct_product_of_groups_input_output_test) {
      BOOST_CHECK(!ss.fail());
      ss >> x;
      BOOST_CHECK(ss.fail());
+}
+
+BOOST_AUTO_TEST_CASE(group_sn_reset_test) {
+     Group_Sn Sn(3);
+
+     BOOST_CHECK(Sn.n() == 3);
+     Element const e1 = Sn.element({1, 0, 2});
+     Element const e2 = Sn.element({2, 1, 0});
+     BOOST_CHECK((Sn.value(e1 * e2) == Group_Sn::ET{2, 0, 1}));
+     Sn.reset(4);
+     BOOST_CHECK(Sn.n() == 4);
+     // vector subscript out of range in line below:
+     // auto const v = Sn.value(e1 * e2);
+}
+
+BOOST_AUTO_TEST_CASE(ring_zn_reset_test) {
+     Ring_Zn Zn(8);
+
+     BOOST_CHECK(Zn.n() == 8);
+     Element const e1 = Zn.element(5);
+     Element const e2 = Zn.element(7);
+     BOOST_CHECK(Zn.value(e1 + e2) == 4);
+     Zn.reset(6);
+     BOOST_CHECK(Zn.n() == 6);
+     BOOST_CHECK(Zn.value(e1 + e2) == 6);  // (5 + 7) - 6 = 6
+}
+
+BOOST_AUTO_TEST_CASE(direct_product_reset_test) {
+     using SHG::ALGEBRA::Direct_product;
+     using SHG::to_string;
+
+     Ring_Zn const Z2(2);
+     Ring_Zn const Z3(3);
+     Group_Sn const S2(2);
+     Group_Sn const S3(3);
+
+     Direct_product G({&Z2, &Z3});
+     Element const e1{G.element({Z2.element(0), Z3.element(0)})};
+     Element const e2{G.element({Z2.element(1), Z3.element(2)})};
+     BOOST_CHECK(to_string(e1) == "0 0");
+     BOOST_CHECK(to_string(e2) == "1 2");
+     BOOST_CHECK(to_string(e1 + e2) == "1 2");
+     G.reset({&S2, &S3});
+     BOOST_CHECK(to_string(e1) == "0 0");
+     BOOST_CHECK(to_string(e2) == "1 2");
+     // memory access violation at address: 0x0: no mapping at fault
+     // address:
+
+     // Element const e = e1 + e2;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

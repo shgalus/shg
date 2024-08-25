@@ -64,41 +64,50 @@ I iceil(F x) {
      return static_cast<I>(y);
 }
 
-template <class T>
-Integer_division<T>::Integer_division(T a, T b) : q(), r() {
+template <typename T>
+void divide(T const& a, T const& b, T& q, T& r) {
      if (b == 0)
-          throw std::invalid_argument(
-               "Integer_division::Integer_division");
-     auto d = std::div(a, b);
-     assert((a < 0 && d.rem != 0) == (d.rem < 0));
-     if (d.rem < 0) {
-          if (b < 0) {
-               q = d.quot + 1;
-               r = d.rem - b;
-          } else {
-               q = d.quot - 1;
-               r = d.rem + b;
-          }
+          throw std::invalid_argument("division by zero in divide");
+     if constexpr (std::is_same<
+                        T, boost::multiprecision::cpp_int>::value) {
+          divide_qr(a, b, q, r);
      } else {
-          q = d.quot;
-          r = d.rem;
+          q = a / b;
+          r = a % b;
+     }
+     if ((a < 0 && r != 0) != (r < 0))
+          throw std::runtime_error("divide error");
+     if (r < 0) {
+          if (b < 0) {
+               q++;
+               r -= b;
+          } else {
+               q--;
+               r += b;
+          }
      }
 }
 
-template <class T>
-T Integer_division<T>::quotient(T a, T b) {
-     if (b == 0)
-          throw std::invalid_argument("Integer_division::quotient");
-     auto d = std::div(a, b);
-     return d.rem < 0 ? b < 0 ? d.quot + 1 : d.quot - 1 : d.quot;
+template <typename T>
+bool divides(T const& a, T const& b) {
+     if (a == 0)
+          throw std::invalid_argument("division by zero divides");
+     return b % a == 0;
 }
 
 template <class T>
-T Integer_division<T>::remainder(T a, T b) {
-     if (b == 0)
-          throw std::invalid_argument("Integer_division::remainder");
-     T const r = a % b;
-     return r < 0 ? r + std::abs(b) : r;
+T gcd(T u, T v) {
+     T r;
+     if (u < 0)
+          u = -u;
+     if (v < 0)
+          v = -v;
+     while (v) {
+          r = u % v;
+          u = v;
+          v = r;
+     }
+     return u;
 }
 
 template <class T>
@@ -291,6 +300,25 @@ constexpr std::size_t length(char const* s) {
      while (*t != '\0')
           t++;
      return t - s;
+}
+
+template <typename T>
+std::string to_string(T const& x) {
+     std::ostringstream oss;
+     oss << x;
+     if (!oss)
+          throw std::runtime_error("to_string() failed");
+     return oss.str();
+}
+
+template <typename T>
+T from_string(std::string const& s) {
+     T x;
+     std::istringstream iss(s);
+     iss >> x;
+     if (!iss)
+          throw std::runtime_error("from_string() failed");
+     return x;
 }
 
 }  // namespace SHG

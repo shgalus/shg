@@ -117,11 +117,11 @@ public:
       * \endcode
       * produces the following output:
       * \verbatim
-      * prog: assertion failed in file file.c, line 10
-      * assertion failed in file file.c, line 10
-      * prog: assertion failed
-      * assertion failed
-      * \endverbatim
+        prog: assertion failed in file file.c, line 10
+        assertion failed in file file.c, line 10
+        prog: assertion failed
+        assertion failed
+        \endverbatim
       */
      void print(char const* progname = nullptr,
                 std::ostream& f = std::cerr) const;

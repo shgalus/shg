@@ -1,0 +1,204 @@
+\chapter{Old notes (until 2021)}
+
+\begin{note}[Functions of multivariate random variables] \label{note:fmvrv}
+Let $(X_1, \ldots, X_n)$ be a random vector with density $f(x_1,
+\ldots, x_n)$. Let
+\begin{align*}
+U_1 &= g_1(X_1, \ldots, X_n) \\
+& \ldots \\
+U_n &= g_n(X_1, \ldots, X_n)
+\end{align*}
+be a one-to-one differentiable function with Jacobian determinant
+different from 0 on $[a_1, b_1) \times \ldots \times [a_n, b_n)$. Let
+\begin{align*}
+X_1 &= h_1(U_1, \ldots, U_n) \\
+& \ldots \\
+X_n &= h_n(U_1, \ldots, U_n)
+\end{align*}
+be the inverse function and let
+\[ J = \left|
+\begin{array}{ccc}
+  \frac{\partial x_1}{\partial u_1} &
+  \ldots &
+  \frac{\partial x_1}{\partial u_n} \\
+  \hdotsfor{3} \\
+  \frac{\partial x_n}{\partial u_1} &
+  \ldots &
+  \frac{\partial x_n}{\partial u_n} \\
+\end{array}
+\right|
+\]
+be its Jacobian determinant. Then the density of $(U_1, \ldots, U_n)$
+is
+\[
+h(u_1, \ldots, u_n) = f[h_1(u_1, \ldots, u_n), \ldots, h_n(u_1,
+  \ldots, u_n)]|J|.
+\]
+\end{note}
+
+\begin{proof}
+See \cite[\S2.9, p.~67]{fisz-1969}.
+\end{proof}
+
+\begin{note}
+Let $X_1, \ldots, X_n$ be independent identically distributed random
+variables with common density $f$. Let $(i_1, \ldots, i_n)$ be a
+permutation of the set $\{1, \ldots, n\}$. Then $\Pr(X_{i_1} < X_{i_2}
+< \ldots < X_{i_n}) = 1 / n!$.
+\end{note}
+
+\begin{proof}
+Let us consider the transformation
+\begin{align*}
+U_1 &= X_{i_1} \\
+& \ldots \\
+U_n &= X_{i_n}
+\end{align*}
+The Jacobian matrix of this transformation is a permutation matrix,
+whose $i$-th row contains 1 in the $i_j$-th column and zeros in the
+remaining columns. The determinant of this matrix is equal to $\pm 1$.
+By the note~\ref{note:fmvrv}, $(U_1, \ldots, U_n)$ has the density
+\[
+h(u_1, \ldots, u_n) = f(x_{i_1}) \ldots f(x_{i_n}) = f(x_1) \ldots f(x_n).
+\]
+
+Thus all permutations of $X_1, \ldots, X_n$ have the same density as
+$X_1, \ldots, X_n$, ie. $f(x_1)\ldots f(x_n)$. Hence it follows that
+for each permutation $(i_1, \ldots, i_n)$
+\[
+\Pr(X_{i_1} < X_{i_2} < \ldots < X_{i_n}) = \Pr(X_1 < X_2 < \ldots <
+X_n) = 1 / n! \qedhere
+\]
+\end{proof}
+
+\begin{note}[The smallest non-commutative group]
+  Every group of order not greater than 5 is
+  commutative.\footnote{\cite [p.~58] {lang-1984}.}
+\end{note}
+
+\begin{proof}
+  Let a group $G$ contains the unit element $e$ and four elements $a,
+  b, c, d$ such that
+  \begin{align}
+    ab &= c \label{eq:abc} \\
+    ba &= d. \label{eq:bad}
+  \end{align}
+
+  There cannot be $a^{-1} = a$ because from \eqref{eq:abc} it would
+  follow $ac = b$ and then it would have to be $ad = d$ ($ae = a$, $aa
+  = e$, $ab = c$, $ac = b$, so the only possible result of $ad$ is
+  $d$). There cannot be $a^{-1} = b$ because then it would be $ab =
+  e$. There cannot be $a^{-1} = c$ because from \eqref{eq:abc} it
+  would follow $cc = b$ and from \eqref{eq:bad} it would follow $dc =
+  b$, so it would be $c = d$. There cannot be $a^{-1} = d$ because
+  from~\eqref{eq:abc} it would follow $dc = b$ and from~\eqref{eq:bad}
+  it would follow $dd = b$, so it would also be $c = d$. Therefore
+  there must exist $f \in G - \{ e, a, b, c, d \}$ such that
+  \begin{equation}
+    af = fa = e. \label{eq:afe}
+  \end{equation}
+
+  Accept
+  \begin{equation}
+    bb = e. \label{eq:bbe}
+  \end{equation}
+  Now the group $G$ can be uniquely determined.
+
+  From~\eqref{eq:abc} and~\eqref{eq:afe} we have $fc = b$,
+  from~\eqref{eq:bad} and ~\eqref{eq:afe} we have $df = b$.
+  From~\eqref{eq:abc} and~\eqref{eq:bbe} we have $cb = a$,
+  from~\eqref{eq:bad} and ~\eqref{eq:bbe} we have $bd = a$. The
+  multiplication table built so far is
+  \begin{center}
+  \begin{tabular}{l|llllll}
+        & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\ \hline
+    $e$ & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\
+    $a$ & $a$ & $ $ & $c$ & $ $ & $ $ & $e$ \\
+    $b$ & $b$ & $d$ & $e$ & $ $ & $a$ & $ $ \\
+    $c$ & $c$ & $ $ & $a$ & $ $ & $ $ & $ $ \\
+    $d$ & $d$ & $ $ & $ $ & $ $ & $ $ & $b$ \\
+    $f$ & $f$ & $e$ & $ $ & $b$ & $ $ & $ $ \\
+  \end{tabular}
+  \end{center}
+  We can see that there must be $bc = f$, $bf = c$, $db = f$, $fb =
+  d$. The table is
+  \begin{center}
+  \begin{tabular}{l|llllll}
+        & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\ \hline
+    $e$ & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\
+    $a$ & $a$ & $ $ & $c$ & $ $ & $ $ & $e$ \\
+    $b$ & $b$ & $d$ & $e$ & $f$ & $a$ & $c$ \\
+    $c$ & $c$ & $ $ & $a$ & $ $ & $ $ & $ $ \\
+    $d$ & $d$ & $ $ & $f$ & $ $ & $ $ & $b$ \\
+    $f$ & $f$ & $e$ & $d$ & $b$ & $ $ & $ $ \\
+  \end{tabular}
+  \end{center}
+  From the table it follows that $ff = a$ and then that $fd = c$, $cf
+  = d$. Since $ff = a$ and $f = a^{-1}$, then $a^{-1}a^{-1} = a$, so
+  \begin{equation}
+    aa = f. \label{eq:aaf}
+  \end{equation}
+  From~\eqref{eq:abc} and~\eqref{eq:aaf}:
+  \begin{equation} \nonumber
+    ab = c \Rightarrow aab = ac \Rightarrow ac = fb \Rightarrow ac = d.
+  \end{equation}
+  From~\eqref{eq:bad} and~\eqref{eq:aaf}:
+  \begin{equation} \nonumber
+    ba = d \Rightarrow baa = da \Rightarrow da = bf \Rightarrow da = c.
+  \end{equation}
+  The table becomes
+  \begin{center}
+  \begin{tabular}{l|llllll}
+        & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\ \hline
+    $e$ & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\
+    $a$ & $a$ & $f$ & $c$ & $d$ & $ $ & $e$ \\
+    $b$ & $b$ & $d$ & $e$ & $f$ & $a$ & $c$ \\
+    $c$ & $c$ & $ $ & $a$ & $ $ & $ $ & $d$ \\
+    $d$ & $d$ & $c$ & $f$ & $ $ & $ $ & $b$ \\
+    $f$ & $f$ & $e$ & $d$ & $b$ & $c$ & $a$ \\
+  \end{tabular}
+  \end{center}
+  We complete $ad = b$ and $ca = b$. Multiplying~\eqref{eq:abc}
+  and~\eqref{eq:bad} we have
+  \begin{equation} \nonumber
+    cd = abba = aa = f, \quad dc = baab = bfb = cb = a.
+  \end{equation}
+  Completing we have $cc = e$ and $dd = e$. The final table is
+  \begin{center}
+  \begin{tabular}{l|llllll}
+        & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\ \hline
+    $e$ & $e$ & $a$ & $b$ & $c$ & $d$ & $f$ \\
+    $a$ & $a$ & $f$ & $c$ & $d$ & $b$ & $e$ \\
+    $b$ & $b$ & $d$ & $e$ & $f$ & $a$ & $c$ \\
+    $c$ & $c$ & $b$ & $a$ & $e$ & $f$ & $d$ \\
+    $d$ & $d$ & $c$ & $f$ & $a$ & $e$ & $b$ \\
+    $f$ & $f$ & $e$ & $d$ & $b$ & $c$ & $a$ \\
+  \end{tabular}
+  \end{center}
+\end{proof}
+
+\begin{note}[Commutative non-associative ,,group'']
+  The set $\{0, 1, 2, 3\}$ with the sum $x + y = |x - y|$ meets the
+  requirements of commutative group without associativity.
+  \footnote{\url{https://math.stackexchange.com/questions/1622348}.}
+\end{note}
+
+\begin{proof}
+  The table of addition is
+  \begin{center}
+  \begin{tabular}{l|llllll}
+        & $0$ & $1$ & $2$ & $3$ \\ \hline
+    $0$ & $0$ & $1$ & $2$ & $3$ \\
+    $1$ & $1$ & $0$ & $1$ & $2$ \\
+    $2$ & $2$ & $1$ & $0$ & $1$ \\
+    $3$ & $3$ & $2$ & $1$ & $0$ \\
+  \end{tabular}
+  \end{center}
+
+  The zero element is 0, addition is commutative, for each element
+  $x$, $-x = x$. However, $(1 + 2) + 3 = 1 + 3 = 2$ and $1 + (2 + 3) =
+  1 + 1 = 0$.
+
+  The set $\realn_+$ with the sum $x + y = |x - y|$ has the same
+  properties.
+\end{proof}

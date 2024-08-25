@@ -20,12 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\shg\album.h" />
+    <ClInclude Include="..\..\..\..\include\shg\algebra-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\algebra.h" />
+    <ClInclude Include="..\..\..\..\include\shg\alggeom.h" />
     <ClInclude Include="..\..\..\..\include\shg\bdstest.h" />
     <ClInclude Include="..\..\..\..\include\shg\binom.h" />
     <ClInclude Include="..\..\..\..\include\shg\brent.h" />
     <ClInclude Include="..\..\..\..\include\shg\cfg.h" />
     <ClInclude Include="..\..\..\..\include\shg\charset.h" />
+    <ClInclude Include="..\..\..\..\include\shg\commalg-inl.h" />
+    <ClInclude Include="..\..\..\..\include\shg\commalg.h" />
     <ClInclude Include="..\..\..\..\include\shg\csv.h" />
     <ClInclude Include="..\..\..\..\include\shg\date.h" />
     <ClInclude Include="..\..\..\..\include\shg\dict.h" />
@@ -33,6 +37,7 @@
     <ClInclude Include="..\..\..\..\include\shg\drbnwtsn.h" />
     <ClInclude Include="..\..\..\..\include\shg\encoding.h" />
     <ClInclude Include="..\..\..\..\include\shg\except.h" />
+    <ClInclude Include="..\..\..\..\include\shg\experiments-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\experiments.h" />
     <ClInclude Include="..\..\..\..\include\shg\fcmp-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\fcmp.h" />
@@ -66,13 +71,13 @@
     <ClInclude Include="..\..\..\..\include\shg\pcfg.h" />
     <ClInclude Include="..\..\..\..\include\shg\permentr.h" />
     <ClInclude Include="..\..\..\..\include\shg\polynomial.h" />
-    <ClInclude Include="..\..\..\..\include\shg\polynomial_ring.h" />
     <ClInclude Include="..\..\..\..\include\shg\rng.h" />
     <ClInclude Include="..\..\..\..\include\shg\runs.h" />
     <ClInclude Include="..\..\..\..\include\shg\shg.h" />
     <ClInclude Include="..\..\..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\..\..\include\shg\specfunc.h" />
     <ClInclude Include="..\..\..\..\include\shg\subdomain.h" />
+    <ClInclude Include="..\..\..\..\include\shg\term.h" />
     <ClInclude Include="..\..\..\..\include\shg\tree-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\tree.h" />
     <ClInclude Include="..\..\..\..\include\shg\utils-inl.h" />
@@ -84,11 +89,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\album.cc" />
     <ClCompile Include="..\..\..\..\src\algebra.cc" />
+    <ClCompile Include="..\..\..\..\src\alggeom.cc" />
     <ClCompile Include="..\..\..\..\src\bdstest.cc" />
     <ClCompile Include="..\..\..\..\src\binom.cc" />
     <ClCompile Include="..\..\..\..\src\cattostr.cc" />
     <ClCompile Include="..\..\..\..\src\cfg.cc" />
     <ClCompile Include="..\..\..\..\src\charset.cc" />
+    <ClCompile Include="..\..\..\..\src\commalg.cc" />
     <ClCompile Include="..\..\..\..\src\complcat.cc" />
     <ClCompile Include="..\..\..\..\src\csv.cc" />
     <ClCompile Include="..\..\..\..\src\date.cc" />
@@ -122,11 +129,11 @@
     <ClCompile Include="..\..\..\..\src\packellp.cc" />
     <ClCompile Include="..\..\..\..\src\pcfg.cc" />
     <ClCompile Include="..\..\..\..\src\polynomial.cc" />
-    <ClCompile Include="..\..\..\..\src\polynomial_ring.cc" />
     <ClCompile Include="..\..\..\..\src\rng.cc" />
     <ClCompile Include="..\..\..\..\src\runs.cc" />
     <ClCompile Include="..\..\..\..\src\smc.cc" />
     <ClCompile Include="..\..\..\..\src\specfunc.cc" />
+    <ClCompile Include="..\..\..\..\src\term.cc" />
     <ClCompile Include="..\..\..\..\src\utils.cc" />
     <ClCompile Include="..\..\..\..\src\version.cc" />
   </ItemGroup>
@@ -275,20 +282,20 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\..\..\..\packages22\boost.1.83.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages22\boost.1.83.0\build\boost.targets')" />
     <Import Project="..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets" Condition="Exists('..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets')" />
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
     <Import Project="..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\..\..\packages22\boost.1.83.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\boost.1.83.0\build\boost.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets'))" />
   </Target>
 </Project>

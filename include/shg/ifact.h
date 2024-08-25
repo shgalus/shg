@@ -80,6 +80,27 @@ bool is_prime(T const& n) {
 }
 
 /**
+ * Returns true if and only if \c n is a prime number.
+ *
+ * \implementation Each integer number can be expressed as \f$6k +
+ * i\f$ for certain integer \f$k\f$ and \f$i \in \{-1, 0, 1, 2, 3, 4\}
+ * \f$. \f$6k + 0, 6k + 2, 6k + 3, 6k + 4\f$ are not prime and \f$6k -
+ * 1, 6k + 1\f$ may be prime. The algorith checks if \f$n\f$ is
+ * divisible by the numbers of the form \f$6k - 1, 6k + 1\f$. See also
+ * \cite vandevoorde-josuttis-gregor-2018, page 126.
+ */
+constexpr bool is_primec(int n) {
+     if (n <= 3)
+          return n > 1;
+     if (n % 2 == 0 || n % 3 == 0)
+          return false;
+     for (int i = 5; i * i <= n; i += 6)
+          if (n % i == 0 || n % (i + 2) == 0)
+               return false;
+     return true;
+}
+
+/**
  * Prime factorization of integers. Given \f$n \geq 2\f$, returns
  * prime numbers \f$p_1 < p_2 < \ldots < p_k\f$ and positive exponents
  * \f$n_1, n_2, \ldots, n_k\f$ such that \f$n = p_1^{n_1} p_2^{n_2}

@@ -20,6 +20,11 @@ namespace SHG::ALGEBRA {
  * \{
  */
 
+/**
+ * A monomial in \f$x_1, x_2, \ldots, x_n\f$. It is a product of the
+ * form \f$x_1^{\alpha_1} x_2^{\alpha_2} \ldots x_n^{\alpha_n}\f$,
+ * where \f$\alpha_i\f$ are nonnegative integers.
+ */
 class Monomial {
 public:
      Monomial() = default;

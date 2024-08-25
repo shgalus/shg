@@ -8,17 +8,21 @@
 
 #include <shg/album.h>
 #include <shg/algebra.h>
+#include <shg/alggeom.h>
 #include <shg/bdstest.h>
 #include <shg/binom.h>
 #include <shg/brent.h>
 #include <shg/cfg.h>
 #include <shg/charset.h>
+#include <shg/commalg.h>
 #include <shg/csv.h>
 #include <shg/date.h>
 #include <shg/dict.h>
 #include <shg/dict_impl.h>
 #include <shg/drbnwtsn.h>
+#include <shg/ealgebra.h>
 #include <shg/encoding.h>
+#include <shg/etalgebra.h>
 #include <shg/except.h>
 #include <shg/experiments.h>
 #include <shg/fcmp.h>
@@ -56,6 +60,7 @@
 #include <shg/smc.h>
 #include <shg/specfunc.h>
 #include <shg/subdomain.h>
+#include <shg/term.h>
 #include <shg/tree.h>
 #include <shg/utils.h>
 #include <shg/vector.h>

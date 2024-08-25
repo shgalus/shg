@@ -1,0 +1,18 @@
+/**
+
+\page aaai Alternative implementations of abstract algebra
+
+Two experimental implementations of abstract algebra are included:
+etalgebra (using templates) and ealgebra. The idea was to implement
+elements of algebraic structures in such a way that an element has all
+the information necessary to interact with other elements without
+being connected to its algebraic structure object. In case of the
+implementation with templates, difficulties with implementation of
+cartesian product of structures appeared. In case of the second
+implementation, additionally difficulties with creating objects
+appeared: for example, each time an element of the field \f$F_p\f$ is
+created, it must be checked if \f$p\f$ is prime.
+
+\verbinclude aaai.txt
+
+*/

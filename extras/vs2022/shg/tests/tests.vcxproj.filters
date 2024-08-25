@@ -167,9 +167,6 @@
     <ClCompile Include="..\..\..\..\tests\permentr_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\tests\polynomial_ring_test.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\tests\polynomial_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -201,6 +198,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\tests\experiments_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\tests\commalg_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\tests\alggeom_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\tests\term_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

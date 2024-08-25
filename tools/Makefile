@@ -1,7 +1,7 @@
 include ../make.inc
 
 INCLUDE = -I../include
-LOADLIBES = -L../lib -L/usr/local/boost_1_83_0/lib
+LOADLIBES = -L../lib -L/usr/local/boost_1_84_0/lib
 GMP = -lgmpxx -lgmp
 
 TARGET = ksone gmconsts octal genbuchb

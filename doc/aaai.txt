@@ -1,0 +1,1140 @@
+# Tu unbundle, sh this file
+echo ../include/shg/etalgebra.h 1>&2
+cat >../include/shg/etalgebra.h << 'End of ../include/shg/etalgebra.h'
+/**
+ * \file include/shg/etalgebra.h
+ * Experimental abstract algebra with templates.
+ */
+
+#ifndef SHG_ETALGEBRA_H
+#define SHG_ETALGEBRA_H
+
+#include <memory>
+#include <type_traits>
+#include <array>
+#include <variant>
+#include <shg/except.h>
+
+/**
+ * Experimental abstract algebra with templates.
+ *
+ * \implementation
+ *
+ * See \cite vandevoorde-josuttis-gregor-2018, section 21.2.
+ *
+ * For template functions with std::enable_if_t, which provide
+ * operators, see \cite vandevoorde-josuttis-gregor-2018,
+ * pages 98, 726. This is an alternative to Barton–Nackman trick (see
+ * \cite barton-nackman-1994, chapter 16,
+ * \cite vandevoorde-josuttis-gregor-2018, section 21.2.1).
+ */
+namespace SHG::ALGEBRA::EXPTEMPL {
+
+/**
+ * \addtogroup algebra
+ *
+ * \{
+ */
+
+/**
+ * \defgroup etalgebra Experimental abstract algebra with templates
+ *
+ * \{
+ */
+
+/**
+ * Base class algebraic structures.
+ */
+template <typename T>
+class AS {
+public:
+     bool equal(T const& y) const;
+     T operator+() const;
+     T operator-() const;
+     T operator+=(T const& y);
+     T operator-=(T const& y);
+     T operator*=(T const& y);
+     T operator/=(T const& y);
+     T inv() const;
+     bool is_zero() const;
+     bool is_one() const;
+     void set_to_zero();
+     void set_to_one();
+     void output(std::ostream& stream) const;
+     void input(std::istream& stream);
+     static T zero();
+     static T one();
+
+     T const& asT() const;
+     T& asT();
+     // Cart
+     static T get(std::variant<T> const& v) { return std::get<T>(v); }
+     friend std::variant<T> operator+(std::variant<T> const& x,
+                                      std::variant<T> const& y) {
+          T const x1 = std::get<T>(x);
+          T const y1 = std::get<T>(y);
+          T z = x1 + y1;
+          return std::variant<T>(z);
+     }
+};
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool> operator==(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool> operator!=(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator+(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator-(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator*(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator/(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool> is_zero(
+     T const& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool> is_one(
+     T const& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, void> set_to_zero(
+     T& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, void> set_to_one(
+     T& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, std::ostream&>
+operator<<(std::ostream& stream, T const& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, std::istream&>
+operator>>(std::istream& stream, T& x);
+
+/*
+ * do_equal
+ * do_plus
+ * do_minus
+ * do_add
+ * do_sub
+ * do_mul
+ * do_div
+ * do_inv
+ * do_is_zero
+ * do_is_one
+ * do_set_to_zero
+ * do_set_to_one
+ * static do_zero
+ * static do_one
+ * do_output
+ * do_input
+ * T const& do_value() const
+ * void do_value(T const&)
+ */
+
+/** Ring \f$Z_n \cong \integern / n \integern, n \geq 1\f$ */
+template <int n>
+class Zn : public AS<Zn<n>> {
+     static_assert(n >= 1);
+
+public:
+     using value_type = int;
+
+     Zn() = default;
+     explicit Zn(value_type v);
+
+     int card() const;
+
+     bool do_equal(Zn const& y) const;
+     value_type const& do_value() const;
+     void do_value(value_type const& v);
+     Zn do_plus() const;
+     Zn do_minus() const;
+     Zn& do_add(Zn const& y);
+     Zn& do_sub(Zn const& y);
+     Zn& do_mul(Zn const& y);
+     Zn& do_div(Zn const& y);
+     Zn do_inv() const;
+     bool do_is_zero() const;
+     bool do_is_one() const;
+     void do_set_to_zero();
+     void do_set_to_one();
+     void do_output(std::ostream& stream) const;
+     void do_input(std::istream& stream);
+     static Zn do_zero();
+     static Zn do_one();
+
+private:
+     value_type v_{0};
+};
+
+template <typename T, int n>
+class Cart : public AS<Cart<T, n>> {
+     static_assert(n > 0);
+
+public:
+     using value_type = std::array<std::variant<T>, n>;
+
+     Cart(value_type const& v) : v_{v} {}
+     value_type const& do_value() const { return v_; }
+     void do_output(std::ostream& stream) const {
+          Zn<3> const z3 = std::get<0>(std::get<0>(v_[0]));
+          Zn<4> const z4 = std::get<1>(std::get<0>(v_[1]));
+          stream << "from do_output:\n";
+          stream << "z3 = " << z3 << '\n';
+          stream << "z4 = " << z4 << '\n';
+          for (int i = 0; i < n; i++) {
+               // std::cout << std::get<i>(std::get<0>(v_[i]));
+               stream << "get<i> does not work\n";
+          }
+     }
+
+private:
+     value_type v_{};
+};
+
+/** \} */ /* end of group algebra */
+
+}  // namespace SHG::ALGEBRA::EXPTEMPL
+
+#include <shg/etalgebra-inl.h>
+
+#endif
+End of ../include/shg/etalgebra.h
+echo ../include/shg/etalgebra-inl.h 1>&2
+cat >../include/shg/etalgebra-inl.h << 'End of ../include/shg/etalgebra-inl.h'
+/**
+ * \file include/shg/etalgebra-inl.h
+ * Implementation of inline functions and templates from etalgebra.h.
+ */
+
+#ifndef SHG_ETALGEBRA_INL_H
+#define SHG_ETALGEBRA_INL_H
+
+namespace SHG::ALGEBRA::EXPTEMPL {
+
+template <typename T>
+inline bool AS<T>::equal(T const& y) const {
+     return asT().do_equal(y);
+}
+
+template <typename T>
+inline T AS<T>::operator+() const {
+     return asT().do_plus();
+}
+
+template <typename T>
+inline T AS<T>::operator-() const {
+     return asT().do_minus();
+}
+
+template <typename T>
+inline T AS<T>::operator+=(T const& y) {
+     return asT().do_add(y);
+}
+
+template <typename T>
+inline T AS<T>::operator-=(T const& y) {
+     return asT().do_sub(y);
+}
+
+template <typename T>
+inline T AS<T>::operator*=(T const& y) {
+     return asT().do_mul(y);
+}
+
+template <typename T>
+inline T AS<T>::operator/=(T const& y) {
+     return asT().do_div(y);
+}
+
+template <typename T>
+inline T AS<T>::inv() const {
+     return asT().do_inv();
+}
+
+template <typename T>
+inline bool AS<T>::is_zero() const {
+     return asT().do_is_zero();
+}
+
+template <typename T>
+inline bool AS<T>::is_one() const {
+     return asT().do_is_one();
+}
+
+template <typename T>
+inline void AS<T>::set_to_zero() {
+     asT().do_set_to_zero();
+}
+
+template <typename T>
+inline void AS<T>::set_to_one() {
+     asT().do_set_to_one();
+}
+
+template <typename T>
+inline void AS<T>::output(std::ostream& stream) const {
+     asT().do_output(stream);
+}
+
+template <typename T>
+inline void AS<T>::input(std::istream& stream) {
+     asT().do_input(stream);
+}
+
+template <typename T>
+inline T AS<T>::zero() {
+     return T::do_zero();
+}
+
+template <typename T>
+inline T AS<T>::one() {
+     return T::do_one();
+}
+
+template <typename T>
+inline T const& AS<T>::asT() const {
+     return *static_cast<T const*>(this);
+}
+
+template <typename T>
+inline T& AS<T>::asT() {
+     return *static_cast<T*>(this);
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool>
+operator==(T const& x, T const& y) {
+     return x.equal(y);
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool>
+operator!=(T const& x, T const& y) {
+     return !(x == y);
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator+(
+     T const& x, T const& y) {
+     T z{x};
+     z += y;
+     return z;
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator-(
+     T const& x, T const& y) {
+     T z{x};
+     z -= y;
+     return z;
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator*(
+     T const& x, T const& y) {
+     T z{x};
+     z *= y;
+     return z;
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, T> operator/(
+     T const& x, T const& y) {
+     T z{x};
+     z /= y;
+     return z;
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool>
+is_zero(T const& x) {
+     return x.is_zero();
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, bool>
+is_one(T const& x) {
+     return x.is_one();
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, void>
+set_to_zero(T& x) {
+     x.set_to_zero();
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value, void>
+set_to_one(T& x) {
+     x.set_to_one();
+}
+
+template <typename T>
+inline std::enable_if_t<std::is_base_of<AS<T>, T>::value,
+                        std::ostream&>
+operator<<(std::ostream& stream, T const& x) {
+     x.output(stream);
+     return stream;
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<AS<T>, T>::value, std::istream&>
+operator>>(std::istream& stream, T& x) {
+     x.input(stream);
+     return stream;
+}
+
+template <int n>
+inline Zn<n>::Zn(value_type v) : v_(v) {
+     if (v < 0 || v >= n)
+          SHG_THROW(std::invalid_argument, __func__);
+}
+
+template <int n>
+inline int Zn<n>::card() const {
+     return n;
+}
+
+template <int n>
+inline bool Zn<n>::do_equal(Zn const& y) const {
+     return v_ == y.v_;
+}
+
+template <int n>
+inline Zn<n>::value_type const& Zn<n>::do_value() const {
+     return v_;
+}
+
+template <int n>
+inline void Zn<n>::do_value(value_type const& v) {
+     if (v < 0 || v >= n)
+          SHG_THROW(std::invalid_argument, __func__);
+     v_ = v;
+}
+
+template <int n>
+inline Zn<n> Zn<n>::do_plus() const {
+     return Zn(*this);
+}
+
+template <int n>
+inline Zn<n> Zn<n>::do_minus() const {
+     return v_ == 0 ? Zn(0) : Zn(n - v_);
+}
+
+template <int n>
+Zn<n>& Zn<n>::do_add(Zn const& y) {
+     v_ += y.v_;
+     if (v_ >= n)
+          v_ -= n;
+     return *this;
+}
+
+template <int n>
+Zn<n>& Zn<n>::do_sub(Zn const& y) {
+     v_ -= y.v_;
+     if (v_ < 0)
+          v_ += n;
+     return *this;
+}
+
+template <int n>
+Zn<n>& Zn<n>::do_mul(Zn const& y) {
+     v_ = (v_ * y.v_) % n;
+     return *this;
+}
+
+template <int n>
+Zn<n>& Zn<n>::do_div([[maybe_unused]] Zn const& y) {
+     throw std::invalid_argument("there is no division in ring Zn");
+}
+
+template <int n>
+inline Zn<n> Zn<n>::do_inv() const {
+     throw std::invalid_argument("there is no inversion in ring Zn");
+}
+
+template <int n>
+inline bool Zn<n>::do_is_zero() const {
+     return v_ == 0;
+}
+
+template <int n>
+inline bool Zn<n>::do_is_one() const {
+     return n == 1 || v_ == 1;
+}
+
+template <int n>
+inline void Zn<n>::do_set_to_zero() {
+     v_ = 0;
+}
+
+template <int n>
+inline void Zn<n>::do_set_to_one() {
+     v_ = n == 1 ? 0 : 1;
+}
+
+template <int n>
+void Zn<n>::do_output(std::ostream& stream) const {
+     stream << v_;
+}
+
+template <int n>
+void Zn<n>::do_input(std::istream& stream) {
+     value_type z;
+     if ((stream >> z) && z >= 0 && z < n)
+          v_ = z;
+     else
+          stream.setstate(std::ios::failbit);
+}
+
+template <int n>
+inline Zn<n> Zn<n>::do_zero() {
+     return Zn{0};
+}
+
+template <int n>
+inline Zn<n> Zn<n>::do_one() {
+     return n == 1 ? Zn{0} : Zn{1};
+}
+
+}  // namespace SHG::ALGEBRA::EXPTEMPL
+
+#endif
+End of ../include/shg/etalgebra-inl.h
+echo ../src/etalgebra.cc 1>&2
+cat >../src/etalgebra.cc << 'End of ../src/etalgebra.cc'
+/**
+ * \file src/etalgebra.cc
+ * Experimental abstract algebra with templates.
+ */
+
+#include <shg/etalgebra.h>
+
+namespace SHG::ALGEBRA::EXPTEMPL {
+
+}  // namespace SHG::ALGEBRA::EXPTEMPL
+End of ../src/etalgebra.cc
+echo ../tests/etalgebra_test.cc 1>&2
+cat >../tests/etalgebra_test.cc << 'End of ../tests/etalgebra_test.cc'
+#include <shg/etalgebra.h>
+#include "tests.h"
+
+namespace TESTS {
+
+BOOST_AUTO_TEST_SUITE(etalgebra_test)
+
+BOOST_AUTO_TEST_CASE(first_test) {
+     using Zn = SHG::ALGEBRA::EXPTEMPL::Zn<4>;
+     Zn const x;
+     Zn const y;
+     Zn const z{2};
+     BOOST_CHECK(x == y);
+     BOOST_CHECK(x != z);
+     BOOST_CHECK(+x == x);
+     BOOST_CHECK(-x == x);
+     BOOST_CHECK(x.is_zero());
+     BOOST_CHECK(is_zero(x));
+     BOOST_CHECK(!is_one(x));
+     Zn u;
+     u = x + y;
+     BOOST_CHECK_THROW(u = x / y, std::invalid_argument);
+     {  // Cart
+          Zn z1(3);
+          Zn z2(2);
+          std::variant<Zn> v1(z1);
+          std::variant<Zn> v2(z2);
+          // Zn<4> u1 = std::get<Zn<4>>(v1);
+          // Zn<4> u1 = Zn<4>::get(v1);
+          // Zn<4> u2 = std::get<Zn<4>>(v2);
+          // std::variant<Zn<4>> v = u1 + u2;
+          std::variant<Zn> v = v1 + v2;
+          BOOST_CHECK(Zn::get(v).do_value() == 1);
+     }
+     BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_CASE(cart_test) {
+     constexpr char const* const res{R"(zn3 = 2
+zn4 = 3
+v3 = 2
+v4 = 3
+v3 = 2
+v4 = 3
+v[0] = 2
+v[1] = 3
+z3 = 2
+z4 = 3
+from do_output:
+z3 = 2
+z4 = 3
+get<i> does not work
+get<i> does not work
+)"};
+     std::ostringstream oss;
+     using Zn3 = SHG::ALGEBRA::EXPTEMPL::Zn<3>;
+     using Zn4 = SHG::ALGEBRA::EXPTEMPL::Zn<4>;
+     using V = std::variant<Zn3, Zn4>;
+     using Cart = SHG::ALGEBRA::EXPTEMPL::Cart<V, 2>;
+     Cart::value_type v;
+     Zn3 zn3{2};
+     Zn4 zn4{3};
+     V v3{zn3};
+     V v4{zn4};
+     v[0] = v3;
+     v[1] = v4;
+     oss << "zn3 = " << zn3 << '\n';
+     oss << "zn4 = " << zn4 << '\n';
+     oss << "v3 = " << std::get<Zn3>(v3) << '\n';
+     oss << "v4 = " << std::get<Zn4>(v4) << '\n';
+     oss << "v3 = " << std::get<0>(v3) << '\n';
+     oss << "v4 = " << std::get<1>(v4) << '\n';
+     oss << "v[0] = " << std::get<0>(std::get<0>(v[0])) << '\n';
+     oss << "v[1] = " << std::get<1>(std::get<0>(v[1])) << '\n';
+     Zn3 z3 = std::get<Zn3>(std::get<0>(v[0]));
+     Zn4 z4 = std::get<Zn4>(std::get<0>(v[1]));
+     oss << "z3 = " << z3 << '\n';
+     oss << "z4 = " << z4 << '\n';
+     Cart c(v);
+     oss << c;
+     BOOST_CHECK(oss.str() == res);
+}
+
+BOOST_AUTO_TEST_CASE(basic_test) {
+     BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+}  // namespace TESTS
+End of ../tests/etalgebra_test.cc
+echo ../include/shg/ealgebra.h 1>&2
+cat >../include/shg/ealgebra.h << 'End of ../include/shg/ealgebra.h'
+/**
+ * \file include/shg/ealgebra.h
+ * Experimental basic algebraic structures.
+ */
+
+#ifndef SHG_EALGEBRA_H
+#define SHG_EALGEBRA_H
+
+#include <memory>
+#include <ostream>
+#include <boost/multiprecision/cpp_int.hpp>
+
+namespace SHG::ALGEBRA::EXPERIMENTAL {
+
+class Element {
+public:
+     virtual ~Element();
+     bool equal(Element const& x) const;
+     void minus();
+     Element& operator+=(Element const& x);
+     Element& operator-=(Element const& x);
+     Element& operator*=(Element const& x);
+     Element& operator/=(Element const& x);
+     void inv();
+     bool is_zero() const;
+     bool is_one() const;
+     void set_to_zero();
+     void set_to_one();
+     void output(std::ostream& stream) const;
+
+private:
+     virtual bool do_equal(Element const& x) const = 0;
+     virtual void do_minus() = 0;
+     virtual Element& do_add(Element const& x) = 0;
+     virtual Element& do_sub(Element const& x) = 0;
+     virtual Element& do_mul(Element const& x) = 0;
+     virtual Element& do_div(Element const& x) = 0;
+     virtual void do_inv() = 0;
+     virtual bool do_is_zero() const = 0;
+     virtual bool do_is_one() const = 0;
+     virtual void do_set_to_zero() = 0;
+     virtual void do_set_to_one() = 0;
+     virtual void do_output(std::ostream& stream) const = 0;
+};
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value, bool> operator==(
+     T const& x, T const& y);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value, T> operator+(
+     T const& x, T const& y);
+
+std::ostream& operator<<(std::ostream& stream, Element const& x);
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value,
+                 std::shared_ptr<T>>
+operator+(std::shared_ptr<T> const& x, std::shared_ptr<T> const& y);
+
+#if 0
+
+class Cart : public Element {
+public:
+     using ET = std::vector<std::shared_ptr<Element>>;
+
+     Cart() = default;
+     explicit Cart(ET const& v);
+     virtual ~Cart();
+     Cart(Cart const&) = default;
+     Cart& operator=(Cart const&) = default;
+     Cart(Cart&&) noexcept = default;
+     Cart& operator=(Cart&&) noexcept = default;
+
+     ET const& value() const;
+
+private:
+     bool do_equal(Element const& x) const override;
+     Element& do_add(Element const& x) override;
+     void do_output(std::ostream& stream) const override;
+
+     ET v_{};
+};
+
+#endif
+
+/** Ring \f$Z_n \cong \integern / n \integern, n \geq 1\f$ */
+/** \todo do_div() and do_inv() */
+class Ring_Zn : public Element {
+public:
+     struct ET {
+          int n{1};
+          int v{0};
+     };
+
+     Ring_Zn() = default;
+     explicit Ring_Zn(ET const& v);
+     virtual ~Ring_Zn();
+     Ring_Zn(Ring_Zn const&) = default;
+     Ring_Zn& operator=(Ring_Zn const&) = default;
+     Ring_Zn(Ring_Zn&&) noexcept = default;
+     Ring_Zn& operator=(Ring_Zn&&) noexcept = default;
+
+     ET const& value() const;
+
+private:
+     bool do_equal(Element const& x) const override;
+     void do_minus() override;
+     Element& do_add(Element const& x) override;
+     Element& do_sub(Element const& x) override;
+     Element& do_mul(Element const& x) override;
+     Element& do_div(Element const& x) override;
+     void do_inv() override;
+     bool do_is_zero() const override;
+     bool do_is_one() const override;
+     void do_set_to_zero() override;
+     void do_set_to_one() override;
+     void do_output(std::ostream& stream) const override;
+
+     ET v_{};
+};
+
+bool operator==(Ring_Zn::ET const& x, Ring_Zn::ET const& y);
+
+#if 0
+
+/** Ring \f$\integern\f$ */
+class Ring_Z : public Element {
+public:
+     using ET = boost::multiprecision::cpp_int;
+
+     Ring_Z() = default;
+     explicit Ring_Z(ET const& v);
+     explicit Ring_Z(int v);
+     virtual ~Ring_Z();
+     Ring_Z(Ring_Z const&) = default;
+     Ring_Z& operator=(Ring_Z const&) = default;
+     Ring_Z(Ring_Z&&) noexcept = default;
+     Ring_Z& operator=(Ring_Z&&) noexcept = default;
+
+     ET const& value() const;
+
+private:
+     bool do_equal(Element const& x) const override;
+     Element& do_add(Element const& x) override;
+     void do_output(std::ostream& stream) const override;
+
+     ET v_{0};
+};
+
+#endif
+
+}  // namespace SHG::ALGEBRA::EXPERIMENTAL
+
+#include <shg/ealgebra-inl.h>
+
+#endif
+End of ../include/shg/ealgebra.h
+echo ../include/shg/ealgebra-inl.h 1>&2
+cat >../include/shg/ealgebra-inl.h << 'End of ../include/shg/ealgebra-inl.h'
+/**
+ * \file include/shg/ealgebra-inl.h
+ * Implementation of inline functions and templates from ealgebra.h.
+ */
+
+#ifndef SHG_EALGEBRA_INL_H
+#define SHG_EALGEBRA_INL_H
+
+namespace SHG::ALGEBRA::EXPERIMENTAL {
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value, bool> operator==(
+     T const& x, T const& y) {
+     return x.equal(y);
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value, T> operator+(
+     T const& x, T const& y) {
+     T z{x};
+     z += y;
+     return z;
+}
+
+template <typename T>
+std::enable_if_t<std::is_base_of<Element, T>::value,
+                 std::shared_ptr<T>>
+operator+(std::shared_ptr<T> const& x, std::shared_ptr<T> const& y) {
+     T* z = new T(*x);
+     *z += *y;
+     return std::shared_ptr<T>(z);
+}
+
+}  // namespace SHG::ALGEBRA::EXPERIMENTAL
+
+#endif
+End of ../include/shg/ealgebra-inl.h
+echo ../src/ealgebra.cc 1>&2
+cat >../src/ealgebra.cc << 'End of ../src/ealgebra.cc'
+/**
+ * \file src/ealgebra.cc
+ * Experimental basic algebraic structures.
+ */
+
+#include <shg/ealgebra.h>
+#include <shg/except.h>
+
+namespace SHG::ALGEBRA::EXPERIMENTAL {
+
+Element::~Element() {}
+
+bool Element::equal(Element const& x) const {
+     return do_equal(x);
+}
+
+void Element::minus() {
+     do_minus();
+}
+
+Element& Element::operator+=(Element const& x) {
+     return do_add(x);
+}
+
+Element& Element::operator-=(Element const& x) {
+     return do_sub(x);
+}
+
+Element& Element::operator*=(Element const& x) {
+     return do_mul(x);
+}
+
+Element& Element::operator/=(Element const& x) {
+     return do_div(x);
+}
+
+void Element::inv() {
+     do_inv();
+}
+
+bool Element::is_zero() const {
+     return do_is_zero();
+}
+
+bool Element::is_one() const {
+     return do_is_one();
+}
+
+void Element::set_to_zero() {
+     do_set_to_zero();
+}
+
+void Element::set_to_one() {
+     do_set_to_one();
+}
+
+void Element::output(std::ostream& stream) const {
+     do_output(stream);
+}
+
+std::ostream& operator<<(std::ostream& stream, Element const& x) {
+     x.output(stream);
+     return stream;
+}
+
+#if 0
+
+Cart::Cart(ET const& v) : v_{v} {}
+
+Cart::~Cart() {}
+
+Cart::ET const& Cart::value() const {
+     return v_;
+}
+
+bool Cart::do_equal(Element const& x) const {
+     Cart const& a = dynamic_cast<Cart const&>(x);
+     if (v_.size() != a.v_.size())
+          SHG_THROW(std::invalid_argument, __func__);
+     for (unsigned i = 0; i < v_.size(); i++)
+          if (!(*v_[i] == *a.v_[i]))
+               return false;
+     return true;
+}
+
+Element& Cart::do_add(Element const& x) {
+     Cart const& a = dynamic_cast<Cart const&>(x);
+     if (v_.size() != a.v_.size())
+          SHG_THROW(std::invalid_argument, __func__);
+     for (unsigned i = 0; i < v_.size(); i++)
+          *v_[i] += *a.v_[i];
+     return *this;
+}
+
+void Cart::do_output(std::ostream& stream) const {
+     stream << '(';
+     for (unsigned i = 0; i < v_.size(); i++) {
+          if (i > 0)
+               stream << ", ";
+          stream << *v_[i];
+     }
+     stream << ')';
+}
+
+#endif
+
+bool operator==(Ring_Zn::ET const& x, Ring_Zn::ET const& y) {
+     return x.n == y.n && x.v == y.v;
+}
+
+Ring_Zn::Ring_Zn(ET const& v) : v_{v} {
+     if (v.n < 1 || v.v < 0 || v.v >= v.n)
+          SHG_THROW(std::invalid_argument, __func__);
+}
+
+Ring_Zn::~Ring_Zn() {}
+
+Ring_Zn::ET const& Ring_Zn::value() const {
+     return v_;
+}
+
+bool Ring_Zn::do_equal(Element const& x) const {
+     Ring_Zn const& a = dynamic_cast<Ring_Zn const&>(x);
+     if (v_.n != a.v_.n)
+          SHG_THROW(std::invalid_argument, __func__);
+     return v_.v == a.v_.v;
+}
+
+void Ring_Zn::do_minus() {
+     if (v_.v != 0)
+          v_.v = v_.n - v_.v;
+}
+
+Element& Ring_Zn::do_add(Element const& x) {
+     Ring_Zn const& a = dynamic_cast<Ring_Zn const&>(x);
+     if (v_.n != a.v_.n)
+          SHG_THROW(std::invalid_argument, __func__);
+     v_.v += a.v_.v;
+     if (v_.v >= v_.n)
+          v_.v -= v_.n;
+     return *this;
+}
+
+Element& Ring_Zn::do_sub(Element const& x) {
+     Ring_Zn const& a = dynamic_cast<Ring_Zn const&>(x);
+     if (v_.n != a.v_.n)
+          SHG_THROW(std::invalid_argument, __func__);
+     v_.v -= a.v_.v;
+     if (v_.v < 0)
+          v_.v += v_.n;
+     return *this;
+}
+
+Element& Ring_Zn::do_mul(Element const& x) {
+     Ring_Zn const& a = dynamic_cast<Ring_Zn const&>(x);
+     if (v_.n != a.v_.n)
+          SHG_THROW(std::invalid_argument, __func__);
+     v_.v = (v_.v * a.v_.v) % v_.n;
+     return *this;
+}
+
+Element& Ring_Zn::do_div([[maybe_unused]] Element const& x) {
+     SHG_THROW(std::invalid_argument, __func__);
+     return *this;
+}
+
+void Ring_Zn::do_inv() {
+     SHG_THROW(std::invalid_argument, __func__);
+}
+
+bool Ring_Zn::do_is_zero() const {
+     return v_.v == 0;
+}
+
+bool Ring_Zn::do_is_one() const {
+     return v_.n == 1 || v_.v == 1;
+}
+
+void Ring_Zn::do_set_to_zero() {
+     v_.v = 0;
+}
+
+void Ring_Zn::do_set_to_one() {
+     v_.v = v_.n == 1 ? 0 : 1;
+}
+
+void Ring_Zn::do_output(std::ostream& stream) const {
+     stream << '(' << v_.n << ", " << v_.v << ')';
+}
+
+#if 0
+
+Ring_Z::Ring_Z(ET const& v) : v_{v} {}
+
+Ring_Z::Ring_Z(int v) : v_{v} {}
+
+Ring_Z::~Ring_Z() {}
+
+Ring_Z::ET const& Ring_Z::value() const {
+     return v_;
+}
+
+bool Ring_Z::do_equal(Element const& x) const {
+     Ring_Z const& a = dynamic_cast<Ring_Z const&>(x);
+     return v_ == a.v_;
+}
+
+Element& Ring_Z::do_add(Element const& x) {
+     Ring_Z const& a = dynamic_cast<Ring_Z const&>(x);
+     v_ += a.v_;
+     return *this;
+}
+
+void Ring_Z::do_output(std::ostream& stream) const {
+     stream << v_;
+}
+
+#endif
+
+}  // namespace SHG::ALGEBRA::EXPERIMENTAL
+End of ../src/ealgebra.cc
+echo ../tests/ealgebra_test.cc 1>&2
+cat >../tests/ealgebra_test.cc << 'End of ../tests/ealgebra_test.cc'
+/**
+ * \file tests/ealgebra_test.cc
+ * Testing experimental basic algebraic structures.
+ */
+
+#include <shg/ealgebra.h>
+#include <typeinfo>  // std::bad_cast
+#include "tests.h"
+
+namespace TESTS {
+
+BOOST_AUTO_TEST_SUITE(ealgebra_test)
+
+BOOST_AUTO_TEST_CASE(first_test) {
+     using SHG::ALGEBRA::EXPERIMENTAL::Ring_Zn;
+     {
+          Ring_Zn z1{{3, 1}};
+          Ring_Zn z2{{3, 0}};
+          z1.minus();
+          z2.minus();
+          Ring_Zn::ET v1{3, 2};
+          Ring_Zn::ET v2{3, 0};
+          BOOST_CHECK((z1.value() == v1));
+          BOOST_CHECK((z2.value() == v2));
+     }
+     std::ostringstream oss;
+     Ring_Zn z31{{3, 1}};
+     Ring_Zn z32{{3, 2}};
+     Ring_Zn z41{{4, 1}};
+     oss << z31 << ' ';
+     oss << z32 << ' ';
+     z31 += z32;
+     oss << z31;
+     BOOST_CHECK_THROW(z31 += z41, std::invalid_argument);
+     BOOST_CHECK(oss.str() == "(3, 1) (3, 2) (3, 0)");
+     Ring_Zn z = z31 + z32;
+     BOOST_CHECK(z.value().n == 3 && z.value().v == 2);
+}
+
+#if 0
+
+BOOST_AUTO_TEST_CASE(second_test) {
+     using SHG::ALGEBRA::EXPERIMENTAL::Ring_Z;
+     using SHG::ALGEBRA::EXPERIMENTAL::Ring_Zn;
+
+     Ring_Z a{5};
+     Ring_Zn const b{3, 2};
+     BOOST_CHECK_THROW(a += b, std::bad_cast);
+     Ring_Z c{6};
+     Ring_Z d = a + c;
+     std::cout << d << '\n';
+}
+
+BOOST_AUTO_TEST_CASE(third_test) {
+     using SHG::ALGEBRA::EXPERIMENTAL::Ring_Z;
+
+     std::shared_ptr<Ring_Z> xpa(new Ring_Z{5});
+     std::shared_ptr<Ring_Z> xpb(new Ring_Z{6});
+     std::shared_ptr<Ring_Z> xpc = xpa + xpb;
+     std::cout << "#####\"" << *xpc << "\"\n";
+     BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_CASE(cart_test) {
+     using SHG::ALGEBRA::EXPERIMENTAL::Cart;
+     using SHG::ALGEBRA::EXPERIMENTAL::Ring_Zn;
+
+     Cart::ET v(2);
+     v[0] = std::shared_ptr<Ring_Zn>(new Ring_Zn{8, 6});
+     v[1] = std::shared_ptr<Ring_Zn>(new Ring_Zn{4, 3});
+     Cart cart1{v};
+     v[0] = std::shared_ptr<Ring_Zn>(new Ring_Zn{8, 1});
+     v[1] = std::shared_ptr<Ring_Zn>(new Ring_Zn{4, 2});
+     Cart cart2{v};
+     Cart cart = cart1 + cart2;
+     std::cout << cart << '\n';
+     BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_CASE(basic_test) {
+     BOOST_CHECK(true);
+}
+
+#endif
+
+BOOST_AUTO_TEST_SUITE_END()
+
+}  // namespace TESTS
+End of ../tests/ealgebra_test.cc

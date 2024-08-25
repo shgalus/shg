@@ -1,0 +1,64 @@
+% If draft mode is on, package hyperref produces no links.
+% \documentclass[a4paper,11pt,draft]{report}
+\documentclass[a4paper,11pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{diagbox}
+\usepackage[colorlinks, linktocpage, linkcolor = blue, urlcolor =
+  blue] {hyperref}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\newtheorem{note}{Note}[chapter]
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{rem}{Remark}
+\numberwithin{prop}{section}
+
+% \mathbb --> \mathbf?
+\newcommand{\naturaln}{\ensuremath{\mathbb{N}}}
+\newcommand{\naturalnz}{\ensuremath{\mathbb{N}_0}}
+\newcommand{\integern}{\ensuremath{\mathbb{Z}}}
+\newcommand{\rationaln}{\ensuremath{\mathbb{Q}}}
+\newcommand{\realn}{\ensuremath{\mathbb{R}}}
+\newcommand{\complexn}{\ensuremath{\mathbb{C}}}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\arctg}{arctg}
+\renewcommand{\Pr}{\mathit{P}}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\newcommand{\var}[1]{\ensuremath{\mathit{#1}}}
+
+\newcommand{\universe}[2]{\ensuremath{P(#1, #2)}}
+\newcommand{\universei}[2]{\ensuremath{P_1(#1, #2)}}
+\renewcommand{\setminus}{\ensuremath{-}}
+
+\title{Mathematical Notes}
+\author{Stanis{\l}aw Galus}
+\date{\today}
+
+\begin{document}
+% maketitle alone produces hyperref warning: destination with the same
+% identifier (name{page.1}) has been already used, duplicate ignored
+\begingroup
+\renewcommand{\thepage}{0}
+\maketitle
+\endgroup
+\tableofcontents
+
+\include{commalg}
+\include{ds}
+\include{oldnotes}
+
+\bibliographystyle{plain}
+\bibliography{sgalus}
+\end{document}

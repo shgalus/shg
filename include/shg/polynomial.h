@@ -1,6 +1,6 @@
 /**
  * \file include/shg/polynomial.h
- * Polynomial over a field.
+ * Polynomials over an algebraic structure.
  */
 
 #ifndef SHG_POLYNOMIAL_H
@@ -8,7 +8,7 @@
 
 #include <map>
 #include <shg/algebra.h>
-#include <shg/monomial.h>
+#include <shg/term.h>
 
 namespace SHG::ALGEBRA {
 
@@ -18,51 +18,39 @@ namespace SHG::ALGEBRA {
  * \{
  */
 
-struct Term {
-     Term() = default;
-     Term(Element const& a, Monomial const& m) : a_(a), m_(m) {}
-     explicit Term(Algebraic_structure const* as) : a_(Element(as)) {}
-     Element const& a() const { return a_; }
-     Monomial const& m() const { return m_; }
-     Algebraic_structure const* as() const { return a_.as(); }
-
-private:
-     Element a_{};
-     Monomial m_{};
-};
-
-bool operator==(Term const& x, Term const& y);
-bool operator!=(Term const& x, Term const& y);
-std::ostream& operator<<(std::ostream& stream, Term const& x);
-std::istream& operator>>(std::istream& stream, Term& x);
-
+/**
+ * %Polynomial over an algebraic structure.
+ */
 class Polynomial {
 public:
      using Terms = std::map<Monomial, Element, Lex_less>;
      using Point = std::vector<Element>;
 
      Polynomial() = default;
-     explicit Polynomial(Field const* k);
+     explicit Polynomial(AS const* as);
      explicit Polynomial(int dim);
-     Polynomial(Field const* k, int dim);
+     Polynomial(AS const* as, int dim);
      Polynomial(Polynomial const&) = default;
      Polynomial& operator=(Polynomial const&) = default;
+     Polynomial(Polynomial&&) noexcept = default;
+     Polynomial& operator=(Polynomial&&) noexcept = default;
 
-     int dim() const { return dim_; }
+     int dim() const;
      void dim(int d);
      int deg() const;
-     bool is_zero() const { return t_.empty(); }
+     bool is_zero() const;
      Monomial const& leading_monomial() const;
      Element const& leading_coefficient() const;
      Term leading_term() const;
      Element operator()(Point const& x) const;
-     Field const* field() const { return k_; }
-     Terms const& terms() const { return t_; }
+     Element operator()(Element const& x) const;
+     AS const* as() const;
+     Terms const& terms() const;
 
-     Monomial_cmp order() const { return order_; }
+     Monomial_cmp order() const;
      void order(Monomial_cmp cmp);
 
-     void set_to_zero() { t_.clear(); }
+     void set_to_zero();
      Polynomial& operator+=(Polynomial const& x);
      Polynomial& operator-=(Polynomial const& x);
      Polynomial& operator*=(Polynomial const& x);
@@ -86,7 +74,7 @@ private:
      void sub(Element const& a, Monomial const& x);
      void mul(Element const& a, Monomial const& x);
 
-     Field const* k_{&q_};
+     AS const* as_{&q_};
      int dim_{1};
      Terms t_{};
      Monomial_cmp order_{lex_cmp};
@@ -117,83 +105,90 @@ std::ostream& operator<<(std::ostream& stream, Polynomial const& x);
 std::istream& operator>>(std::istream& stream, Polynomial& x);
 
 /**
- * \note This function is for polynomials over the field of rational
- * numbers.
+ * Returns \f$a_0 + a_1x + a_2x^2 + \ldots + a_nx^n\f$.
  */
-Polynomial from_chars(char const* s);
+Polynomial one_var(std::vector<Element> const& a);
 
 /**
- * Division of polynomials.
- *
- * Given a polynomial \f$f\f$ and polynomials \f$g_1, \ldots, g_s\f$,
- * the function calculates the polynomial \f$r\f$ and the polynomials
- * \f$a_1, \ldots, a_s\f$ such that \f$f = a_1g_1 + \ldots + a_sg_s +
- * r\f$ and either \f$r = 0\f$ or no monomial of \f$r\f$ is divisible
- * by any of leading terms of \f$g_1, \ldots, g_s\f$. Furhtermore, if
- * \f$a_if_i \neq 0\f$, then the leading term of \f$a_if_i\f$ is not
- * greater than the leading term of \f$f\f$ (with respect to monomial
- * order).
- *
- * See \cite cox-little-oshea-2007, page 64, theorem 3.
+ * %Polynomial ring over an algebraic structure.
  */
-struct Polynomial_div {
-     void divide(Polynomial const& f,
-                 std::vector<Polynomial> const& g);
-     Polynomial r{};
-     std::vector<Polynomial> a{};
-};
-
-/**
- * Normal form of the polynomial with respect to polynomials.
- *
- * Returns the normal form of the polynomial \f$f\f$ with respect to
- * polynomials \f$g_1, \ldots, g_s\f$. Calls
- * \f$\var{Polynomial_div::divide}(f, g)\f$ and returns \f$r\f$.
- */
-Polynomial normal_form(Polynomial const& f,
-                       std::vector<Polynomial> const& g);
-
-/**
- * Calculates the S-polynomial of two polynomials. See
- * \cite cox-little-oshea-2007, page 83, definition 4.
- */
-Polynomial s_polynomial(Polynomial const& f, Polynomial const& g);
-
-Polynomial s_polynomial_unsafe(Polynomial const& f,
-                               Polynomial const& g);
-
-/**
- * Buchberger algorithm.
- * See \cite buchberger-1985, algorithm 6.3, pages 196-197.
- */
-class Buchberger_improved {
+class Polynomial_ring : public Commutative_ring {
 public:
-     using P = Polynomial;
-     using S = std::vector<P>;
+     using ET = Polynomial;
 
-     void run(S const& f);
-     S const& g() { return g_; }
+     Polynomial_ring() = default;
+     explicit Polynomial_ring(AS const* as);
+     explicit Polynomial_ring(int dim);
+     Polynomial_ring(AS const* as, int dim);
+     virtual ~Polynomial_ring();
+     Polynomial_ring(Polynomial_ring const&) = default;
+     Polynomial_ring& operator=(Polynomial_ring const&) = default;
+     Polynomial_ring(Polynomial_ring&&) noexcept = default;
+     Polynomial_ring& operator=(Polynomial_ring&&) noexcept = default;
+
+     AS const* as() const { return as_; }
+     int dim() const { return dim_; }
+
+     ET const& value(Element const& x) const;
+     Element element(ET const& x) const;
+     void reset(AS const* as, int dim);
 
 private:
-     struct Pair {
-          Pair() = default;
-          Pair(P const& f1, P const& f2) : f1_(f1), f2_(f2) {}
-          P f1_;
-          P f2_;
-     };
-     friend bool operator==(Pair const& lhs, Pair const& rhs);
-     using SP = std::vector<Pair>;
+     Element do_add(Element const& x,
+                    Element const& y) const override;
+     Element do_zero() const override;
+     Element do_neg(Element const& x) const override;
+     Element do_mul(Element const& x,
+                    Element const& y) const override;
+     Element do_one() const override;
+     Element do_inv(Element const& x) const override;
+     bool do_is_zero(Element const& x) const override;
+     bool do_is_one(Element const& x) const override;
 
-     void reduce_all();
-     void new_basis();
-     bool criterion1(P const& f1, P const& f2);
-     bool criterion2(P const& f1, P const& f2);
+     bool do_equal(Element const& x, Element const& y) const override;
+     void do_output(std::ostream& stream,
+                    Element const& x) const override;
+     void do_input(std::istream& stream, Element& x) const override;
 
-     S r_{};
-     S p_{};
-     S g_{};
-     SP b_{};
+     std::type_info const& do_element_type() const override;
+
+     bool do_is_zerodivisor(Element const& x) const override;
+     bool do_is_nilpotent(Element const& x) const override;
+     bool do_is_unit(Element const& x) const override;
+     bool do_is_field() const override;
+
+     AS const* as_{&q_};
+     int dim_{1};
+     static Field_Q const q_;
 };
+
+inline int Polynomial::dim() const {
+     return dim_;
+}
+
+inline bool Polynomial::is_zero() const {
+     return t_.empty();
+}
+
+inline Element Polynomial::operator()(Element const& x) const {
+     return operator()(Point{x});
+}
+
+inline AS const* Polynomial::as() const {
+     return as_;
+}
+
+inline Polynomial::Terms const& Polynomial::terms() const {
+     return t_;
+}
+
+inline Monomial_cmp Polynomial::order() const {
+     return order_;
+}
+
+inline void Polynomial::set_to_zero() {
+     t_.clear();
+}
 
 /** \} */ /* end of group algebra */
 

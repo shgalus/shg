@@ -14,42 +14,42 @@
 #include <typeinfo>
 #include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <shg/except.h>
+#include <shg/ifact.h>
 #include <shg/matrix.h>
+#include <shg/utils.h>
 
 /**
  * Algebra.
+ *
+ * Classes and functions related to abstract algebra.
+ *
+ * \see \ref aaai.
+ * \see \ref eia.
  */
 namespace SHG::ALGEBRA {
 
 /**
- * \defgroup algebra Algebra
- *
- * Classes and functions related to abstract algebra.
- *
- * \note Alternative names for to_string() and from_string() are
- * <tt>etos</tt> and <tt>stoe</tt>.
- *
- * \todo Does Direct_product_of_groups::do_equal() require a loop
- * inside?
- *
- * \todo As Algebraic_structure::do_equal() and do_element_type(),
- * do_value() are almost identical, write a template in
- * Algebraic_structure.
- *
- * \{
+ * %Exception class for invalid operation.
  */
+class Invalid_operation : public std::logic_error {
+public:
+     Invalid_operation();
+};
 
-class Algebraic_structure;
+class AS;
 
-/** Element of an algebraic structure. */
+/** %Element of an algebraic structure. */
 class Element {
 public:
      Element() = default;
      /** Initializes to zero. */
-     explicit Element(Algebraic_structure const* as);
-     Element(Algebraic_structure const* as, std::any const& v);
+     explicit Element(AS const* as);
+     Element(AS const* as, std::any const& v);
      Element(Element const&) = default;
      Element& operator=(Element const&) = default;
+     Element(Element&&) noexcept = default;
+     Element& operator=(Element&&) noexcept = default;
      void set_to_zero();
      void set_to_one();
      Element& operator+=(Element const& x);
@@ -57,13 +57,13 @@ public:
      Element& operator*=(Element const& x);
      Element& operator/=(Element const& x);
      bool is_valid() const;
-     Algebraic_structure const* as() const;
+     AS const* as() const;
      std::any const& value() const;
 
      static bool is_valid(Element const& x, Element const& y);
 
 private:
-     Algebraic_structure const* as_{nullptr};
+     AS const* as_{nullptr};
      std::any v_{};
 };
 
@@ -105,8 +105,8 @@ Element inv(Element const& x);
  * \implementation See \cite knuth-2002b, section 4.6.3,
  * page 497.
  */
-
 Element times(Element const& x, int n);
+
 /**
  * Calculates \f$x^n\f$ (right-to-left binary method for
  * exponentiation). The structure must have defined one() and
@@ -131,9 +131,9 @@ std::istream& operator>>(std::istream& stream, Element& x);
  * are unsafe. Arguments passed must fulfill the condition
  * <tt>Element::is_valid(x, y)</tt> and <tt>x.as() == this</tt>.
  */
-class Algebraic_structure {
+class AS {
 public:
-     virtual ~Algebraic_structure();
+     virtual ~AS();
      Element add(Element const& x, Element const& y) const;
      Element zero() const;
      Element neg(Element const& x) const;
@@ -142,20 +142,17 @@ public:
      Element inv(Element const& x) const;
      bool is_zero(Element const& x) const;
      bool is_one(Element const& x) const;
-
      bool equal(Element const& x, Element const& y) const;
      std::ostream& output(std::ostream& stream,
                           Element const& x) const;
      std::istream& input(std::istream& stream, Element& x) const;
-
-     bool is_abelian() const;
      std::type_info const& element_type() const;
 
 protected:
      template <typename T>
-     inline static T const* element_cast(Element const& x) {
-          return std::any_cast<T const>(&x.value());
-     }
+     static T const* element_cast(Element const& x);
+     template <typename T>
+     static bool equalt(Element const& x, Element const& y);
 
 private:
      virtual Element do_add(Element const& x,
@@ -168,36 +165,22 @@ private:
      virtual Element do_inv(Element const& x) const = 0;
      virtual bool do_is_zero(Element const& x) const = 0;
      virtual bool do_is_one(Element const& x) const = 0;
-
      virtual bool do_equal(Element const& x,
                            Element const& y) const = 0;
-
      virtual void do_output(std::ostream& stream,
                             Element const& x) const = 0;
      virtual void do_input(std::istream& stream,
                            Element& x) const = 0;
-
-     virtual bool do_is_abelian() const = 0;
      virtual std::type_info const& do_element_type() const = 0;
 };
 
-/** A semigroup with neutral element, also called a monoid. */
-class Semigroup : public Algebraic_structure {
-public:
-     virtual ~Semigroup();
+bool is_group(AS const* as);
+bool is_commutative_ring(AS const* as);
 
-private:
-     Element do_add(Element const& x,
-                    Element const& y) const override final;
-     Element do_zero() const override final;
-     Element do_neg(Element const& x) const override final;
-     Element do_inv(Element const& x) const override final;
-     bool do_is_zero(Element const& x) const override final;
-};
-
-class Group : public Algebraic_structure {
+class Group : public AS {
 public:
      virtual ~Group();
+     bool is_abelian() const;
 
 private:
      Element do_add(Element const& x,
@@ -205,49 +188,22 @@ private:
      Element do_zero() const override final;
      Element do_neg(Element const& x) const override final;
      bool do_is_zero(Element const& x) const override final;
+     virtual bool do_is_abelian() const = 0;
 };
 
-class Ring : public Algebraic_structure {
+class Commutative_ring : public AS {
 public:
-     virtual ~Ring();
+     virtual ~Commutative_ring();
+     bool is_zerodivisor(Element const& x) const;
+     bool is_nilpotent(Element const& x) const;
+     bool is_unit(Element const& x) const;
+     bool is_field() const;
 
 private:
-     Element do_inv(Element const& x) const override final;
-};
-
-class Field : public Algebraic_structure {
-public:
-     virtual ~Field();
-};
-
-/**
- * The set of all finite strings over an alphabet with concatenation.
- */
-class Finite_strings : public Semigroup {
-public:
-     using ET = std::string;
-
-     Finite_strings() = default;
-     explicit Finite_strings(const std::set<char>& alphabet);
-
-     ET const& value(Element const& x) const;
-     Element element(ET const& x) const;
-
-private:
-     Element do_mul(Element const& x,
-                    Element const& y) const override;
-     Element do_one() const override;
-     bool do_is_one(Element const& x) const override;
-
-     bool do_equal(Element const& x, Element const& y) const override;
-     void do_output(std::ostream& stream,
-                    Element const& x) const override;
-     void do_input(std::istream& stream, Element& x) const override;
-
-     bool do_is_abelian() const override;
-     std::type_info const& do_element_type() const override;
-
-     std::set<char> a_{};
+     virtual bool do_is_zerodivisor(Element const& x) const = 0;
+     virtual bool do_is_nilpotent(Element const& x) const = 0;
+     virtual bool do_is_unit(Element const& x) const = 0;
+     virtual bool do_is_field() const = 0;
 };
 
 /**
@@ -271,9 +227,15 @@ public:
 
      Group_Sn() = default;
      explicit Group_Sn(int n);
+     virtual ~Group_Sn();
+     Group_Sn(Group_Sn&&) noexcept = default;
+     Group_Sn& operator=(Group_Sn&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
+
+     int n() const;
+     void reset(int n);
 
 private:
      Element do_mul(Element const& x,
@@ -300,6 +262,9 @@ public:
 
      Finite_group() = default;
      explicit Finite_group(Matrix<int> const& t);
+     virtual ~Finite_group();
+     Finite_group(Finite_group&&) noexcept = default;
+     Finite_group& operator=(Finite_group&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
@@ -328,9 +293,16 @@ private:
      bool is_abelian_{true};
 };
 
-class Ring_Z : public Ring {
+class Ring_Z : public Commutative_ring {
 public:
      using ET = boost::multiprecision::cpp_int;
+
+     Ring_Z() = default;
+     virtual ~Ring_Z();
+     Ring_Z(Ring_Z const&) = default;
+     Ring_Z& operator=(Ring_Z const&) = default;
+     Ring_Z(Ring_Z&&) noexcept = default;
+     Ring_Z& operator=(Ring_Z&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
@@ -345,6 +317,7 @@ private:
      Element do_mul(Element const& x,
                     Element const& y) const override;
      Element do_one() const override;
+     Element do_inv(Element const& x) const override;
      bool do_is_zero(Element const& x) const override;
      bool do_is_one(Element const& x) const override;
 
@@ -353,19 +326,31 @@ private:
                     Element const& x) const override;
      void do_input(std::istream& stream, Element& x) const override;
 
-     bool do_is_abelian() const override;
      std::type_info const& do_element_type() const override;
+
+     bool do_is_zerodivisor(Element const& x) const override;
+     bool do_is_nilpotent(Element const& x) const override;
+     bool do_is_unit(Element const& x) const override;
+     bool do_is_field() const override;
 };
 
-class Ring_Zn : public Ring {
+class Ring_Zn : public Commutative_ring {
 public:
      using ET = int;
 
      Ring_Zn() = default;
      explicit Ring_Zn(int n);
+     virtual ~Ring_Zn();
+     Ring_Zn(Ring_Zn const&) = default;
+     Ring_Zn& operator=(Ring_Zn const&) = default;
+     Ring_Zn(Ring_Zn&&) noexcept = default;
+     Ring_Zn& operator=(Ring_Zn&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
+
+     int n() const;
+     void reset(int n);
 
 private:
      Element do_add(Element const& x,
@@ -375,6 +360,7 @@ private:
      Element do_mul(Element const& x,
                     Element const& y) const override;
      Element do_one() const override;
+     Element do_inv(Element const& x) const override;
      bool do_is_zero(Element const& x) const override;
      bool do_is_one(Element const& x) const override;
 
@@ -383,15 +369,28 @@ private:
                     Element const& x) const override;
      void do_input(std::istream& stream, Element& x) const override;
 
-     bool do_is_abelian() const override;
      std::type_info const& do_element_type() const override;
 
+     bool do_is_zerodivisor(Element const& x) const override;
+     bool do_is_nilpotent(Element const& x) const override;
+     bool do_is_unit(Element const& x) const override;
+     bool do_is_field() const override;
+
      int n_{1};
+     bool is_prime_{false};
+     int p1pm_{-1};
 };
 
-class Field_Q : public Field {
+class Field_Q : public Commutative_ring {
 public:
      using ET = boost::multiprecision::cpp_rational;
+
+     Field_Q() = default;
+     virtual ~Field_Q();
+     Field_Q(Field_Q const&) = default;
+     Field_Q& operator=(Field_Q const&) = default;
+     Field_Q(Field_Q&&) noexcept = default;
+     Field_Q& operator=(Field_Q&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
@@ -416,21 +415,34 @@ private:
                     Element const& x) const override;
      void do_input(std::istream& stream, Element& x) const override;
 
-     bool do_is_abelian() const override;
      std::type_info const& do_element_type() const override;
+
+     bool do_is_zerodivisor(Element const& x) const override;
+     bool do_is_nilpotent(Element const& x) const override;
+     bool do_is_unit(Element const& x) const override;
+     bool do_is_field() const override;
 };
 
-class Field_Fp : public Field {
+class Direct_product : public AS {
 public:
-     using ET = int;
+     using ET = std::vector<Element>;
 
-     Field_Fp() = default;
-     explicit Field_Fp(int p);
+     Direct_product() = default;
+     explicit Direct_product(std::vector<AS const*> const& v);
+     virtual ~Direct_product();
+     Direct_product(Direct_product const&) = default;
+     Direct_product& operator=(Direct_product const&) = default;
+     Direct_product(Direct_product&&) noexcept = default;
+     Direct_product& operator=(Direct_product&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
 
+     std::vector<AS const*> const& v() const;
+     void reset(std::vector<AS const*> const& v);
+
 private:
+     using Sztp = std::vector<AS const*>::size_type;
      Element do_add(Element const& x,
                     Element const& y) const override;
      Element do_zero() const override;
@@ -447,37 +459,34 @@ private:
                     Element const& x) const override;
      void do_input(std::istream& stream, Element& x) const override;
 
-     bool do_is_abelian() const override;
      std::type_info const& do_element_type() const override;
 
-     int p_{2};
+     std::vector<AS const*> v_{};
 };
 
-class Direct_product_of_groups : public Group {
+/**
+ * Direct product of groups.
+ */
+class DPG : Group {
 public:
      using ET = std::vector<Element>;
 
-     Direct_product_of_groups() = default;
-     explicit Direct_product_of_groups(
-          std::vector<Group const*> const& v);
+     DPG() = default;
+     explicit DPG(std::vector<Group const*> const& v);
+     virtual ~DPG();
+     DPG(DPG const&) = default;
+     DPG& operator=(DPG const&) = default;
+     DPG(DPG&&) noexcept = default;
+     DPG& operator=(DPG&&) noexcept = default;
 
      ET const& value(Element const& x) const;
      Element element(ET const& x) const;
 
-     /**
-      * Sets separator which will be used to separate elements of the
-      * groups in string representation of the product elements.
-      * This separator should not appear in string representation of
-      * elements of groups of the product.
-      */
-     void separator(std::string const& sep);
-     /**
-      * Returns the separator.
-      */
-     std::string const& separator() const;
+     std::vector<Group const*> const& v() const;
+     void reset(std::vector<Group const*> const& v);
 
 private:
-     using Sztp = std::vector<const Group*>::size_type;
+     using Sztp = std::vector<Group const*>::size_type;
      Element do_mul(Element const& x,
                     Element const& y) const override;
      Element do_one() const override;
@@ -489,15 +498,13 @@ private:
                     Element const& x) const override;
      void do_input(std::istream& stream, Element& x) const override;
 
-     bool do_is_abelian() const override;
      std::type_info const& do_element_type() const override;
 
-     std::vector<const Group*> v_{};
-     std::string sep_{";"};
+     std::vector<Group const*> v_{};
 };
 
-/** \} */ /* end of group algebra */
-
 }  // namespace SHG::ALGEBRA
+
+#include <shg/algebra-inl.h>
 
 #endif

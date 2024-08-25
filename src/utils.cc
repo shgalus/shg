@@ -20,6 +20,17 @@ namespace SHG {
 
 using std::string;
 
+template <>
+unsigned gcd<unsigned>(unsigned u, unsigned v) {
+     unsigned r;
+     while (v) {
+          r = u % v;
+          u = v;
+          v = r;
+     }
+     return u;
+}
+
 Vecchar wfread(char const* filename) {
      using std::ifstream;
      using std::ios;

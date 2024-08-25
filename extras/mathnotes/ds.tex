@@ -1,0 +1,565 @@
+\chapter{Notes on dynamical systems}
+\section{Exercises}
+
+\textbf{Exercise 1.1.1.} Let $f \colon \realn \to \realn$, $f(x) = \pi
++ x - \frac{1}{2} \arctan x$. Since \( |f'(x)| = \left|1 - \frac{1}{2}
+\frac{1}{1 + x^2}\right| < 1 \), Lagrange mean value theorem~\cite
+     [p.~145] {rudnicki-2012} shows that \( |f(x) - f(y)| = |f'(c)||x
+     - y| < |x - y| \). If $f$ had a fixed point $x$, there should be
+     $\arctan x = 2\pi$, what is impossible. For any $x \in \realn$
+     and $y = f(x)$, \( |f^n(x) - f^n(y)| = |f^n(x) - \pi - f^n(x) +
+     \frac{1}{2} \arctan f^n(x)| = |\pi - \frac{1}{2} \arctan f^n(x)|
+     > \frac{3}{4} \), so \( |f^n(x) - f^n(y)| \) cannot converge to
+     0.
+
+\textbf{Exercise 1.1.2.} Let us define $g \colon X \to \realn$, $g(x)
+= d(x, f(x))$. As $g$ is continuous, the Weierstrass extreme value
+theorem~\cite [p.~121] {rudnicki-2012} shows that there exists $x_0
+\in X$ such that $g(x) \geq g(x_0)$ for all $x \in X$. If $x_0 \neq
+f(x_0)$, then from
+\begin{equation} \label{eq:112}
+  \forall x \neq y \quad d(f(x), f(y)) < d(x, y)
+\end{equation}
+it follows \[ g(f(x_0)) = d(f(x_0), f^2(x_0)) < d(x_0, f(x_0)) =
+g(x_0) \] what is a contradiction. Therefore $f(x_0) = x_0$.
+
+Let us suppose that $x_1 \neq x_0$ is another fixed point of $f$. Then
+on one hand $d(f(x_0), f(x_1)) = d(x_0, x_1)$ and by~(\ref{eq:112})
+$d(f(x_0), f(x_1)) < d(x_0, x_1)$ on the other, so $x_0$ is a single
+fixed point of $f$.
+
+It follows from~(\ref{eq:112}) that for every $x \neq x_0$ the
+sequence $d(f^n(x), x_0)$ is strictly decreasing, so $d(f^n(x), x_0)
+\to \delta \geq 0$. As $X$ is compact, $d(f^{k_n}(x), y) \to 0$. From
+triangle inequality for metric $d$ it follows that \[
+\underbrace{d(f^{k_n}(x), x_0)}_{\to \delta} -
+\underbrace{d(f^{k_n}(x), y)}_{\to 0} \leq d(x_0, y) \leq
+\underbrace{d(f^{k_n}(x), x_0)}_{\to \delta} +
+\underbrace{d(f^{k_n}(x), y)}_{\to 0}, \] so $d(x_0, y) = \delta$. But
+$d(f^{k_n + 1}(x), f(y)) \to 0$, so there also must be $d(x_0, f(y)) =
+\delta$. If $\delta > 0$, there would be a contradiction, as,
+according to~(\ref{eq:112}), there should be $d(x_0, f(y)) < \delta$.
+Hence $\delta = 0$ and $f^n(x) \to x_0$.
+
+To see that the convergence need not be exponential, take $f \colon
+[0, 1] \to [0, 1]$, $f(x) = \ln (1 + x)$. Lagrange mean value
+theorem~\cite [p.~145] {rudnicki-2012} shows that \[ \frac{f(x) -
+  f(0)}{x - 0} = \frac{1}{1 + c}, \quad 0 < c < x, \] so $f(x) >
+\frac{x}{1 + x}$. As the function $\frac{x}{1 + x}$ is strictly
+increasing, \[ f^2(x) > \frac{f(x)}{1 + f(x)} > \frac{\frac{x}{1 +
+    x}}{1 + \frac{x}{1 + x}} = \frac{x}{1 + 2x}, \] and, generally, \[
+f^n(x) > \frac{x}{1 + nx}. \] If $f^n(x)$ converged to 0
+exponentially, there would exist $c > 0$ and $\lambda < 1$ such
+that \[ \frac{x}{1 + nx} < f^n(x) < c \lambda^n, \] ie. \[ c \lambda^n
++ cx n \lambda^n > x. \] This inequality is impossible as both
+$c\lambda^n$ and $n\lambda^n$ converge to zero\footnote{If $a_n > 0$
+  and $\frac{a_{n + 1}}{a_n} \to \lambda < 1$, then $a_n \to 0$.}.
+
+\textbf{Exercise 1.1.5.} Let $f \colon X \to X$ be a bijective
+contracting map, ie. $d(f(x), f(y)) \leq \lambda d(x, y)$ for a
+$\lambda < 1$. It is easy to show that $d(f^{-n}(x), f^{-n}(y)) \geq
+\left( \frac{1}{\lambda} \right)^n d(x, y)$, where $\frac{1}{\lambda}
+> 1$. As $f^{-1}(x_0) = x_0$ for the fixed point $x_0$ of $f$, for
+every $x \neq x_0$, $d(f^{-n}(x), x_0) \geq \left( \frac{1}{\lambda}
+\right)^n d(x, x_0)$, so $\lim_{n \to +\infty} d(f^{-n}(x), x_0) =
++\infty$, what contradicts the compactness of $X$.
+
+\begin{note}[Note on a distance]
+\end{note}
+\begin{proof}
+Let $(X, \mathfrak{S}, \mu)$ be a measure space and $(Y,
+\mathfrak{T})$ be a measurable space. Suppose that $Y$ is linearly
+ordered and every interval is measurable. For each pair of measurable
+functions $f, g \colon X \to Y$ and for each $x \in X$ define a set
+\begin{equation*}
+  E_x(f, g) = \{t \in X \colon f(t) \leq f(x), \; g(t) > g(x)\} \in
+  \mathfrak{S}.
+\end{equation*}
+Let $\phi \colon X \to [0, \infty]$, $\phi(x) = \mu(E_x(f, g))$. If
+$\phi$ is measurable, define
+\begin{equation*}
+  d(f, g) = \int \limits_{X} \phi \, d\mu
+\end{equation*}
+as long as the integral is finite.
+
+Suppose that $\mu$ is $\sigma$-finite,
+\begin{equation*}
+  E(f, g) = \{(x, t) \in X \times X \colon f(t) \leq f(x), \; g(t) >
+  g(x)\} \in \mathfrak{S} \times \mathfrak{S},
+\end{equation*}
+and the functions $f$, $g$ for all $x \in X$ fulfill the conditions
+\begin{align*}
+  \mu(\{t \in X - \{x\} \colon f(t) &= f(x)\}) = 0, \\
+  \mu(\{t \in X - \{x\} \colon g(t) &= g(x)\}) = 0.
+\end{align*}
+Put
+\begin{equation*}
+  E^t(f, g) = \{x \in X \colon f(t) \leq f(x), \; g(t) > g(x)\} \in
+  \mathfrak{S}.
+\end{equation*}
+For fixed $x \in X$, $\chi_{E(f, g)}(x, t)$ is the characteristic
+function of $E_x(f, g)$ and for fixed $t \in X$, $\chi_{E(f, g)}(x,
+t)$ is the characteristic function of $E^t(f, g)$. It follows from
+Tonelli theorem \cite [\S7.6, \S7.8] {rudin-1986}, \cite [p.~231]
+{billingsley-2009} that
+\begin{equation*}
+  \begin{split}
+    \int \limits_{X} \mu(E_x(f, g)) \, d\mu(x) =
+    \int \limits_{X} \chi_{E(f, g)}(x, t) \, d\mu(t) = \\
+    \int \limits_{X} \chi_{E(f, g)}(x, t) \, d\mu(x) =
+    \int \limits_{X} \mu(E^t(f, g)) \, d\mu(t).
+  \end{split}
+\end{equation*}
+But
+\begin{multline*}
+  E^t(f, g) = \left( E_t(g, f) - \{x \in X \colon g(x) = g(t), \; f(x)
+  > f(t)\} \right) \cup \\ \{x \in X \colon f(x) = f(t), \; g(x) <
+  g(t)\},
+\end{multline*}
+so $\mu(E^t(f, g)) = \mu(E_t(g, f))$ and $d(f, g) = d(g, f)$.
+
+Let $f, g, h \colon X \to Y$ be measurable. Then $E_x(f, g) \subset
+E_x(f, h) \cup E_x(h, g)$ and $E_x(f, h) \cap E_x(h, g) = \emptyset$.
+If the three functions $\mu(E_x(f, g)$, $\mu(E_x(f, h)$, $\mu(E_x(h,
+g)$ are measurable and integrable,
+\[
+d(f, g) \leq d(f, h) + d(h, g).
+\]
+\end{proof}
+
+\section{First attempt}
+
+$\mathfrak{R}$ denotes the Borel $\sigma$-algebra in the real line
+\realn.
+
+Let $(X, \mathfrak{S}, \mu)$ be a measure space and $(Y,
+\mathfrak{T})$ be a measurable space. Let $Y$ be linearly ordered and
+every interval be measurable. The set $Y$ may be considered as a
+topological space with topology induced by the linear order~\cite
+[p.~130] {kuratowski-1977}. For each pair of measurable functions $f,
+g \colon X \to Y$ and for each $x \in X$ define a measurable set
+$E_x(f, g) = f^{-1}((-\infty, f(x)]) \cap g^{-1}((g(x), \infty)) \in
+  \mathfrak{S}$.
+
+\begin{lem}
+The function $X \ni x \mapsto \mu(E_x(f, g)) \in [0, \infty]$ is
+$\mathfrak{S}/\mathfrak{R}$-measurable.
+\end{lem}
+
+\begin{proof}
+For $y \in Y$, denote $A(y) = f^{-1}((-\infty, y])$, $B(y) =
+g^{-1}((-\infty, y])$. The functions
+\begin{align*}
+  Y \ni y & \mapsto \mu(A(y)) \in [0, \infty] \\
+  Y \times Y \ni (y_1, y_2) & \mapsto \mu(A(y_1) \cap B(y_2)) \in [0, \infty]
+\end{align*}
+are measurable as preimages of $(-\infty, w]$ under them are
+intervals. Thus the function
+\begin{multline} \label{eq:func11}
+  Y \times Y \ni (y_1, y_2) \mapsto \mu(A(y_1)) - \mu(A(y_1)) \cap
+  B(y_2)) = \\ \mu(A(y_1) \cap B(y_2)^\complement) \in [0, \infty]
+\end{multline}
+is $\mathfrak{T} \times \mathfrak{T} / \mathfrak{R}$-measurable \cite
+[theorem 13.3, p.~183] {billingsley-2009}. The function
+\begin{equation} \label{eq:func12}
+  X \ni x \mapsto (f(x), g(x)) \in Y \times Y
+\end{equation}
+is $\mathfrak{S} / \mathfrak{T} \times \mathfrak{T}$-measurable as the
+preimages of $(-\infty, y_1] \times (-\infty, y_2]$, namely $A(y_1)
+\cap B(y_2)$, are measurable. Hence the composition of
+(\ref{eq:func11}) and (\ref{eq:func12}), that is $\mu(E_x(f, g))$, is
+$\mathfrak{S} / \mathfrak{R}$-measurable \cite [theorem 13.1, p.~182]
+     {billingsley-2009}.
+\end{proof}
+
+Define a functional which each pair of $\mathfrak{S} /
+\mathfrak{T}$-measurable functions $f, g \colon X \to Y$ assigns
+\[ d(f, g) = \int \limits_X \mu(E_x(f, g)) \, d\mu(x) \in [0,
+  \infty]. \] It is easy to notice that $d(f, f) = 0$ as $E_x(f, f) =
+\emptyset$, and that $d(f, g) \leq d(f, h) + d(h, g)$ as $E_x(f, g)
+\subseteq E_x(f, h) \cup E_x(h, g)$.
+
+Let \universe{X}{Y} be the set of all $\mathfrak{S} /
+\mathfrak{T}$-measurable functions $f \colon X \to Y$ such that for
+every $x \in X$ the punctured preimage $f^{-1}(\{f(x)\}) - \{x\}$ has
+measure zero.
+
+\begin{lem}
+If $\mu$ is $\sigma$-finite, $Y$ has a countable dense subset, then
+for each $f, g \in \universe{X}{Y}$, $d(f, g) = d(g, f)$.
+\end{lem}
+
+\begin{proof}
+First, we show that \[ E(f, g) = \{ (x, t) \in X \times X \colon f(t)
+\leq f(x), g(t) > g(x) \} \] is $\mathfrak{S} \times
+\mathfrak{S}$-measurable. If $D$ is a countable dense subset of $Y$,
+then the sets
+\begin{equation} \label{eq:set1}
+\{ (x, t) \in X \times X \colon g(t) > g(x) \} = \bigcup_{r \in D}
+g^{-1}((-\infty, r]) \times g^{-1}((r, \infty)),
+\end{equation}
+\begin{multline} \label{eq:set2}
+  \{ (x, t) \in X \times X \colon f(t) > f(x), g(t) > g(x) \} =
+  \\ \bigcup_{r, s \in D} \left[ f^{-1}((-\infty, r]) \cap
+  g^{-1}((-\infty, s]) \right] \times \left[ f^{-1}((r, \infty)) \cap
+        g^{-1}((s, \infty)) \right]
+\end{multline}
+are measurable and $E(f, g)$ is the difference between (\ref{eq:set1})
+and (\ref{eq:set2}), so it is also measurable.
+
+Let $\chi_E$ be the characteristic function of $E(f, g)$. Put \[
+E^t(f, g) = \{x \in X \colon f(t) \leq f(x), \; g(t) > g(x)\} \in
+\mathfrak{S}. \] For fixed $x \in X$, $\chi_E(x, t)$ is the
+characteristic function of $E_x(f, g)$, and for fixed $t \in X$,
+$\chi_E(x, t)$ is the characteristic function of $E^t(f, g)$. It
+follows from Tonelli theorem \cite [p.~231] {billingsley-2009} that
+\[ \begin{split}
+  \int \limits_X \mu(E_x(f, g)) \, d\mu(x) =
+  \int \limits_X \left( \int \limits_X \chi_E(x, t) \, d\mu(t) \right)
+  \, d\mu(x) = \\
+  \int \limits_X \left( \int \limits_X \chi_E(x, t) \, d\mu(x) \right)
+  \, d\mu(t) =
+  \int \limits_X \mu(E^t(f, g)) \, d\mu(t).
+\end{split} \]
+But
+\begin{multline*}
+  E^t(f, g) = \left( E_t(g, f) - \{x \in X \colon g(x) = g(t), \; f(x)
+  > f(t)\} \right) \cup \\ \{x \in X \colon f(x) = f(t), \; g(x) <
+  g(t)\},
+\end{multline*}
+so $\mu(E^t(f, g)) = \mu(E_t(g, f))$ and $d(f, g) = d(g, f)$.
+\end{proof}
+
+If $\mu$ is finite and Y has a countable dense subset, an equivalence
+relation on $\universe{X}{Y} \times \universe{X}{Y}$ can be defined
+such that $f$ and $g$ are equivalent if $d(f, g) = 0$. Then $d$ is a
+metric on the space of equivalence classes of this relation. This
+space will be denoted by $\universei{X}{Y}$.
+
+\begin{prop}
+If $f, g \in \universei{X}{Y}$, then \[ d(f, g) \leq d_{\max} =
+\frac{1}{2} \left[ \mu(X)^2 - \int \limits_X \mu(\{x\}) \, d\mu(x)
+  \right]. \]
+\end{prop}
+
+\begin{proof}
+Let $\chi(x, t)$ be the characteristic function of the
+set~(\ref{eq:set1}). It follows from Tonelli theorem that
+\[ \begin{split}
+  \int \limits_X \mu(g^{-1}((g(x), \infty))) \, d\mu(x) =
+  \int \limits_X \left( \int \limits_X \chi(x, t) \, d\mu(t) \right)
+  \, d\mu(x) = \\
+  \int \limits_X \left( \int \limits_X \chi(x, t) \, d\mu(x) \right)
+  \, d\mu(t) =
+  \int \limits_X \mu(g^{-1}((-\infty, g(t)))) \, d\mu(t).
+\end{split} \]
+As \[ g^{-1}((-\infty, g(x))) \cup g^{-1}((g(x), \infty)) \cup \{ x \}
+\cup \left( g^{-1}(\{ g(x) \}) - \{ x \} \right) = X,\] we get \[ \int
+\limits_X \mu(g^{-1}((g(x), \infty))) \, d\mu(x) = \frac{1}{2} \left[
+  \mu(X)^2 - \int \limits_X \mu(\{x\}) \, d\mu(x) \right]. \] But
+$E_x(f, g) \subseteq g^{-1}((g(x), \infty))$, hence the thesis.
+\end{proof}
+
+\begin{prop}
+If $X$ is linearly ordered in such a way that every interval is
+measurable and $f, g \in \universei{X}{Y}$, then: (1) if $f$ and $g$
+are simultaneously non-decreasing or simultaneously non-increasing,
+then $d(f, g) = 0$, (2) if one of them is non-decreasing and the other
+is non-increasing, then $d(f, g) = d_{\max}$.
+\end{prop}
+
+\begin{proof}
+The following table presents $E_x(f, g)$ for combinations of strictly
+increasing ($<$), non-decreasing ($\leq$), strictly decreasing ($>$)
+and non-increasing ($\geq$) functions.
+
+\begin{center}
+\begin{tabular}{c|cccc}
+  \diagbox{$f$}{$g$} & $<$ & $\leq$ & $>$ & $\geq$ \\ \hline
+  $<$ & $\emptyset$ & $\emptyset$ & $(-\infty, x)$ & $(-\infty, x)$ \\
+  $\leq$ & $A_x$ & $A_x$ & $(-\infty, x)$ & $(-\infty, x)$ \\
+  $>$ & $(x, \infty)$ & $(x, \infty)$ & $\emptyset$ & $\emptyset$ \\
+  $\geq$ & $(x, \infty)$ & $(x, \infty)$ & $B_x$ & $B_x$ \\ \hline
+  \multicolumn{5}{l}{$A_x = f^{-1}(\{f(x)\}) \cap (x, \infty)$, $B_x =
+    f^{-1}(\{f(x)\}) \cap (-\infty, x)$ }
+\end{tabular}
+\end{center}
+
+Simple calculations prove the thesis. For example, if $f$ and $g$ are
+non-increasing, then $E_x(f, g) = f^{-1}(\{f(x)\}) \cap (-\infty, x)$
+and $\mu(E_x(f, g)) = 0$, hence $d(f, g) = 0$.
+\end{proof}
+
+\section{Symmetric difference semi-metric}
+
+Let $(X, \mathfrak{S}, \mu)$ be a measure space with a finite measure
+$\mu$ and $(\realn, \mathfrak{B})$ be the measurable space on the real
+line $\realn$ with the Borel $\sigma$-algebra $\mathfrak{B}$ over the
+standard order topology. Denote by $\mathcal{M}(X, \mathfrak{S})$ the
+set of $\mathfrak{S}/\mathfrak{B}$-measurable real functions on $X$.
+For each pair of functions $f, g \in \mathcal{M}(X, \mathfrak{S})$ and
+for each $x \in X$ define a measurable set
+\[ E_x(f, g) = f^{-1}((-\infty, f(x)]) \mathbin{\triangle} g^{-1}((-\infty, g(x)])
+    \in \mathfrak{S}, \] where $\mathbin{\triangle}$ denotes the
+    symmetric difference of two sets, and a functional \[ d(f, g) =
+    \int \limits_X \mu(E_x(f, g)) \, d\mu(x) \in [0, \infty). \]
+
+\begin{prop}
+  $d$ is a semi-metric on $\mathcal{M}(X, \mathfrak{S})$, ie. $d(f, f)
+  = 0$, $d(f, g) = d(g, f)$, $d(f, g) \leq d(f, h) + d(h, g)$ for all
+  measurable $f, g, h \colon X \to \realn$. $d$ is bounded by
+  $\mu(X)^2 - \int_X \mu(\{x\}) \, d\mu(x)$.
+\end{prop}
+
+\begin{proof}
+  First it should be proved that the function $X \ni x \mapsto
+  \mu(E_x(f, g)) \in \realn$ is
+  $\mathfrak{S}/\mathfrak{B}$-measurable. For each pair of functions
+  $f, g \in \mathcal{M}(X, \mathfrak{S})$ the functions
+\begin{align*}
+  \phi_1 \colon \realn \to \realn, & \quad \phi_1(y) = \mu(f^{-1}((-\infty, y])), \\
+  \phi_2 \colon \realn \to \realn, & \quad \phi_2(y) = \mu(g^{-1}((-\infty, y])), \\
+  \phi_3 \colon \realn \times \realn \to \realn, & \quad \phi_3(y_1, y_2) = \mu(f^{-1}((-\infty, y_1]) \cap g^{-1}((-\infty, y_2]))
+\end{align*}
+are measurable as preimages of $(-\infty, z]$ under them are intervals
+  or the empty set. Thus the functions $\phi_4, \phi_5 \colon \realn
+  \times \realn \to \realn$,
+\begin{align*}
+  \phi_4(y_1, y_2) &= \phi_1(y_1) - \phi_3(y_1, y_2) = \mu(f^{-1}((-\infty, y_1]) \cap g^{-1}((-\infty, y_2])^\complement), \\
+      \phi_5(y_1, y_2) &= \phi_2(y_2) - \phi_3(y_1, y_2) = \mu(f^{-1}((-\infty, y_1])^\complement \cap g^{-1}((-\infty, y_2])
+\end{align*}
+are $\mathfrak{B} \times \mathfrak{B} / \mathfrak{B}$-measurable \cite
+[theorem 13.3, p.~183] {billingsley-2009}.
+The function
+\[
+  \phi_6 \colon X \to \realn \times \realn, \quad \phi_6(x) = (f(x), g(x))
+\]
+is $\mathfrak{S}/\mathfrak{B} \times \mathfrak{B}$-measurable as the
+preimages of $(-\infty, y_1] \times (-\infty, y_2]$, namely
+    $f^{-1}((-\infty, y_1]) \cap g^{-1}((-\infty, y_2]))$, are
+        measurable. Hence the composition $(\phi_4 + \phi_5) \circ
+        \phi_6 \colon X \to \realn$, which is $\mu(E_x(f, g))$, is
+        $\mathfrak{S}/\mathfrak{B}$-measurable.
+
+The properties of semi-metrics result from the properties of symmetric
+difference: $E_x(f, f) = \emptyset$, $E_x(f, g) = E_x(g, f)$, $E_x(f,
+g) \subseteq E_x(f, h) \cup E_x(h, g)$.
+
+As $E_x(f, g) \subseteq X - \{x\}$, $\mu(E_x(f, g)) \leq \mu(X -
+\{x\}) = \mu(X) - \mu(\{x\})$, so
+\[ d(f, g) \leq \int \limits_X \mu(X) \, d\mu(x) -
+\int \limits_X \mu(\{x\}) \, d\mu(x) = \mu(X)^2 - \int \limits_X
+\mu(\{x\}) \, d\mu(x). \]
+\end{proof}
+
+An equivalence relation on $\mathcal{M}(X, \mathfrak{S}) \times
+\mathcal{M}(X, \mathfrak{S})$ can be defined such that $f$ and $g$ are
+equivalent if $d(f, g) = 0$. Then $d$ is a metric on the space of
+equivalence classes of this relation.
+
+\begin{prop}
+  If $X$ is linearly ordered in such a way that every interval is
+  measurable and $f, g \in \mathcal{M}(X, \mathfrak{S})$, then: (1) if
+  $f$ and $g$ are simultaneously strictly increasing or simultaneously
+  strictly decreasing, then $d(f, g) = 0$, (2) if one of them is
+  strictly increasing and the other is strictly decreasing, then $d(f,
+  g) = \mu(X)^2 - \int_X \mu(\{x\}) \, d\mu(x)$.
+\end{prop}
+
+\begin{proof}
+  In the first case, $E_x(f, g) = \emptyset$, so $d(f, g) = 0$. In the
+  second case \[
+  \begin{split}
+    E_x(f, g) = (\{ t \in X \colon f(t) \leq f(x) \} \cap \{ t \in X
+    \colon g(t) > g(x) \}) \\
+    \cup (\{ t \in X \colon f(t) > f(x) \} \cap \{ t \in X \colon g(t)
+    \leq g(x) \}) = X - \{ x \},
+  \end{split} \]
+  so $d(f, g) = \mu(X)^2 - \int_X \mu(\{x\}) \, d\mu(x)$.
+\end{proof}
+
+\begin{prop} \label{prop:integr1}
+  For any $f \in \mathcal{M}(X, \mathfrak{S})$, \[ \int \limits_X
+  \mu(f^{-1}((-\infty, f(x)])) \, d\mu(X) = \frac{1}{2} \mu(X)^2 +
+    \frac{1}{2} J_f, \] where
+    \begin{equation} \label{eq:definitionofJ}
+      J_f = \int \limits_X \mu(f^{-1}(\{x\})) \, d\mu(x).
+    \end{equation}
+\end{prop}
+
+\begin{proof}
+  The set $\{(x, t) \in X \times X \colon f(t) < f(x)\}$ is
+  $\mathfrak{S} \times \mathfrak{S}$-measurable as it is equal to \[
+  \bigcup_{r \in Q} f^{-1}((r, \infty)) \times f^{-1}((-\infty,
+  r]), \] where $Q$ is a countable dense subset of $\realn$. Let
+    $\chi(x, t)$ be its characteristic function. It follows from
+    Tonelli theorem \cite [p.~231] {billingsley-2009} that
+    \[ \begin{split}
+      \int \limits_X \mu(f^{-1}((-\infty, f(x)))) \, d\mu(x) = \int
+      \limits_X \left( \int \limits_X \chi(x, t) \, d\mu(t) \right) \,
+      d\mu(x) = \\ \int \limits_X \left( \int \limits_X \chi(x, t) \,
+      d\mu(x) \right) \, d\mu(t) = \int \limits_X \mu(f^{-1}((f(x),
+      \infty))) \, d\mu(x).
+    \end{split} \]
+    Integration of \[ \mu(X) = \mu(f^{-1}((-\infty, f(x)))) +
+    \mu(f^{-1}(\{f(x)\})) + \mu(f^{-1}((f(x), \infty))) \] proves the
+    thesis.
+\end{proof}
+
+\begin{prop}
+  If $f, g \in \mathcal{M}(X, \mathfrak{S})$ are independent, ie. for
+  all $H_1, H_2 \in \mathfrak{B}$ \[ \mu(f^{-1}(H_1) \cap g^{-1}(H_2))
+  = \mu(f^{-1}(H_1)) \cdot \mu(g^{-1}(H_2)) \] \cite
+  [chapter~4.20,~p.~260] {billingsley-2009}, then \[ d(f, g) =
+  \frac{1}{2} \left(\mu(X)^3 - \frac{1}{\mu(X)} J_fJ_g \right), \]
+  where $J_f$ and $J_g$ are defined by~(\ref{eq:definitionofJ}).
+\end{prop}
+
+\begin{proof}
+  Due to the independence,
+  \begin{multline} \label{eq:distrofmuEx}
+    \mu(E_x(f, g)) = \mu(f^{-1}((-\infty, f(x)])) \cdot \left[ \mu(X)
+        - \mu(g^{-1}((-\infty, g(x)])) \right] + \\
+        \left[ \mu(X) - \mu(f^{-1}((-\infty, f(x)])) \right] \cdot
+          \mu(g^{-1}((-\infty, g(x)])).
+  \end{multline}
+
+  Let $F_1(z) = \mu(\{ x \in X \colon f(t) \leq z \})$ and $F_2(z) =
+  \mu(\{ x \in X \colon g(t) \leq z \})$ be the cumulative
+  distribution functions of $f$ and $g$ and let
+  \begin{align*}
+    \phi_1(x) &= \mu(f^{-1}((-\infty, f(x)])) = F_1(f(x)), \\
+    \phi_2(x) &= \mu(g^{-1}((-\infty, g(x)])) = F_2(g(x)).
+  \end{align*}
+  As $F_1 \circ f$ and $F_2 \circ g$ are Borel functions\footnote{If
+    $F \colon \realn \to \realn$ is monotone, then for every $x \in
+    \realn$ the set $F^{-1}((-\infty, x])$ is an empty set or an
+  interval.} of independent functions, \[ \begin{split}
+    &\mu(\{ x \in X \colon \phi_1(x) \leq z_1, \phi_2(x) \leq z_2 \}) = \\
+    &\mu(\{ x \in X \colon F_1(f(x)) \leq z_1, F_2(g(x)) \leq z_2 \}) = \\
+    &\mu(\{ x \in X \colon F_1(f(x)) \leq z_1 \}) \cdot
+    \mu(\{ x \in X \colon F_2(g(x)) \leq z_2 \}) = \\
+    &\mu(\{ x \in X \colon \phi_1(x) \leq z_1 \}) \cdot
+    \mu(\{ x \in X \colon \phi_2(x) \leq z_2 \}), \end{split} \]
+  $\phi_1$ and $\phi_2$ are a pair of independent functions \cite
+  [theorem~14, p.~101] {jakubowski-sztencel-2001}.
+  Thus \cite [chapter~4.21,~p.~277] {billingsley-2009}
+  \begin{equation} \label{eq:expphi1phi2}
+    \int \limits_X \phi_1(x) \phi_2(x) \, d\mu(x) = \frac{1}{\mu(X)}
+    \int \limits_X \phi_1(x) \, d\mu(x) \cdot \int \limits_X \phi_2(x)
+    \, d\mu(x).
+  \end{equation}
+
+  Integration of (\ref{eq:distrofmuEx}) using (\ref{eq:expphi1phi2})
+  and proposition \ref{prop:integr1} proves the thesis.
+\end{proof}
+
+\begin{rem}
+  Let $X \colon \Omega \to \realn^2$ be a random vector on $(\Omega,
+  \mathfrak{F}, P)$, $X(\omega) = (X_1(\omega), X_2(\omega))$, and let
+  $F$, $F_1$, $F_2$ be the cumulative distribution functions of $X$,
+  $X_1$ and $X_2$. Then \[ \Pr(E_\omega(X_1, X_2) = F_1(X_1(\omega)) +
+  F_2(X_2(\omega)) - 2F(X_1(\omega), X_2(\omega)), \]
+  so \[ \begin{split} d(X_1, X_2) &= \int \limits_\Omega
+    \Pr(E_\omega(X_1, X_2)) \, d\Pr(\omega) \\ &= \int
+    \limits_{\realn^2} F_1(x_1) + F_2(x_2) - 2F(x_1, x_2) \, dF(x_1,
+    x_2). \end{split} \] If $X$ has density $f$ with respect to
+  Lebesgue measure, then \[ \begin{split} \int \limits_{\realn^2}
+    F_1(x_1) \, dF(x_1, x_2) &= \int \limits_{-\infty}^\infty F_1(x_1)
+    \left( \int \limits_{-\infty}^\infty f(x_1, x_2) \, dx_2 \right)
+    \, dx_1 \\ &= \int \limits_{-\infty}^\infty F_1(x_1)f_1(x_1) \,
+    dx_1 = \frac{1}{2}, \end{split} \] where $f_1$ is the marginal
+  density of $X_1$ (the last equality results from integrating by
+  parts), and
+  \begin{equation} \label{eq:defofd}
+    d(X_1, X_2) = 1 - 2 \int \limits_{\realn^2} F(x_1, x_2) f(x_1,
+    x_2) \, dx_1dx_2.
+  \end{equation}
+
+  If $X$ is a simple random variable, ie. $X_1$, $X_2$ take on the
+  values
+  \begin{equation*}
+    x_{11} < x_{12} < \ldots < x_{1,n_1},
+  \end{equation*}
+  \begin{equation*}
+    x_{21} < x_{22} < \ldots < x_{2,n_2},
+  \end{equation*}
+  respectively, $\Pr(X_1 = x_{1i}, X_2 = x_{2j}) = p_{ij}$, $0 \leq
+  p_{ij} \leq 1$, then the cumulative distribution function $F(x_1,
+  x_2)$ takes on the value zero if $x_1 < x_{11}$ or $x_2 < x_{21}$
+  and the values \[ \sum_{k = 1}^i \sum_{l = 1}^j p_{kl} \] if $(x_1,
+  x_2) \in [x_{1i}, x_{1, i + 1}) \times [x_{2j}, x_{2, j + 1})$
+      ($x_{1, n_1 + 1} = x_{2, n_2 + 1} = \infty$).
+      Then \[ \begin{split}
+        d(X_1, X_2) & = \sum_{i = 1}^{n_1} \sum_{j = 1}^{n_2} \left[
+          \sum_{k = 1}^{i} \sum_{l = j + 1}^{n_2} p_{kl} +
+          \sum_{k = i + 1}^{n_1} \sum_{l = 1}^{j} p_{kl} \right]
+          p_{ij} \\
+        & = \sum_{i = 1}^{n_1} \sum_{j = 1}^{n_2} \left[ \Pr(X_1 \leq
+            x_{1i}, X_2 > x_{2j}) + \Pr(X_1 > x_{1i}, X_2 \leq x_{2j})
+            \right] p_{ij}.
+      \end{split} \]
+\end{rem}
+
+\begin{rem}[Relation between $d$ and Kendall's $\tau$]
+  Let $X_i = (X_{i1}, X_{i2})$, $X_i \colon \Omega \to \realn^2$, $i =
+  1, 2$, be independent random pairs with common distribution.
+  Kendall's $\tau$ is defined \cite [section~9.4, p.~474]
+  {koronacki-mielniczuk-2001} \cite [section~4.4.2, p.~61]
+  {terasvirta-tjostheim-granger-2010} \cite [section~2.1.9, p.~32]
+  {joe-1997} as \[
+  \begin{split}
+  \tau & = \Pr((X_{11} - X_{21})(X_{12} - X_{22}) > 0) - \\
+  & \quad \Pr((X_{11} - X_{21})(X_{12} - X_{22}) < 0) \\
+  & = \Pr(Y_1 > 0, Y_2 > 0) + \Pr(Y_1 < 0, Y_2 < 0) - \\
+  & \quad \Pr(Y_1 > 0, Y_2 < 0) - \Pr(Y_1 < 0, Y_2 > 0),
+  \end{split} \] where $Y = (Y_1, Y_2)$, $Y_1 = X_{11} - X_{21}$,
+  $Y_2 = X_{12} - X_{22}$. If $F(x_1, x_2)$ is the cumulative
+  distribution function of each $X_i$, then on Fubini theorem $Y$ has
+  the cumulative distribution function \[ G(y_1, y_2) = \int
+  \limits_{\realn^2} F(x_1 + y_1, x_2 + y_2) \, dF(x_1, x_2) \] (see
+  \cite [p.~199, 640--641] {fisz-1969}, \cite [p.~258--259]
+        {billingsley-2009}) and $\tau$ may be expressed
+        as \[ \begin{split}
+          \tau & = G(\infty, \infty) - G(0, \infty) - G(\infty, 0) +
+          G(0, 0) + \\
+          & \quad G(0-, 0-) - G(0-, \infty) + G(0-, 0) - G(\infty, 0-)
+          + G(0, 0-) \\
+          & = \int \limits_{\realn^2} 1 - F_1(x_1) - F_2(x_2) + F(x_1,
+          x_2) + F(x_1-, x_2-) \, dF(x_1, x_2) - \\
+          & \quad \int \limits_{\realn^2} F_1(x_1-) - F(x_1-, x_2) +
+          F_2(x_2-) - F(x_1, x_2-) \, dF(x_1, x_2),
+        \end{split} \]
+        where $F_1(x_1) = F(x_1, \infty)$, $F_2(x_2) = F(\infty,
+        x_2)$. If $X$ has density $f(x_1, x_2)$ with respect to
+        Lebesgue measure, then
+        \begin{equation} \label{eq:defoftau} \begin{split}
+            \tau & = \int \limits_{\realn^2} 1 - 2F_1(x_1) - 2F_2(x_2)
+            + 4F(x_1, x_2) \, dF(x_1, x_2) \\
+            & = 4 \int \limits_{\realn^2} F(x_1, x_2) \, dF(x_1, x_2)
+            - 1.
+        \end{split} \end{equation}
+        Comparing (\ref{eq:defofd}) and (\ref{eq:defoftau}) we see
+        that $d = (1 - \tau) / 2$.
+\end{rem}
+
+\begin{rem}
+  Kendall's tau may be defined using a single pair $X = (X_1, X_2)$
+  with cumulative distribution function $F(x_1, x_2)$: \[
+  \begin{split}
+    \tau & = \int \limits_\Omega Pr(\{ \tau \in \Omega \colon X(\tau) >
+    X(\omega), Y(\tau) > Y(\omega) \}) \, d\Pr(\omega) + \\
+    & \quad \int \limits_\Omega \Pr(\{ \tau \in \Omega \colon X(\tau) <
+    X(\omega), Y(\tau) < Y(\omega) \}) \, d\Pr(\omega) - \\
+    & \quad \int \limits_\Omega \Pr(\{ \tau \in \Omega \colon X(\tau) <
+    X(\omega), Y(\tau) > Y(\omega) \}) \, d\Pr(\omega) - \\
+    & \quad \int \limits_\Omega \Pr(\{ \tau \in \Omega \colon X(\tau) >
+    X(\omega), Y(\tau) < Y(\omega) \}) \, d\Pr(\omega) \\
+    & = \int \limits_{\realn^2} F(\infty, \infty) - F(x_1, \infty) -
+    F(\infty, x_2) + F(x_1, x_2) \, dF(x_1, x_2) + \\
+    & \quad \int \limits_{\realn^2} F(x_1-, x_2-) \, dF(x_1, x_2) - \\
+    & \quad \int \limits_{\realn^2} F(x_1-, \infty) - F(x_1-, x_2) \,
+    dF(x_1, x_2) - \\
+    & \quad \int \limits_{\realn^2} F(\infty, x_2-) - F(x_1, x_2-) \,
+    dF(x_1, x_2). \end{split} \]
+\end{rem}

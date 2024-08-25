@@ -6,6 +6,29 @@
 
 \section various_notes Various notes.
 
+\subsection smf Special member functions.
+
+Function            |Declaration
+:-------------------|:-----------------------------------------
+default constructor | <tt>T()</tt>
+destructor          | <tt>~T()</tt>
+copy constructor    | <tt>T(T const& other)</tt>
+copy assignment     | <tt>T& operator=(T const& other)</tt>
+move constructor    | <tt>T(T&& other) noexcept</tt>
+move assignment     | <tt>T& operator=(T&& other) noexcept</tt>
+
+\subsection eia Eventually in algebra.
+
+- Module inherits from \c Algebraic_structure and has additional
+  operation (scalar multiplication) and one or two algebraic
+  structures
+- \c Ring_Z --> template<T> for T = int or T = cpp_int
+- \c Ring_Zn --> if \c n is prime --> also \c Field_Fp
+- eventually use eigen3 instead of vector
+- add Z[sqrt(c)]
+- add mathnotes to doc instead of extras
+- rewrite notes on commutative algebra into new chapter of shg.pdf
+
 \section strdlr NIST Statistical Reference Datasets Linear Regression.
 
 Test cases in the file ols_test.cc use data for testing linear
@@ -240,14 +263,14 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 - [Clang documentation](https://clang.llvm.org/docs/index.html)
   ([local copy](file:///usr/share/doc/clang-17/html/index.html))
 
-- [Boost documentation](https://www.boost.org/doc/libs/1_83_0/)
-  ([local copy](file:///usr/local/share/doc/boost_1_83_0/index.html))
+- [Boost documentation](https://www.boost.org/doc/libs/1_85_0/)
+  ([local copy](file:///usr/local/share/doc/boost_1_85_0/index.html))
 
-    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_83_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_83_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
+    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_85_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_85_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
 
-    - [Safe numerics](https://www.boost.org/doc/libs/1_83_0/libs/safe_numerics/doc/html/introduction.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_83_0/libs/safe_numerics/doc/html/introduction.html))
+    - [Safe numerics](https://www.boost.org/doc/libs/1_85_0/libs/safe_numerics/doc/html/introduction.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_85_0/libs/safe_numerics/doc/html/introduction.html))
 
 - [Eigen3 documentation](https://eigen.tuxfamily.org/dox/)
   ([local copy](file:///usr/local/share/doc/eigen3/index.html))
@@ -331,6 +354,9 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
   ([local copy](file:///usr/share/doc/gmp-doc/html/index.html))
 
 - [Bit Twiddling Hacks](http://graphics.stanford.edu/~seander/bithacks.html)
+
+- [Tutorial: When to Write Which Special
+  Member](https://www.foonathan.net/2019/02/special-member-functions/)
 
 \section useful_commands Useful commands.
 

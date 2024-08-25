@@ -125,24 +125,74 @@ BOOST_AUTO_TEST_CASE(iceil_test) {
 }
 
 using test_types =
-     boost::mpl::list<signed char, int, long int, long long int>;
+     boost::mpl::list<signed char, short int, int, long int,
+                      long long int, boost::multiprecision::cpp_int>;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(integer_division_test, T, test_types) {
-     using Idiv = SHG::Integer_division<T>;
-     for (T a = static_cast<T>(-100); a <= static_cast<T>(100); a++)
-          for (T b = static_cast<T>(-100); b <= static_cast<T>(100);
-               b++) {
+BOOST_AUTO_TEST_CASE_TEMPLATE(divide_test, T, test_types) {
+     using SHG::divide;
+     using SHG::divides;
+     int const n1 = std::numeric_limits<signed char>::min();
+     int const n2 = std::numeric_limits<signed char>::max();
+     T q, r;
+     for (int ia = n1; ia <= n2; ia++) {
+          T const a = static_cast<T>(ia);
+          for (int ib = n1; ib <= n2; ib++) {
+               T const b = static_cast<T>(ib);
                try {
-                    Idiv const d(a, b);
+                    divide(a, b, q, r);
                     BOOST_CHECK(b != 0);
-                    BOOST_CHECK(d.r >= 0 && d.r < std::abs(b));
-                    BOOST_CHECK(a == d.q * b + d.r);
-                    BOOST_CHECK(Idiv::quotient(a, b) == d.q);
-                    BOOST_CHECK(Idiv::remainder(a, b) == d.r);
+                    BOOST_CHECK(r >= 0 && r < abs(b));
+                    if constexpr (std::is_same<T,
+                                               signed char>::value) {
+                         if (a == n1 && b == -1) {
+                              BOOST_CHECK(a != q * b + r);
+                              BOOST_CHECK(q == a && r == 0);
+                         } else
+                              BOOST_CHECK(a == q * b + r);
+                    } else {
+                         BOOST_CHECK(a == q * b + r);
+                    }
+                    BOOST_CHECK(divides(b, a) == (r == 0));
                } catch (std::invalid_argument const&) {
                     BOOST_CHECK(b == 0);
                }
           }
+     }
+}
+
+BOOST_AUTO_TEST_CASE(gcd_test) {
+     using SHG::gcd;
+     using boost::multiprecision::cpp_int;
+     using boost::multiprecision::pow;
+     {
+          signed char m = 12, n = 24;
+          BOOST_CHECK(gcd(m, n) == 12);
+     }
+     {
+          int m = 12, n = 24;
+          BOOST_CHECK(gcd(m, n) == 12);
+     }
+     {  // Testing specialization for unsigned.
+          unsigned m = 12, n = 24;
+          BOOST_CHECK(gcd(m, n) == 12);
+     }
+     {
+          long m = 1, n = 1;
+          for (int i = 0; i < 30; i++)
+               m *= 2;
+          n = m / 2;
+          // m = 2^30, n = 2^29.
+          BOOST_CHECK(gcd(m, n) == n);
+     }
+     {
+          cpp_int const m = pow(cpp_int(2), 30);
+          cpp_int const n = pow(cpp_int(2), 29);
+          BOOST_CHECK(gcd(m, n) == n);
+     }
+     BOOST_CHECK(gcd(0, 124) == 124);
+     BOOST_CHECK(gcd(0, -124) == 124);
+     BOOST_CHECK(gcd(124, 0) == 124);
+     BOOST_CHECK(gcd(-124, 0) == 124);
 }
 
 /**

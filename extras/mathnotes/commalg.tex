@@ -1,0 +1,38 @@
+\chapter{Commutative algebra}
+\setcounter{section}{-1}
+
+This section is rewritten from \cite{eisenbud-2004}[section 0].
+
+\section{Elamentary Definitions}
+\subsection{Rings and Ideals}
+A \textbf{ring} is an abelian group $R$ with an operation $(a, b)
+\mapsto ab$ called \emph{multiplication} and an ``identity element''
+1, satisfying, for all $a, b, c \in R$:
+
+\begin{align*}
+  a(bc) &= (ab)c && \text{(associativity)} \\
+  a(b + c) &= ab + ac \\
+  (b + c) a &= ba + ca && \text{(distributivy)} \\
+  1a &= a1 = a && \text{(identity)}.
+\end{align*}
+A ring $R$ is \textbf{commutative} if, in addiotion, $ab = ba$ for all
+$a, b \in R$.
+
+\begin{exercise}
+Show that $\mathcal{P}(\Omega)$ with addition $A \mathbin{\triangle} B
+= (A \cup B) \setminus (A \cap B)$ and multiplication $A \cap B$ is a
+commutative ring with multiplicative identity, in which each non-zero
+element of its additive group is of order two.
+\end{exercise}
+\begin{proof}
+  We use identities
+  \begin{gather*}
+    A \mathbin{\triangle} B = (A \cap B') \cup (A' \cap B), \\
+    (A \cup B) \cap C = (A \cap C) \cup (B \cap C), \\
+    (A \cup B) \cap (C \cup D) = (A \cap C) \cup (A \cap D) \cup (B
+    \cap C) \cup (B \cap D).
+  \end{gather*}
+  To show associativity of addition $(A \mathbin{\triangle} B)
+  \mathbin{\triangle} C = A \mathbin{\triangle} (B \mathbin{\triangle}
+  C)$ we write both sides:
+\end{proof}

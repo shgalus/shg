@@ -1,42 +1,21 @@
 #include <shg/polynomial.h>
-#include <shg/utils.h>
 #include <shg/binom.h>
-#include "buchbdat.h"
+#include <shg/utils.h>
 #include "tests.h"
 
 namespace TESTS {
 
 BOOST_AUTO_TEST_SUITE(polynomial_test)
 
-using SHG::ALGEBRA::Term;
-using SHG::ALGEBRA::Polynomial;
-using SHG::ALGEBRA::from_chars;
-using SHG::ALGEBRA::Polynomial_div;
-using SHG::ALGEBRA::Buchberger_improved;
-using SHG::ALGEBRA::Monomial;
-using SHG::ALGEBRA::Monomial_cmp;
-using SHG::ALGEBRA::lex_cmp;
-using SHG::ALGEBRA::grlex_cmp;
-using SHG::ALGEBRA::grevlex_cmp;
-using SHG::ALGEBRA::Field_Q;
-using SHG::ALGEBRA::Field_Fp;
-using SHG::ALGEBRA::Element;
-using std::invalid_argument;
-
-BOOST_AUTO_TEST_CASE(term_test) {
-     std::stringstream ss;
-     Field_Q Q;
-     Element z = Q.element(-3, 4);
-     Term y(&Q);
-
-     Term x{z, Monomial{1, 2, 1}};
-     ss << x;
-     ss >> y;
-     BOOST_CHECK(x == y);
-}
-
 BOOST_AUTO_TEST_CASE(constructor_test) {
-     Field_Q const F;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Term;
+     using SHG::ALGEBRA::grlex_cmp;
+     using SHG::ALGEBRA::lex_cmp;
+     using std::invalid_argument;
+     Ring_Z const Z;
      {
           Polynomial p;
           BOOST_CHECK(p.dim() == 1);
@@ -67,11 +46,11 @@ BOOST_AUTO_TEST_CASE(constructor_test) {
           BOOST_CHECK(p.is_zero());
      }
      {
-          Polynomial p(&F);
+          Polynomial p(&Z);
           BOOST_CHECK(p.dim() == 1);
           BOOST_CHECK(p.deg() == -1);
           BOOST_CHECK(p.is_zero());
-          BOOST_CHECK(p.field() == &F);
+          BOOST_CHECK(p.as() == &Z);
           BOOST_CHECK(p.terms().empty());
           BOOST_CHECK(p.order() == lex_cmp);
           BOOST_CHECK_THROW(p.order(nullptr), invalid_argument);
@@ -94,11 +73,11 @@ BOOST_AUTO_TEST_CASE(constructor_test) {
           BOOST_CHECK_THROW(p *= y, invalid_argument);
      }
      {
-          Polynomial p(&F, 2);
+          Polynomial p(&Z, 2);
           BOOST_CHECK(p.dim() == 2);
           BOOST_CHECK(p.deg() == -1);
           BOOST_CHECK(p.is_zero());
-          BOOST_CHECK(p.field() == &F);
+          BOOST_CHECK(p.as() == &Z);
           BOOST_CHECK(p.terms().empty());
           BOOST_CHECK(p.order() == lex_cmp);
           BOOST_CHECK_THROW(p.order(nullptr), invalid_argument);
@@ -122,38 +101,42 @@ BOOST_AUTO_TEST_CASE(constructor_test) {
 }
 
 BOOST_AUTO_TEST_CASE(operator_test) {
-     Field_Q const F;
+     using SHG::ALGEBRA::Monomial;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Term;
+     Ring_Z const Z;
      {
           // x^2yz + xy^2z + xyz^2
-          Polynomial p(&F, 3);
-          p += {F.element(1), Monomial{2, 1, 1}};
-          p += {F.element(1), Monomial{1, 2, 1}};
-          p += {F.element(1), Monomial{1, 1, 2}};
+          Polynomial p(&Z, 3);
+          p += {Z.element(1), Monomial{2, 1, 1}};
+          p += {Z.element(1), Monomial{1, 2, 1}};
+          p += {Z.element(1), Monomial{1, 1, 2}};
           BOOST_CHECK(p.dim() == 3);
           BOOST_CHECK(p.deg() == 4);
           BOOST_CHECK(p.terms().size() == 3);
-          p -= {F.element(1), Monomial{2, 1, 1}};
-          p -= {F.element(1), Monomial{1, 2, 1}};
-          p -= {F.element(1), Monomial{1, 1, 2}};
+          p -= {Z.element(1), Monomial{2, 1, 1}};
+          p -= {Z.element(1), Monomial{1, 2, 1}};
+          p -= {Z.element(1), Monomial{1, 1, 2}};
           BOOST_CHECK(p.dim() == 3);
           BOOST_CHECK(p.deg() == -1);
           BOOST_CHECK(p.terms().size() == 0);
      }
      {  // Multiply by a term.
           // x^2yz + 2xy^2z + 3xyz^2
-          Polynomial p(&F, 3);
-          p += {F.element(1), Monomial{2, 1, 1}};
-          p += {F.element(2), Monomial{1, 2, 1}};
-          p += {F.element(3), Monomial{1, 1, 2}};
+          Polynomial p(&Z, 3);
+          p += {Z.element(1), Monomial{2, 1, 1}};
+          p += {Z.element(2), Monomial{1, 2, 1}};
+          p += {Z.element(3), Monomial{1, 1, 2}};
 
           // 4x^3y^3z^4 + 8x^2y^4z^4 + 12x^2y^3z^5
-          Polynomial q(&F, 3);
-          q += {F.element(4), Monomial{3, 3, 4}};
-          q += {F.element(8), Monomial{2, 4, 4}};
-          q += {F.element(12), Monomial{2, 3, 5}};
+          Polynomial q(&Z, 3);
+          q += {Z.element(4), Monomial{3, 3, 4}};
+          q += {Z.element(8), Monomial{2, 4, 4}};
+          q += {Z.element(12), Monomial{2, 3, 5}};
 
-          Term const t0{F.element(0), Monomial{1, 2, 3}};
-          Term const t1{F.element(4), Monomial{1, 2, 3}};
+          Term const t0{Z.element(0), Monomial{1, 2, 3}};
+          Term const t1{Z.element(4), Monomial{1, 2, 3}};
 
           Polynomial r{p};
           r *= t1;
@@ -171,41 +154,41 @@ BOOST_AUTO_TEST_CASE(operator_test) {
      }
      {  // Multiply by a constant.
           // x^2yz + 2xy^2z + 3xyz^2
-          Polynomial p0(&F, 3);
-          p0 += {F.element(1), Monomial{2, 1, 1}};
-          p0 += {F.element(2), Monomial{1, 2, 1}};
-          p0 += {F.element(3), Monomial{1, 1, 2}};
+          Polynomial p0(&Z, 3);
+          p0 += {Z.element(1), Monomial{2, 1, 1}};
+          p0 += {Z.element(2), Monomial{1, 2, 1}};
+          p0 += {Z.element(3), Monomial{1, 1, 2}};
 
           // 4x^2yz + 8xy^2z + 12xyz^2
-          Polynomial q(&F, 3);
-          q += {F.element(4), Monomial{2, 1, 1}};
-          q += {F.element(8), Monomial{1, 2, 1}};
-          q += {F.element(12), Monomial{1, 1, 2}};
+          Polynomial q(&Z, 3);
+          q += {Z.element(4), Monomial{2, 1, 1}};
+          q += {Z.element(8), Monomial{1, 2, 1}};
+          q += {Z.element(12), Monomial{1, 1, 2}};
 
           Polynomial p{p0};
-          p *= F.element(4);
+          p *= Z.element(4);
           BOOST_CHECK(p == q);
-          p *= F.one();
+          p *= Z.one();
           BOOST_CHECK(p == q);
-          p *= F.zero();
+          p *= Z.zero();
           BOOST_CHECK(p.is_zero());
 
-          p = p0 * F.element(4);
+          p = p0 * Z.element(4);
           BOOST_CHECK(p == q);
-          p = F.element(4) * p0;
+          p = Z.element(4) * p0;
           BOOST_CHECK(p == q);
      }
      {
           // (x^2y + yz) * (x + y) = x^3y + xyz + x^2y^2 + y^2z
-          Polynomial p(&F, 3), q(&F, 3), r(&F, 3), s(&F, 3);
-          p += {F.element(1), Monomial{2, 1, 0}};
-          p += {F.element(1), Monomial{0, 1, 1}};
-          q += {F.element(1), Monomial{1, 0, 0}};
-          q += {F.element(1), Monomial{0, 1, 0}};
-          r += {F.element(1), Monomial{3, 1, 0}};
-          r += {F.element(1), Monomial{1, 1, 1}};
-          r += {F.element(1), Monomial{2, 2, 0}};
-          r += {F.element(1), Monomial{0, 2, 1}};
+          Polynomial p(&Z, 3), q(&Z, 3), r(&Z, 3), s(&Z, 3);
+          p += {Z.element(1), Monomial{2, 1, 0}};
+          p += {Z.element(1), Monomial{0, 1, 1}};
+          q += {Z.element(1), Monomial{1, 0, 0}};
+          q += {Z.element(1), Monomial{0, 1, 0}};
+          r += {Z.element(1), Monomial{3, 1, 0}};
+          r += {Z.element(1), Monomial{1, 1, 1}};
+          r += {Z.element(1), Monomial{2, 2, 0}};
+          r += {Z.element(1), Monomial{0, 2, 1}};
 
           s = p * q;
           BOOST_CHECK(s == r);
@@ -225,11 +208,15 @@ BOOST_AUTO_TEST_CASE(operator_test) {
  * \implementation \f$ (x^2y + xy^2)^n = \sum_{k = 0}^n \binom{n}{k}
  * x^{n + k} y^{2n - k} \f$.
  */
-Polynomial test_polynomial(Field_Q const* F, int n) {
+SHG::ALGEBRA::Polynomial test_polynomial(
+     SHG::ALGEBRA::Ring_Z const* Z, int n) {
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Monomial;
+     using SHG::ALGEBRA::Polynomial;
      using SHG::binom;
-     Polynomial p(F, 2);
+     Polynomial p(Z, 2);
      for (int k = 0; k <= n; k++) {
-          Element const e = F->element(binom(n, k));
+          Element const e = Z->element(binom(n, k));
           p += {e, Monomial{n + k, 2 * n - k}};
      }
      return p;
@@ -242,17 +229,20 @@ Polynomial test_polynomial(Field_Q const* F, int n) {
  * b^{k_2}c^{n - k_1 - k_2} x^{n + k_1} y^{n + k_2} z^{2n - k_1 - k_2}
  * \f]
  */
-Polynomial test_polynomial(Field_Q const* F, int a, int b, int c,
-                           int n) {
+SHG::ALGEBRA::Polynomial test_polynomial(
+     SHG::ALGEBRA::Ring_Z const* Z, int a, int b, int c, int n) {
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Monomial;
+     using SHG::ALGEBRA::Polynomial;
      using SHG::binom;
-     Polynomial p(F, 3);
+     Polynomial p(Z, 3);
      for (int k1 = 0; k1 <= n; k1++) {
-          Element const bin1 = F->element(binom(n, k1));
-          Element const ak1 = pow(F->element(a), k1);
+          Element const bin1 = Z->element(binom(n, k1));
+          Element const ak1 = pow(Z->element(a), k1);
           for (int k2 = 0; k2 <= n - k1; k2++) {
-               Element const bin2 = F->element(binom(n - k1, k2));
-               Element const bk2 = pow(F->element(b), k2);
-               Element const ck3 = pow(F->element(c), n - k1 - k2);
+               Element const bin2 = Z->element(binom(n - k1, k2));
+               Element const bk2 = pow(Z->element(b), k2);
+               Element const ck3 = pow(Z->element(c), n - k1 - k2);
                Element const coeff = bin1 * ak1 * bin2 * bk2 * ck3;
                p += {coeff,
                      Monomial{n + k1, n + k2, 2 * n - k1 - k2}};
@@ -262,24 +252,29 @@ Polynomial test_polynomial(Field_Q const* F, int a, int b, int c,
 }
 
 BOOST_AUTO_TEST_CASE(polynomial_value_test) {
-     Field_Q const F;
-     Polynomial p{test_polynomial(&F, 1, 2, 3, 1)};
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     Ring_Z const Z;
+     Polynomial p{test_polynomial(&Z, 1, 2, 3, 1)};
 
      // For x = t, y = 2t, z = 3t the polynomial has the value 84t^4.
-     Element const e84 = F.element(84);
+     Element const e84 = Z.element(84);
      for (int t = 0; t < 10; t++) {
-          Polynomial::Point const x{F.element(t), F.element(2 * t),
-                                    F.element(3 * t)};
-          BOOST_CHECK(p(x) == e84 * pow(F.element(t), 4));
+          Polynomial::Point const x{Z.element(t), Z.element(2 * t),
+                                    Z.element(3 * t)};
+          BOOST_CHECK(p(x) == e84 * pow(Z.element(t), 4));
      }
 }
 
 BOOST_AUTO_TEST_CASE(polynomial_input_output_test) {
-     Field_Q const F;
-     Polynomial p(&F, 3), q(&F, 3);
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     Ring_Z const Z;
+     Polynomial p(&Z, 3), q(&Z, 3);
      std::stringstream ss;
      for (int n = 1; n <= 10; n++) {
-          p = test_polynomial(&F, 1, 2, 3, n);
+          p = test_polynomial(&Z, 1, 2, 3, n);
           ss.clear();
           ss << p;
           BOOST_CHECK(ss);
@@ -290,60 +285,68 @@ BOOST_AUTO_TEST_CASE(polynomial_input_output_test) {
 }
 
 BOOST_AUTO_TEST_CASE(leading_monomial_test) {
-     Field_Q const F;
-     Polynomial p{&F, 3};
+     using SHG::ALGEBRA::Monomial;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Term;
+     using SHG::ALGEBRA::grevlex_cmp;
+     using SHG::ALGEBRA::grlex_cmp;
+     using SHG::ALGEBRA::lex_cmp;
+     using std::invalid_argument;
+     Ring_Z const Z;
+     Polynomial p{&Z, 3};
      bool b;
 
      // \cite cox-little-oshea-2007, page 59.
      // 4*x*y^2*z+4*z^2+-5*x^3+7*x^2*z^2"
-     p += {F.element(4), Monomial{1, 2, 1}};
-     p += {F.element(4), Monomial{0, 0, 2}};
-     p += {F.element(-5), Monomial{3, 0, 0}};
-     p += {F.element(7), Monomial{2, 0, 2}};
+     p += {Z.element(4), Monomial{1, 2, 1}};
+     p += {Z.element(4), Monomial{0, 0, 2}};
+     p += {Z.element(-5), Monomial{3, 0, 0}};
+     p += {Z.element(7), Monomial{2, 0, 2}};
      p.order(lex_cmp);
      b = p.leading_monomial() == Monomial{3, 0, 0};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(-5);
+     b = p.leading_coefficient() == Z.element(-5);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(-5), Monomial{3, 0, 0}};
+     b = p.leading_term() == Term{Z.element(-5), Monomial{3, 0, 0}};
      BOOST_CHECK(b);
      p.order(grlex_cmp);
      b = p.leading_monomial() == Monomial{2, 0, 2};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(7);
+     b = p.leading_coefficient() == Z.element(7);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(7), Monomial{2, 0, 2}};
+     b = p.leading_term() == Term{Z.element(7), Monomial{2, 0, 2}};
      BOOST_CHECK(b);
      p.order(grevlex_cmp);
      b = p.leading_monomial() == Monomial{1, 2, 1};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(4);
+     b = p.leading_coefficient() == Z.element(4);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(4), Monomial{1, 2, 1}};
+     b = p.leading_term() == Term{Z.element(4), Monomial{1, 2, 1}};
      BOOST_CHECK(b);
 
      p.set_to_zero();
-     p += F.element(5);
+     p += Z.element(5);
      p.order(lex_cmp);
      b = p.leading_monomial() == Monomial{0, 0, 0};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(5);
+     b = p.leading_coefficient() == Z.element(5);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(5), Monomial{0, 0, 0}};
+     b = p.leading_term() == Term{Z.element(5), Monomial{0, 0, 0}};
      BOOST_CHECK(b);
      p.order(grlex_cmp);
      b = p.leading_monomial() == Monomial{0, 0, 0};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(5);
+     b = p.leading_coefficient() == Z.element(5);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(5), Monomial{0, 0, 0}};
+     b = p.leading_term() == Term{Z.element(5), Monomial{0, 0, 0}};
      BOOST_CHECK(b);
      p.order(grevlex_cmp);
      b = p.leading_monomial() == Monomial{0, 0, 0};
      BOOST_CHECK(b);
-     b = p.leading_coefficient() == F.element(5);
+     b = p.leading_coefficient() == Z.element(5);
      BOOST_CHECK(b);
-     b = p.leading_term() == Term{F.element(5), Monomial{0, 0, 0}};
+     b = p.leading_term() == Term{Z.element(5), Monomial{0, 0, 0}};
      BOOST_CHECK(b);
 
      p.set_to_zero();
@@ -366,425 +369,284 @@ BOOST_AUTO_TEST_CASE(leading_monomial_test) {
      BOOST_CHECK_THROW(q.leading_term(), invalid_argument);
 }
 
-/**
- * Test data and expected results for basic test of division of
- * polynomials. In each case, \f$ f = \sum_{i = 1}^n a_ig_i + r \f$.
- */
-struct {
-     bool const should_throw;
-     char const* f;
-     std::vector<const char*> const g;
-     char const* r;
-     std::vector<const char*> const a;
-} const pdtcase[] = {
-     // \cite cox-little-oshea-2007, page 61-62.
-     {false,
-      "2 2 1/1 2 1 2 1/1 2 0 0",  // xy^2 + 1
-      {
-           "2 2 1/1 2 1 1 1/1 2 0 0",  // xy + 1
-           "2 2 1/1 2 0 1 1/1 2 0 0"   // y + 1
-      },
-      "2 1 2/1 2 0 0",  // 2
-      {
-           "2 1 1/1 2 0 1",  // y
-           "2 1 -1/1 2 0 0"  // -1
-      }},
-     // \cite cox-little-oshea-2007, page 62-64.
-     {false,
-      "2 3 1/1 2 2 1 1/1 2 1 2 1/1 2 0 2",  // x^2y + xy^2 + y^2
-      {
-           "2 2 1/1 2 1 1 -1/1 2 0 0",  // xy - 1
-           "2 2 1/1 2 0 2 -1/1 2 0 0",  // y^2 - 1
-      },
-      "2 3 1/1 2 1 0 1/1 2 0 1 1/1 2 0 0",  // x + y + 1
-      {
-           "2 2 1/1 2 1 0 1/1 2 0 1",  // x + y
-           "2 1 1/1 2 0 0",            // 1
-      }},
-     // \cite cox-little-oshea-2007, page 66.
-     {false,
-      "2 3 1/1 2 2 1 1/1 2 1 2 1/1 2 0 2",  // x^2y + xy^2 + y^2
-      {
-           "2 2 1/1 2 0 2 -1/1 2 0 0",  // y^2 - 1
-           "2 2 1/1 2 1 1 -1/1 2 0 0",  // xy - 1
-      },
-      "2 2 2/1 2 1 0 1/1 2 0 0",  // 2x + 1
-      {
-           "2 2 1/1 2 1 0 1/1 2 0 0",  // x + 1
-           "2 1 1/1 2 1 0"             // x
-      }},
-     // \cite cox-little-oshea-2007, page 67.
-     {false,
-      "2 2 1/1 2 1 2 -1/1 2 1 0",  // xy^2 - x
-      {
-           "2 2 1/1 2 1 1 1/1 2 0 0",   // xy + 1
-           "2 2 1/1 2 0 2 -1/1 2 0 0",  // y^2 - 1
-      },
-      "2 2 -1/1 2 1 0 -1/1 2 0 1",  // -x - y
-      {
-           "2 1 1/1 2 0 1",  // y
-           "2 0"             // 0
-      }},
-     // \cite cox-little-oshea-2007, page 67.
-     {false,
-      "2 2 1/1 2 1 2 -1/1 2 1 0",  // xy^2 - x
-      {
-           "2 2 1/1 2 0 2 -1/1 2 0 0",  // y^2 - 1
-           "2 2 1/1 2 1 1 1/1 2 0 0",   // xy + 1
-      },
-      "2 0",  // 0
-      {
-           "2 1 1/1 2 1 0",  // x
-           "2 0"             // 0
-      }},
-     // \cite cox-little-oshea-2007, ex. 1a, page 68.
-     {false,
-      "2 4 1/1 2 7 2 1/1 2 3 2 -1/1 2 0 1 1/1 2 0 0",  // x^7y^2
-                                                       // +
-                                                       // x^3y^2
-                                                       // - y + 1
-      {
-           "2 2 1/1 2 1 2 -1/1 2 1 0",  // xy^2 - x
-           "2 2 1/1 2 1 0 -1/1 2 0 3",  // x - y^3
-      },
-      "2 3 2/1 2 0 3 -1/1 2 0 1 1/1 2 0 0",  // 2/1 x1^0 x2^3 +
-                                             // -1/1 x1^0 x2^1 +
-                                             // 1/1 x1^0 x2^0
-      {
-           "2 10 1/1 2 6 0 1/1 2 5 1 1/1 2 4 2 1/1 2 4 0 1/1 2 "
-           "3 1 1/1 2 2 2 2/1 2 2 0 2/1 2 1 1 2/1 2 0 2 2/1 2 0 "
-           "0",  // 1/1 x1^6 x2^0 + 1/1 x1^5 x2^1 + 1/1 x1^4 x2^2
-                 // + 1/1 x1^4 x2^0 + 1/1 x1^3 x2^1 + 1/1 x1^2
-                 // x2^2 + 2/1 x1^2 x2^0 + 2/1 x1^1 x2^1 + 2/1
-                 // x1^0 x2^2 + 2/1 x1^0 x2^0
-           "2 7 1/1 2 6 0 1/1 2 5 1 1/1 2 4 0 1/1 2 3 1 2/1 2 2 "
-           "0 2/1 2 1 1 2/1 2 0 0"  // 1/1 x1^6 x2^0 + 1/1 x1^5
-                                    // x2^1 + 1/1 x1^4 x2^0 + 1/1
-                                    // x1^3 x2^1 + 2/1 x1^2 x2^0
-                                    // + 2/1 x1^1 x2^1 + 2/1 x1^0
-                                    // x2^0
-      }},
-     // \cite cox-little-oshea-2007, ex. 2a, page 68.
-     {false,
-      "3 3 1/1 3 1 2 2 1/1 3 1 1 0 -1/1 3 0 1 1",  // xy^2z^2 + xy -
-                                                   // yz
-      {
-           "3 2 1/1 3 1 0 0 -1/1 3 0 2 0",  // x - y^2
-           "3 2 1/1 3 0 1 0 -1/1 3 0 0 3",  // y - z^3
-           "3 2 1/1 3 0 0 2 -1/1 3 0 0 0"   // z^2 - 1
-      },
-      "3 1 1/1 3 0 0 1",
-      {"3 2 1/1 3 0 2 2 1/1 3 0 1 0",
-       "3 8 1/1 3 0 3 2 1/1 3 0 2 5 1/1 3 0 2 0 1/1 3 0 1 8 1/1 3 0 "
-       "1 3 1/1 3 0 0 11 1/1 3 0 0 6 -1/1 3 0 0 1",
-       "3 9 1/1 3 0 0 12 1/1 3 0 0 10 1/1 3 0 0 8 1/1 3 0 0 7 1/1 3 "
-       "0 0 6 1/1 3 0 0 5 1/1 3 0 0 4 1/1 3 0 0 3 1/1 3 0 0 1"}},
-     // \cite cox-little-oshea-2007, ex. 2a, page 68, first
-     // permutation.
-     {false,
-      "3 3 1/1 3 1 2 2 1/1 3 1 1 0 -1/1 3 0 1 1",  // xy^2z^2 + xy -
-                                                   // yz
-      {
-           "3 2 1/1 3 0 0 2 -1/1 3 0 0 0",  // z^2 - 1
-           "3 2 1/1 3 1 0 0 -1/1 3 0 2 0",  // x - y^2
-           "3 2 1/1 3 0 1 0 -1/1 3 0 0 3"   // y - z^3
-      },
-      "3 1 1/1 3 0 0 1",
-      {"3 9 1/1 3 1 2 0 1/1 3 0 3 1 1/1 3 0 2 2 1/1 3 0 2 1 1/1 3 0 "
-       "2 0 1/1 3 0 1 2 1/1 3 0 1 1 1/1 3 0 1 0 1/1 3 0 0 1",
-       "3 2 1/1 3 0 2 0 1/1 3 0 1 0",
-       "3 6 1/1 3 0 3 0 1/1 3 0 2 1 1/1 3 0 2 0 1/1 3 0 1 1 1/1 3 0 "
-       "1 0 1/1 3 0 0 0"}},
-     // \cite cox-little-oshea-2007, ex. 2a, page 68, second
-     // permutation.
-     {false,
-      "3 3 1/1 3 1 2 2 1/1 3 1 1 0 -1/1 3 0 1 1",  // xy^2z^2 + xy -
-                                                   // yz
-      {
-           "3 2 1/1 3 0 1 0 -1/1 3 0 0 3",  // y - z^3
-           "3 2 1/1 3 0 0 2 -1/1 3 0 0 0",  // z^2 - 1
-           "3 2 1/1 3 1 0 0 -1/1 3 0 2 0"   // x - y^2
-      },
-      "3 1 1/1 3 0 0 1",
-      {"3 8 1/1 3 1 1 2 1/1 3 1 0 5 1/1 3 1 0 0 1/1 3 0 1 1 1/1 3 0 "
-       "1 0 1/1 3 0 0 4 1/1 3 0 0 3 -1/1 3 0 0 1",
-       "3 9 1/1 3 1 0 6 1/1 3 1 0 4 1/1 3 1 0 2 1/1 3 1 0 1 1/1 3 1 "
-       "0 0 1/1 3 0 0 5 1/1 3 0 0 4 1/1 3 0 0 3 1/1 3 0 0 1",
-       "3 2 1/1 3 0 0 1 1/1 3 0 0 0"}},
-     // x^2 - y^2 = (x - y)(x + y) + 0(x - y)
-     {false,
-      "2 2 1/1 2 2 0 -1/1 2 0 2",  // x^2 - y^2
-      {
-           "2 2 1/1 2 1 0 1/1 2 0 1",  // x + y
-           "2 2 1/1 2 1 0 -1/1 2 0 1"  // x - y
-      },
-      "2 0",  // 0
-      {
-           "2 2 1/1 2 1 0 -1/1 2 0 1",  // x - y
-           "2 0"                        // 0
-      }},
-     // x^2 - y^2 = (x - y)(x + y) + 0(x + y) (g[0] = g[1])
-     {false,
-      "2 2 1/1 2 2 0 -1/1 2 0 2",  // x^2 - y^2
-      {
-           "2 2 1/1 2 1 0 1/1 2 0 1",  // x + y
-           "2 2 1/1 2 1 0 1/1 2 0 1"   // x + y
-      },
-      "2 0",  // 0
-      {
-           "2 2 1/1 2 1 0 -1/1 2 0 1",  // x - y
-           "2 0"                        // 0
-      }},
-     // g.size() == 0
-     {true,
-      "2 2 1/1 2 2 0 -1/1 2 0 2",  // x^2 - y^2
-      {},
-      "2 0",  // 0
-      {}},
-     // g[0].dim() != g[1].dim()
-     {true,
-      "2 2 1/1 2 2 0 -1/1 2 0 2",  // x^2 - y^2
-      {
-           "1 1 1/1 1 1",             // x
-           "2 2 1/1 2 1 0 1/1 2 0 1"  // x + y
-      },
-      "2 0",  // 0
-      {
-           "2 2 1/1 2 1 0 -1/1 2 0 1",  // x - y
-           "2 0"                        // 0
-      }},
-     // g[1] = 0
-     {true,
-      "2 2 1/1 2 2 0 -1/1 2 0 2",  // x^2 - y^2
-      {
-           "2 2 1/1 2 1 0 1/1 2 0 1",  // x + y
-           "2 0"                       // 0
-      },
-      "2 0",  // 0
-      {
-           "2 2 1/1 2 1 0 -1/1 2 0 1",  // x - y
-           "2 0"                        // 0
-      }},
-};
+BOOST_AUTO_TEST_CASE(polynomial1_over_Z_test) {
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::one_var;
+     using SHG::to_string;
 
-BOOST_DATA_TEST_CASE(polynomial_div_test,
-                     bdata::xrange(std::size(pdtcase)), xr) {
-     using Sztp = std::vector<Polynomial>::size_type;
-     auto const& c = pdtcase[xr];
-     auto const s = c.g.size();
-     BOOST_REQUIRE(c.a.size() == s);
+     char const* const res[] = {
+          "1 0",                          // 0
+          "1 1 1 1 0",                    // 1
+          "1 2 2 1 1 1 1 0",              // 1 + 2x
+          "1 3 3 1 2 2 1 1 1 1 0",        // 1 + 2x +3x^2
+          "1 4 4 1 3 3 1 2 2 1 1 1 1 0",  // 1 + 2x + 3x^2 + 4x^3
+          "1 5 5 1 4 4 1 3 3 1 2 2 1 1 1 1 0",  // 1 + 2x + 3x^2 +
+                                                // 4x^3 + 5x^4
+     };
+     Ring_Z const Z;
+     std::vector<Element> a;
 
-     Polynomial f, r;
-     std::vector<Polynomial> g(s), a(s);
-     f = from_chars(c.f);
-     r = from_chars(c.r);
-     for (Sztp i = 0; i < s; i++) {
-          g[i] = from_chars(c.g[i]);
-          a[i] = from_chars(c.a[i]);
+     BOOST_CHECK(to_string(Polynomial(&Z, 1)) == "1 0");
+     BOOST_CHECK(to_string(one_var(a)) == "1 0");
+     for (unsigned i = 0; i < std::size(res); i++) {
+          a.resize(i);
+          for (unsigned j = 0; j < i; j++)
+               a[j] = Z.element(0);
+          BOOST_CHECK(to_string(one_var(a)) == "1 0");
+          a.resize(i + 1);
+          for (unsigned j = 0; j < i; j++)
+               a[j] = Z.element(j + 1);
+          a[i] = Z.element(0);
+          BOOST_CHECK(to_string(one_var(a)) == res[i]);
+          a.resize(i + 2, Z.element(0));
+          BOOST_CHECK(to_string(one_var(a)) == res[i]);
      }
-     Polynomial_div pd;
-     if (c.should_throw) {
-          BOOST_CHECK_THROW(pd.divide(f, g), invalid_argument);
-          return;
+}
+
+BOOST_AUTO_TEST_CASE(polynomial1_over_Z_addition_test) {
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::one_var;
+     using SHG::to_string;
+
+     Ring_Z const Z;
+     std::vector<Element> a;
+
+     {
+          constexpr char const* const res{
+               "1 3 5 1 2 6 1 1 4 1 0"};  // 4 + 6x + 5x^2
+          a.resize(2);
+          a[0] = Z.element(1);
+          a[1] = Z.element(2);
+          Polynomial const f(one_var(a));  // 1 + 2x
+          a.resize(3);
+          a[0] = Z.element(3);
+          a[1] = Z.element(4);
+          a[2] = Z.element(5);
+          Polynomial const g(one_var(a));  // 3 + 4x + 5x^2
+          BOOST_CHECK(to_string(f + g) == res);
+          BOOST_CHECK(to_string(g + f) == res);
+          BOOST_CHECK(f + g == g + f);
      }
      {
-          Polynomial p({r});
-          for (Sztp i = 0; i < s; i++) {
-               Polynomial const q = a[i] * g[i];
-               p += q;
-               if (!q.is_zero()) {
-                    // Check that the leading term of a[i] * g[i] is
-                    // not greater than the leading term of f.
-                    auto const& qlm = q.leading_monomial();
-                    auto const& flm = f.leading_monomial();
-                    BOOST_REQUIRE(!f.order()(flm, qlm));
-               }
-          }
-          BOOST_REQUIRE(p == f);
-
-          // Check that no monomial of r is divisible by any of
-          // leading terms of g[i].
-          auto const& t = r.terms();
-          for (auto it = t.cbegin(); it != t.cend(); ++it)
-               for (Sztp i = 0; i < s; i++)
-                    BOOST_REQUIRE(
-                         !g[i].leading_monomial().divides(it->first));
+          constexpr char const* const res{
+               "1 2 2 1 1 1 1 0"};  // 1 + 2x
+          a.resize(2);
+          a[0] = Z.element(1);
+          a[1] = Z.element(2);
+          Polynomial const f(one_var(a));  // 1 + 2x
+          Polynomial const g(&Z);          // 0
+          BOOST_CHECK(to_string(f + g) == res);
+          BOOST_CHECK(to_string(g + f) == res);
+          BOOST_CHECK(f + g == g + f);
+          BOOST_CHECK(f + g == f);
+          BOOST_CHECK(g + f == f);
      }
-     pd.divide(f, g);
-     BOOST_REQUIRE(pd.a.size() == s);
-     for (Sztp i = 0; i < s; i++)
-          BOOST_CHECK(pd.a[i] == a[i]);
-     BOOST_CHECK(pd.r == r);
-}
-
-struct Test_data {
-     std::vector<Polynomial> f_{};
-     std::vector<Polynomial> g_{};
-     void init(std::vector<char const*> const f,
-               std::vector<char const*> const g,
-               char const* ordering);
-};
-
-void Test_data::init(std::vector<char const*> const f,
-                     std::vector<char const*> const g,
-                     char const* ordering) {
-     Monomial_cmp cmp;
-     if (strcmp(ordering, "Lex_less") == 0)
-          cmp = lex_cmp;
-     else if (strcmp(ordering, "Grlex_less") == 0)
-          cmp = grlex_cmp;
-     else if (strcmp(ordering, "Grevlex_less") == 0)
-          cmp = grevlex_cmp;
-     else
-          throw std::runtime_error("invalid monomial ordering");
-     for (auto it = f.cbegin(); it != f.cend(); ++it) {
-          Polynomial p{from_chars(*it)};
-          p.order(cmp);
-          f_.push_back(p);
-     }
-     for (auto it = g.cbegin(); it != g.cend(); ++it) {
-          Polynomial p{from_chars(*it)};
-          p.order(cmp);
-          g_.push_back(p);
+     {
+          a.resize(2);
+          a[0] = Z.element(1);
+          a[1] = Z.element(2);
+          Polynomial const f(one_var(a));  // 1 + 2x
+          a[0] = Z.element(-1);
+          a[1] = Z.element(-2);
+          Polynomial const g(one_var(a));  // -1 - 2x
+          BOOST_CHECK(to_string(f + g) == "1 0");
+          BOOST_CHECK(to_string(g + f) == "1 0");
+          BOOST_CHECK(f + g == g + f);
+          BOOST_CHECK(-f == g);
+          BOOST_CHECK(f == -g);
      }
 }
 
-// At compile time, buchberger_test_data.size() may be unknown. This
-// constant is checked inside the test.
-constexpr std::vector<Buchberger_test_case>::size_type
-     buchberger_test_data_size = 30;
+BOOST_AUTO_TEST_CASE(polynomial1_over_Z_multiplication_test) {
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::one_var;
+     using SHG::to_string;
 
-BOOST_DATA_TEST_CASE(buchberger_test,
-                     bdata::xrange(buchberger_test_data_size), xr) {
-     BOOST_REQUIRE(buchberger_test_data.size() ==
-                   buchberger_test_data_size);
-     auto const& tc = buchberger_test_data[xr];
-     if (strstr(tc.description, "exercise 13b, page 114") !=
-              nullptr &&
-         strcmp(tc.ordering, "Lex_less") == 0) {
-          BOOST_CHECK(true);
-          return;  // Takes too long.
+     Ring_Z const Z;
+     std::vector<Element> a;
+
+     {
+          constexpr char const* const res{
+               "1 4 10 1 3 13 1 2 10 1 1 3 1 0"};  // 3 + 10x + 13x^2
+                                                   // + 10x^3
+          a.resize(2);
+          a[0] = Z.element(1);
+          a[1] = Z.element(2);
+          Polynomial const f(one_var(a));  // 1 + 2x
+          a.resize(3);
+          a[0] = Z.element(3);
+          a[1] = Z.element(4);
+          a[2] = Z.element(5);
+          Polynomial const g(one_var(a));  // 3 + 4x + 5x^2
+          BOOST_CHECK(to_string(f * g) == res);
+          BOOST_CHECK(to_string(g * f) == res);
+          BOOST_CHECK(f * g == g * f);
      }
-
-     Test_data td;
-     td.init(tc.f, tc.g, tc.ordering);
-     Buchberger_improved b;
-     b.run(td.f_);
-     BOOST_CHECK(SHG::have_equal_content(b.g(), td.g_));
-     BOOST_CHECK(true);
-}
-
-/**
- * Non-zero polynomial equal to zero for all values.
- * \cite cox-little-oshea-2007, exercise 2, page 5.
- */
-BOOST_AUTO_TEST_CASE(exercise2_test) {
-     Field_Fp F(2);
-     Polynomial p(&F, 2);
-     p += {F.element(1), Monomial{2, 1}};
-     p += {F.element(1), Monomial{1, 2}};
-     Polynomial::Point x(2);
-     for (int i = 0; i < 2; i++) {
-          x[0] = F.element(i);
-          for (int j = 0; j < 2; j++) {
-               x[1] = F.element(j);
-               BOOST_CHECK(p(x) == F.zero());
-          }
+     {
+          constexpr char const* const res{"1 0"};  // 0
+          a.resize(2);
+          a[0] = Z.element(1);
+          a[1] = Z.element(2);
+          Polynomial const f(one_var(a));  // 1 + 2x
+          Polynomial const g(&Z);          // 0
+          BOOST_CHECK(to_string(f * g) == res);
+          BOOST_CHECK(to_string(g * f) == res);
+          BOOST_CHECK(f * g == g * f);
      }
 }
 
-/**
- * Test of division based on
- * \f$(x^n - 1) = (x - 1) (x^{n - 1} + x^{n - 2} +
- * \ldots + x + 1)\f$.
- */
-BOOST_DATA_TEST_CASE(polynomial_in_one_variable_first_test,
-                     bdata::xrange(10), xr) {
-     int const n = xr + 1;
-     Field_Q F;
-     Polynomial a(&F), b(&F), c(&F);
-     // a = x^n - 1
-     a += {F.element(-1), Monomial{0}};
-     a += {F.element(1), Monomial{n}};
-     // b = x^{n - 1} + x^{n - 2} + ... + x + 1
-     for (int i = 0; i < n; i++)
-          b += {F.element(1), Monomial{i}};
-     // c = x - 1
-     c += {F.element(-1), Monomial{0}};
-     c += {F.element(1), Monomial{1}};
+BOOST_AUTO_TEST_CASE(polynomial1_over_Z_value_operator_test) {
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::one_var;
 
-     BOOST_CHECK(b * c == a);
-     Polynomial_div d;
+     Ring_Z const Z;
+     std::vector<Element> const a{Z.element(1), Z.element(2),
+                                  Z.element(3)};
 
-     d.divide(a, {c});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == b);
-
-     d.divide(a, {b});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == c);
+     Polynomial const f(one_var(a));  // 1 + 2x + 3x^2
+     BOOST_CHECK(f(Z.element(0)) == Z.element(1));
+     BOOST_CHECK(f(Z.element(4)) == Z.element(57));
+     Polynomial const g(&Z);  // 0
+     BOOST_CHECK(g(Z.element(0)) == Z.element(0));
+     BOOST_CHECK(g(Z.element(4)) == Z.element(0));
 }
 
-/**
- * Test of division based on
- * \f$(x^n - y^n) = (x - y) (x^{n - 1} + x^{n - 2}y +
- * \ldots + xy^{n - 2} + y^{n - 1})\f$.
- */
-BOOST_DATA_TEST_CASE(polynomial_in_one_variable_second_test,
-                     bdata::xrange(10), xr) {
-     int const n = xr + 1;
-     Field_Q F;
-     Polynomial a(&F, 2), b(&F, 2), c(&F, 2);
-     // a = x^n - y^n
-     a += {F.element(1), Monomial{n, 0}};
-     a += {F.element(-1), Monomial{0, n}};
-     // b = x^{n - 1} + x^{n - 2}y + ... + xy^{n - 2} + y^{n - 1}
-     for (int i = 0; i < n; i++)
-          b += {F.element(1), Monomial{n - 1 - i, i}};
-     // c = x - y
-     c += {F.element(1), Monomial{1, 0}};
-     c += {F.element(-1), Monomial{0, 1}};
+/// \cite rutkowski-2012, exercise 578, page 144.
+BOOST_AUTO_TEST_CASE(polynomial1_over_Z6_test) {
+     using SHG::ALGEBRA::Ring_Zn;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::to_string;
 
-     BOOST_CHECK(b * c == a);
-     Polynomial_div d;
+     Ring_Zn const Z6(6);
+     std::vector<Element> a;
+     a.resize(2);
+     a[0] = Z6.element(1);
+     a[1] = Z6.element(2);
+     Polynomial const f(one_var(a));  // 1 + 2x
+     a[1] = Z6.element(3);
+     Polynomial const g(one_var(a));                      // 1 + 3x
+     BOOST_CHECK(to_string(f * g) == "1 2 5 1 1 1 1 0");  // 1 + 5x
+}
 
-     a.order(lex_cmp);
-     b.order(lex_cmp);
-     c.order(lex_cmp);
-     d.divide(a, {c});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == b);
-     d.divide(a, {b});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == c);
+/// \cite sharp-2000, exercise 1.18, page 10.
+BOOST_AUTO_TEST_CASE(Z7_test) {
+     using SHG::ALGEBRA::Ring_Zn;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::one_var;
 
-     a.order(grlex_cmp);
-     b.order(grlex_cmp);
-     c.order(grlex_cmp);
-     d.divide(a, {c});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == b);
-     d.divide(a, {b});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == c);
+     Ring_Zn const Z7(7);
+     std::vector<Element> a;
+     a.resize(8);
+     for (int i = 0; i < 8; i++)
+          a[i] = Z7.element(0);
+     a[1] = Z7.element(6);
+     a[7] = Z7.element(1);
+     Polynomial const f(one_var(a));  // x^7 - x
+     for (int i = 0; i < 7; i++)
+          BOOST_CHECK(f(Z7.element(i)) == Z7.element(0));
+}
 
-     a.order(grevlex_cmp);
-     b.order(grevlex_cmp);
-     c.order(grevlex_cmp);
-     d.divide(a, {c});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == b);
-     d.divide(a, {b});
-     BOOST_CHECK(is_zero(d.r));
-     BOOST_CHECK(d.a.size() == 1);
-     BOOST_CHECK(d.a[0] == c);
+/// \cite rutkowski-2012, example 75, page 143.
+BOOST_AUTO_TEST_CASE(Z8_test) {
+     using SHG::ALGEBRA::Ring_Zn;
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::one_var;
+     using SHG::to_string;
+
+     constexpr char const* const res[] = {
+          "1 3 1 1 3 1 1 2 2 1 1",        // 2x + x^2 + x^3
+          "1 4 7 1 3 3 1 2 2 1 1 2 1 0",  // 2 + 2x + 3x^2 + 7x^3
+          "1 6 2 1 5 4 1 4 7 1 3 1 1 2 6 1 1 7 1 0",  // 7 + 6x + x^2
+                                                      // + 7x^3 + 4x^4
+                                                      // + 2x^5"
+     };
+
+     Ring_Zn const Z8(8);
+     std::vector<Element> a;
+     a.resize(3);
+     a[0] = Z8.element(5);
+     a[1] = Z8.element(6);
+     a[2] = Z8.element(2);
+     Polynomial const f(one_var(a));  // 5 + 6x + 2x^2
+     a.resize(4);
+     a[0] = Z8.element(3);
+     a[1] = Z8.element(4);
+     a[2] = Z8.element(7);
+     a[3] = Z8.element(1);
+     Polynomial const g(one_var(a));  // 3 + 4x + 7x^2 + x^3
+     BOOST_CHECK(to_string(f + g) == res[0]);
+     BOOST_CHECK(to_string(f - g) == res[1]);
+     BOOST_CHECK(to_string(f * g) == res[2]);
+}
+
+BOOST_AUTO_TEST_CASE(polynomial_ring_test) {
+     using SHG::ALGEBRA::Element;
+     using SHG::ALGEBRA::Field_Q;
+     using SHG::ALGEBRA::Monomial;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::Polynomial_ring;
+     using SHG::ALGEBRA::is_commutative_ring;
+     using SHG::to_string;
+
+     Field_Q Q;
+     Polynomial_ring ring(&Q);
+     BOOST_CHECK(is_commutative_ring(&ring));
+
+     BOOST_CHECK(ring.as() == &Q);
+     BOOST_CHECK(ring.dim() == 1);
+     Polynomial p(ring.as(), ring.dim());
+     p += {Q.element(1), Monomial{3}};
+     p += Q.element(-1);
+     BOOST_CHECK(to_string(p) == "1 2 1 1 3 -1 1 0");
+     Element x = ring.element(p);
+     BOOST_CHECK(ring.value(x) == p);
+     Element y{x};
+     BOOST_CHECK(y == x);
+     Element z = pow(x, 5);
+     BOOST_CHECK(to_string(z) ==
+                 "1 6 1 1 15 -5 1 12 10 1 9 -10 1 6 5 1 3 -1 1 0");
+}
+
+BOOST_AUTO_TEST_CASE(polynomial_ring_reset_test) {
+     using SHG::ALGEBRA::Field_Q;
+     using SHG::ALGEBRA::Ring_Z;
+     using SHG::ALGEBRA::Polynomial;
+     using SHG::ALGEBRA::one_var;
+     using SHG::ALGEBRA::Polynomial_ring;
+     using SHG::ALGEBRA::Element;
+     using SHG::to_string;
+
+     Field_Q const Q;
+     Ring_Z const Z;
+     std::vector<Element> a;
+     Polynomial_ring R(&Q, 1);
+     BOOST_CHECK(R.as() == &Q);
+     BOOST_CHECK(R.dim() == 1);
+     a.resize(2);
+     a[0] = Q.element(1, 2);
+     a[1] = Q.element(1, 4);
+     Polynomial const p1 = one_var(a);
+     BOOST_CHECK(to_string(p1) == "1 2 1/4 1 1 1/2 1 0");
+     R.reset(&Z, 1);
+     BOOST_CHECK(R.as() == &Z);
+     BOOST_CHECK(R.dim() == 1);
+     a[0] = Z.element(1);
+     a[1] = Z.element(2);
+     Polynomial const p2 = one_var(a);
+     BOOST_CHECK(to_string(p1) == "1 2 1/4 1 1 1/2 1 0");
+     BOOST_CHECK(to_string(p2) == "1 2 2 1 1 1 1 0");
+     BOOST_CHECK_THROW(p1 + p2, std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

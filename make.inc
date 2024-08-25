@@ -19,12 +19,12 @@ endif
 DEFS =
 
 DEBUG = -g
-INCLUDE = -I./include -isystem/usr/local/boost_1_83_0/include	\
+INCLUDE = -I./include -isystem/usr/local/boost_1_85_0/include	\
 -isystem/usr/local/include/eigen3
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++20 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
-LOADLIBES = -L./lib -L/usr/local/boost_1_83_0/lib
+LOADLIBES = -L./lib -L/usr/local/boost_1_85_0/lib
 LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams -lboost_log -lboost_thread -lboost_filesystem	\
 -lpugixml -lpthread -lz

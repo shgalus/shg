@@ -29,7 +29,7 @@ shgutf8.bib : shg.bib bibtoutf8.py
 
 html: shgutf8.bib $(PDFDOC) ../src/*.cc ../include/shg/*.h	\
 	../tests/*.cc ../tests/*.h ../tools/*.cc mainpage.dox	\
-	notes.dox
+	notes.dox aaai.dox aaai.txt
 	doxygen
 	touch html
 	@if [ -s doxwarn.txt ]; \

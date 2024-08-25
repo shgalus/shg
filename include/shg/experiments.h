@@ -20,4 +20,6 @@ namespace SHG {
 
 }  // namespace SHG
 
+#include <shg/experiments-inl.h>
+
 #endif
