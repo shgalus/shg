@@ -54,6 +54,8 @@
     <ClInclude Include="..\..\..\..\include\shg\lexan.h" />
     <ClInclude Include="..\..\..\..\include\shg\linalg.h" />
     <ClInclude Include="..\..\..\..\include\shg\mathprog.h" />
+    <ClInclude Include="..\..\..\..\include\shg\mathutils-inl.h" />
+    <ClInclude Include="..\..\..\..\include\shg\mathutils.h" />
     <ClInclude Include="..\..\..\..\include\shg\matrix-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\matrix.h" />
     <ClInclude Include="..\..\..\..\include\shg\mconsts.h" />
@@ -78,6 +80,7 @@
     <ClInclude Include="..\..\..\..\include\shg\specfunc.h" />
     <ClInclude Include="..\..\..\..\include\shg\subdomain.h" />
     <ClInclude Include="..\..\..\..\include\shg\term.h" />
+    <ClInclude Include="..\..\..\..\include\shg\textutils.h" />
     <ClInclude Include="..\..\..\..\include\shg\tree-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\tree.h" />
     <ClInclude Include="..\..\..\..\include\shg\utils-inl.h" />
@@ -116,6 +119,7 @@
     <ClCompile Include="..\..\..\..\src\laplace.cc" />
     <ClCompile Include="..\..\..\..\src\lexan.cc" />
     <ClCompile Include="..\..\..\..\src\mathprog.cc" />
+    <ClCompile Include="..\..\..\..\src\mathutils.cc" />
     <ClCompile Include="..\..\..\..\src\mnistdhd.cc" />
     <ClCompile Include="..\..\..\..\src\monomial.cc" />
     <ClCompile Include="..\..\..\..\src\mstat.cc" />
@@ -134,6 +138,7 @@
     <ClCompile Include="..\..\..\..\src\smc.cc" />
     <ClCompile Include="..\..\..\..\src\specfunc.cc" />
     <ClCompile Include="..\..\..\..\src\term.cc" />
+    <ClCompile Include="..\..\..\..\src\textutils.cc" />
     <ClCompile Include="..\..\..\..\src\utils.cc" />
     <ClCompile Include="..\..\..\..\src\version.cc" />
   </ItemGroup>
@@ -285,8 +290,8 @@
     <Import Project="..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets" Condition="Exists('..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets')" />
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
-    <Import Project="..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets')" />
-    <Import Project="..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -295,7 +300,7 @@
     <Error Condition="!Exists('..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\Eigen3.3.3.9\build\native\Eigen3.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\pugixml.1.14.0\build\native\pugixml.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\boost.1.85.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets'))" />
   </Target>
 </Project>

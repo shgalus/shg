@@ -13,6 +13,7 @@
 /doc/*.out
 /doc/*.mpx
 /doc/shg.[0-9]*
+!/doc/jonathan.pdf
 !/doc/ascii.pdf
 !/doc/cnf.pdf
 !/doc/gebauerm.pdf

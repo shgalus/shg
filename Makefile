@@ -8,6 +8,8 @@ docdir = $(prefix)/share/doc/shg
 VERSION = $(shell sed -n '/SHG_VERSION "/			\
 s/^\([^0-9]*\)\([.0-9]*\)\(.*$$\)/\2/ p' include/shg/version.h)
 
+SRCS_TIDY = $(shell find src include/shg tests \( -name '*.cc' -o -name '*.h' -not -name '*-inl.h' \))
+
 SRCS_LIB := $(wildcard src/*.cc)
 SRCS_TESTS := $(wildcard tests/*.cc)
 SRCS_PLP := $(wildcard plp/*.cc)
@@ -69,8 +71,12 @@ run: all /tmp/basic.swf
 
 lint:
 	cpplint include/shg/* src/* tests/* extras/valgrind/tree.cc
+
+tidy:
+	clang-tidy-19 -extra-arg-before=-xc++ $(SRCS_TIDY) -- -std=c++20 $(INCLUDE)
+
 format:
-	clang-format-17 -i `find . -name '*.h' -o -name '*.cc'`
+	clang-format-19 -i `find . -name '*.h' -o -name '*.cc'`
 
 install: lib/libshg.a lib/libshg.so.$(VERSION) doc uninstall
 	install -d $(includedir) $(libdir) $(docdir)/html/search

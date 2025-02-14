@@ -196,6 +196,19 @@ void Matrix<T>::resize(std::size_t m, std::size_t n) {
 }
 
 template <class T>
+void Matrix<T>::conservative_resize(std::size_t m, std::size_t n) {
+     if (m != m_ || n != n_) {
+          Matrix<T> const a{*this};
+          auto const min_m = std::min(m, m_);
+          auto const min_n = std::min(n, n_);
+          resize(m, n);
+          for (std::size_t i = 0; i < min_m; i++)
+               for (std::size_t j = 0; j < min_n; j++)
+                    this->operator()(i, j) = a(i, j);
+     }
+}
+
+template <class T>
 void Matrix<T>::assign(std::size_t m, std::size_t n, T const& a) {
      resize(m, n);
      v_ = a;
@@ -250,6 +263,11 @@ bool equal(Matrix<T> const& a, Matrix<T> const& b) {
 template <class T>
 bool operator==(Matrix<T> const& a, Matrix<T> const& b) {
      return equal(a, b);
+}
+
+template <class T>
+inline bool is_zero(Matrix<T> const& a) {
+     return is_zero(a.vector());
 }
 
 template <class T>

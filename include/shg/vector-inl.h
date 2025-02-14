@@ -148,6 +148,16 @@ void Vector<T>::resize(std::size_t n) {
 }
 
 template <class T>
+void Vector<T>::conservative_resize(std::size_t n) {
+     if (n != n_) {
+          Vector<T> const v{*this};
+          auto const end = std::begin(v) + (n > n_ ? n_ : n);
+          resize(n);
+          std::copy(std::begin(v), end, begin());
+     }
+}
+
+template <class T>
 void Vector<T>::assign(std::size_t n, T const& a) {
      resize(n);
      std::fill(begin(), end(), a);
@@ -289,6 +299,16 @@ bool equal(Vector<T> const& a, Vector<T> const& b) {
 template <class T>
 bool operator==(Vector<T> const& a, Vector<T> const& b) {
      return equal(a, b);
+}
+
+template <class T>
+inline bool is_zero(Vector<T> const& v) {
+     if (v.size() > 0)
+          return std::find_if_not(v.cbegin(), v.cend(),
+                                  [](T const& x) {
+                                       return x == static_cast<T>(0);
+                                  }) == v.cend();
+     return false;
 }
 
 template <class T>

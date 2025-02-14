@@ -227,54 +227,6 @@ bool Varlex::next() {
      return false;
 }
 
-bool isdegenerate(std::gslice const& g) {
-     using std::begin;
-     using std::end;
-     using std::inner_product;
-     using std::size_t;
-     using std::valarray;
-
-     valarray<size_t> const& l = g.size();
-     valarray<size_t> const& d = g.stride();
-     size_t const n = l.size();
-     if (n < 1 || n != d.size())
-          return true;
-     if (l.min() < 1 || d.min() < 1)
-          return true;
-     valarray<bool> addr(
-          inner_product(begin(l), end(l), begin(d), 0) - d.sum() + 1);
-     valarray<size_t> i(n);
-     for (;;) {
-          size_t kk = inner_product(begin(i), end(i), begin(d), 0);
-          SHG_ASSERT(kk < addr.size());
-          if (addr[kk])
-               return true;
-          addr[kk] = true;
-          for (size_t k = n - 1; ++i[k] >= l[k]; k--) {
-               if (k == 0)
-                    return false;
-               i[k] = 0;
-          }
-     }
-}
-
-bool isvalid(size_t n, std::gslice const& g) {
-     using std::begin;
-     using std::end;
-     using std::inner_product;
-     using std::size_t;
-     using std::valarray;
-
-     if (isdegenerate(g))
-          return false;
-     valarray<size_t> const& l = g.size();
-     valarray<size_t> const& d = g.stride();
-     size_t const maxaddr =
-          inner_product(begin(l), end(l), begin(d), g.start()) -
-          d.sum();
-     return maxaddr < n;
-}
-
 std::string to_octal(std::string const& s) {
      std::ostringstream oss;
      unsigned char u;

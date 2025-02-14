@@ -66,17 +66,23 @@ I iceil(F x) {
 
 template <typename T>
 void divide(T const& a, T const& b, T& q, T& r) {
+     static_assert(std::numeric_limits<T>::is_integer);
+     static_assert(std::numeric_limits<T>::is_signed);
+
      if (b == 0)
-          throw std::invalid_argument("division by zero in divide");
+          throw std::invalid_argument("divide: division by zero");
      if constexpr (std::is_same<
                         T, boost::multiprecision::cpp_int>::value) {
           divide_qr(a, b, q, r);
      } else {
+          if (a == static_cast<T>(std::numeric_limits<T>::min()) &&
+              b == static_cast<T>(-1))
+               throw std::out_of_range("divide: result out of range");
           q = a / b;
           r = a % b;
      }
      if ((a < 0 && r != 0) != (r < 0))
-          throw std::runtime_error("divide error");
+          throw std::runtime_error("divide: implementation error");
      if (r < 0) {
           if (b < 0) {
                q++;

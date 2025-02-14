@@ -22,9 +22,9 @@ BOOST_AUTO_TEST_CASE(basic_test) {
      BOOST_CHECK(n == 0);
      BOOST_CHECK_THROW(n = Nonnegative<int>(-1),
                        Subdomain_error<int>);
-     n = Prime<int>(2);
-     n = Prime<int>(3);
-     n = Prime<int>(5);
+     BOOST_CHECK_NO_THROW(n = Prime<int>(2));
+     BOOST_CHECK_NO_THROW(n = Prime<int>(3));
+     BOOST_CHECK_NO_THROW(n = Prime<int>(5));
      BOOST_CHECK_THROW(n = Prime<int>(-1), Subdomain_error<int>);
      BOOST_CHECK_THROW(n = Prime<int>(0), Subdomain_error<int>);
      BOOST_CHECK_THROW(n = Prime<int>(1), Subdomain_error<int>);

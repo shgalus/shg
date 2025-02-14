@@ -6,6 +6,19 @@
 
 \section various_notes Various notes.
 
+\subsection temporary_notes Temporary notes.
+
+According to https://isocpp.org/get-started, a build of GCC for
+Windows is available at https://nuwen.net/mingw.html.
+
+\subsection general_todos General todos.
+
+\todo `scan-build-19 -analyze-headers -o scan_build make`
+
+generates
+
+file:///home/sgalus/projects/shgp/scan_build/2025-02-02-132811-17958-1/index.html
+
 \subsection smf Special member functions.
 
 Function            |Declaration
@@ -254,23 +267,23 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Managing Projects with GNU Make](https://www.oreilly.com/openbook/make3/book/)
 
-- [GCC documentation](https://gcc.gnu.org/onlinedocs/13.2.0/)
-  ([local copy](file:///usr/local/gcc-13.2.0/share/doc/html/gcc/index.html))
+- [GCC documentation](https://gcc.gnu.org/onlinedocs/14.2.0/)
+  ([local copy](file:///usr/local/gcc-14.2.0/share/doc/html/gcc/index.html))
 
-- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/cpp/)
-  ([local copy](file:///usr/local/gcc-13.2.0/share/doc/html/cpp/index.html))
+- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-14.2.0/cpp/)
+  ([local copy](file:///usr/local/gcc-14.2.0/share/doc/html/cpp/index.html))
 
 - [Clang documentation](https://clang.llvm.org/docs/index.html)
-  ([local copy](file:///usr/share/doc/clang-17/html/index.html))
+  ([local copy](file:///usr/share/doc/clang-19/html/index.html))
 
-- [Boost documentation](https://www.boost.org/doc/libs/1_85_0/)
-  ([local copy](file:///usr/local/share/doc/boost_1_85_0/index.html))
+- [Boost documentation](https://www.boost.org/doc/libs/1_87_0/)
+  ([local copy](file:///usr/local/share/doc/boost_1_87_0/index.html))
 
-    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_85_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_85_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
+    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_87_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_87_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
 
-    - [Safe numerics](https://www.boost.org/doc/libs/1_85_0/libs/safe_numerics/doc/html/introduction.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_85_0/libs/safe_numerics/doc/html/introduction.html))
+    - [Safe numerics](https://www.boost.org/doc/libs/1_87_0/libs/safe_numerics/doc/html/introduction.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_87_0/libs/safe_numerics/doc/html/introduction.html))
 
 - [Eigen3 documentation](https://eigen.tuxfamily.org/dox/)
   ([local copy](file:///usr/local/share/doc/eigen3/index.html))
@@ -357,6 +370,7 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Tutorial: When to Write Which Special
   Member](https://www.foonathan.net/2019/02/special-member-functions/)
+  ([local copy herein](file:jonathan.pdf))
 
 \section useful_commands Useful commands.
 

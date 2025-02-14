@@ -308,7 +308,6 @@ void OLS::estimate(Matdouble const& X, Vecdouble const& y) {
           xty(0) = s;
           for (i = 1; i < k_; i++) {
                i1 = i - 1;
-               s = 0.0;
                for (j = i; j < k_; j++) {
                     j1 = j - 1;
                     s = 0.0;

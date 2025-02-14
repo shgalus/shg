@@ -67,6 +67,7 @@
     <ClCompile Include="..\..\..\..\tests\lexan_test.cc" />
     <ClCompile Include="..\..\..\..\tests\linalg_test.cc" />
     <ClCompile Include="..\..\..\..\tests\mathprog_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\mathutils_test.cc" />
     <ClCompile Include="..\..\..\..\tests\matrix_test.cc" />
     <ClCompile Include="..\..\..\..\tests\monomial_test.cc" />
     <ClCompile Include="..\..\..\..\tests\mstat_test.cc" />
@@ -89,6 +90,7 @@
     <ClCompile Include="..\..\..\..\tests\subdomain_test.cc" />
     <ClCompile Include="..\..\..\..\tests\term_test.cc" />
     <ClCompile Include="..\..\..\..\tests\tests.cc" />
+    <ClCompile Include="..\..\..\..\tests\textutils_test.cc" />
     <ClCompile Include="..\..\..\..\tests\tree_test.cc" />
     <ClCompile Include="..\..\..\..\tests\utils_test.cc" />
     <ClCompile Include="..\..\..\..\tests\vector_test.cc" />
@@ -254,15 +256,15 @@
     <Import Project="..\..\..\..\..\packages19\Eigen3.3.3.9\build\native\Eigen3.targets" Condition="Exists('..\..\..\..\..\packages19\Eigen3.3.3.9\build\native\Eigen3.targets')" />
     <Import Project="..\..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
-    <Import Project="..\..\..\..\..\packages19\pugixml.1.14.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages19\pugixml.1.14.0\build\native\pugixml.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost.1.85.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages19\boost.1.85.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_date_time-vc142.1.85.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_date_time-vc142.1.85.0\build\boost_date_time-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_filesystem-vc142.1.85.0\build\boost_filesystem-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_filesystem-vc142.1.85.0\build\boost_filesystem-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_iostreams-vc142.1.85.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_iostreams-vc142.1.85.0\build\boost_iostreams-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_log-vc142.1.85.0\build\boost_log-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_log-vc142.1.85.0\build\boost_log-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_thread-vc142.1.85.0\build\boost_thread-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.85.0\build\boost_thread-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.85.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.85.0\build\boost_unit_test_framework-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\boost_zlib-vc142.1.85.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.85.0\build\boost_zlib-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost.1.87.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages19\boost.1.87.0\build\boost.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_filesystem-vc142.1.87.0\build\boost_filesystem-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_filesystem-vc142.1.87.0\build\boost_filesystem-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_iostreams-vc142.1.87.0\build\boost_iostreams-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_iostreams-vc142.1.87.0\build\boost_iostreams-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_log-vc142.1.87.0\build\boost_log-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_log-vc142.1.87.0\build\boost_log-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" />
+    <Import Project="..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -271,14 +273,14 @@
     <Error Condition="!Exists('..\..\..\..\..\packages19\Eigen3.3.3.9\build\native\Eigen3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\Eigen3.3.3.9\build\native\Eigen3.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\pugixml.1.14.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\pugixml.1.14.0\build\native\pugixml.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost.1.85.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost.1.85.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_date_time-vc142.1.85.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_date_time-vc142.1.85.0\build\boost_date_time-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_filesystem-vc142.1.85.0\build\boost_filesystem-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_filesystem-vc142.1.85.0\build\boost_filesystem-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_iostreams-vc142.1.85.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_iostreams-vc142.1.85.0\build\boost_iostreams-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_log-vc142.1.85.0\build\boost_log-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_log-vc142.1.85.0\build\boost_log-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.85.0\build\boost_thread-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_thread-vc142.1.85.0\build\boost_thread-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.85.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.85.0\build\boost_unit_test_framework-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.85.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_zlib-vc142.1.85.0\build\boost_zlib-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost.1.87.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost.1.87.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_filesystem-vc142.1.87.0\build\boost_filesystem-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_filesystem-vc142.1.87.0\build\boost_filesystem-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_iostreams-vc142.1.87.0\build\boost_iostreams-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_iostreams-vc142.1.87.0\build\boost_iostreams-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_log-vc142.1.87.0\build\boost_log-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_log-vc142.1.87.0\build\boost_log-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets'))" />
   </Target>
 </Project>

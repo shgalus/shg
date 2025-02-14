@@ -146,9 +146,18 @@ public:
 
      /**
       * Changes the length of the vector to \a n. All elements are
-      * value-initialized.
+      * indeterminate.
       */
      void resize(std::size_t n);
+
+     /**
+      * Changes the length of the vector to \a n.
+      * If \a n == size(), the function does nothing.
+      * If \a n > size(), additional indeterminate elements are
+      * appended. If \a n < size(), the vector is reduced to the first
+      * \a n elements.
+      */
+     void conservative_resize(std::size_t n);
 
      /**
       * Resizes the vector to \a n elements and assigns \a a to each
@@ -257,6 +266,13 @@ inline bool equal(Vector<T> const& a, Vector<T> const& b);
  */
 template <class T>
 inline bool operator==(Vector<T> const& a, Vector<T> const& b);
+
+/**
+ * Returns true if v.size() > 0 and v[i] == 0 for all i in [0,
+ * v.size()), false otherwise.
+ */
+template <class T>
+inline bool is_zero(Vector<T> const& v);
 
 /**
  * Returns the sum of all the elements of the vector. Operator \a +=

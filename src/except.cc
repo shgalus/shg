@@ -21,13 +21,13 @@ Exception::Exception(char const* what) {
 }
 
 Exception::Exception(Exception const& e) {
-     std::strcpy(what_, e.what_);
+     std::strcpy(what_, e.what_);  // NOLINT
 }
 
 Exception::~Exception() {}
 
 Exception& Exception::operator=(Exception const& e) {
-     std::strcpy(what_, e.what_);
+     std::strcpy(what_, e.what_);  // NOLINT
      return *this;
 }
 

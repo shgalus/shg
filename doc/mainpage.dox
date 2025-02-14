@@ -12,17 +12,19 @@ Additional documentation is in <a href = "shg.pdf">shg.pdf</a>.
 \verbatim
 .
 |-- data
-|-- doc           documentation files
+|-- doc            documentation files
 |-- extras
-|   |-- valgrind  Valgrind test of the class SHG::Tree
-|   |-- vs2019    Visual Studio 2019 solution
-|   `-- vs2022    Visual Studio 2022 solution
+|   |-- mathnotes  old math notes
+|   |-- solveint   Pascal program to check SHG::Lin_Dioph
+|   |-- valgrind   Valgrind test of the class SHG::Tree
+|   |-- vs2019     Visual Studio 2019 solution
+|   `-- vs2022     Visual Studio 2022 solution
 |-- include
-|   `-- shg       library include files
-|-- plp           plp header and source files
-|-- src           library source files
-|-- tests         header and source files for testing
-`-- tools         development utilities
+|   `-- shg        library include files
+|-- plp            plp header and source files
+|-- src            library source files
+|-- tests          header and source files for testing
+`-- tools          development utilities
 \endverbatim
 
 */

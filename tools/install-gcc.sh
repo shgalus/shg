@@ -1,5 +1,5 @@
 #!/bin/sh
-# install-gcc.sh: install gcc${VERSION} on Debian Linux 9 (stretch)
+# install-gcc.sh: install gcc${VERSION} on Debian Linux 12 (bookworm)
 #
 # Change VERSION below to what is needed.
 #
@@ -7,9 +7,9 @@
 # --disable-multilib should be added to configure.
 #
 # Stanislaw Galus
-# Sun Apr 21 19:57:41 CEST 2019
+# Sat Sep  7 12:04:15 CEST 2024
 
-VERSION=-13.2.0
+VERSION=-14.2.0
 
 wget ftp://ftp.gnu.org/gnu/gcc/gcc${VERSION}/gcc${VERSION}.tar.xz
 tar xvf gcc${VERSION}.tar.xz

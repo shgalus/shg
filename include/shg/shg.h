@@ -20,7 +20,6 @@
 #include <shg/dict.h>
 #include <shg/dict_impl.h>
 #include <shg/drbnwtsn.h>
-#include <shg/ealgebra.h>
 #include <shg/encoding.h>
 #include <shg/etalgebra.h>
 #include <shg/except.h>
@@ -38,6 +37,7 @@
 #include <shg/lexan.h>
 #include <shg/linalg.h>
 #include <shg/mathprog.h>
+#include <shg/mathutils.h>
 #include <shg/matrix.h>
 #include <shg/mconsts.h>
 #include <shg/monomial.h>
@@ -61,6 +61,7 @@
 #include <shg/specfunc.h>
 #include <shg/subdomain.h>
 #include <shg/term.h>
+#include <shg/textutils.h>
 #include <shg/tree.h>
 #include <shg/utils.h>
 #include <shg/vector.h>

@@ -151,6 +151,23 @@ BOOST_AUTO_TEST_CASE(vector_memeber_functions_test) {
           BOOST_CHECK(v.size() == 0);
      }
      {
+          Vecint v{1, 3, 5, 7, 9};
+          v.conservative_resize(2);
+          BOOST_CHECK(v.size() == 2);
+          BOOST_CHECK(v[0] == 1);
+          BOOST_CHECK(v[1] == 3);
+     }
+     {
+          Vecint v{1, 3, 5, 7, 9};
+          v.conservative_resize(7);
+          BOOST_CHECK(v.size() == 7);
+          BOOST_CHECK(v[0] == 1);
+          BOOST_CHECK(v[1] == 3);
+          BOOST_CHECK(v[2] == 5);
+          BOOST_CHECK(v[3] == 7);
+          BOOST_CHECK(v[4] == 9);
+     }
+     {
           Vecint v;
           v.assign(10, 11);
           BOOST_CHECK(v.size() == 10);
@@ -243,8 +260,11 @@ BOOST_DATA_TEST_CASE(vector_iterators_test, bdata::xrange(5), xr) {
 }
 
 BOOST_AUTO_TEST_CASE(vector_non_member_functions_test) {
+     using SHG::is_zero;
      Vecint const wirth{44, 55, 12, 42, 94, 18, 6, 67}, empty;
      {
+          BOOST_CHECK(!is_zero(wirth));
+          BOOST_CHECK(!is_zero(empty));
           BOOST_CHECK(sum(wirth) == 338);
           BOOST_CHECK(min(wirth) == 6);
           BOOST_CHECK(max(wirth) == 94);
@@ -259,6 +279,11 @@ BOOST_AUTO_TEST_CASE(vector_non_member_functions_test) {
           BOOST_CHECK(maxloc(empty) == 0);
           mml = minmaxloc(empty);
           BOOST_CHECK(mml.first == 0 && mml.second == 0);
+     }
+     {
+          BOOST_CHECK(is_zero(Vecint({0})));
+          BOOST_CHECK(is_zero(Vecint({0, 0})));
+          BOOST_CHECK(is_zero(Vecint({0, 0, 0})));
      }
      {
           Vecint v(wirth), w(empty);

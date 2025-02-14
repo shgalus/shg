@@ -140,21 +140,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(divide_test, T, test_types) {
                T const b = static_cast<T>(ib);
                try {
                     divide(a, b, q, r);
-                    BOOST_CHECK(b != 0);
                     BOOST_CHECK(r >= 0 && r < abs(b));
-                    if constexpr (std::is_same<T,
-                                               signed char>::value) {
-                         if (a == n1 && b == -1) {
-                              BOOST_CHECK(a != q * b + r);
-                              BOOST_CHECK(q == a && r == 0);
-                         } else
-                              BOOST_CHECK(a == q * b + r);
-                    } else {
-                         BOOST_CHECK(a == q * b + r);
-                    }
+                    BOOST_CHECK(a == q * b + r);
                     BOOST_CHECK(divides(b, a) == (r == 0));
                } catch (std::invalid_argument const&) {
                     BOOST_CHECK(b == 0);
+               } catch (std::out_of_range const&) {
+                    BOOST_CHECK(
+                         (std::is_same<T, signed char>::value));
+                    BOOST_CHECK(a == n1 && b == -1);
                }
           }
      }

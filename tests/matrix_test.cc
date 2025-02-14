@@ -199,6 +199,29 @@ BOOST_AUTO_TEST_CASE(matrix_memeber_functions_test) {
           BOOST_CHECK(a.nrows() == 0 && a.ncols() == 0);
      }
      {
+          Matint const a0(3, 4,
+                          {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
+          Matint const b1(2, 3, {1, 2, 3, 5, 6, 7});
+          Matint const b2(2, 2, {1, 2, 5, 6});
+          Matint a;
+          a = a0;
+          a.conservative_resize(2, 3);
+          BOOST_CHECK(a == b1);
+          a = a0;
+          a.conservative_resize(2, 5);
+          for (Matint::size_type i = 0; i < b1.nrows(); i++)
+               for (Matint::size_type j = 0; j < b1.ncols(); j++)
+                    BOOST_CHECK(a(i, j) == b1(i, j));
+          a = a0;
+          a.conservative_resize(2, 2);
+          BOOST_CHECK(a == b2);
+          a = a0;
+          a.conservative_resize(4, 2);
+          for (Matint::size_type i = 0; i < b2.nrows(); i++)
+               for (Matint::size_type j = 0; j < b2.ncols(); j++)
+                    BOOST_CHECK(a(i, j) == b2(i, j));
+     }
+     {
           Matint a;
           a.assign(10, 20, 13);
           BOOST_CHECK(a.nrows() == 10 && a.ncols() == 20);
@@ -260,6 +283,7 @@ BOOST_AUTO_TEST_CASE(matrix_non_member_functions_test) {
           std::initializer_list<int> const il = {1, 4,  9, 6, 10, 7,
                                                  2, 11, 3, 0, 5,  8};
           Matint const a(3, 4, il);
+          BOOST_CHECK(!is_zero(a));
           BOOST_CHECK(sum(a) == 66);
           BOOST_CHECK(min(a) == 0);
           BOOST_CHECK(max(a) == 11);
@@ -274,6 +298,15 @@ BOOST_AUTO_TEST_CASE(matrix_non_member_functions_test) {
                       minmaxl.first.second == 1 &&
                       minmaxl.second.first == 1 &&
                       minmaxl.second.second == 3);
+     }
+     {
+          Matint a;
+          BOOST_CHECK(!is_zero(a));
+          for (Matint::size_type m = 1; m <= 3; m++)
+               for (Matint::size_type n = 1; n <= 4; n++) {
+                    a.assign(m, n, 0);
+                    BOOST_CHECK(is_zero(a));
+               }
      }
      {
           Matint a(3, 4, 12);

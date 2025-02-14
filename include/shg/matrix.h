@@ -174,9 +174,16 @@ public:
 
      /**
       * Changes the dimensions of the matrix to \a m by \a n. The
-      * elements are value-initialized.
+      * elements are indeterminate.
       */
      void resize(std::size_t m, std::size_t n);
+
+     /**
+      * Resizes the matrix to m x n leaving old values unchanged.
+      * Eventual new values are indeterminate. If \a m = nrows() and
+      * \a n = ncols(), the function does nothing.
+      */
+     void conservative_resize(std::size_t m, std::size_t n);
 
      /**
       * Changes the dimensions of the matrix to \a m by \a n and then
@@ -264,6 +271,13 @@ bool equal(Matrix<T> const& a, Matrix<T> const& b);
  */
 template <class T>
 inline bool operator==(Matrix<T> const& a, Matrix<T> const& b);
+
+/**
+ * Returns true if a is not empty and a(i, j) == 0 for all i and j,
+ * false otherwise.
+ */
+template <class T>
+inline bool is_zero(Matrix<T> const& a);
 
 /**
  * Returns the sum of all the elements of the matrix. Operator \a +=

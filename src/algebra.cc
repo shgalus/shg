@@ -299,7 +299,7 @@ bool Finite_group::is_valid_table() const {
 
 Element Ring_Z::do_inv(Element const& x) const {
      auto const xp = element_cast<ET>(x);
-     if (abs(*xp) == 1)
+     if (abs(*xp) == 1)  // NOLINT
           return x;
      throw Invalid_operation();
 }
