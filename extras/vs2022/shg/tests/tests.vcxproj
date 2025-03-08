@@ -85,6 +85,7 @@
     <ClCompile Include="..\..\..\..\tests\permentr_test.cc" />
     <ClCompile Include="..\..\..\..\tests\polynomial_test.cc" />
     <ClCompile Include="..\..\..\..\tests\runs_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\safeint_test.cc" />
     <ClCompile Include="..\..\..\..\tests\smc_test.cc" />
     <ClCompile Include="..\..\..\..\tests\specfunc_test.cc" />
     <ClCompile Include="..\..\..\..\tests\subdomain_test.cc" />

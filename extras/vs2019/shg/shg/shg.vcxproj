@@ -75,6 +75,8 @@
     <ClInclude Include="..\..\..\..\include\shg\polynomial.h" />
     <ClInclude Include="..\..\..\..\include\shg\rng.h" />
     <ClInclude Include="..\..\..\..\include\shg\runs.h" />
+    <ClInclude Include="..\..\..\..\include\shg\safeint-inl.h" />
+    <ClInclude Include="..\..\..\..\include\shg\safeint.h" />
     <ClInclude Include="..\..\..\..\include\shg\shg.h" />
     <ClInclude Include="..\..\..\..\include\shg\smc.h" />
     <ClInclude Include="..\..\..\..\include\shg\specfunc.h" />

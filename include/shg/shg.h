@@ -57,6 +57,7 @@
 #include <shg/polynomial_ring.h>
 #include <shg/rng.h>
 #include <shg/runs.h>
+#include <shg/safeint.h>
 #include <shg/smc.h>
 #include <shg/specfunc.h>
 #include <shg/subdomain.h>
