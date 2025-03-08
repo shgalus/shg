@@ -314,8 +314,6 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [C++ - constexpr const vs constexpr variables?](https://stackoverflow.com/questions/28845058/)
 
-- [C++ - constexpr vector](https://stackoverflow.com/questions/74154484/)
-
 - [C++ Template implementation file extension convention?](https://stackoverflow.com/questions/29264656/c-template-implementation-file-extension-convention)
 
 - [C++ Preferred method of dealing with implementation for large templates](https://softwareengineering.stackexchange.com/questions/373916/c-preferred-method-of-dealing-with-implementation-for-large-templates)
@@ -340,8 +338,6 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 - [ASCII control code chart (local copy herein)](ascii.pdf)
 
 - [ACCU](https://accu.org/)
-
-- [SQL Style Guide](https://www.sqlstyle.guide/)
 
 - [Numerical Recipes Other Stuff](http://numerical.recipes/otherstufftop.html)
   ([local copy: Numerical Recipes Code 3.02](file:///usr/local/share/nr3/index.htm))

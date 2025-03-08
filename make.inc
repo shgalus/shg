@@ -11,6 +11,10 @@ CXX = clang++-19 -O2 --gcc-toolchain=/usr/local/gcc-14.2.0
 WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 endif
 
+ifdef ubsan
+UBSAN = -fsanitize=undefined
+endif
+
 # Things you might add to DEFS:
 # -DMCHECK              To debug memory allocation in GCC.
 # -D_GLIBCXX_DEBUG      Use the libstdc++ debug mode.
@@ -18,7 +22,7 @@ endif
 
 DEFS =
 
-DEBUG = -g
+DEBUG = -g $(UBSAN)
 INCLUDE = -I./include -isystem/usr/local/boost_1_87_0/include	\
 -isystem/usr/local/include/eigen3
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++20 $(WARNINGS) $(DEFS)
@@ -28,6 +32,10 @@ LOADLIBES = -L./lib -L/usr/local/boost_1_87_0/lib
 LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams -lboost_log -lboost_thread -lboost_filesystem	\
 -lpugixml -lpthread -lz
+
+ifdef ubsan
+LDLIBS += -lubsan
+endif
 
 AR = gcc-ar-14.2.0
 ARFLAGS = rc

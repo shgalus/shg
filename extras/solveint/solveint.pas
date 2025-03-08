@@ -1,3 +1,7 @@
+{Helper program to translate SHG::Lin_Dioph::intrank() and
+SHG::Lin_Dioph::solveinteger() from Algol 68 to C++. See
+include/shg/mathutils.h.}
+
 program solveint;
 
 const
