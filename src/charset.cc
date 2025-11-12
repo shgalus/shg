@@ -1257,7 +1257,7 @@ namespace {
  * 4) dot above
  * 5) caron
  * 6) diaeresis
- *r7) ing above
+ * 7) ing above
  * 8) breve
  * 9) grave
  * 10) cedilla
@@ -1267,7 +1267,7 @@ namespace {
  *
  * 0 - 64     null - @      0 - 64
  * 65 - 90    A - Z
- * 91 - 96    [ - `        65 - 70
+ * 91 - 96    [ - \`       65 - 70
  * 97 - 122   a - z
  * 123 - 135  { - >>       71 - 83
  * 136 - 244  letters

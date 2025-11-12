@@ -90,6 +90,8 @@
     <ClInclude Include="..\..\..\..\include\shg\vector-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\vector.h" />
     <ClInclude Include="..\..\..\..\include\shg\version.h" />
+    <ClInclude Include="..\..\..\..\include\shg\zsqrtd-inl.h" />
+    <ClInclude Include="..\..\..\..\include\shg\zsqrtd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\album.cc" />
@@ -143,6 +145,7 @@
     <ClCompile Include="..\..\..\..\src\textutils.cc" />
     <ClCompile Include="..\..\..\..\src\utils.cc" />
     <ClCompile Include="..\..\..\..\src\version.cc" />
+    <ClCompile Include="..\..\..\..\src\zsqrtd.cc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

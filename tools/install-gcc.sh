@@ -3,13 +3,13 @@
 #
 # Change VERSION below to what is needed.
 #
-# If g++-6-multilib package is not already installed,
+# If g++-multilib package is not already installed,
 # --disable-multilib should be added to configure.
 #
 # Stanislaw Galus
-# Sat Sep  7 12:04:15 CEST 2024
+# Wed Aug 27 09:20:44 AM CEST 2025
 
-VERSION=-14.2.0
+VERSION=-15.2.0
 
 wget ftp://ftp.gnu.org/gnu/gcc/gcc${VERSION}/gcc${VERSION}.tar.xz
 tar xvf gcc${VERSION}.tar.xz

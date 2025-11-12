@@ -13,11 +13,17 @@ Windows is available at https://nuwen.net/mingw.html.
 
 \subsection general_todos General todos.
 
-\todo `scan-build-19 -analyze-headers -o scan_build make`
+\todo scan-build.
 
-generates
+`scan-build-21 -analyze-headers -o scan_build make` generates a
+subdirectory in `scan_build` directory to be inspected using
+`scan-view-21` command.
 
-file:///home/sgalus/projects/shgp/scan_build/2025-02-02-132811-17958-1/index.html
+\todo Implicit conversions between char8_t, char16_t, and char32_t.
+
+`-Wno-error=character-conversion` has been added in make.inc for
+clang21 due to
+https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3695r1.html.
 
 \subsection smf Special member functions.
 
@@ -267,23 +273,22 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Managing Projects with GNU Make](https://www.oreilly.com/openbook/make3/book/)
 
-- [GCC documentation](https://gcc.gnu.org/onlinedocs/14.2.0/)
-  ([local copy](file:///usr/local/gcc-14.2.0/share/doc/html/gcc/index.html))
+- [GCC documentation](https://gcc.gnu.org/onlinedocs/15.2.0/)
+  ([local copy](file:///usr/local/gcc-15.2.0/share/doc/html/gcc/index.html))
 
-- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-14.2.0/cpp/)
-  ([local copy](file:///usr/local/gcc-14.2.0/share/doc/html/cpp/index.html))
+- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-15.2.0/cpp/)
+  ([local copy](file:///usr/local/gcc-15.2.0/share/doc/html/cpp/index.html))
 
 - [Clang documentation](https://clang.llvm.org/docs/index.html)
-  ([local copy](file:///usr/share/doc/clang-19/html/index.html))
 
-- [Boost documentation](https://www.boost.org/doc/libs/1_87_0/)
-  ([local copy](file:///usr/local/share/doc/boost_1_87_0/index.html))
+- [Boost documentation](https://www.boost.org/doc/libs/1_89_0/)
+  ([local copy](file:///usr/local/share/doc/boost_1_89_0/index.html))
 
-    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_87_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_87_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
+    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_89_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_89_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
 
-    - [Safe numerics](https://www.boost.org/doc/libs/1_87_0/libs/safe_numerics/doc/html/introduction.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_87_0/libs/safe_numerics/doc/html/introduction.html))
+    - [Safe numerics](https://www.boost.org/doc/libs/1_89_0/libs/safe_numerics/doc/html/introduction.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_89_0/libs/safe_numerics/doc/html/introduction.html))
 
 - [Eigen3 documentation](https://eigen.tuxfamily.org/dox/)
   ([local copy](file:///usr/local/share/doc/eigen3/index.html))
@@ -301,6 +306,8 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 - [Standard C++](https://isocpp.org/)
 
 - [The Definitive C++ Book Guide and List](https://stackoverflow.com/questions/388242/)
+
+- [awesome-cpp](https://github.com/fffaraz/awesome-cpp)
 
 - [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 

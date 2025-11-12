@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\..\..\tests\tree_test.cc" />
     <ClCompile Include="..\..\..\..\tests\utils_test.cc" />
     <ClCompile Include="..\..\..\..\tests\vector_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\zsqrtd_test.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

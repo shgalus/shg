@@ -67,5 +67,6 @@
 #include <shg/utils.h>
 #include <shg/vector.h>
 #include <shg/version.h>
+#include <shg/zsqrtd.h>
 
 #endif

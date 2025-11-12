@@ -25,6 +25,9 @@ int is_commutative_ring_with_unity(SHG::Linalg::Matint const& add,
                    mul(x, y) >= n)
                     return 1;
 
+     if (n == 1)
+          return 0;
+
      // Check if both operations are commutative.
      for (int x = 0; x < n; x++)
           for (int y = 0; y < x; y++) {
@@ -86,10 +89,12 @@ int is_field(SHG::Linalg::Matint const& add,
      if (r != 0)
           return r;
      int const n = add.rows();
+     if (n == 1)
+          return 10;
      // Check if there exists multiplicative inverse for each element.
-     for (int x = 0; x < n; x++) {
+     for (int x = 1; x < n; x++) {
           int y;
-          for (y = 0; y < n && mul(x, y) != 1; y++)
+          for (y = 1; y < n && mul(x, y) != 1; y++)
                ;
           if (y >= n)
                return 10;
