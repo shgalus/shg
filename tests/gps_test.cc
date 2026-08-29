@@ -483,7 +483,7 @@ void setup() {
      fs::path p;
 
      try {
-          p = fs::temp_directory_path();
+          p = tmp_dir_path();
           p /= "shg";
           fs::remove_all(p);
           ok = fs::create_directory(p);
@@ -522,7 +522,7 @@ void setup() {
 void teardown() {
      namespace fs = std::filesystem;
      try {
-          fs::path const p = fs::temp_directory_path() / "shg";
+          fs::path const p = tmp_dir_path() / "shg";
           fs::remove_all(p);
      } catch (std::exception const&) {
           BOOST_TEST_MESSAGE("Could not remove temporary directory.");
@@ -551,7 +551,7 @@ BOOST_AUTO_TEST_CASE(activity_statistics_test,
      for (auto& u : used)
           u = false;
 
-     fs::path const p = fs::temp_directory_path() / "shg";
+     fs::path const p = tmp_dir_path() / "shg";
      Activity_statistics as;
      BOOST_REQUIRE(as.results().size() == 0);
      BOOST_REQUIRE_NO_THROW(as.run(p));

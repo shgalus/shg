@@ -1,7 +1,6 @@
 #include <shg/dict.h>
 #include <cstring>
 #include <fstream>
-#include <filesystem>
 #include <sstream>
 #include <shg/utils.h>
 #include "dictdata.h"
@@ -368,8 +367,8 @@ BOOST_DATA_TEST_CASE(bad_data_test,
 BOOST_AUTO_TEST_CASE(load_big_source_word_file_test) {
      namespace fs = std::filesystem;
      Dictionary dict;
-     fs::path const ip = fs::temp_directory_path() / "basic.swf";
-     fs::path const op = fs::temp_directory_path() / "basic2.swf";
+     fs::path const ip = tmp_dir_path() / "basic.swf";
+     fs::path const op = tmp_dir_path() / "basic2.swf";
      std::ifstream f(ip, bininp);
      std::ofstream g(op, binout);
      BOOST_REQUIRE(f.good());
@@ -2099,7 +2098,7 @@ BOOST_AUTO_TEST_CASE(report_test) {
 void basic_swf_stat() {
      namespace fs = std::filesystem;
      Dictionary dict;
-     fs::path const ip = fs::temp_directory_path() / "basic.swf";
+     fs::path const ip = tmp_dir_path() / "basic.swf";
      std::ifstream f(ip, bininp);
      BOOST_REQUIRE(f.good());
      dict.load_source_word_file(f);

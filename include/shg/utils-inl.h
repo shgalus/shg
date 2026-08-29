@@ -95,9 +95,16 @@ void divide(T const& a, T const& b, T& q, T& r) {
 }
 
 template <typename T>
+T remainder(T const& a, T const& b) {
+     T q, r;
+     divide(a, b, q, r);
+     return r;
+}
+
+template <typename T>
 bool divides(T const& a, T const& b) {
      if (a == 0)
-          throw std::invalid_argument("division by zero divides");
+          throw std::invalid_argument("division by zero in divides");
      return b % a == 0;
 }
 
@@ -154,6 +161,36 @@ T ipower(T const& x, int n) {
           if (n == 0)
                return y;
           z *= z;
+     }
+}
+
+template <typename T>
+T powmod(T const& x, T const& n, T const& m) {
+     static_assert(std::numeric_limits<T>::is_integer &&
+                        std::numeric_limits<T>::is_signed,
+                   "T must be a signed integer type.");
+
+     if (m == 0 || n < 0)
+          throw std::invalid_argument(__func__);
+     T const absm = abs(m);
+     if (absm == 1)
+          return 0;
+     T nn{n};
+     T y = T(1);
+     T z = x;
+     T q, r;
+     for (;;) {
+          q = nn / 2;
+          r = nn % 2;
+          if (r != 0)
+               y = (y * z) % m;
+          if (q == 0) {
+               if (y < 0)
+                    y += absm;
+               return y;
+          }
+          nn = q;
+          z = (z * z) % m;
      }
 }
 

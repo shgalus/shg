@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(ring_zsqrtd_quot_test)
 
 using SHG::ALGEBRA::Ring_Zsqrtd_quot;
-using SHG::ALGEBRA::is_commutative_ring_with_unity;
+using SHG::ALGEBRA::is_ring;
 using SHG::ALGEBRA::is_field;
 
 BOOST_AUTO_TEST_CASE(constructor_test) {
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(tables1_test) {
      SHG::Linalg::Matint add;
      SHG::Linalg::Matint mul;
      R.tables(add, mul);
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 0);
+     BOOST_CHECK(is_ring(add, mul) == 0);
      BOOST_CHECK(is_field(add, mul) == 10);
      for (int i = 0; i < add.rows(); i++)
           for (int j = 0; j < add.cols(); j++) {
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(tables2_test) {
      SHG::Linalg::Matint add;
      SHG::Linalg::Matint mul;
      R.tables(add, mul);
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 0);
+     BOOST_CHECK(is_ring(add, mul) == 0);
      BOOST_CHECK(is_field(add, mul) == 10);
      for (int i = 0; i < add.rows(); i++)
           for (int j = 0; j < add.cols(); j++) {
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(tables3_test) {
      SHG::Linalg::Matint mul;
      R.tables(add, mul);
      // Z[sqrt(2)] / (9 + 6 * sqrt(2)) \cong GF(9).
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 0);
+     BOOST_CHECK(is_ring(add, mul) == 0);
      BOOST_CHECK(is_field(add, mul) == 0);
      for (int i = 0; i < add.rows(); i++)
           for (int j = 0; j < add.cols(); j++) {

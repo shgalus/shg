@@ -34,6 +34,7 @@
 #include <shg/ifact.h>
 #include <shg/ipart.h>
 #include <shg/laplace.h>
+#include <shg/legendresym.h>
 #include <shg/lexan.h>
 #include <shg/linalg.h>
 #include <shg/mathprog.h>
@@ -55,8 +56,10 @@
 #include <shg/permentr.h>
 #include <shg/polynomial.h>
 #include <shg/polynomial_ring.h>
+#include <shg/recjar.h>
 #include <shg/rng.h>
 #include <shg/runs.h>
+#include <shg/rzxdabc.h>
 #include <shg/safeint.h>
 #include <shg/smc.h>
 #include <shg/specfunc.h>

@@ -128,11 +128,11 @@ BOOST_AUTO_TEST_CASE(iceil_test) {
      }
 }
 
-using test_types =
+using divide_test_types =
      boost::mpl::list<signed char, short int, int, long int,
                       long long int, boost::multiprecision::cpp_int>;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(divide_test, T, test_types) {
+BOOST_AUTO_TEST_CASE_TEMPLATE(divide_test, T, divide_test_types) {
      using SHG::divide;
      using SHG::divides;
      int const n1 = std::numeric_limits<signed char>::min();
@@ -258,6 +258,25 @@ BOOST_AUTO_TEST_CASE(ipower_test) {
           double const p2 = std::pow(x, n);
           BOOST_CHECK(SHG::faeq(p, p2, 8e-14));
      }
+}
+
+using powmod_test_types =
+     boost::mpl::list<int, boost::multiprecision::cpp_int>;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(powmod_test, T, powmod_test_types) {
+     using SHG::powmod;
+     for (T x = -10; x <= 10; x++)
+          for (int n = 0; n <= 6; n++)
+               for (T m = -20; m <= 20; m++)
+                    if (m != 0) {
+                         T const y = powmod(x, T(n), m);
+                         BOOST_CHECK(0 <= y && y < abs(m));
+                         T const z = SHG::ipower(x, n);
+                         T r = z % m;
+                         if (r < 0)
+                              r += abs(m);
+                         BOOST_CHECK(r == y);
+                    }
 }
 
 struct Mod_case {

@@ -135,6 +135,12 @@ template <typename T>
 void divide(T const& a, T const& b, T& q, T& r);
 
 /**
+ * Returns the remainder of the division of a by b.
+ */
+template <typename T>
+T remainder(T const& a, T const& b);
+
+/**
  * Returns true if and only if a divides b.
  *
  * \exception std::invalid_argument if \f$a = 0\f$
@@ -191,6 +197,15 @@ private:
  */
 template <typename T>
 T ipower(T const& x, int n);
+
+/**
+ * Calculates \f$x^n \bmod m\f$ (right-to-left binary method for
+ * exponentiation).
+ * \throws std::invalid_argument if \f$m = 0\f$ or \f$n < 0\f$.
+ * \implementation See \cite knuth-2002b, section 4.6.3, page 497.
+ */
+template <typename T>
+T powmod(T const& x, T const& n, T const& m);
 
 /**
  * Returns floating-point modulo of \f$x\f$ and \f$y\f$:

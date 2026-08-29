@@ -13,6 +13,8 @@ Additional documentation is in <a href = "shg.pdf">shg.pdf</a>.
 .
 |-- data
 |-- doc            documentation files
+|-- external       external libraries
+|   `-- pugixml    pugixml header and source files
 |-- extras
 |   |-- mathnotes  old math notes
 |   |-- solveint   Pascal program to check SHG::Lin_Dioph

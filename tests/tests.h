@@ -1,6 +1,7 @@
 #ifndef TESTS_H
 #define TESTS_H
 
+#include <filesystem>
 #include <limits>
 #include <ios>
 #include <boost/mpl/list.hpp>
@@ -32,7 +33,17 @@ constexpr std::ios_base::openmode const binout =
 constexpr std::ios_base::openmode const bininpout =
      std::ios_base::in | std::ios_base::out | std::ios_base::binary;
 
-extern const char* const datadir;
+void printl();
+
+template <typename T, typename... Types>
+void printl(T arg1, Types... args) {
+     std::cout << arg1 << "   ";
+     printl(args...);
+}
+
+extern char const* const datadir;
+
+std::filesystem::path tmp_dir_path();
 
 }  // namespace TESTS
 

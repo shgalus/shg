@@ -64,6 +64,7 @@
     <ClCompile Include="..\..\..\..\tests\ifact_test.cc" />
     <ClCompile Include="..\..\..\..\tests\ipart_test.cc" />
     <ClCompile Include="..\..\..\..\tests\laplace_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\legendresym_test.cc" />
     <ClCompile Include="..\..\..\..\tests\lexan_test.cc" />
     <ClCompile Include="..\..\..\..\tests\linalg_test.cc" />
     <ClCompile Include="..\..\..\..\tests\mathprog_test.cc" />
@@ -84,7 +85,9 @@
     <ClCompile Include="..\..\..\..\tests\pcfg_test.cc" />
     <ClCompile Include="..\..\..\..\tests\permentr_test.cc" />
     <ClCompile Include="..\..\..\..\tests\polynomial_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\recjar_test.cc" />
     <ClCompile Include="..\..\..\..\tests\runs_test.cc" />
+    <ClCompile Include="..\..\..\..\tests\rzxdabc_test.cc" />
     <ClCompile Include="..\..\..\..\tests\safeint_test.cc" />
     <ClCompile Include="..\..\..\..\tests\smc_test.cc" />
     <ClCompile Include="..\..\..\..\tests\specfunc_test.cc" />
@@ -165,7 +168,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions);SHG_TMPDIR=R"($(SolutionDir)..\..\..\build\tmp\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -179,7 +182,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\..\data\basic.swf $(TEMP)</Command>
+      <Command>if not exist $(SolutionDir)..\..\..\build\tmp\ md $(SolutionDir)..\..\..\build\tmp\
+copy /B /Y ..\..\..\..\data\basic.swf $(SolutionDir)..\..\..\build\tmp\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -188,7 +192,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions);SHG_TMPDIR=R"($(SolutionDir)..\..\..\build\tmp\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -204,14 +208,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\..\data\basic.swf $(TEMP)</Command>
+      <Command>if not exist $(SolutionDir)..\..\..\build\tmp\ md $(SolutionDir)..\..\..\build\tmp\
+copy /B /Y ..\..\..\..\data\basic.swf $(SolutionDir)..\..\..\build\tmp\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions);SHG_TMPDIR=R"($(SolutionDir)..\..\..\build\tmp\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -225,7 +230,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\..\data\basic.swf $(TEMP)</Command>
+      <Command>if not exist $(SolutionDir)..\..\..\build\tmp\ md $(SolutionDir)..\..\..\build\tmp\
+copy /B /Y ..\..\..\..\data\basic.swf $(SolutionDir)..\..\..\build\tmp\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -234,7 +240,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CONSOLE;SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)";%(PreprocessorDefinitions);SHG_TMPDIR=R"($(SolutionDir)..\..\..\build\tmp\)"</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -250,7 +256,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\..\..\..\data\basic.swf $(TEMP)</Command>
+      <Command>if not exist $(SolutionDir)..\..\..\build\tmp\ md $(SolutionDir)..\..\..\build\tmp\
+copy /B /Y ..\..\..\..\data\basic.swf $(SolutionDir)..\..\..\build\tmp\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
@@ -266,7 +273,7 @@
     <Import Project="..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets')" />
     <Import Project="..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets')" />
     <Import Project="..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets" Condition="Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" />
-    <Import Project="..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\..\packages19\pugixml.1.16.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages19\pugixml.1.16.0\build\native\pugixml.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -283,6 +290,6 @@
     <Error Condition="!Exists('..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_thread-vc142.1.87.0\build\boost_thread-vc142.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_unit_test_framework-vc142.1.87.0\build\boost_unit_test_framework-vc142.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\pugixml.1.15.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages19\pugixml.1.16.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages19\pugixml.1.16.0\build\native\pugixml.targets'))" />
   </Target>
 </Project>

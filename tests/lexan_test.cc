@@ -1,6 +1,5 @@
 #include <shg/lexan.h>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <shg/utils.h>
@@ -20,7 +19,7 @@ Basic_lexer::Basic_lexer() {
      SHG::PLP::Dictionary dict;
 
      fs::path const ip = fs::path(datadir) / "basic.swf";
-     fs::path const op = fs::temp_directory_path() / "basic.wf";
+     fs::path const op = tmp_dir_path() / "basic.wf";
      std::ifstream f(ip, bininp);
      BOOST_REQUIRE(f.good());
      dict.load_source_word_file(f);

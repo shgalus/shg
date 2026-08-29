@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="plp/plp.vcxproj" Id="18047482-6389-4791-b1f7-cff145b5712e" />
+  <Project Path="shg/shg.vcxproj" Id="912b3ca9-e05b-4640-836d-f128e13ff902" />
+  <Project Path="tests/tests.vcxproj" Id="d914b6ac-eec4-482e-be05-9f77d56658f4" />
+</Solution>

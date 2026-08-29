@@ -34,8 +34,8 @@ build/plp/%.o : plp/%.cc
 .PHONY: all doc run lint format install uninstall clean spotless
 
 # Building shared library is disabled to speed up compilation time.
-# all: lib/libshg.a lib/libshg.so.$(VERSION) bin/tests bin/plp
-all: lib/libshg.a bin/tests bin/plp
+# all: lib/libshg.a lib/libshg.so.$(VERSION) bin/tests bin/tmp bin/plp
+all: lib/libshg.a bin/tests bin/tmp bin/plp
 
 lib/libshg.a: $(OBJS_STATIC) | lib
 	$(AR) $(ARFLAGS) $@ $(OBJS_STATIC)
@@ -51,7 +51,7 @@ bin/tests: lib/libshg.a $(OBJS_TESTS) | bin
 bin/plp: lib/libshg.a $(OBJS_PLP) | bin
 	$(CXX) $(LDFLAGS) $(OBJS_PLP) $(LOADLIBES) $(LDLIBS) -lboost_program_options -o $@
 
-bin lib build build/static build/shared build/tests build/plp:
+bin bin/tmp lib build build/static build/shared build/tests build/plp:
 	mkdir -p $@
 
 
@@ -60,13 +60,13 @@ $(OBJS_SHARED): | build/shared
 $(OBJS_TESTS):  | build/tests
 $(OBJS_PLP):    | build/plp
 
-/tmp/basic.swf: data/basic.swf
+bin/tmp/basic.swf: data/basic.swf
 	cp $< $@
 
 doc:
 	cd doc && $(MAKE)
 
-run: all /tmp/basic.swf
+run: all bin/tmp/basic.swf
 	./bin/tests --log_level=message --run_test=*
 
 lint:

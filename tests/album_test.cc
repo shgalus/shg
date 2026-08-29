@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE(convert_test) {
 BOOST_AUTO_TEST_CASE(basic_test) {
      namespace fs = std::filesystem;
      BOOST_REQUIRE(album_data.size() == 16);
-     fs::path const path = fs::temp_directory_path() / "shg/album";
+     fs::path const path = tmp_dir_path() / "shg/album";
      BOOST_REQUIRE_NO_THROW(fs::remove_all(path));
      bool ok = false;
      BOOST_REQUIRE_NO_THROW(ok = fs::create_directories(path));

@@ -11,8 +11,8 @@
 
 namespace SHG::ALGEBRA {
 
-int is_commutative_ring_with_unity(SHG::Linalg::Matint const& add,
-                                   SHG::Linalg::Matint const& mul) {
+int is_ring(SHG::Linalg::Matint const& add,
+            SHG::Linalg::Matint const& mul) {
      int const n = add.rows();
      if (n <= 0)
           return 1;  // general error
@@ -85,7 +85,7 @@ int is_commutative_ring_with_unity(SHG::Linalg::Matint const& add,
 
 int is_field(SHG::Linalg::Matint const& add,
              SHG::Linalg::Matint const& mul) {
-     int const r = is_commutative_ring_with_unity(add, mul);
+     int const r = is_ring(add, mul);
      if (r != 0)
           return r;
      int const n = add.rows();

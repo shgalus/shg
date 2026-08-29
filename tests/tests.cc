@@ -28,10 +28,22 @@ BOOST_TEST_GLOBAL_FIXTURE(Global_fixture);
 
 namespace TESTS {
 
+void printl() {
+     std::cout << '\n';
+}
+
 #if defined(_MSC_VER)
 char const* const datadir = SHG_DATADIR;
 #else
 char const* const datadir = "./data/";
 #endif
+
+std::filesystem::path tmp_dir_path() {
+#if defined(_MSC_VER)
+     return SHG_TMPDIR;
+#else
+     return "./bin/tmp/";
+#endif
+}
 
 }  // namespace TESTS

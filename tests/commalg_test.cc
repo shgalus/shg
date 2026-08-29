@@ -5,10 +5,10 @@ namespace TESTS {
 
 BOOST_AUTO_TEST_SUITE(commalg_test)
 
-BOOST_AUTO_TEST_SUITE(is_commutative_ring_with_unity_test)
+BOOST_AUTO_TEST_SUITE(is_ring_test)
 
 using SHG::Linalg::Matint;
-using SHG::ALGEBRA::is_commutative_ring_with_unity;
+using SHG::ALGEBRA::is_ring;
 
 BOOST_AUTO_TEST_CASE(commutative_ring_with_unity_test) {
      int const n = 6;
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(commutative_ring_with_unity_test) {
                mul(i, j) = (i * j) % n;
           }
      // std::cout << add << "\n\n" << mul << '\n';
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 0);
+     BOOST_CHECK(is_ring(add, mul) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(commutative_ring_without_unity_test) {
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(commutative_ring_without_unity_test) {
                add(i, j) = (i + j) % n;
                mul(i, j) = 0;
           }
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 5);
+     BOOST_CHECK(is_ring(add, mul) == 5);
 }
 
 /*
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(noncommutative_ring_test) {
      // clang-format on
 
      // std::cout << add << "\n\n" << mul << '\n';
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 3);
+     BOOST_CHECK(is_ring(add, mul) == 3);
 }
 
 struct ET_less {
@@ -157,7 +157,7 @@ BOOST_DATA_TEST_CASE(ring_zu_quot_test,
                     }
           }
      // std::cout << add << "\n\n" << mul << '\n';
-     BOOST_CHECK(is_commutative_ring_with_unity(add, mul) == 0);
+     BOOST_CHECK(is_ring(add, mul) == 0);
      BOOST_CHECK(SHG::ALGEBRA::is_field(add, mul) == 10);
      BOOST_CHECK(true);
 }

@@ -33,10 +33,10 @@ namespace SHG::ALGEBRA {
    5 0 1 2 3 4   0 5 4 3 2 1
    \endverbatim
  */
-int is_commutative_ring_with_unity(SHG::Linalg::Matint const& add,
-                                   SHG::Linalg::Matint const& mul);
+int is_ring(SHG::Linalg::Matint const& add,
+            SHG::Linalg::Matint const& mul);
 /**
- * Calls is_commutative_ring_with_unity(). If successful, checks for
+ * Calls is_ring(). If successful, checks for
  * multiplicative inverses.
  */
 int is_field(SHG::Linalg::Matint const& add,

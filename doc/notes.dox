@@ -180,6 +180,54 @@ from http://yann.lecun.com/exdb/mnist/ (<a href =
 - train-images-idx3-ubyte.gz
 - train-labels-idx1-ubyte.gz
 
+\section vs2026 Creating Visual Studio 2026 solution.
+
+Create directory `shg\extras\vs2026`. Create project `shg` as a static
+library in solution `shg` in this directory. In the solution `shg` add
+projects named `tests` and `plp` as console applications and project
+named `pugixml` as static library.
+
+For properies of all projects in all configurations and all platforms:
+- in section C/C++ Language choose ISO C++20 and disable language
+  extensions, allow for language extensions for `tests` (it compiles
+  winnt.h),
+- in section C/C++ Precompiled Headers choose Not Using Precompiled
+  Headers,
+- in section C/C++ Advanced disable warnings: 4244, 4267, 4305, 4723,
+  4756, 4996, 26451, 26812.
+
+Remove all automatically generated header and source files from all
+projects.
+
+Download
+https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+and move it as `.gitignore` into `vs2026` directory. Move
+`.gitattributes` generated in `Git|Settings|Git Repository Config`
+into `vs2026` directory.
+
+Add header files from `include/shg` and source files from `src` to the
+project `shg`. Add files from directories `tests`, `plp` and
+`external/pugixml` to respective projects.
+
+For the projects `shg`, `tests` and `plp`, in C/C++ General in
+Additional Include Directories, add the path `..\..\..\..\include`.
+For the projects `shg` and `tests` add also
+`..\..\..\..\external\pugixml`.
+
+In solution explorer, for `tests` add reference to `shg` and
+`pugixml`, for `plp` add reference to `shg`, for `shg` add reference
+to `pugixml`.
+
+Add the file `nuget.config`. With `Tools|NuGet Package Manager` add
+required packages to all projects but `pugixml`.
+
+For `tests`, in C/C++ Preprocessor definitions, add
+`SHG_DATADIR=R"($(SolutionDir)..\..\..\data\)"`. To enable assertions
+in release mode, remove NDEBUG in
+Properties/C/C++/Preprocessor/Preprocessor definitions. Add post-build
+event for `tests`: `copy /B /Y ..\..\..\..\data\basic.swf $(TEMP)`.
+
+
 \section vs2022 Creating Visual Studio 2022 solution.
 
 Create directory `shg\extras\vs2022`. Create project `shg` as a
@@ -273,22 +321,23 @@ Letter Latex   UTF-8    Charset Unicode UTF-8 string literal
 
 - [Managing Projects with GNU Make](https://www.oreilly.com/openbook/make3/book/)
 
-- [GCC documentation](https://gcc.gnu.org/onlinedocs/15.2.0/)
-  ([local copy](file:///usr/local/gcc-15.2.0/share/doc/html/gcc/index.html))
+- [GCC documentation](https://gcc.gnu.org/onlinedocs/16.2.0/)
+  ([local copy](file:///usr/local/gcc-16.2.0/share/doc/html/gcc/index.html))
 
-- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-15.2.0/cpp/)
-  ([local copy](file:///usr/local/gcc-15.2.0/share/doc/html/cpp/index.html))
+- [CPP documentation](https://gcc.gnu.org/onlinedocs/gcc-16.2.0/cpp/)
+  ([local copy](file:///usr/local/gcc-16.2.0/share/doc/html/cpp/index.html))
 
 - [Clang documentation](https://clang.llvm.org/docs/index.html)
+  ([local copy](file:///usr/share/doc/clang-22/html/index.html))
 
-- [Boost documentation](https://www.boost.org/doc/libs/1_89_0/)
-  ([local copy](file:///usr/local/share/doc/boost_1_89_0/index.html))
+- [Boost documentation](https://www.boost.org/doc/libs/latest/)
+  ([local copy](file:///usr/local/share/doc/boost_1_92_0/index.html))
 
-    - [Improved numeric_cast](https://www.boost.org/doc/libs/1_89_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_89_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
+    - [Improved numeric_cast](https://www.boost.org/doc/libs/latest/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_92_0/libs/numeric/conversion/doc/html/boost_numericconversion/improved_numeric_cast__.html))
 
-    - [Safe numerics](https://www.boost.org/doc/libs/1_89_0/libs/safe_numerics/doc/html/introduction.html)
-      ([local copy](file:///usr/local/share/doc/boost_1_89_0/libs/safe_numerics/doc/html/introduction.html))
+    - [Safe numerics](https://www.boost.org/doc/libs/latest/libs/safe_numerics/doc/html/introduction.html)
+      ([local copy](file:///usr/local/share/doc/boost_1_92_0/libs/safe_numerics/doc/html/introduction.html))
 
 - [Eigen3 documentation](https://eigen.tuxfamily.org/dox/)
   ([local copy](file:///usr/local/share/doc/eigen3/index.html))

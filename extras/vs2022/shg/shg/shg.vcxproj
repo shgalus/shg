@@ -51,6 +51,7 @@
     <ClInclude Include="..\..\..\..\include\shg\ipart-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\ipart.h" />
     <ClInclude Include="..\..\..\..\include\shg\laplace.h" />
+    <ClInclude Include="..\..\..\..\include\shg\legendresym.h" />
     <ClInclude Include="..\..\..\..\include\shg\lexan.h" />
     <ClInclude Include="..\..\..\..\include\shg\linalg.h" />
     <ClInclude Include="..\..\..\..\include\shg\mathprog.h" />
@@ -73,8 +74,10 @@
     <ClInclude Include="..\..\..\..\include\shg\pcfg.h" />
     <ClInclude Include="..\..\..\..\include\shg\permentr.h" />
     <ClInclude Include="..\..\..\..\include\shg\polynomial.h" />
+    <ClInclude Include="..\..\..\..\include\shg\recjar.h" />
     <ClInclude Include="..\..\..\..\include\shg\rng.h" />
     <ClInclude Include="..\..\..\..\include\shg\runs.h" />
+    <ClInclude Include="..\..\..\..\include\shg\rzxdabc.h" />
     <ClInclude Include="..\..\..\..\include\shg\safeint-inl.h" />
     <ClInclude Include="..\..\..\..\include\shg\safeint.h" />
     <ClInclude Include="..\..\..\..\include\shg\shg.h" />
@@ -137,8 +140,10 @@
     <ClCompile Include="..\..\..\..\src\packellp.cc" />
     <ClCompile Include="..\..\..\..\src\pcfg.cc" />
     <ClCompile Include="..\..\..\..\src\polynomial.cc" />
+    <ClCompile Include="..\..\..\..\src\recjar.cc" />
     <ClCompile Include="..\..\..\..\src\rng.cc" />
     <ClCompile Include="..\..\..\..\src\runs.cc" />
+    <ClCompile Include="..\..\..\..\src\rzxdabc.cc" />
     <ClCompile Include="..\..\..\..\src\smc.cc" />
     <ClCompile Include="..\..\..\..\src\specfunc.cc" />
     <ClCompile Include="..\..\..\..\src\term.cc" />
@@ -296,7 +301,7 @@
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" />
     <Import Project="..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets" Condition="Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" />
     <Import Project="..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets" Condition="Exists('..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets')" />
-    <Import Project="..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets')" />
+    <Import Project="..\..\..\..\..\packages22\pugixml.1.16.0\build\native\pugixml.targets" Condition="Exists('..\..\..\..\..\packages22\pugixml.1.16.0\build\native\pugixml.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -306,6 +311,6 @@
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x64.2.3.0.2779\build\native\gsl-msvc14-x64.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\gsl-msvc14-x86.2.3.0.2779\build\native\gsl-msvc14-x86.targets'))" />
     <Error Condition="!Exists('..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\boost.1.87.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\pugixml.1.15.0\build\native\pugixml.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\packages22\pugixml.1.16.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\packages22\pugixml.1.16.0\build\native\pugixml.targets'))" />
   </Target>
 </Project>

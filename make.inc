@@ -4,12 +4,15 @@ SHELL = /bin/sh
 .SUFFIXES: .cc .o
 
 ifndef clang
-CXX = g++-15.2.0 -O2
+CXX = g++-16.2.0 -O2
 WARNINGS = -Wpedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror
 else
-CXX = clang++-21 -O2 --gcc-toolchain=/usr/local/gcc-15.2.0
-WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror -Wno-error=character-conversion
+CXX = clang++-22 -O2 --gcc-toolchain=/usr/local/gcc-16.2.0
+WARNINGS = -pedantic -Wall -Wextra -Weffc++ -Wold-style-cast -Werror -Wno-error=character-conversion -Wno-c2y-extensions
 endif
+
+# -Wno-c2y-extensions above was added on 26 August 2026 due to an
+# issue in clang++-22.
 
 ifdef ubsan
 UBSAN = -fsanitize=undefined
@@ -23,12 +26,12 @@ endif
 DEFS =
 
 DEBUG = -g $(UBSAN)
-INCLUDE = -I./include -isystem/usr/local/boost_1_89_0/include	\
+INCLUDE = -I./include -isystem/usr/local/boost_1_92_0/include	\
 -isystem/usr/local/include/eigen3
 CXXFLAGS = -MMD $(DEBUG) $(INCLUDE) -std=c++20 $(WARNINGS) $(DEFS)
 CPPFLAGS =
 LDFLAGS = -static
-LOADLIBES = -L./lib -L/usr/local/boost_1_89_0/lib
+LOADLIBES = -L./lib -L/usr/local/boost_1_92_0/lib
 LDLIBS = -lshg -lgsl -lgslcblas -lboost_unit_test_framework	\
 -lboost_iostreams -lboost_log -lboost_thread -lboost_filesystem	\
 -lpugixml -lpthread -lz
@@ -37,9 +40,9 @@ ifdef ubsan
 LDLIBS += -lubsan
 endif
 
-AR = gcc-ar-15.2.0
+AR = gcc-ar-16.2.0
 ARFLAGS = rc
-RANLIB = gcc-ranlib-15.2.0
+RANLIB = gcc-ranlib-16.2.0
 
 %.o : %.cc
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@

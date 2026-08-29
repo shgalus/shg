@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <string>
 #include <fstream>
-#include <filesystem>
 #include <shg/utils.h>
 #include "tests.h"
 
